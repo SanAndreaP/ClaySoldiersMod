@@ -1,0 +1,3291 @@
+/*******************************************************************************************************************
+ * Name:      EntityClayMan.java
+ * Author:    SanAndreasP
+ * Copyright: SanAndreasP and SilverChiren
+ * License:   Attribution-NonCommercial-ShareAlike 3.0 Unported (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+ *******************************************************************************************************************/
+
+package sanandreasp.mods.ClaySoldiersMod.entity;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import sanandreasp.mods.ClaySoldiersMod.client.entity.EntityClayCam;
+import sanandreasp.mods.ClaySoldiersMod.entity.mount.EntityBunny;
+import sanandreasp.mods.ClaySoldiersMod.entity.mount.EntityGecko;
+import sanandreasp.mods.ClaySoldiersMod.entity.mount.EntityHorse;
+import sanandreasp.mods.ClaySoldiersMod.entity.mount.EntityPegasus;
+import sanandreasp.mods.ClaySoldiersMod.entity.mount.EntitySnowball;
+import sanandreasp.mods.ClaySoldiersMod.entity.mount.EntityTurtle;
+import sanandreasp.mods.ClaySoldiersMod.entity.mount.IMount;
+import sanandreasp.mods.ClaySoldiersMod.entity.projectile.EntityFireball;
+import sanandreasp.mods.ClaySoldiersMod.entity.projectile.EntityGravelChunk;
+import sanandreasp.mods.ClaySoldiersMod.item.ItemBunny;
+import sanandreasp.mods.ClaySoldiersMod.item.ItemClayMan;
+import sanandreasp.mods.ClaySoldiersMod.item.ItemGecko;
+import sanandreasp.mods.ClaySoldiersMod.item.ItemHorses;
+import sanandreasp.mods.ClaySoldiersMod.item.ItemTurtle;
+import sanandreasp.mods.ClaySoldiersMod.registry.CSMModRegistry;
+
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.network.EntitySpawnPacket;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.server.FMLServerHandler;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.EntityMinecartContainer;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.IAnimals;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemRecord;
+import net.minecraft.item.ItemSpade;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+
+public class EntityClayMan_OLD extends EntityCreature /*, IEntityAdditionalSpawnData*/ {
+	
+	public static final float padColorTable[][] = {
+		{ 1.0F, 1.0F, 1.0F },
+		{ 0.95F, 0.7F, 0.2F },
+		{ 0.9F, 0.5F, 0.85F },
+		{ 0.6F, 0.7F, 0.95F },
+		{ 0.9F, 0.9F, 0.2F },
+		{ 0.5F, 0.8F, 0.1F },
+		{ 0.95F, 0.7F, 0.8F },
+		{ 0.3F, 0.3F, 0.3F },
+		{ 0.6F, 0.6F, 0.6F },
+		{ 0.3F, 0.6F, 0.7F },
+		{ 0.7F, 0.4F, 0.9F },
+		{ 0.2F, 0.4F, 0.8F },
+		{ 0.5F, 0.4F, 0.3F },
+		{ 0.4F, 0.5F, 0.2F },
+		{ 0.8F, 0.3F, 0.3F },
+		{ 0.1F, 0.1F, 0.1F }
+	};
+	
+	private boolean thisInWater;
+	
+	public int ghastTearPts, blazeStock, foodLeft, sugarTime, resPoints, entCount, strikeTime, climbTime, smokeTime, gooStock, smokeStock, toxinStock, timeBombTicks = -1;
+	
+	public int blockX, blockY, blockZ, throwTime, essence, victory, sittingPos = 0;
+	
+	public int timeUntilSit = -1;
+	
+	public float swingLeft;
+
+	public boolean isSwinging, heavyCore, isSwingingLeft, hasFeather, villager, brawler, fireDeath, hasCoal, timeBombReady;
+
+	public boolean glowBlocked, snowBlocked, fromNexus, neutral, goldBlocked, preInit, wheatSeeds;
+	
+	public int[] MusicCoord = new int[3];
+	
+	public double field_20066_r;
+	
+	public double field_20065_s;
+	
+	public double field_20064_t;
+
+	public double field_20063_u;
+	
+	public double field_20062_v;
+	
+	public double field_20061_w;
+	public Entity targetFollow, killedByPlayer;
+	
+	public EntityClayMan_OLD(World world) {
+		super(world);
+//		health = 20;
+		yOffset = 0.0F;
+		stepHeight = 0.1F;
+//		moveSpeed = 0.3F;
+		setSize(0.15F, 0.4F);
+		setPosition(posX, posY, posZ);
+		renderDistanceWeight = 5D;
+		this.dataWatcher.addObject(28, (short)-1); // TODO: [SHORT] clayTeam
+		this.dataWatcher.addObject(11, (short)0); // TODO: [SHORT] stickPoints
+		this.dataWatcher.addObject(12, (short)0); // TODO: [SHORT] rodPoints
+		this.dataWatcher.addObject(13, (int)0); // TODO: [BOOL] booleanStuff
+		this.dataWatcher.addObject(14, (short)0); // TODO: [SHORT] armorPoints
+		this.dataWatcher.addObject(15, (short)0); // TODO: [SHORT] snowbPoints
+		this.dataWatcher.addObject(16, (short)-1); // TODO: [SHORT] padColor
+		this.dataWatcher.addObject(17, (short)-1); // TODO: [SHORT] capeColor
+		this.dataWatcher.addObject(18, (short)0); // TODO: [SHORT] firecPoints
+		this.dataWatcher.addObject(19, (short)0); // TODO: [SHORT] gooTime
+		this.dataWatcher.addObject(20, (short)0); // TODO: [SHORT] logPoints
+		this.dataWatcher.addObject(21, (short)0); // TODO: [SHORT] bonePoints
+		this.dataWatcher.addObject(22, (short)0); // TODO: [SHORT] rockPoints
+		this.dataWatcher.addObject(23, (short)0); // TODO: [SHORT] glisterPoints
+		this.dataWatcher.addObject(24, (short)0); // TODO: [SHORT] shieldPoints
+		this.dataWatcher.addObject(25, (short)0); // TODO: [SHORT] musDiscPoints
+		this.dataWatcher.addObject(26, (short)0); // TODO: [SHORT] shearPointsA / shearPointsB
+		this.dataWatcher.addObject(27, (short)0); // TODO: [SHORT] MusDiskID
+		preInit = true;
+		updateDataWatcher("altSkin", clayTexturePick(0));
+//		texture = clayManTexture(0);
+	}
+	
+	public boolean hasWheatSeeds() {
+		return wheatSeeds;
+	}
+	
+	public void setWheatSeeds(boolean b) {
+		this.wheatSeeds = b;
+	}
+	
+	public EntityClayMan_OLD(World world, double x, double y, double z, int i) {
+		this(world);
+		setPosition(x, y, z);
+		this.updateDataWatcher("clayTeam", (short)i);
+		worldObj.playSoundAtEntity(this, "step.gravel", 0.8F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.9F);
+	}
+	
+	private void addSquirrelButts() {
+		CSMModRegistry.proxy.showEffect(worldObj, this, 21);
+	}
+	
+	@Override
+	public void addVelocity(double d, double d1, double d2)
+    {
+		if (isGooey()) {
+			return;
+		}
+        motionX += d;
+        motionY += d1;
+        motionZ += d2;
+    }
+	
+	public boolean applyStatsFromCartItem(ItemStack stack, EntityMinecartContainer cart, int q) {
+		if (applyStatsFromItem(stack)) {
+			cart.decrStackSize(q, 1);
+			mountEntity(null);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean applyStatsFromChestItem(ItemStack stack, TileEntityChest chest, int q) {
+		if (applyStatsFromItem(stack)) {
+			gotcha(chest, q);
+			mountEntity(null);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean applyStatsFromDroppedItem(ItemStack stack, EntityItem item) {
+		if (applyStatsFromItem(stack)) {
+			gotcha(item);
+			mountEntity(null);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean applyStatsFromItem(ItemStack stack) {	
+		if (worldObj.isRemote) return false;
+		if (stack.itemID == Item.stick.itemID) {
+			updateDataWatcher("stickPoints", (short) (15 * (isSuper() ? 3 : 1)));
+			updateDataWatcher("stickSharp", false);
+			return true;
+		} else if (stack.itemID == CSMModRegistry.shearBlade.itemID && !hasRightShear() && !hasBlazeRod() && !hasBone() && getDataWatcherShort("stickPoints") <= 0) {
+			updateDataWatcher("shearPointsA", (short) (16 * (isSuper() ? 3 : 1)));
+			return true;
+		} else if (stack.itemID == CSMModRegistry.shearBlade.itemID) {
+			updateDataWatcher("shearPointsB", (short) (16 * (isSuper() ? 3 : 1)));
+			return true;
+		} else if (stack.itemID == Item.seeds.itemID) {
+			setWheatSeeds(true);
+			return true;
+		} else if (stack.itemID == Item.arrow.itemID) {
+			updateDataWatcher("stickPoints", (short) (15 * (isSuper() ? 3 : 1)));
+			dropItem(Item.feather.itemID, 1, 0);
+			updateDataWatcher("stickSharp", true);
+			return true;
+		} else if (stack.itemID == Item.silk.itemID) {
+			this.setHasString(true);
+			return true;
+		} else if (stack.getItem() instanceof ItemSword) {
+			attackEntityFrom(DamageSource.magic, 10000);
+			showChatMessageToAll("Not everything needs to be possible!");
+		} else if (stack.getItem() instanceof ItemAxe) {
+			attackEntityFrom(DamageSource.magic, 10000);
+			showChatMessageToAll("The gods have spoken, you are smited!");
+		} else if (stack.getItem() instanceof ItemPickaxe) {
+			attackEntityFrom(DamageSource.magic, 10000);
+			showChatMessageToAll("This situation is about mind over matter. Now, if you don't mind, let us get back to matters that make sense.");
+		} else if (stack.getItem() instanceof ItemSpade) {
+			attackEntityFrom(DamageSource.magic, 10000);
+			showChatMessageToAll("You lack the pre-determined number of starfruits required!");
+		} else if (stack.getItem() instanceof ItemHoe) {
+			attackEntityFrom(DamageSource.magic, 10000);
+			showChatMessageToAll("The Fae Lords have heared your request. Well, you can probably guess what they think.");
+		} else if (stack.getItem() instanceof ItemBow) {
+			attackEntityFrom(DamageSource.magic, 10000);
+			showChatMessageToAll("Be careful around that stri- oh wait, nevermind.");
+		} else if (stack.itemID == Item.blazeRod.itemID) {
+			this.updateDataWatcher("rodPoints", (short)(20 * (isSuper() ? 3 : 1)) );
+			return true;
+		} else if (stack.itemID == Item.bone.itemID) {
+			updateDataWatcher("bonePoints", (short) (35 * (isSuper() ? 3 : 1)));
+			return true;
+		} else if (stack.itemID == Item.fermentedSpiderEye.itemID) {
+			neutral = true;
+			return true;
+		} else if (stack.getItem() instanceof ItemRecord) {
+			updateDataWatcher("musDiscPoints", (short)(20*60*8+1));
+			updateDataWatcher("musDiskID", (short)stack.itemID);
+			return true;
+		} else if (stack.itemID == Item.speckledMelon.itemID) {
+			this.updateDataWatcher("glisterPoints", (short)(4 * (isSuper() ? 2 : 1)) );
+			return true;
+		} else if (stack.itemID == Item.egg.itemID) {
+			updateDataWatcher("camouflaged", true);
+			return true;
+		} else if (stack.itemID == Item.leather.itemID) {
+			updateDataWatcher("armorPoints", (short) (15 * (isSuper() ? 3 : 1)));
+			updateDataWatcher("padColor", (short)-1);
+			return true;
+		} else if (stack.itemID == Item.magmaCream.itemID) {
+			timeBombReady = true;
+			return true;
+		} else if (stack.itemID == Block.waterlily.blockID) {
+			updateDataWatcher("hasPants", true);
+			jump();
+			return true;
+		} else if (stack.itemID == Item.bucketMilk.itemID) {
+			villager = false;
+			brawler = false;
+			neutral = false;
+			worldObj.playSoundAtEntity(this, "random.drink", 0.8F, 0.7F + Math.min(0.3F, rand.nextFloat()));
+			targetFollow = null;
+		} else if (stack.itemID == Item.reed.itemID) {
+			updateDataWatcher("hasReed", true);
+			return true;
+		} else if (stack.itemID == Item.monsterPlacer.itemID && stack.getItemDamage() == teamEgg(getDataWatcherShort("clayTeam"))) {
+			updateDataWatcher("specSkin", true);
+			texture = clayManTexture(getDataWatcherShort("clayTeam"));
+			return true;
+		} else if (stack.itemID == CSMModRegistry.clayCookie.itemID) {
+			updateDataWatcher("altSkin", clayTexturePick(getDataWatcherShort("clayTeam")));
+			texture = clayManTexture(getDataWatcherShort("clayTeam"));
+			return true;
+		} else if (stack.itemID == Item.bowlEmpty.itemID) {
+			updateDataWatcher("shieldPoints", (short)(10 * (isSuper() ? 3 : 1)));
+			updateDataWatcher("shieldStud", false);
+			return true;
+		} else if (stack.itemID == Block.gravel.blockID) {
+			updateDataWatcher("rockPoints", (short)(15 * (isSuper() ? 3 : 1)));
+			return true;
+		} else if (stack.itemID == Item.emerald.itemID) {
+			updateDataWatcher("hasEmerald", true);
+			return true;
+		} else if (stack.itemID == Item.snowball.itemID) {
+			updateDataWatcher("snowbPoints", (short)(15 * (isSuper() ? 3 : 1)));
+			snowBlocked = false;
+			return true;
+		} else if (stack.itemID == Block.blockSnow.blockID) {
+			updateDataWatcher("snowbPoints", (short)(15 * (isSuper() ? 3 : 1)));
+
+			for (int j = 0; j < 4; j++) {
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 3);
+			}
+			worldObj.playSoundAtEntity(this, "step.cloth", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			snowBlocked = true;
+
+			targetFollow = null;
+		} else if (stack.itemID == Block.tnt.blockID) {
+			updateDataWatcher("gunPowdered", true);
+			
+			for (int j = 0; j < 4; j++) {
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 3);
+			}
+			worldObj.playSoundAtEntity(this, "step.grass", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			
+			targetFollow = null;
+		} else if (stack.itemID == Item.fireballCharge.itemID) {
+			updateDataWatcher("firecPoints", (short)(15 * (isSuper() ? 3 : 1)));
+			return true;
+		} else if (stack.itemID == Block.mushroomRed.blockID) {
+			toxinStock = 2 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Block.mushroomBrown.blockID) {
+			foodLeft = 2 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Item.coal.itemID) {
+			hasCoal = true;
+			return true;
+		} else if (stack.itemID == Item.lightStoneDust.itemID) {
+			updateDataWatcher("glowing", true);
+			glowBlocked = false;
+			return true;
+		} else if (stack.itemID == Block.glowStone.blockID) {
+			updateDataWatcher("glowing", true);
+
+			for (int j = 0; j < 4; j++) {
+				double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double b = boundingBox.minY + 0.125D + ((rand.nextFloat() - rand.nextFloat()) * 0.25D);
+				double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 4);
+			}
+			worldObj.playSoundAtEntity(this, "random.glass", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			glowBlocked = true;
+			
+			targetFollow = null;
+		} else if (stack.itemID == Item.wheat.itemID && stack.stackSize == 2 && this.getDataWatcherShort("clayTeam") == 8 && !hasEESkin()) {
+			updateDataWatcher("eeskin", true);
+			texture = clayManTexture(getDataWatcherShort("clayTeam"));
+			return true;
+		} else if (stack.itemID == Item.wheat.itemID) {
+			villager = true;
+			return true;
+		} else if (stack.itemID == Item.netherStalkSeeds.itemID) {
+			brawler = true;
+			return true;
+		} else if (stack.itemID == Item.goldNugget.itemID) {
+			updateDataWatcher("hasCrown", true);
+			return true;
+		} else if (stack.itemID == Item.gunpowder.itemID) {
+			this.updateDataWatcher("gunPowdered", true);
+			return true;
+		} else if (stack.itemID == Item.sugar.itemID) {
+			sugarTime = 1200;
+			return true;
+		} else if (stack.getItem() instanceof ItemFood) {
+			foodLeft = 4 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Item.brick.itemID) {
+			setHasBrick(true);
+			return true;
+		} else if (stack.itemID == Item.clay.itemID) {
+			resPoints = 4 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Item.ghastTear.itemID) {
+			ghastTearPts = 1 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Item.redstone.itemID) {
+			smokeStock = 2 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Item.blazePowder.itemID) {
+			blazeStock = 1 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Item.slimeBall.itemID) {
+			gooStock = 2 * (isSuper() ? 2 : 1);
+			return true;
+		} else if (stack.itemID == Item.ingotIron.itemID) {
+			heavyCore = true;
+			return true;
+		} else if (stack.itemID == Item.feather.itemID) {
+			hasFeather = true;
+			return true;
+		} else if (stack.itemID == Item.diamond.itemID) {
+			updateDataWatcher("superSoldier", true);
+			updateDataWatcher("capeColor", (short)-1);
+			health *= 20;
+			updateDataWatcher("stickPoints", (short) (getDataWatcherShort("stickPoints") * 3));
+			this.updateDataWatcher("rodPoints", (short) (this.getDataWatcherShort("rodPoints") * 3));
+			this.updateDataWatcher("bonePoints", (short) (this.getDataWatcherShort("bonePoints") * 3));
+			updateDataWatcher("armorPoints", (short) (getDataWatcherShort("armorPoints") * 3));
+			updateDataWatcher("shieldPoints", (short) (getDataWatcherShort("shieldPoints") * 3));
+			updateDataWatcher("rockPoints", (short)(getDataWatcherShort("rockPoints") * 3));
+			updateDataWatcher("snowbPoints", (short)(getDataWatcherShort("snowbPoints") * 3));
+			updateDataWatcher("firecPoints", (short)(getDataWatcherShort("firecPoints") * 3));
+			resPoints *= 2;
+			foodLeft *= 2;
+			smokeStock *= 2;
+			gooStock *= 2;
+			ghastTearPts *= 2;
+			updateDataWatcher("glisterPoints", (short)(getDataWatcherShort("glisterPoints") * 2));
+			toxinStock *= 2;
+			return true;
+		} else if (stack.itemID == Block.blockGold.blockID) {
+			goldBlocked = true;
+			health *= 2;
+			updateDataWatcher("stickPoints", (short) (getDataWatcherShort("stickPoints") * 2));
+			this.updateDataWatcher("rodPoints", (short) (this.getDataWatcherShort("rodPoints") * 2));
+			this.updateDataWatcher("bonePoints", (short) (this.getDataWatcherShort("bonePoints") * 2));
+			updateDataWatcher("armorPoints", (short) (getDataWatcherShort("armorPoints") * 2));
+			updateDataWatcher("shieldPoints", (short) (getDataWatcherShort("shieldPoints") * 2));
+			updateDataWatcher("rockPoints", (short)(getDataWatcherShort("rockPoints") * 2));
+			updateDataWatcher("snowbPoints", (short)(getDataWatcherShort("snowbPoints") * 2));
+			updateDataWatcher("firecPoints", (short)(getDataWatcherShort("firecPoints") * 2));
+			resPoints *= 2;
+			foodLeft *= 2;
+			smokeStock *= 2;
+			gooStock *= 2;
+			ghastTearPts *= 2;
+			updateDataWatcher("glisterPoints", (short)(getDataWatcherShort("glisterPoints") * 2));
+			toxinStock *= 2;
+			worldObj.playSoundAtEntity(this, "random.wood click", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			targetFollow = null;
+		} else if (stack.itemID == Item.paper.itemID) {
+			updateDataWatcher("capeColor", (short)(isPadded() ? getPadColor() : 0));
+			return true;
+		} else if (stack.itemID == Item.book.itemID) {
+			updateDataWatcher("capeColor", (short)(isPadded() ? getPadColor() : 0));
+			worldObj.playSoundAtEntity(this, "random.pop", 0.8F, 1.0F);
+			targetFollow = null;
+		} else if (stack.itemID == Item.enderPearl.itemID) {
+			updateDataWatcher("corrupt", true);
+			this.health = Math.max(this.health, 30);
+			essence = 3600;
+			worldObj.playSoundAtEntity(this, "mob.zombie.hurt", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			return true;
+		} else if (stack.itemID == Item.flint.itemID) {
+			if (getDataWatcherShort("stickPoints") > 0) {
+				updateDataWatcher("stickSharp", true);
+				for (int j = 0; j < 4; j++) {
+					CSMModRegistry.proxy.showEffect(this.worldObj, this, 5);
+				}
+				worldObj.playSoundAtEntity(this, "random.wood click", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			}
+			targetFollow = null;
+		} else if (stack.itemID == Block.cloth.blockID) {
+			if (hasArmor()) {
+				updateDataWatcher("padColor", (short)stack.getItemDamage());
+				for (int j = 0; j < 4; j++) {
+					CSMModRegistry.proxy.showEffect(this.worldObj, this, 3);
+				}
+				worldObj.playSoundAtEntity(this, "step.cloth", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			}
+			if (isCaped() && getCapeColor() != stack.getItemDamage()) {
+				updateDataWatcher("capeColor", (short)stack.getItemDamage());
+				for (int j = 0; j < 4; j++) {
+					CSMModRegistry.proxy.showEffect(this.worldObj, this, 3);
+				}
+				worldObj.playSoundAtEntity(this, "step.cloth", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			}
+			targetFollow = null;
+		} else if (stack.itemID == Block.blockIron.blockID) {
+			if (hasShield()) {
+				updateDataWatcher("shieldStud", true);
+				updateDataWatcher("shieldPoints", (short)(getDataWatcherShort("shieldPoints") + 5 * (isSuper() ? 2 : 1)));
+				for (int j = 0; j < 4; j++) {
+					CSMModRegistry.proxy.showEffect(this.worldObj, this, 6);
+				}
+				worldObj.playSoundAtEntity(this, "step.stone", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			}
+			targetFollow = null;
+		} else if ((stack.itemID == Block.glass.blockID)) {
+			if (!hasGoggles()) {
+				updateDataWatcher("goggles", true);
+				for (int j = 0; j < 4; j++) {
+					CSMModRegistry.proxy.showEffect(this.worldObj, this, 7);
+				}
+				worldObj.playSoundAtEntity(this, "random.glass", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			}
+			targetFollow = null;
+		} else if ((stack.itemID == Item.glassBottle.itemID || stack.itemID == Block.thinGlass.blockID)) {
+			if (!hasGoggles()) {
+				updateDataWatcher("goggles", true);
+				for (int j = 0; j < 4; j++) {
+					CSMModRegistry.proxy.showEffect(this.worldObj, this, 7);
+				}
+				worldObj.playSoundAtEntity(this, "random.glass", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+			}
+			return true;
+		} else if (stack.getItem() instanceof ItemClayMan) {
+			swingArm();
+			CSMModRegistry.proxy.swingSoldierArm(this.worldObj, this);
+			worldObj.playSoundAtEntity(this, "step.gravel", 0.8F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.9F);
+			for (int q = 0; q < 18; q++) {
+				double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double b = posY + 0.25D + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 2);
+			}
+			EntityClayMan ec = new EntityClayMan(worldObj, this.posX, this.posY, this.posZ, getDataWatcherShort("clayTeam"));
+			worldObj.spawnEntityInWorld(ec);
+			resPoints --;
+			return true;
+		} else if (stack.itemID == CSMModRegistry.brickDoll.itemID) { /*ADDED*/
+			swingArm();
+			CSMModRegistry.proxy.swingSoldierArm(this.worldObj, this);
+			worldObj.playSoundAtEntity(this, "step.gravel", 0.8F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.9F);
+			for (int q = 0; q < 18; q++) {
+				double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double b = posY + 0.25D + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 2);
+			}
+			EntityClayMan ec = new EntityClayMan(worldObj, this.posX, this.posY, this.posZ, getDataWatcherShort("clayTeam"));
+			worldObj.spawnEntityInWorld(ec);
+			ghastTearPts --;
+			return true;
+		} else if ((stack.getItem() instanceof ItemHorses || stack.getItem() instanceof ItemBunny || stack.getItem() instanceof ItemTurtle || stack.getItem() instanceof ItemGecko) ) {
+			swingArm();
+			CSMModRegistry.proxy.swingSoldierArm(this.worldObj, this);
+			worldObj.playSoundAtEntity(this, "step.gravel", 0.8F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.9F);
+			for (int q = 0; q < 18; q++) {
+				double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double b = posY + 0.25D + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 8);
+			}
+			
+			IMount<EntityCreature> mount = null;
+			
+			if (stack.getItem() instanceof ItemHorses) {
+				mount = new EntityHorse(worldObj, this.posX, this.posY, this.posZ, stack.getItemDamage());
+				if (stack.getItem() == CSMModRegistry.pegasusDoll) {
+					mount = new EntityPegasus(worldObj, this.posX, this.posY, this.posZ, stack.getItemDamage());
+				}
+			} else if (stack.getItem() instanceof ItemTurtle) {
+				mount = new EntityTurtle(worldObj, this.posX, this.posY, this.posZ, stack.getItemDamage());
+			} else if (stack.getItem() instanceof ItemBunny) {
+				mount = new EntityBunny(worldObj, this.posX, this.posY, this.posZ, stack.getItemDamage());
+			} else if (stack.getItem() instanceof ItemGecko) {
+				mount = new EntityGecko(worldObj, this.posX, this.posY, this.posZ, stack.getItemDamage());
+			}
+			
+			if (mount != null) {
+				worldObj.spawnEntityInWorld((EntityCreature) mount);
+				resPoints --;
+			}
+			return true;
+		} else if (stack.itemID == Block.wood.blockID && ridingEntity == null) {
+			int gottam = 0;
+			if (getDataWatcherShort("logPoints") < 20 && stack.stackSize >= 5) {
+				gottam = 1;
+			}
+			
+			if (gottam > 0) {
+				worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				if (gottam == 1) {
+					updateDataWatcher("logPoints", (short) (getDataWatcherShort("logPoints") + 5));
+					if (stack != null) {
+						stack.stackSize -= 5;
+					}
+				}
+				
+				if (stack == null || stack.stackSize <= 0) {
+					return true;
+				}
+			}
+			
+			setPathToEntity((PathEntity)null);
+			targetFollow = null;
+		} else if (stack.itemID == Item.dyePowder.itemID) {
+			targetFollow = null;
+		}
+		
+		return false;
+	}
+	
+	public float armLeft() {
+		return swingLeft;
+	}
+	
+	@Override
+	public boolean attackEntityFrom(DamageSource damagesource, int i) {
+		Entity entity = damagesource.getEntity();
+		Entity entity2 = damagesource.getSourceOfDamage();
+		
+		if (entity instanceof EntityPlayer && !(isCorrupt() && isSuper())) {
+			i = 970;
+			hurtTime = 0;
+		}
+		
+//		TODO: repair string explosion resistance
+		
+		if (this.hasString() && damagesource.isExplosion()) {
+			setHasString(false);
+			return false;
+		}
+		
+		if (entity instanceof EntityClayMan && !(isCorrupt() || brawler) && !(entity == this)) {
+			EntityClayMan ecm = (EntityClayMan)entity;
+			if (ecm.hasGlister() && ecm.getDataWatcherShort("clayTeam") == this.getDataWatcherShort("clayTeam")) {
+				ecm.updateDataWatcher("glisterPoints", (short)(ecm.getDataWatcherShort("glisterPoints")-1));
+				health = func_110138_aP();
+				if (isPotionActive(Potion.harm)) {
+					removePotionEffect(Potion.harm.getId());
+				}
+				ecm.entityToAttack = null;
+				CSMModRegistry.proxy.showEffect(worldObj, this, 19);
+				return false;
+			}
+		}
+		
+		if (entity2 instanceof EntityGravelChunk) {
+			if ((((EntityGravelChunk)entity2).getClayTeam() == getDataWatcherShort("clayTeam"))) {
+				return false;
+			}
+			else if (hasShield() && isShieldStud()) {
+				if (rand.nextInt(4) == 0) {
+					updateDataWatcher("shieldPoints", (short)(getDataWatcherShort("shieldPoints")-1));
+				}
+				return false;
+			}
+			else if (hasShield()) {
+				if (rand.nextInt(3) == 0) {
+					updateDataWatcher("shieldPoints", (short)(getDataWatcherShort("shieldPoints")-1));
+				}
+				return false;
+			}
+		}
+		
+		if (ridingEntity != null && i < 100 && rand.nextInt(2) == 0) {
+			return ridingEntity.attackEntityFrom(damagesource, i);
+		}
+		
+		if (damagesource.isFireDamage() && !isPotionActive(Potion.fireResistance)) {
+			boolean b = super.attackEntityFrom(damagesource, 1);
+			if (health <= 2) {
+				fireDeath = true;
+			}
+			if (health <= 0) {
+				setDead();
+			}
+			return b;
+		}
+	
+		boolean corrupted = false;
+		if ((entity == null || !(entity instanceof EntityClayMan)) && !damagesource.isFireDamage() && !(entity instanceof EntityGravelChunk) && !(entity instanceof EntityTurtle) && !(damagesource.equals(DamageSource.magic))) {
+			i += 30;
+			
+			if (entity instanceof EntityFishHook) {
+				return false;
+			}
+		} else if (!damagesource.isFireDamage() && !(entity instanceof EntityGravelChunk) && !(entity instanceof EntityTurtle) && !(damagesource.equals(DamageSource.magic))) {
+			EntityClayMan james = (EntityClayMan)entity;
+			
+			if (james == this && !isCorrupt() && !james.isCorrupt() && !brawler && !james.brawler) {
+				return false;
+			}
+			
+			if (james.heavyCore && ridingEntity != null) {
+				mountEntity(ridingEntity);
+			}
+		
+			if (hasLogs()) {
+				dropLogs();
+			}
+		
+			if (smokeTime <= 0 && !villager) {
+				entityToAttack = entity;
+			}
+			if (hasArmor()) {
+				i /= 2;
+				if (isPadded()) {
+					i -= 1;
+				}
+				updateDataWatcher("armorPoints", (short) (getDataWatcherShort("armorPoints") - 1));
+				if (i < 0) {
+					i = 0;
+				}
+			}
+			
+			if (hasShield()) {
+				i /= 2;
+				if (isShieldStud()) {
+					i -= 1;
+				}
+				updateDataWatcher("shieldPoints", (short)(getDataWatcherShort("shieldPoints")-1));
+				if (i < 0) {
+					i = 0;
+				}
+			}
+			
+			if (riddenByEntity instanceof EntityTurtle) {
+				int i1 = i/2;
+				james.attackEntityFrom(DamageSource.causeMobDamage((EntityLiving) riddenByEntity), i1);
+			}
+			
+			else if (hasTimeBomb() && rand.nextInt(15) == 0) {
+				i *= 3;
+				//TO-DO: crit FX
+//				if (FMLCommonHandler.instance().getSide().isClient())
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 9);
+//					CSM_ModRegistry.proxy.showEffect(new EntityCrit2FX(CSM_ModRegistry.proxy.getClientWorld(), this));
+			}
+			
+			if (health - i > 0) {
+				if ((james.smokeStock <= 0 || smokeTime <= 0 || rand.nextInt(2) == 0) && james.gooStock > 0 && !isGooey() && onGround && james.blazeStock <= 0) {
+					james.gooStock --;
+					if (!(isShieldStud() && rand.nextInt(4) == 0)) {
+						updateDataWatcher("gooTime", (short)150);
+					}
+					worldObj.playSoundAtEntity(this, "mob.slimeattack", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+					CSMModRegistry.proxy.showEffect(worldObj, this, 20);
+					motionX = 0D;
+					motionY = 0D;
+					motionZ = 0D;
+					moveForward = 0F;
+					moveStrafing = 0F;
+					isJumping = false;
+				} else if (james.smokeStock <= 0  && james.gooStock <= 0 && james.blazeStock > 0) {
+					james.blazeStock --;
+                    worldObj.playAuxSFXAtEntity(null, 1009, (int)posX, (int)posY, (int)posZ, 0);
+                    CSMModRegistry.proxy.showEffect(this.worldObj, this, 16);
+					if (isShieldStud() && rand.nextInt(4) == 0) {
+						i = 1;
+					} else if (isSuper()) {
+						i = 200;
+					} else {
+						motionX = 0D;
+						motionY = 0D;
+						motionZ = 0D;
+						moveForward = 0F;
+						moveStrafing = 0F;
+						isJumping = false;
+						setDead();
+						dropItem(CSMModRegistry.brickDoll.itemID, 1);
+					}
+				} else if (james.smokeStock > 0 && smokeTime <= 0 && blazeStock <= 0) {
+					james.smokeStock --;
+					if (!(isShieldStud() && rand.nextInt(4) == 0)) {
+						smokeTime = 150;
+					}
+					worldObj.playSoundAtEntity(this, "random.fizz", 0.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+                    CSMModRegistry.proxy.showEffect(this.worldObj, this, 17);
+//					for (int j = 0; j < 8; j++) {
+//						double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+//						double b = boundingBox.minY + 0.25D + (rand.nextFloat() * 0.25D);
+//						double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+//						worldObj.spawnParticle("reddust", a, b, c, 0.0D, 0.1D, 0.0D);
+//					}
+					targetFollow = null;
+					entityToAttack = null;
+					setPathToEntity((PathEntity)null);
+				}
+			} else if (james != this && james.isCorrupt() && !hasWheatSeeds()) {
+				james.entityToAttack = null;
+				james.setEntityHealth(Math.max(james.health, 30));
+				james.essence = 3600;
+				entityToAttack = null;
+				setEntityHealth(Math.max(this.health, 30));
+				essence = 3600;
+				updateDataWatcher("corrupt", true);
+				worldObj.playSoundAtEntity(this, "mob.zombie.hurt", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+				return false;
+			} else if (timeBombReady) {
+				james.timeBombTicks = 20*5;
+			}
+			
+		}
+		
+		boolean fred = super.attackEntityFrom(damagesource, i);
+		if (fred && func_110143_aJ() <= 0) {
+			victory = 0;
+			for (int q = 0; q < 24; q++) {
+				double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double b = posY + 0.25D + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
+				//TO-DO: cloth FX
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 2);
+//				if (FMLCommonHandler.instance().getSide().isClient())
+//					CSM_ModRegistry.proxy.showEffect(new EntityDiggingFX(CSM_ModRegistry.proxy.getClientWorld(), a, b, c, 0.0D, 0.0D, 0.0D, Block.cloth, 0, teamCloth(getDataWatcherShort("clayTeam"))));
+			}
+			isDead = true;
+			if (entity != null && entity instanceof EntityPlayer && FMLCommonHandler.instance().getSide().isServer()) {
+				killedByPlayer = entity;
+			}
+			if (hasGunPowder()) {
+				worldObj.createExplosion(null, posX, posY, posZ, 1F, false);
+			}
+		}
+		return fred;
+	}
+	
+	public double blockDist(int a, int b, int c, int x, int y, int z) {
+		double i = (a - x);
+		double j = (b - y);
+		double k = (c - z);
+		return Math.sqrt((i * i) + (j * j) + (k * k));
+	}
+	
+	public void buildHouseOne() {
+		int x = MathHelper.floor_double(posX + 0.5D);
+        int y = MathHelper.floor_double(boundingBox.minY);
+        int z = MathHelper.floor_double(posZ + 0.5D);
+		
+		int direction = rand.nextInt(4);
+		
+		for (int j = 0; j < 3; j++) {
+			int b = j;
+			for (int i = -1; i < 3; i++) {
+				for (int k = -1; k < 2; k++) {
+					int a = i;
+					int c = k;
+					
+					if (direction % 2 == 0) {
+						a = -a;
+						c = -c;
+					} 
+					
+					if (direction / 2 == 0) {
+						int swap = a;
+						a = c;
+						c = swap;
+					}
+					
+					if (j == 0) {
+						if (i == -1 || i == 2 || k == -1) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID); 
+						} else {
+							worldObj.setBlock(x + a, y + b, z + c, 0); 
+						}
+					} else if (j == 1) {
+						if (i == -1) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID);
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4, 3); 
+						} else if (i == 2) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2) % 4, 3); 
+						} else if (k == -1) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID); 
+						} else {
+							worldObj.setBlock(x + a, y + b, z + c, 0); 
+						}
+					} else {
+						if (i == 0) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4, 3);
+						} else if (i == 1) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2) % 4, 3); 
+						} else {
+							worldObj.setBlock(x + a, y + b, z + c, 0); 
+						}
+					}
+				}
+			}
+		}
+		
+		worldObj.playSoundAtEntity(this, "random.wood click", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+		worldObj.playSoundAtEntity(this, "step.wood", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+		updateDataWatcher("logPoints", (short) (getDataWatcherShort("logPoints")-5));
+	}
+	
+	public void buildHouseThree() {
+		int x = MathHelper.floor_double(posX);
+        int y = MathHelper.floor_double(boundingBox.minY);
+        int z = MathHelper.floor_double(posZ);
+		
+		int direction = rand.nextInt(4);
+		
+		for (int j = 0; j < 4; j++) {
+			int b = j;
+			for (int i = -3; i < 4; i++) {
+				for (int k = -2; k < 3; k++) {
+					int a = i;
+					int c = k;
+					
+					if (direction % 2 == 0) {
+						a = -a;
+						c = -c;
+					} 
+					
+					if (direction / 2 == 0) {
+						int swap = a;
+						a = c;
+						c = swap;
+					}
+					
+					if ((i == -3 || i == 3) && (k == -2 || k == 2)) {
+						continue;
+					}
+					
+					if (j < 3) {
+						if (i == -3 || i == 3 || k == -2 || (k == 2 && (i != 0 || j > 0))) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID); 
+						} else {
+							if (i == -2 && j == 0 && k == 0) { 
+								worldObj.setBlock(x + a, y + b, z + c, Block.chest.blockID); 
+								int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+								worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2) % 4, 3);
+								TileEntityChest chest = (TileEntityChest)worldObj.getBlockTileEntity(x + a, y + b, z + c);
+								chest.setInventorySlotContents(0, new ItemStack(Item.stick, 16, 0));
+							} else if (i == 0 && j == 0 && k == -1) {
+								worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+								int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+								worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4, 3);
+							} else if (i == 1 && j == 1 && k == -1) {
+								worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+								int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+								worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4, 3);
+							} else if (i == 2 && j == 1 && k == -1) {
+								worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID); 
+							} else if (i == 2 && j == 2 && k == 0) {
+								worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+								int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+								worldObj.setBlock(x + a, y + b, z + c, bID, (direction + (direction % 2 == 0 ? 1 : -1)) % 4, 3);
+							} else if (i == 0 && j == 2 && k == -1) {
+								worldObj.setBlock(x + a, y + b, z + c, 0); 
+							} else if (i == 1 && j == 2 && k == -1) {
+								worldObj.setBlock(x + a, y + b, z + c, 0); 
+							} else if (i == 2 && j == 2 && k == -1) {
+								worldObj.setBlock(x + a, y + b, z + c, 0); 
+							} else if (j == 2) {
+								worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID); 
+							} else {
+								worldObj.setBlock(x + a, y + b, z + c, 0); 
+							}
+						}
+					} else if (j == 3) {
+						if (i == -3 || i == 3 || k == -2 || (k == 2 && (i != 0 || j > 0))) {
+							if (i == -2 || i == 0 || i == 2 || k == 0) {
+								worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID);
+							} else {
+								worldObj.setBlock(x + a, y + b, z + c, Block.woodSingleSlab.blockID);
+								int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+								worldObj.setBlock(x + a, y + b, z + c, bID, 2, 3);
+							}
+						} else {
+							worldObj.setBlock(x + a, y + b, z + c, 0); 
+						}
+					}
+				}
+			}
+		}
+		
+		worldObj.playSoundAtEntity(this, "random.wood click", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+		worldObj.playSoundAtEntity(this, "step.wood", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+		updateDataWatcher("logPoints", (short)(getDataWatcherShort("logPoints")-20));
+	}
+	
+	public void buildHouseTwo() {
+		int x = MathHelper.floor_double(posX);
+        int y = MathHelper.floor_double(boundingBox.minY);
+        int z = MathHelper.floor_double(posZ);
+		
+		int direction = rand.nextInt(4);
+		
+		for (int j = 0; j < 3; j++) {
+			int b = j;
+			for (int i = -2; i < 3; i++) {
+				for (int k = -2; k < 3; k++) {
+					int a = i;
+					int c = k;
+					
+					if (direction % 2 == 0) {
+						a = -a;
+						c = -c;
+					} 
+					
+					if (direction / 2 == 0) {
+						int swap = a;
+						a = c;
+						c = swap;
+					}
+					
+					if ((i == -2 || i == 2) && (k == -2 || k == 2)) {
+						continue;
+					}
+					
+					if (j == 0 || j == 1) {
+						if (i == -2 || i == 2 || k == -2 || (k == 2 && (i != 0 || j == 1))) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID); 
+						} else {
+							worldObj.setBlock(x + a, y + b, z + c, 0); 
+						}
+					} else if (j == 2) {
+						if (i == -2) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2 + (direction % 2 == 0 ? 1 : -1)) % 4, 3);
+						} else if (i == 2) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction + 2) % 4, 3); 
+						} else if (k == -2) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction + (direction % 2 == 0 ? 1 : -1)) % 4, 3);
+						} else if (k == 2) {
+							worldObj.setBlock(x + a, y + b, z + c, Block.stairsWoodOak.blockID); 
+							int bID = this.worldObj.getBlockId(x + a, y + b, z + c);
+							worldObj.setBlock(x + a, y + b, z + c, bID, (direction) % 4, 3); 
+						} else {
+							worldObj.setBlock(x + a, y + b, z + c, Block.planks.blockID);  
+						}
+					}
+				}
+			}
+		}
+		
+		worldObj.playSoundAtEntity(this, "random.wood click", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+		worldObj.playSoundAtEntity(this, "step.wood", 1.75F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+		updateDataWatcher("logPoints", (short) (getDataWatcherShort("logPoints")-10));
+	}
+	
+	
+	
+	@Override
+	public boolean canBePushed() {
+		return !this.hasBrick();
+	}
+	
+	@Override
+	public boolean canBreatheUnderwater()
+	{
+		return true;
+	}
+	
+	@Override
+	protected boolean canDespawn()
+    {
+        return false;
+    }
+	
+	@Override
+	public boolean canEntityBeSeen(Entity entity)
+    {
+        return worldObj.rayTraceBlocks(Vec3.createVectorHelper(posX, posY + getEyeHeight() + 0.2D, posZ), Vec3.createVectorHelper(entity.posX, entity.posY + (entity.getEyeHeight() / 4D), entity.posZ)) == null;
+    }
+	
+	public float capeSwing() {
+		if (moveForward > 0F) {
+			return (float)Math.sqrt((motionX * motionX) + (motionZ * motionZ)) * 4F;
+		} else {
+			return 0F;
+		}
+	}
+	
+	public boolean cartOperations(EntityMinecartContainer cart, boolean arrived) {
+		for (int q = 0; q < cart.getSizeInventory(); q++) {
+			ItemStack stack = cart.getStackInSlot(q);
+			if (stack != null) {
+				if (stack.stackSize > 0) {
+					if (checkIfItemIsValid(stack, 2)) {
+						applyStatsFromCartItem(stack, cart, q);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkIfItemIsValid(ItemStack stack, int operation) { // operation: 0 = dropped Item | 1 = Item from chest | 2 = Item from minecart
+		if (stack.itemID == Item.stick.itemID && !villager && !hasRightShear() && !hasBlazeRod() && !hasBone() && this.getDataWatcherShort("stickPoints") <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.getItem() instanceof ItemRecord && !villager && getDataWatcherShort("musDiscPoints") <= 0) {
+			return true;
+		} else if ((stack.getItem() instanceof ItemSword || 
+				stack.getItem() instanceof ItemAxe || 
+				stack.getItem() instanceof ItemPickaxe ||
+				stack.getItem() instanceof ItemHoe ||
+				stack.getItem() instanceof ItemSpade ||
+				stack.getItem() instanceof ItemBow) && operation == 0) {
+			return true;
+		} else if (stack.itemID == Item.blazeRod.itemID && !villager && !hasRightShear() && !hasBlazeRod() && !hasBone() && getDataWatcherShort("stickPoints") <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Item.bone.itemID && !villager &&  !hasRightShear() && !hasBlazeRod() && !hasBone() && hasCrown() && getDataWatcherShort("stickPoints") <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Item.brick.itemID && !hasBrick() && !brawler && !isCorrupt()) {
+			return true;
+		} else if (stack.itemID == Item.seeds.itemID && !hasWheatSeeds() && !isCorrupt()) {
+			return true;
+		} else if (stack.itemID == Item.silk.itemID && !hasString() && !brawler && !isCorrupt() && !heavyCore) {
+			return true;
+		} else if (stack.itemID == Item.bucketMilk.itemID && (villager || brawler || neutral)) {
+			return true;
+		} else if (stack.itemID == Item.speckledMelon.itemID && !brawler && !isCorrupt() && !hasGlister() && !((gooStock > 0) || (smokeStock > 0) || (blazeStock > 0) ||  hasBlazeRod() || hasBone() || hasFireballs() || hasEmerald() || hasRocks() || hasShield() || hasSnowballs() || hasTimeBomb() || hasStick() || (toxinStock > 0))) {
+			return true;
+		} else if (stack.itemID == Item.leather.itemID && !hasArmor()) {
+			return true;
+		} else if (stack.itemID == Item.magmaCream.itemID && !villager && !timeBombReady && !hasGunPowder() && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Block.waterlily.blockID && !hasPants() && !heavyCore) {
+			return true;
+		} else if (stack.itemID == Item.reed.itemID && !hasReed() && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Block.blockGold.blockID && !goldBlocked && hasCrown()) {
+			return true;
+		} else if (stack.itemID == CSMModRegistry.shearBlade.itemID && !isCorrupt() && !hasGlister() && ((!hasLeftShear() && !hasShield() && !hasRocks() && !hasSnowballs() && !hasFireballs() && !hasEmerald()) || (!hasRightShear() && !hasBlazeRod() && !hasBone() && getDataWatcherShort("stickPoints") <= 0))) {
+			return true;
+		} else if (stack.itemID == Item.fermentedSpiderEye.itemID && !neutral) {
+			return true;
+		} else if (stack.itemID == Item.bowlEmpty.itemID && !hasShield() && !hasLeftShear() && !hasRocks() && !hasSnowballs() && !hasFireballs() && !hasGlister() && !hasEmerald()) {
+			return true;
+		} else if (stack.itemID == Block.gravel.blockID && !villager && !hasLeftShear() && !hasRocks() && !hasShield() && !hasSnowballs() && !hasFireballs() && !hasGlister() && !hasEmerald()) {
+			return true;
+		} else if (stack.itemID == Item.emerald.itemID && !villager && !hasLeftShear() && !hasRocks() && !hasShield() && !hasSnowballs() && !hasFireballs() && !hasGlister() && !hasEmerald()) {
+			return true;
+		} else if (stack.itemID == Item.fireballCharge.itemID && !villager && !hasLeftShear() && !hasRocks() && !hasShield() && !hasSnowballs() && !hasFireballs() && !hasGlister() && !hasEmerald()) {
+			return true;
+		} else if (stack.itemID == Item.snowball.itemID && !villager && !hasLeftShear() && !hasSnowballs() && !hasRocks() && !hasShield() && !hasFireballs() && !hasGlister() && !hasEmerald()) {
+			return true;
+		} else if (stack.itemID == Block.blockSnow.blockID && !villager && !hasLeftShear() && !hasSnowballs() && !hasRocks() && !hasShield() && !hasFireballs() && !hasGlister() && !hasEmerald()) {
+			return true;
+		} else if (stack.itemID == Block.mushroomRed.blockID && !villager && toxinStock <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Block.mushroomBrown.blockID && foodLeft <= 0) {
+			return true;
+		} else if (stack.itemID == Item.coal.itemID && !hasCoal && !villager && (hasBlazeRod() || hasFireballs())) {
+			return true;
+		} else if (stack.itemID == Item.lightStoneDust.itemID && !isGlowing()) {
+			return true;
+		} else if (stack.itemID == Block.glowStone.blockID && !isGlowing()) {
+			return true;
+		} else if (stack.itemID == Item.egg.itemID && !isCamouflaged()) {
+			return true;
+		} else if (stack.itemID == Item.wheat.itemID && stack.stackSize == 2 && !hasEESkin() && this.getDataWatcherShort("clayTeam") == 8) {
+			return true;
+		} else if (stack.itemID == Item.wheat.itemID && !villager && !brawler) {
+			return true;
+		} else if (stack.itemID == Item.netherStalkSeeds.itemID && !villager && !brawler) {
+			return true;
+		} else if (stack.itemID == Item.goldNugget.itemID && !hasCrown() && !brawler) {
+			boolean jack = false;
+			List list2 = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(24D, 16D, 24D));
+			for (int k = 0; k < list2.size(); k++) {
+				Entity entity2 = (Entity)list2.get(k);
+				if (entity2 instanceof EntityClayMan) {
+					EntityClayMan clayman = (EntityClayMan)entity2;
+					if (clayman.getDataWatcherShort("clayTeam") == this.getDataWatcherShort("clayTeam") && clayman.hasCrown()) {
+						jack = true;
+						break;
+					}
+				}
+			}
+			
+			if (!jack) {
+				return true;
+			}
+		} else if (stack.itemID == Item.diamond.itemID && !isSuper()) {
+			return true;
+		} else if (stack.itemID == Item.paper.itemID && !isSuper() && !isCaped()) {
+			return true;
+		} else if (stack.itemID == Item.book.itemID && !isSuper() && !isCaped()) {
+			return true;
+		} else if (stack.itemID == Item.enderPearl.itemID && !isCorrupt()) {
+			return true;
+		} else if (stack.itemID == Item.gunpowder.itemID && !hasGunPowder() && !timeBombReady) {
+			return true;
+		} else if (stack.itemID == Block.tnt.blockID && !hasGunPowder() && !timeBombReady) {
+			return true;
+		} else if (stack.itemID == Item.sugar.itemID && !isSuper() && sugarTime <= 0) {
+			return true;
+		} else if (stack.getItem() instanceof ItemFood && foodLeft <= 0) {
+			return true;
+		} else if (stack.itemID == Item.clay.itemID && !brawler && resPoints <= 0) {
+			return true;
+		} else if (stack.itemID == Item.ghastTear.itemID && !brawler && ghastTearPts <= 0) {/*ADDED*/
+			return true;
+		} else if (stack.itemID == Item.slimeBall.itemID && !villager && gooStock <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Item.redstone.itemID && !villager && smokeStock <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Item.blazePowder.itemID && !villager && blazeStock <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Item.flint.itemID && !villager && getDataWatcherShort("stickPoints") > 0 && !isStickSharp()) {
+			return true;
+		} else if (stack.itemID == Item.arrow.itemID && !villager && !hasRightShear() && !hasBlazeRod() && !hasBone() && getDataWatcherShort("stickPoints") <= 0 && !hasGlister()) {
+			return true;
+		} else if (stack.itemID == Block.cloth.blockID && ((hasArmor() && getDataWatcherShort("padColor") != stack.getItemDamage()) || (isCaped() && getCapeColor() != stack.getItemDamage()))) {
+			return true;
+		} else if (stack.itemID == Block.blockIron.blockID && hasShield() && !isShieldStud()) {
+			return true;
+		} else if ((stack.itemID == Block.glass.blockID || stack.itemID == Item.glassBottle.itemID || stack.itemID == Block.thinGlass.blockID) && !hasGoggles()) {
+			return true;
+		} else if (stack.itemID == Item.ingotIron.itemID && !heavyCore && ridingEntity == null && !hasFeather && !hasPants()) {
+			return true;
+		} else if (stack.itemID == Item.feather.itemID && !hasFeather && !heavyCore) {
+			return true;
+		} else if (stack.getItem() instanceof ItemClayMan && !brawler && resPoints > 0) {
+			if (stack.getItemDamage() == this.getDataWatcherShort("clayTeam")) {
+				return true;
+			}
+		} else if (stack.itemID == CSMModRegistry.brickDoll.itemID && !brawler && ghastTearPts > 0) {/*ADDED*/
+			return true;
+		} else if ((stack.getItem() instanceof ItemHorses || stack.getItem() instanceof ItemBunny || stack.getItem() instanceof ItemGecko || stack.getItem() instanceof ItemTurtle) && resPoints > 0 && ridingEntity == null) {
+			return true;
+		} else if (stack.itemID == Item.melonSeeds.itemID && 16 == getDataWatcherShort("clayTeam")) {
+			return true;
+		} else if (stack.itemID == Item.pumpkinSeeds.itemID && 17 == getDataWatcherShort("clayTeam")) {
+			return true;
+		} else if (stack.itemID == Block.torchWood.blockID && 18 == getDataWatcherShort("clayTeam")) {
+			return true;
+		} else if (stack.itemID == Block.torchRedstoneActive.blockID && 19 == getDataWatcherShort("clayTeam")) {
+			return true;
+		} else if (stack.itemID == CSMModRegistry.clayCookie.itemID) {
+			return true;
+		} else if (stack.itemID == Item.monsterPlacer.itemID && stack.getItemDamage() == teamEgg(getDataWatcherShort("clayTeam")) && !hasSpecSkin()) {
+			return true;
+		} else if (stack.itemID == Item.dyePowder.itemID && stack.getItemDamage() == teamDye(getDataWatcherShort("clayTeam")) && operation == 0) {
+			return true;
+		} else if (stack.itemID == Block.wood.blockID && ridingEntity == null && !hasGlister()) {
+			int gottam = 0;
+			if (getDataWatcherShort("logPoints") < 20 && stack.stackSize >= 5) {
+				gottam = 1;
+			}
+			
+			if (gottam > 0) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean checkForTE(int a, int b, int c, int i, int j, int k, double dist, boolean first) {
+		if (b > 0 && b < 250) {
+			if (worldObj.getBlockId(a, b, c) == Block.chest.blockID) {
+				if (first && blockX == i && blockY == j && blockZ == k) {
+					setPathToEntity((PathEntity)null);
+					blockX = 0;
+					blockY = 0;
+					blockZ = 0;
+					chestOperations(a, b, c, true);
+					return true;
+				} else if (blockX == 0 && blockY == 0 && blockZ == 0) {
+					if (chestOperations(a, b, c, false)) {
+						PathEntity emily = worldObj.getEntityPathToXYZ(this, i, j, k, 16F, false, false, false, false);
+						if (emily != null) {
+							setPathToEntity(emily);
+							blockX = i;
+							blockY = j;
+							blockZ = k;
+							return true;
+						}
+					}
+				}
+			}
+			else if (worldObj.getBlockId(a, b, c) == Block.signPost.blockID || worldObj.getBlockId(a, b, c) == Block.signWall.blockID) {
+				if (first && blockX == i && blockY == j && blockZ == k) {
+					setPathToEntity((PathEntity)null);
+					blockX = 0;
+					blockY = 0;
+					blockZ = 0;
+					TileEntitySign tesign = (TileEntitySign) worldObj.getBlockTileEntity(a, b, c);
+					if (!hasSpecSkin() && tesign != null && tesign.signText[1].equals("Easter Egg")) {
+						updateDataWatcher("specSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 14);
+					}
+
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("STARFRUIT") && getDataWatcherShort("clayTeam") == 3) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 14);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Prickler") && getDataWatcherShort("clayTeam") == 3) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 14);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Forever Abone") && getDataWatcherShort("clayTeam") == 18) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Two Wheat") && getDataWatcherShort("clayTeam") == 8) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Moosh") && getDataWatcherShort("clayTeam") == 1) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Notch's Drop") && getDataWatcherShort("clayTeam") == 17) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Not A Lie") && getDataWatcherShort("clayTeam") == 9) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Mojangster") && getDataWatcherShort("clayTeam") == 9) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && (tesign.signText[1].equals("Lomopy") || tesign.signText[1].equals("Lomopoly")) && getDataWatcherShort("clayTeam") == 6) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Phail") && getDataWatcherShort("clayTeam") == 6) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Bite Me.") && getDataWatcherShort("clayTeam") == 10) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Chuck Souris") && getDataWatcherShort("clayTeam") == 4) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Yay Dirt!") && getDataWatcherShort("clayTeam") == 8) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Die in a fire") && getDataWatcherShort("clayTeam") == 19) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && (tesign.signText[1].equals("Butter") || tesign.signText[1].equals("Budder")) && getDataWatcherShort("clayTeam") == 15) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					return true;
+				} else if (blockX == 0 && blockY == 0 && blockZ == 0) {
+					TileEntitySign tesign = (TileEntitySign) worldObj.getBlockTileEntity(a, b, c);
+					boolean b1 = false;
+					if (!hasSpecSkin() && tesign != null && tesign.signText[1].equals("Easter Egg")) {
+						updateDataWatcher("specSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 14);
+					}
+
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("STARFRUIT") && getDataWatcherShort("clayTeam") == 3) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 14);
+					}
+
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Prickler") && getDataWatcherShort("clayTeam") == 3) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 14);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Forever Abone") && getDataWatcherShort("clayTeam") == 18) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Two Wheat") && getDataWatcherShort("clayTeam") == 8) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Moosh") && getDataWatcherShort("clayTeam") == 1) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Notch's Drop") && getDataWatcherShort("clayTeam") == 17) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Not A Lie") && getDataWatcherShort("clayTeam") == 9) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && (tesign.signText[1].equals("Lomopy") || tesign.signText[1].equals("Lomopoly")) && getDataWatcherShort("clayTeam") == 6) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Phail") && getDataWatcherShort("clayTeam") == 6) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Bite Me.") && getDataWatcherShort("clayTeam") == 10) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Chuck Souris") && getDataWatcherShort("clayTeam") == 4) {
+						updateDataWatcher("eeskin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (!hasEESkin() && tesign != null && tesign.signText[1].equals("Yay Dirt!") && getDataWatcherShort("clayTeam") == 8) {
+						updateDataWatcher("eeskin", true);
+						updateDataWatcher("altSkin", true);
+						texture = clayManTexture(getDataWatcherShort("clayTeam"));
+						for (int i1 = 0; i1 < 15; i1++) CSMModRegistry.proxy.showEffect(this.worldObj, this, 15);
+					}
+					if (b1) {
+						PathEntity emily = worldObj.getEntityPathToXYZ(this, i, j, k, 16F, false, false, false, false);
+						if (emily != null) {
+							setPathToEntity(emily);
+							blockX = i;
+							blockY = j;
+							blockZ = k;
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean chestOperations(int x, int y, int z, boolean arrived) {
+		TileEntity te = worldObj.getBlockTileEntity(x, y, z);
+		if (te != null && te instanceof TileEntityChest) {
+			TileEntityChest chest = (TileEntityChest)te;
+			for (int q = 0; q < chest.getSizeInventory(); q++) {
+				if (chest.getStackInSlot(q) != null) {
+					ItemStack stack = chest.getStackInSlot(q);
+					if (stack.stackSize > 0) {
+						if (checkIfItemIsValid(stack, 1)) {
+							applyStatsFromChestItem(stack, chest, q);
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public String clayManTexture(int i) {
+		String joe = "/sanandreasp/mods/ClaySoldiersMod/claymans/soldiers/clay";
+		if (hasEESkin())
+		{
+			joe = "/sanandreasp/mods/ClaySoldiersMod/claymans/soldiers unique/clay";
+		}
+		if (hasSpecSkin())
+		{
+			joe = "/sanandreasp/mods/ClaySoldiersMod/claymans/soldiers rare/clay";
+		}
+		if (i == 1) {
+			joe = joe + "Red";
+		} else if (i == 2) {
+			joe = joe + "Yellow";
+		} else if (i == 3 && hasAltSkin() && hasEESkin()) {
+			joe = joe + "Green2";
+		} else if (i == 3) {
+			joe = joe + "Green";
+		} else if (i == 4) {
+			joe = joe + "Blue";
+		} else if (i == 5) {
+			joe = joe + "Orange";
+		} else if (i == 6 && hasAltSkin() && hasEESkin()) {
+			joe = joe + "Purple2";
+		} else if (i == 6 && hasAltSkin() && hasSpecSkin()) {
+			joe = joe + "Purple2";
+		} else if (i == 6) {
+			joe = joe + "Purple";
+		} else if (i == 7) {
+			joe = joe + "Pink";
+		} else if (i == 8 && hasAltSkin() && hasEESkin()) {
+			joe = joe + "Brown2";
+		} else if (i == 8) {
+			joe = joe + "Brown";
+		} else if (i == 9 && hasAltSkin() && hasEESkin()) {
+			joe = joe + "White2";
+		} else if (i == 9) {
+			joe = joe + "White";
+		} else if (i == 10) {
+			joe = joe + "Black";
+		} else if (i == 11) {
+			joe = joe + "Cyan";
+		} else if (i == 12) {
+			joe = joe + "LightGrey";
+		} else if (i == 13) {
+			joe = joe + "Lime";
+		} else if (i == 14) {
+			joe = joe + "LightBlue";
+		} else if (i == 15) {
+			joe = joe + "Magenta";
+		} else if (i == 16) {
+			joe = joe + "Melon";
+		} else if (i == 17 && hasAltSkin()) {
+			joe = joe + "Pumpkin2";
+		} else if (i == 17){
+			joe = joe + "Pumpkin";
+		}  else if (i == 18){
+			joe = joe + "Coal";
+		}  else if (i == 19 && hasAltSkin()){
+			joe = joe + "Redstone2";
+		}  else if (i == 19){
+			joe = joe + "Redstone";
+		} else if (i == 0) {
+			joe = joe + "Grey";
+		}
+		return joe + ".png";
+	}
+	
+	public boolean clayTexturePick(int i) {
+		if (rand.nextInt(8192) == 0) {
+			updateDataWatcher("specSkin", true);
+		}
+		if ( (i == 17 && rand.nextInt(3) == 0) || (i == 19 && rand.nextInt(4) == 0) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	protected void dropFewItems(boolean flag, int i) {
+		if (!hasGunPowder() || !fireDeath) {
+			Item item1 = CSMModRegistry.greyDoll;
+			if (!fireDeath) {
+				dropItem(item1.itemID, 1, getDataWatcherShort("clayTeam"));
+			}
+			
+			if (fireDeath) {
+				dropItem(CSMModRegistry.brickDoll.itemID, 1);
+			}
+		
+			if (resPoints > 0) {
+				dropItem(Item.clay.itemID, 1);
+			}
+			
+			if (ghastTearPts > 0) {
+				dropItem(Item.ghastTear.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("musDiskID") != 0 && getDataWatcherShort("musDiscPoints") > 0) {/*ADDED*/
+				dropItem(getDataWatcherShort("musDiskID"), 1);
+				updateDataWatcher("musDiskID", (short)0);
+				updateDataWatcher("musDiscPoints", (short)0);
+				worldObj.playRecord(null, MusicCoord[0], MusicCoord[1], MusicCoord[2]);
+			}
+			
+			if (getDataWatcherShort("stickPoints") > 7 && rand.nextInt(2) == 0) {
+				dropItem(Item.stick.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("shearPointsA") > 7 && rand.nextInt(2) == 0) {
+				dropItem(CSMModRegistry.shearBlade.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("shearPointsB") > 7 && rand.nextInt(2) == 0) {
+				dropItem(CSMModRegistry.shearBlade.itemID, 1);
+			}
+			
+			if (this.getDataWatcherShort("rodPoints") > 7 && rand.nextInt(2) == 0) {
+				dropItem(Item.blazeRod.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("bonePoints") > 10 && rand.nextInt(2) == 0) {
+				dropItem(Item.bone.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("armorPoints") > 7 && rand.nextInt(2) == 0) {
+				dropItem(Item.leather.itemID, 1);
+			}
+			
+			if (hasPants() && rand.nextInt(2) == 0) {
+				dropItem(Block.waterlily.blockID, 1);
+			}
+			
+			if (hasReed() && rand.nextInt(2) == 0) {
+				dropItem(Item.reed.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("rockPoints") > 7 && rand.nextInt(2) == 0) {
+				dropItem(Block.gravel.blockID, 1);
+			}
+			
+			if (getDataWatcherShort("snowbPoints") > 7 && rand.nextInt(2) == 0 && !snowBlocked) {
+				dropItem(Item.snowball.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("firecPoints") > 7 && rand.nextInt(2) == 0) {
+				dropItem(Item.fireballCharge.itemID, 1);
+			}
+			
+			if (getDataWatcherShort("shieldPoints") > 4 && rand.nextInt(2) == 0) {
+				dropItem(Item.bowlEmpty.itemID, 1);
+			}
+			
+			if (smokeStock > 1 && rand.nextInt(2) == 0) {
+				dropItem(Item.redstone.itemID, 1);
+			}
+			
+			if (blazeStock > 1 && rand.nextInt(2) == 0) {
+				dropItem(Item.blazePowder.itemID, 1);
+			}
+			
+			if (gooStock > 1 && rand.nextInt(2) == 0) {
+				dropItem(Item.slimeBall.itemID, 1);
+			}
+			
+			if (smokeStock > 1 && rand.nextInt(2) == 0) {
+				dropItem(Item.redstone.itemID, 1);
+			}
+
+			if (isGlowing() && rand.nextInt(2) == 0 && !glowBlocked) {
+				dropItem(Item.lightStoneDust.itemID, 1);
+			}
+			
+			if (hasCrown()) {
+				dropItem(Item.goldNugget.itemID, 1);
+			}
+			
+			if (hasString() && rand.nextInt(2) == 0) {
+				dropItem(Item.silk.itemID, 1);
+			}
+			
+			if (hasBrick()) {
+				dropItem(CSMModRegistry.brickLump.itemID, 1);
+			}
+			
+			if (hasWheatSeeds() && rand.nextInt(2) == 0) {
+				dropItem(Item.seeds.itemID, 1);
+			}
+			
+			if (isCamouflaged()) {
+				dropItem(Item.egg.itemID, 1);
+			}
+			
+			if (heavyCore) {
+				dropItem(Item.ingotIron.itemID, 1);
+			}
+			
+			if (isSuper()) {
+				dropItem(Item.diamond.itemID, 1);
+			}
+			
+			if (hasFeather) {
+				dropItem(Item.feather.itemID, 1);
+			}
+			
+			if (hasLogs()) {
+				dropLogs();
+			}
+		}
+	}
+	
+	protected void dropItem(int itemID, int i, int j) {
+		entityDropItem(new ItemStack(itemID, i, j), 0.0F);
+	}
+	
+	public void dropLogs() {
+		dropItem(Block.wood.blockID, getDataWatcherShort("logPoints"));
+		updateDataWatcher("logPoints", (short)0);
+	}
+	
+	@Override
+	public EntityItem entityDropItem(ItemStack par1ItemStack, float par2) {
+		return (fromNexus) ? null : super.entityDropItem(par1ItemStack, par2);
+	}
+	
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+	}
+	
+	@Override
+	public int getBrightnessForRender(float f) {
+		return isGlowing() ? 0x0f00f0 : super.getBrightnessForRender(f);
+	}
+	
+	public int getCapeColor() {
+		return getDataWatcherShort("capeColor");
+	}
+	
+	public boolean getDataWatcherBool(String key) {
+		int flags = this.dataWatcher.getWatchableObjectInt(13);
+		if (key.equals("gunPowdered")) {
+			return (flags & 1) == 1;
+		} else if (key.equals("hasCrown")) {
+			return (flags & 2) == 2;
+		} else if (key.equals("stickSharp")) {
+			return (flags & 4) == 4;
+		} else if (key.equals("deployFeather")) {
+			return (flags & 8) == 8;
+		} else if (key.equals("hasReed")) {
+			return (flags & 16) == 16;
+		} else if (key.equals("camouflaged")) {
+			return (flags & 32) == 32;
+		} else if (key.equals("glowing")) {
+			return (flags & 64) == 64;
+		} else if (key.equals("goggles")) {
+			return (flags & 128) == 128;
+		} else if (key.equals("specSkin")) {
+			return (flags & 256) == 256;
+		} else if (key.equals("altSkin")) {
+			return (flags & 512) == 512;
+		} else if (key.equals("eeskin")) {
+			return (flags & 1024) == 1024;
+		} else if (key.equals("hasPants")) {
+			return (flags & 2048) == 2048;
+		} else if (key.equals("superSoldier")) {
+			return (flags & 4096) == 4096;
+		} else if (key.equals("shieldStud")) {
+			return (flags & 8192) == 8192;
+		} else if (key.equals("corrupt")) {
+			return (flags & 16384) == 16384;
+		} else if (key.equals("hasBrick")) {
+			return (flags & 32768) == 32768;
+		} else if (key.equals("hasString")) {
+			return (flags & 65536) == 65536;
+		} else if (key.equals("isSitting")) {
+			return (flags & 131072) == 131072;
+		} else if (key.equals("hasEmerald")) {
+			return (flags & 262144) == 262144;
+		}
+		
+		return false;
+	}
+	
+	public short getDataWatcherShort(String key) {
+		if (key.equals("clayTeam")) {
+			return this.dataWatcher.getWatchableObjectShort(28);
+		} else if (key.equals("stickPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(11);
+		} else if (key.equals("rodPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(12);
+		} else if (key.equals("armorPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(14);
+		} else if (key.equals("snowbPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(15);
+		} else if (key.equals("padColor")) {
+			return this.dataWatcher.getWatchableObjectShort(16);
+		} else if (key.equals("capeColor")) {
+			return this.dataWatcher.getWatchableObjectShort(17);
+		} else if (key.equals("firecPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(18);
+		} else if (key.equals("gooTime")) {
+			return this.dataWatcher.getWatchableObjectShort(19);
+		} else if (key.equals("logPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(20);
+		} else if (key.equals("bonePoints")) {
+			return this.dataWatcher.getWatchableObjectShort(21);
+		} else if (key.equals("rockPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(22);
+		} else if (key.equals("glisterPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(23);
+		} else if (key.equals("shieldPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(24);
+		} else if (key.equals("musDiscPoints")) {
+			return this.dataWatcher.getWatchableObjectShort(25);
+		} else if (key.equals("shearPointsA")) {
+			return (short)(this.dataWatcher.getWatchableObjectShort(26) & 0x00FF);
+		} else if (key.equals("shearPointsB")) {
+			return (short)(((this.dataWatcher.getWatchableObjectShort(26)) & 0xFF00) >> 8);
+		} else if (key.equals("musDiskID")) {
+			return this.dataWatcher.getWatchableObjectShort(27);
+		}
+		return -1;
+	}
+	
+	@Override
+	protected String getDeathSound()
+    {
+		if (isCorrupt()) {
+			return "mob.zombie.death";
+		} else {
+			return "step.gravel";
+		}
+    }
+	
+	@Override
+	protected String getHurtSound()
+    {
+		if (isCorrupt()) {
+			return "mob.zombie.hurt";
+		} else {
+			return "step.gravel";
+		}
+    }
+	
+	public boolean getIsJumping() {
+		return this.isJumping;
+	}
+	
+	@Override
+	protected String getLivingSound() {
+		return this.isCorrupt() ? "mob.zombie.say" : "";
+	}
+	
+	@Override
+	public int func_110138_aP() {
+		return(villager ? 15 : (brawler || isCorrupt()) ? 30 : 20) * (isSuper() ? 20 : 1);
+	}
+	
+	public float getMoveForward() {
+		return this.moveForward;
+	}
+	
+	public float getMoveStrafing() {
+		return this.moveStrafing;
+	}
+	
+	public String getMusTrack() {
+		ItemRecord itemrecord = (ItemRecord)(new ItemStack(getDataWatcherShort("musDiskID"), 1, 0).getItem());
+		return itemrecord.recordName;
+	}
+	
+	public int getPadColor() {
+		return getDataWatcherShort("padColor");
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public String getTexture() {
+		return clayManTexture(getDataWatcherShort("clayTeam"));
+	}
+	
+	private double goggleView() {
+		if (hasGoggles()) {
+			return 13D;
+		} else {
+			return 8D;
+		}
+	}
+	
+	public boolean goingToBlock() {
+		return blockX != 0 || blockY != 0 || blockX != 0;
+	}
+	
+	public void gotcha(EntityItem item) {
+		worldObj.playSoundAtEntity(item, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+		if (item.getDataWatcher().getWatchableObjectItemStack(10) != null) {
+			item.getDataWatcher().getWatchableObjectItemStack(10).stackSize--;
+			if (item.getDataWatcher().getWatchableObjectItemStack(10).stackSize <= 0) {
+				item.setDead();
+			}
+		} else {
+			item.setDead();
+		}
+		targetFollow = null;
+		setPathToEntity((PathEntity)null);
+	}
+	
+	public void gotcha(TileEntityChest chest, int q) {
+		worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+		chest.decrStackSize(q, 1);
+	}
+	
+	private boolean handleThisWaterMovement() {
+        return worldObj.handleMaterialAcceleration(boundingBox.expand(0.0D, -0.40000000596046448D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this);
+	}
+	
+	@Override
+	public boolean handleWaterMovement() {
+		return false;
+	}
+
+	public boolean hasAltSkin() {
+		return getDataWatcherBool("altSkin");
+	}
+	
+	public boolean hasArmor() {
+		return getDataWatcherShort("armorPoints") > 0;
+	}
+	
+	public boolean hasBlazeRod() {
+		return this.getDataWatcherShort("rodPoints") > 0;
+	}
+	
+	public boolean hasBone() {
+		return getDataWatcherShort("bonePoints") > 0;
+	}
+	
+	public boolean hasBrick() {
+		return getDataWatcherBool("hasBrick");
+	}
+	
+	public boolean hasCrown() {
+		return getDataWatcherBool("hasCrown");
+	}
+	
+	public boolean hasEESkin() {
+		return getDataWatcherBool("eeskin");
+	}
+	
+	public boolean hasFireballs() {
+		return getDataWatcherShort("firecPoints") > 0 && !hasLogs();
+	}
+	
+	public boolean hasGlister() {
+		return getDataWatcherShort("glisterPoints") > 0;
+	}
+	public boolean hasGoggles() {
+		return getDataWatcherBool("goggles");
+	}
+
+	public boolean hasGoo() {
+		return gooStock > 0;
+	}
+	
+	public boolean hasGunPowder() {
+		return this.getDataWatcherBool("gunPowdered");
+	}
+	
+	public boolean hasLeftShear() {
+		return getDataWatcherShort("shearPointsB") > 0;
+	}
+	
+	public boolean hasLogs() {
+		return getDataWatcherShort("logPoints") > 0;
+	}
+	
+	public boolean hasPants() {
+		return getDataWatcherBool("hasPants");
+	}
+	
+	public boolean hasReed() {
+		return getDataWatcherBool("hasReed");
+	}
+	
+	public boolean hasRightShear() {
+		return getDataWatcherShort("shearPointsA") > 0;
+	}
+	
+	public boolean hasRocks() {
+		return getDataWatcherShort("rockPoints") > 0 && !hasLogs();
+	}
+	
+	public boolean hasShield() {
+		return getDataWatcherShort("shieldPoints") > 0;
+	}
+	
+	public boolean hasSmoke() {
+		return smokeStock > 0;
+	}
+	
+	public boolean hasSnowballs() {
+		return getDataWatcherShort("snowbPoints") > 0 && !hasLogs();
+	}
+	
+	public boolean hasSpecSkin() {
+		return getDataWatcherBool("specSkin");
+	}
+	
+	public boolean hasStick() {
+		return getDataWatcherShort("stickPoints") > 0;
+	}
+	
+	public boolean hasString() {
+		return this.getDataWatcherBool("hasString");
+	}
+	
+	public boolean hasTimeBomb() {
+		return timeBombTicks > 0;
+	}
+	
+	public boolean hitTargetMakesDead(Entity e) {
+		strikeTime = 12 - (isSuper() ? 4 : 0);
+		swingArm();
+		CSMModRegistry.proxy.swingSoldierArm(this.worldObj, this);
+		int power = (getDataWatcherShort("stickPoints") > 0 ? 3 + rand.nextInt(2) + (isStickSharp() ? 1 : 0) : 2) + (hasBone() ? 4 + rand.nextInt(2) : 0) + (isSuper() ? 2 : 0) + (hasRightShear() ? 2 - rand.nextInt(2) : 0) + (hasLeftShear() ? 2 - rand.nextInt(2) : 0);
+		if (getDataWatcherShort("stickPoints") > 0) {
+			updateDataWatcher("stickPoints", (short)(getDataWatcherShort("stickPoints")-1));
+		}
+		if (hasRightShear()) {
+			updateDataWatcher("shearPointsA", (short)(getDataWatcherShort("shearPointsA")-1));
+		}
+		if (hasLeftShear()) {
+			updateDataWatcher("shearPointsB", (short)(getDataWatcherShort("shearPointsB")-1));
+		}
+		if (hasBone()) {
+			updateDataWatcher("bonePoints", (short)(getDataWatcherShort("bonePoints")-1));
+		}
+		
+		if ((e instanceof EntityClayMan) && (hasRightShear() || hasLeftShear()) && isCamouflaged()) {
+			boolean b = ((EntityClayMan)e).entityToAttack != this;
+			if (b) {
+				power += 1+rand.nextInt(2);
+				//TO-DO: crit FX
+				CSMModRegistry.proxy.showEffect(this.worldObj, e, 9);
+//				if (FMLCommonHandler.instance().getSide().isClient())
+//					CSM_ModRegistry.proxy.showEffect(new EntityCrit2FX(CSM_ModRegistry.proxy.getClientWorld(), e));
+			}
+		}
+			
+		boolean flag = e.attackEntityFrom(DamageSource.causeMobDamage(this), power);
+		if (flag && e instanceof EntityLiving) {
+			EntityLiving el = (EntityLiving)e;
+			if (isSuper()) {
+				//TO-DO: crit FX
+				CSMModRegistry.proxy.showEffect(this.worldObj, el, 9);
+//				if (FMLCommonHandler.instance().getSide().isClient())
+//					CSM_ModRegistry.proxy.showEffect(new EntityCrit2FX(CSM_ModRegistry.proxy.getClientWorld(), el));
+			}
+			if (el.func_110143_aJ() <= 0) {
+				if (!isCorrupt()) {
+					victory = 50;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean holdFeather() {
+		return getDataWatcherBool("deployFeather");
+	}
+	
+	@Override
+	public boolean interact(EntityPlayer entityplayer) {
+		if (CSMModRegistry.prevPlayer == null && CSMModRegistry.proxy.isClient() && worldObj.isRemote) {
+			EntityClayCam eddie = new EntityClayCam(worldObj, this);
+			CSMModRegistry.claycam = eddie;
+			worldObj.spawnEntityInWorld(eddie);
+			Minecraft game = FMLClientHandler.instance().getClient();
+			game.renderViewEntity = eddie;
+			CSMModRegistry.showTheHUD = game.gameSettings.hideGUI;
+			CSMModRegistry.showTheGUY = game.gameSettings.thirdPersonView == 0;
+			game.gameSettings.hideGUI = true;
+			game.gameSettings.thirdPersonView = 0;
+			CSMModRegistry.prevPlayer = entityplayer;
+		}
+		return false;
+	}
+	
+	public boolean isAirySpace(int x, int y, int z) { 
+		int p = worldObj.getBlockId(x, y, z);
+		return p == 0 || Block.blocksList[p].getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null;
+	}
+	
+	public boolean isCamouflaged() {
+		return getDataWatcherBool("camouflaged");
+	}
+	
+	public boolean isCaped() {
+		return getDataWatcherShort("capeColor") >= 0;
+	}
+	
+	public boolean isCorrupt() {
+		if (!preInit) return false;
+		return getDataWatcherBool("corrupt");
+	}
+	
+	public boolean isGlowing() {
+		return getDataWatcherBool("glowing");
+	}
+	
+	public boolean isGooey() {
+		return getDataWatcherShort("gooTime") > 0;
+	}
+	
+	@Override
+	public boolean isInWater() {
+		return thisInWater;
+	}
+	
+	@Override
+	protected boolean isMovementCeased() {
+		return hasBrick() || this.isSitting();
+	}
+	
+	@Override
+	public boolean isOnLadder()
+    {
+		if (!hasLogs() && !holdFeather() && isCollidedHorizontally && climbTime > 0) {
+			if (climbTime == 10) {
+				if (motionY < 0.05D) {
+					climbTime --;
+					throwTime = 5;
+					return true;
+				}
+			} else {
+				throwTime = 5;
+				climbTime --;
+				return true;
+			}
+		}
+		return false;
+    }
+	
+	public boolean isPadded() {
+		return getDataWatcherShort("padColor") >= 0;
+	}
+	
+	public boolean isShieldStud() {
+		return getDataWatcherBool("shieldStud");
+	}
+	
+	public boolean isSitting() {
+		return getDataWatcherBool("isSitting");
+	}
+	
+	public boolean isStickSharp() {
+		return getDataWatcherBool("stickSharp");
+	}
+	
+	public boolean hasEmerald() {
+		return getDataWatcherBool("hasEmerald");
+	}
+	
+	public boolean isSuper() {
+		if (!preInit) return false;
+		return getDataWatcherBool("superSoldier");
+	}
+	
+	@Override
+	protected void jump()
+    {
+		if (isGooey()) {
+			return;
+		}
+		if (sugarTime > 0) {
+			motionY = 0.375D;
+		} else {
+			motionY = 0.275D;
+		}
+    }
+	@Override
+	public void knockBack(Entity entity, int i, double d, double d1)
+    {
+		if (isGooey() || hasBrick()) {
+			return;
+		}
+        super.knockBack(entity, i, d, d1);
+		if (entity != null && entity instanceof EntityClayMan) {
+			EntityClayMan ec = (EntityClayMan) entity;
+			if ((ec.heavyCore && heavyCore) || (!ec.heavyCore && !heavyCore)) {
+				motionX *= 0.6D;
+				motionY *= 0.75D;
+				motionZ *= 0.6D;
+			} else if (!ec.heavyCore && heavyCore) {
+				motionX *= 0.2D;
+				motionY *= 0.4D;
+				motionZ *= 0.2D;
+			} else {
+				motionX *= 1.5D;
+				motionZ *= 1.5D;
+			}
+		} else if (entity != null && entity instanceof EntityGravelChunk) {
+			motionX *= 0.6D;
+			motionY *= 0.75D;
+			motionZ *= 0.6D;
+		}
+    }
+	
+	@Override
+	public void mountEntity(Entity e) {
+		if (!(e != null && e instanceof EntityMinecart)) {
+			super.mountEntity(e);
+		}
+	}
+	
+	@Override
+	public void moveEntityWithHeading(float f, float f1)
+    {
+		super.moveEntityWithHeading(f, f1);
+        
+        if (ridingEntity != null && (ridingEntity instanceof EntityBunny)) {
+        	isJumping = true;
+        }
+	}
+	
+	@Override
+	public void onEntityUpdate() {		
+		super.onEntityUpdate();
+		if (targetFollow != null && (targetFollow instanceof EntityHorse || targetFollow instanceof EntityTurtle) && targetFollow.riddenByEntity != null) {
+			targetFollow = null;
+		}
+		
+		if (handleThisWaterMovement())
+        {
+            if (!thisInWater)
+            {
+                float f = MathHelper.sqrt_double(motionX * motionX * 0.20000000298023224D + motionY * motionY + motionZ * motionZ * 0.20000000298023224D) * 0.2F;
+                if (f > 1.0F)
+                {
+                    f = 1.0F;
+                }
+                if (rand.nextInt(20) == 0) {
+                	worldObj.playSoundAtEntity(this, "random.splash", f, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
+	                float f1 = MathHelper.floor_double(boundingBox.minY);
+	                for (int l = 0; l < 1.0F + width * 20F; l++)
+	                {
+	                    float f2 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+	                    float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+	                    worldObj.spawnParticle("bubble", posX + f2, f1 + 1.0F, posZ + f4, motionX, motionY - (rand.nextFloat() * 0.2F), motionZ);
+	                }
+	
+	                for (int i1 = 0; i1 < 1.0F + width * 20F; i1++)
+	                {
+	                    float f3 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+	                    float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+	                    worldObj.spawnParticle("splash", posX + f3, f1 + 1.0F, posZ + f5, motionX, motionY, motionZ);
+	                }
+                }
+            }
+            fallDistance = 0.0F;
+            thisInWater = true;
+            setFire(0);
+        }
+        else
+        {
+        	thisInWater = false;
+        }
+	}
+	
+	@Override
+	public void onLivingUpdate() {		
+		if (isInWater()) {
+			if (hasPants()) {
+				isJumping = false;
+				motionY = 0.00F;
+			} else if (!isOnLadder()) {
+				isJumping = false;
+				motionY = -0.5F;
+			} 
+			if (worldObj.getBlockMaterial((int)Math.floor(posX), (int)Math.ceil(posY-0.5), (int)Math.floor(posZ)).equals(Material.water) && hasPants()) {
+				motionY = 0.2F;
+			}
+			if (isOnLadder()) {
+				motionY = 0.2F;
+			}
+		}
+
+		if (!hasEESkin() && getDataWatcherShort("clayTeam") == 17 && this.activePotionsMap.containsKey(Integer.valueOf(Potion.damageBoost.id))) {
+			updateDataWatcher("eeskin", true);
+			texture = clayManTexture(getDataWatcherShort("clayTeam"));
+		}
+		
+		if (getDataWatcherShort("musDiscPoints") > 20*60*8 && getDataWatcherShort("musDiskID") != 0) {
+			MusicCoord = new int[] { (int)posX, (int)posY, (int)posZ };
+			worldObj.playRecord(getMusTrack(), MusicCoord[0], MusicCoord[1], MusicCoord[2]);
+		}
+		
+		if (getDataWatcherShort("musDiscPoints") > 0) {
+			updateDataWatcher("musDiscPoints", (short) (getDataWatcherShort("musDiscPoints")-1));
+			if (ticksExisted % 10 == 0)
+				CSMModRegistry.proxy.showEffect(this.worldObj, this, 0);
+		}
+		
+		if (getDataWatcherShort("musDiscPoints") <= 0 && getDataWatcherShort("musDiskID") != 0) {
+			worldObj.playRecord(null, MusicCoord[0], MusicCoord[1], MusicCoord[2]);
+			dropItem(getDataWatcherShort("musDiskID"), 1);
+			updateDataWatcher("musDiskID", (short)0);
+			
+		}
+		
+		if (strikeTime > 0) {
+			strikeTime --;
+		}
+		
+		if (victory > 0) {
+			victory --;
+		}
+		
+		if (isCorrupt()) {
+			essence --;
+			if (essence <= 0) {
+				hurtTime = 0;
+				attackEntityFrom(DamageSource.causeMobDamage(this), health + 20);
+			}
+			
+			if (rand.nextInt(2) == 0 && FMLCommonHandler.instance().getSide().isClient() && FMLClientHandler.instance().getClient().gameSettings.fancyGraphics)
+			{
+				addSquirrelButts();
+			}
+		}
+		
+		fleeingTick = 0;
+		
+		if (sugarTime > 0 || isSuper()) {
+			moveSpeed = 0.5F + (!goingToBlock() && entityToAttack == null && targetFollow == null ? 0.0F : 0.25F);
+			if (sugarTime > 0) {sugarTime --;}
+		} else {
+			moveSpeed = 0.3F + (!goingToBlock() && entityToAttack == null && targetFollow == null ? 0.0F : 0.15F);
+		}
+		
+		if (foodLeft > 0 && health <= 15 && health > 0) {
+			for (int j = 0; j < 8; j++)
+            {
+				CSMModRegistry.proxy.showEffect(worldObj, this, 1);
+            }
+			health += 15;
+			foodLeft --;
+		}
+		
+		if (onGround) {
+			climbTime = 10;
+		}
+		
+		if (smokeTime > 0) {
+			smokeTime --;
+		}
+		
+		if (throwTime > 0) {
+			throwTime --;
+		}
+		
+		if (timeBombTicks >= 0) {
+			timeBombTicks --;
+		}
+		
+		if (timeBombTicks == 0) {
+			worldObj.createExplosion(null, posX, posY, posZ, 1F, false);
+		}
+		
+		if (hasFeather && !holdFeather() && !isGooey() && !onGround && fallDistance >= 3F && !hasLogs() && !heavyCore && ridingEntity == null) {
+			updateDataWatcher("deployFeather", true);
+		}
+		
+		if (holdFeather()) {
+			throwTime = 5;
+			strikeTime = 5;
+			fallDistance = 0F;
+			motionX *= 0.8D;
+			motionZ *= 0.8D;
+			if (motionY < -0.08D) {
+				motionY = -0.08D;
+			}
+			
+			if (motionY >= 0D || onGround || handleWaterMovement()) {
+				updateDataWatcher("deployFeather", false);
+			}
+		}
+		
+		if (isGooey()) {
+			motionX = 0D;
+			motionY = 0D;
+			motionZ = 0D;
+			moveForward = 0F;
+			moveStrafing = 0F;
+			isJumping = false;
+			moveSpeed = 0F;
+			
+			updateDataWatcher("gooTime", (short) (getDataWatcherShort("gooTime")-1));
+			
+			int i = MathHelper.floor_double(posX);
+			int j = MathHelper.floor_double(boundingBox.minY - 1D);
+			int k = MathHelper.floor_double(posZ);
+			int p = worldObj.getBlockId(i, j, k);
+			if (j > 0 && j < 128 && (p == 0 || Block.blocksList[p].getCollisionBoundingBoxFromPool(worldObj, i, j, k) == null)) {
+				updateDataWatcher("gooTime", (short)0);
+			}
+		}
+		
+		if (throwTime > 6) {
+			moveSpeed = -moveSpeed;
+		}
+		
+		super.onLivingUpdate();
+		
+		if (!hasPath()) {
+			blockX = 0;
+			blockY = 0;
+			blockZ = 0;
+		}
+		
+		if (isSwinging) {
+            prevSwingProgress += 0.15F;
+            swingProgress += 0.15F;
+
+            if (prevSwingProgress > 1.0F || swingProgress > 1.0F) {
+                isSwinging = false;
+                prevSwingProgress = 0.0F;
+                swingProgress = 0.0F;
+            }
+        }
+		
+		if (isSwingingLeft) {
+            swingLeft += 0.15F;
+
+            if (swingLeft > 1.0F) {
+                isSwingingLeft = false;
+                swingLeft = 0.0F;
+            }
+        }
+	}
+	
+	@Override
+	public void onUpdate() {
+		double prevPX = this.posX;
+		double prevPY = this.posY;
+		double prevPZ = this.posZ;
+		double prevMX = this.motionX = hasBrick() ? 0F : this.motionX;
+		double prevMY = this.motionY = onGround && hasBrick() ? 0F : this.motionY;
+		double prevMZ = this.motionZ = hasBrick() ? 0F : this.motionZ;
+		
+		super.onUpdate();
+		
+		if (hasBrick()) {
+			motionX = prevMX;
+			motionZ = prevMY;
+			prevPosX = prevPX;
+			prevPosZ = prevPZ;
+			if (onGround) {
+				motionY = prevMY;
+				prevPosY = prevPY;
+			}
+			isJumping = false;
+		}
+		
+		if (isSitting())
+			isJumping = false;
+		
+		if (isSuper() || isCaped()) {
+			processCape();
+		}
+		
+		if (!this.worldObj.isRemote) {
+			if (!isSitting() && this.timeUntilSit < 0 && this.entityToAttack == null && this.targetFollow == null)
+				this.timeUntilSit = this.rand.nextInt(4800) + 2400;
+			else if (this.timeUntilSit == 0) {
+				setIsSitting(!this.isSitting());
+				this.timeUntilSit = this.rand.nextInt(3600) + 1200;
+			} else if (this.timeUntilSit > 0)
+				this.timeUntilSit--;
+			
+			if (isSitting() && (this.entityToAttack != null || this.targetFollow != null)) {
+				this.timeUntilSit = -1;
+				setIsSitting(false);
+			}
+		} else {
+			if (this.isSitting() && sittingPos < 1) {
+				sittingPos = 1;
+			} else if (!this.isSitting()) {
+				sittingPos = 0;
+			}
+		}
+	}
+	
+	public void processCape() {
+		field_20066_r = field_20063_u;
+        field_20065_s = field_20062_v;
+        field_20064_t = field_20061_w;
+        double d = posX - field_20063_u;
+        double d1 = posY - field_20062_v;
+        double d2 = posZ - field_20061_w;
+        double d3 = 10D;
+        if (d > d3)
+        {
+            field_20066_r = field_20063_u = posX;
+        }
+        if (d2 > d3)
+        {
+            field_20064_t = field_20061_w = posZ;
+        }
+        if (d1 > d3)
+        {
+            field_20065_s = field_20062_v = posY;
+        }
+        if (d < -d3)
+        {
+            field_20066_r = field_20063_u = posX;
+        }
+        if (d2 < -d3)
+        {
+            field_20064_t = field_20061_w = posZ;
+        }
+        if (d1 < -d3)
+        {
+            field_20065_s = field_20062_v = posY;
+        }
+        field_20063_u += d * 0.25D;
+        field_20061_w += d2 * 0.25D;
+        field_20062_v += d1 * 0.25D;
+	}
+	
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
+    { 
+		super.readEntityFromNBT(nbttagcompound);
+		this.updateDataWatcher("clayTeam", nbttagcompound.getShort("ClayTeam"));
+		updateDataWatcher("specSkin", nbttagcompound.getBoolean("RARE"));
+		updateDataWatcher("altSkin", nbttagcompound.getBoolean("ALT"));
+		
+		texture = clayManTexture(getDataWatcherShort("clayTeam"));
+		this.updateDataWatcher("stickPoints", nbttagcompound.getShort("WeaponPoints"));
+		this.updateDataWatcher("rodPoints", nbttagcompound.getShort("RodPoints"));
+		this.updateDataWatcher("bonePoints", nbttagcompound.getShort("bonePoints"));
+		updateDataWatcher("armorPoints", nbttagcompound.getShort("ArmorPoints"));
+		foodLeft = nbttagcompound.getShort("FoodLeft");
+		sugarTime = nbttagcompound.getShort("SugarTime");
+		resPoints = nbttagcompound.getShort("ResPoints");
+		ghastTearPts = nbttagcompound.getShort("GhastTearPts");
+		strikeTime = nbttagcompound.getShort("StrikeTime");
+		climbTime = nbttagcompound.getShort("ClimbTime");
+		updateDataWatcher("gooTime", nbttagcompound.getShort("GooTime"));
+		smokeTime = nbttagcompound.getShort("SmokeTime");
+		gooStock = nbttagcompound.getShort("GooStock");
+		smokeStock = nbttagcompound.getShort("SmokeStock");
+		blazeStock = nbttagcompound.getShort("BlazeStock");
+		updateDataWatcher("logPoints", nbttagcompound.getShort("Logs"));
+		updateDataWatcher("rockPoints", nbttagcompound.getShort("Rocks"));
+		updateDataWatcher("snowbPoints", nbttagcompound.getShort("SoldierSnowballs"));
+		updateDataWatcher("firecPoints", nbttagcompound.getShort("SoldierFireballs"));
+		updateDataWatcher("shieldPoints", nbttagcompound.getShort("ShieldPts"));
+		essence = nbttagcompound.getShort("Essence");
+		updateDataWatcher("padColor", nbttagcompound.getShort("Ink"));
+		updateDataWatcher("capeColor", nbttagcompound.getShort("CapeInk"));
+		updateDataWatcher("glisterPoints", nbttagcompound.getShort("melons"));
+		toxinStock = nbttagcompound.getShort("poisoner");
+		timeBombTicks = nbttagcompound.getShort("TimeBombTicks");
+
+		this.updateDataWatcher("gunPowdered", nbttagcompound.getBoolean("Gunpowdered"));
+		timeBombReady = nbttagcompound.getBoolean("TimeBomb");
+		updateDataWatcher("hasCrown", nbttagcompound.getBoolean("KingCrowned"));
+		updateDataWatcher("glowing", nbttagcompound.getBoolean("Glowing"));
+		updateDataWatcher("stickSharp", nbttagcompound.getBoolean("StickSharp"));
+		heavyCore = nbttagcompound.getBoolean("HeavyCore");
+		hasFeather = nbttagcompound.getBoolean("HasFeather");
+		updateDataWatcher("deployFeather", nbttagcompound.getBoolean("FeatherDeployed"));
+		updateDataWatcher("goggles", nbttagcompound.getBoolean("Goggles"));
+		updateDataWatcher("corrupt", nbttagcompound.getBoolean("Corrupt"));
+		villager = nbttagcompound.getBoolean("hasWheat");
+		brawler = nbttagcompound.getBoolean("hasNetherwart");
+		updateDataWatcher("superSoldier", nbttagcompound.getBoolean("superSoldier"));
+		hasCoal = nbttagcompound.getBoolean("coals");
+		updateDataWatcher("shieldStud", nbttagcompound.getBoolean("studs"));
+		updateDataWatcher("hasPants", nbttagcompound.getBoolean("pants"));
+		updateDataWatcher("hasReed", nbttagcompound.getBoolean("reeds"));
+		fromNexus = nbttagcompound.getBoolean("fromNexus");
+		neutral = nbttagcompound.getBoolean("isNeutral");
+		updateDataWatcher("camouflaged", nbttagcompound.getBoolean("camouflaged"));
+		goldBlocked = nbttagcompound.getBoolean("goldBlocked");
+		glowBlocked = nbttagcompound.getBoolean("glowBlocked");
+		snowBlocked = nbttagcompound.getBoolean("snowBlocked");
+		setHasBrick(nbttagcompound.getBoolean("hasBrick"));
+		setHasString(nbttagcompound.getBoolean("hasString"));
+		setWheatSeeds(nbttagcompound.getBoolean("hasWheatSeeds"));
+
+		updateDataWatcher("shearPointsA", nbttagcompound.getShort("shearAPts"));
+		updateDataWatcher("shearPointsB", nbttagcompound.getShort("shearBPts"));
+		updateDataWatcher("musDiskID", nbttagcompound.getShort("MusicDiscID"));
+	}
+	
+	public void setHasBrick(boolean b) {
+		updateDataWatcher("hasBrick", b);
+	}
+	
+	public void setHasString(boolean b) {
+		this.updateDataWatcher("hasString", b);
+	}
+	
+	public void setIsSitting(boolean b) {
+		updateDataWatcher("isSitting", b);
+	}
+	
+	public void setTexture(String tex) {
+		this.texture = tex;
+	}
+	private void showChatMessageToAll(String msg) {
+		Iterator<EntityPlayer> players = this.worldObj.playerEntities.iterator();
+		while(players.hasNext()) {
+			EntityPlayer player = players.next();
+			if (getDistanceSqToEntity(player) < 32F)
+				player.sendChatToPlayer(msg);
+		}
+	}
+	
+	public void swingArm() {
+        if (!isSwinging) {
+            isSwinging = true;
+            prevSwingProgress = 0.0F;
+            swingProgress = 0.0F;
+        }
+    }
+	public void swingLeftArm() {
+        if (!isSwingingLeft) {
+            isSwingingLeft = true;
+            swingLeft = 0.01F;
+        }
+    }
+	public int teamCloth(int teamNum) {
+		if (teamNum == 0) {
+			return 8;
+		} else if (teamNum == 1) {
+			return 14;
+		} else if (teamNum == 2) {
+			return 4;
+		} else if (teamNum == 3) {
+			return 13;
+		} else if (teamNum == 4) {
+			return 11;
+		} else if (teamNum == 5) {
+			return 1;
+		} else if (teamNum == 6) {
+			return 10;
+		} else if (teamNum == 7) {
+			return 6;
+		} else if (teamNum == 8) {
+			return 12;
+		} else if (teamNum == 9) {
+			return 0;
+		} else if (teamNum == 10) {
+			return 15;
+		} else if (teamNum == 11) {
+			return 9;
+		} else if (teamNum == 12) {
+			return 8;
+		} else if (teamNum == 13) {
+			return 5;
+		} else if (teamNum == 14) {
+			return 3;
+		} else if (teamNum == 15) {
+			return 2;
+		} else if (teamNum == 16) {
+			return 5;
+		} else if (teamNum == 17) {
+			return 1;
+		} else {
+			return 8;
+		}
+	}
+	
+	public int teamDye(int teamNum) {
+		if (teamNum == 0) {
+			return 8;
+		} else if (teamNum == 1) {
+			return 1;
+		} else if (teamNum == 2) {
+			return 11;
+		} else if (teamNum == 3) {
+			return 2;
+		} else if (teamNum == 4) {
+			return 4;
+		} else if (teamNum == 5) {
+			return 14;
+		} else if (teamNum == 6) {
+			return 5;
+		} else if (teamNum == 7) {
+			return 9;
+		} else if (teamNum == 8) {
+			return 3;
+		} else if (teamNum == 9) {
+			return 15;
+		} else if (teamNum == 10) {
+			return 0;
+		} else if (teamNum == 11) {
+			return 6;
+		} else if (teamNum == 12) {
+			return 7;
+		} else if (teamNum == 13) {
+			return 10;
+		} else if (teamNum == 14) {
+			return 12;
+		} else if (teamNum == 15) {
+			return 13;
+		} else {
+			return 16;
+		}
+	}
+	
+	public int teamEgg(int teamNum) {
+		if (teamNum == 0) { //zombie pig
+			return 57;
+		} else if (teamNum == 1) { //mooshroom
+			return 96;
+		} else if (teamNum == 2) { //chicken
+			return 93;
+		} else if (teamNum == 3) { //slime
+			return 55;
+		} else if (teamNum == 4) { //squid
+			return 94;
+		} else if (teamNum == 5) { //magma cube
+			return 62;
+		} else if (teamNum == 6) { //ghast
+			return 56;
+		} else if (teamNum == 7) { //silverfish
+			return 60;
+		} else if (teamNum == 8) { //villager
+			return 120;
+		} else if (teamNum == 9) { //skeleton
+			return 51;
+		} else if (teamNum == 10) { //enderman
+			return 58;
+		} else if (teamNum == 11) { //zombie
+			return 54;
+		} else if (teamNum == 12) { //sheep
+			return 91;
+		} else if (teamNum == 13) { //creeper
+			return 50;
+		} else if (teamNum == 14) { //cave spider
+			return 59;
+		} else if (teamNum == 15) { //cow
+			return 92;
+		} else if (teamNum == 16) { //wolf
+			return 95;
+		} else if (teamNum == 17) { //pig
+			return 90;
+		} else if (teamNum == 18) { //spider
+			return 52;
+		} else if (teamNum == 19) { //blaze
+			return 61;
+		} else {
+			return 10;
+		}
+	}
+    public void throwRockAtEnemy(Entity entity) {
+		if (!holdFeather()) {
+	        double d = entity.posX - posX;
+	        double d1 = entity.posZ - posZ;
+	        EntityGravelChunk entitygravelchunk = new EntityGravelChunk(worldObj, this, getDataWatcherShort("clayTeam"));
+	
+	        if (hasRocks()) {
+	        	entitygravelchunk = new EntityGravelChunk(worldObj, this, getDataWatcherShort("clayTeam"));
+	        }
+	        else if (hasSnowballs()) {
+	        	entitygravelchunk = new EntitySnowball(worldObj, this, getDataWatcherShort("clayTeam"));
+	        }
+	        else if (hasFireballs()) {
+	        	entitygravelchunk = new EntityFireball(worldObj, this, getDataWatcherShort("clayTeam"));
+	        }
+	        
+			entitygravelchunk.posY += 0.3999999761581421D;
+			entitygravelchunk.target = (EntityLiving)entity;
+			entitygravelchunk.setCanFollow(getDataWatcherBool("hasReed"));
+			double d2 = (entity.posY + entity.getEyeHeight()) - 0.10000000298023224D - entitygravelchunk.posY;
+			float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
+			worldObj.spawnEntityInWorld(entitygravelchunk);
+			entitygravelchunk.setArrowHeading(d, d2 + f1, d1, 0.6F, 12F);
+			attackTime = 30;
+			moveForward = -moveForward;
+	
+			rotationYaw = (float)((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
+			hasAttacked = true;
+			swingLeftArm();
+		}
+    }
+    public void updateBlockFinder() {
+		int x = MathHelper.floor_double(posX);
+        int y = MathHelper.floor_double(boundingBox.minY);
+        int z = MathHelper.floor_double(posZ);
+		
+		if (blockX != 0 && blockY != 0 && blockZ != 0 && !hasPath()) {
+			PathEntity emily = worldObj.getEntityPathToXYZ(this, blockX, blockY, blockZ, 16F, false, false, false, false);
+			if (emily != null && rand.nextInt(5) != 0) {
+				setPathToEntity(emily);
+			} else {
+				blockX = 0;
+				blockY = 0;
+				blockZ = 0;
+			}
+		}
+		
+		int i = x;
+		int j = y;
+		int k = z;
+		
+		for (int q = 0; q < 32; q++) {
+			if (j < 0 || j > 250 || !isAirySpace(i, j, k) || isAirySpace(i, j - 1, k)) {
+				continue;
+			}
+		
+			int a = i;
+			int b = j - 1;
+			int c = k;
+			if (checkForTE(a, b, c, i, j, k, blockDist(a, b, c, x, y, z), q == 0)) {
+				
+				break;
+			}
+			
+			b += 1;
+			a -= 1;
+			
+			if (checkForTE(a, b, c, i, j, k, blockDist(a, b, c, x, y, z), q == 0)) {
+				
+				break;
+			}
+			
+			a += 2;
+			
+			if (checkForTE(a, b, c, i, j, k, blockDist(a, b, c, x, y, z),q == 0)) {
+				
+				break;
+			}
+			
+			a -= 1;
+			c -= 1;
+			
+			if (checkForTE(a, b, c, i, j, k, blockDist(a, b, c, x, y, z),q == 0)) {
+				
+				break;
+			}
+			
+			c += 2;
+			
+			if (checkForTE(a, b, c, i, j, k, blockDist(a, b, c, x, y, z),q == 0)) {
+				
+				break;
+			}
+			
+			i = x + rand.nextInt(8) - rand.nextInt(8);
+			j = y + rand.nextInt(4) - rand.nextInt(4);
+			k = z + rand.nextInt(8) - rand.nextInt(8);
+		}
+	}
+    public void updateBuildings() {
+		int x = MathHelper.floor_double(posX);
+        int y = MathHelper.floor_double(boundingBox.minY);
+        int z = MathHelper.floor_double(posZ);
+		
+		if (y < 4 || y > 120) {
+			return;
+		}
+		
+		int broad = 2;
+		int high = 3;
+		if (getDataWatcherShort("logPoints") == 20) {
+			broad = 3;
+			high = 4;
+		}
+		
+		boolean flag = false;
+		for (int a = -broad; a < broad + 1 && !flag; a++) {
+			for (int b = -1; b < high + 1 && !flag; b++) {
+				for (int c = -broad; c < broad + 1 && !flag; c++) {
+					if (b == -1) {
+						if (isAirySpace(x + a, y + b, z + c)) {
+							flag = true;
+						}
+					} else {
+						if (!isAirySpace(x + a, y + b, z + c) || worldObj.getBlockMaterial(x + a, y + b, z + c) == Material.water) {
+							flag = true;
+						}
+					}
+				}
+			}
+		}
+		
+		if (!flag) {
+			double gee = broad;
+			List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(gee, gee, gee));
+			if (list.size() > 0) {
+				flag = true;
+			}
+		}
+		
+		if (!flag) {
+			if (getDataWatcherShort("logPoints") == 20 && rand.nextInt(2) == 0) {
+				buildHouseThree();
+			} else if (getDataWatcherShort("logPoints") >= 10 && rand.nextInt(3) > 0) {
+				buildHouseTwo();
+			} else if (getDataWatcherShort("logPoints") >= 5) {
+				buildHouseOne();
+			}
+		}
+	}
+    public void updateDataWatcher(String key, Object obj) {
+		if (key.equals("clayTeam")) {
+			this.dataWatcher.updateObject(28, (Short)obj);
+			updateDataWatcher("altSkin", clayTexturePick((Short)obj));
+			texture = clayManTexture((Short)obj);
+		} else if (key.equals("stickPoints")) {
+			this.dataWatcher.updateObject(11, (Short)obj);
+		} else if (key.equals("rodPoints")) {
+			this.dataWatcher.updateObject(12, (Short)obj);
+		} else if (key.equals("gunPowdered")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 1 : flags & ~1));
+		} else if (key.equals("hasCrown")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 2 : flags & ~2));
+		} else if (key.equals("stickSharp")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 4 : flags & ~4));
+		} else if (key.equals("deployFeather")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 8 : flags & ~8));
+		} else if (key.equals("hasReed")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 16 : flags & ~16));
+		} else if (key.equals("camouflaged")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 32 : flags & ~32));
+		} else if (key.equals("glowing")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 64 : flags & ~64));
+		} else if (key.equals("goggles")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 128 : flags & ~128));
+		} else if (key.equals("specSkin")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 256 : flags & ~256));
+		} else if (key.equals("altSkin")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 512 : flags & ~512));
+		} else if (key.equals("eeskin")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 1024 : flags & ~1024));
+		} else if (key.equals("hasPants")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 2048 : flags & ~2048));
+		} else if (key.equals("superSoldier")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 4096 : flags & ~4096));
+		} else if (key.equals("shieldStud")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 8192 : flags & ~8192));
+		} else if (key.equals("corrupt")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 16384 : flags & ~16384));
+		} else if (key.equals("hasBrick")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 32768 : flags & ~32768));
+		} else if (key.equals("hasString")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 65536 : flags & ~65536));
+		} else if (key.equals("isSitting")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 131072 : flags & ~131072));
+		} else if (key.equals("hasEmerald")) {
+			int flags = this.dataWatcher.getWatchableObjectInt(13);
+			this.dataWatcher.updateObject(13, (int)((Boolean)obj ? flags | 262144 : flags & ~262144));
+		} else if (key.equals("armorPoints")) {
+			this.dataWatcher.updateObject(14, (Short)obj);
+		} else if (key.equals("snowbPoints")) {
+			this.dataWatcher.updateObject(15, (Short)obj);
+		} else if (key.equals("padColor")) {
+			this.dataWatcher.updateObject(16, (Short)obj);
+		} else if (key.equals("capeColor")) {
+			this.dataWatcher.updateObject(17, (Short)obj);
+		} else if (key.equals("firecPoints")) {
+			this.dataWatcher.updateObject(18, (Short)obj);
+		} else if (key.equals("gooTime")) {
+			this.dataWatcher.updateObject(19, (Short)obj);
+		} else if (key.equals("logPoints")) {
+			this.dataWatcher.updateObject(20, (Short)obj);
+		} else if (key.equals("bonePoints")) {
+			this.dataWatcher.updateObject(21, (Short)obj);
+		} else if (key.equals("rockPoints")) {
+			this.dataWatcher.updateObject(22, (Short)obj);
+		} else if (key.equals("glisterPoints")) {
+			this.dataWatcher.updateObject(23, (Short)obj);
+		} else if (key.equals("shieldPoints")) {
+			this.dataWatcher.updateObject(24, (Short)obj);
+		} else if (key.equals("musDiscPoints")) {
+			this.dataWatcher.updateObject(25, (Short)obj);
+		} else if (key.equals("shearPointsA")) {
+			short actualBits = (short)(dataWatcher.getWatchableObjectShort(26) & 0xFF00);
+			short value = (short)((Short)obj & 0x00FF);
+			this.dataWatcher.updateObject(26, (short)(actualBits | value));
+		} else if (key.equals("shearPointsB")) {
+			short actualBits = (short)(dataWatcher.getWatchableObjectShort(26) & 0x00FF);
+			short value = (short)(((Short)obj & 0x00FF) << 8);
+			this.dataWatcher.updateObject(26, (short)(actualBits | value));
+		} else if (key.equals("musDiskID")) {
+			this.dataWatcher.updateObject(27, (Short)obj);
+		}
+	}
+    @Override
+	public void updateEntityActionState() {
+		super.updateEntityActionState();
+		
+		entCount ++;
+		
+		if (entityToAttack != null && entityToAttack.isDead) {
+			entityToAttack = null;
+			setPathToEntity((PathEntity)null);
+		} else if (entityToAttack != null && rand.nextInt(25) == 0 && (getDistanceToEntity(entityToAttack) > goggleView() || !canEntityBeSeen(entityToAttack))) {
+			entityToAttack = null;
+			setPathToEntity((PathEntity)null);
+		}
+		
+		if (entityToAttack != null && entityToAttack instanceof EntityClayNexus) {
+			if (((EntityClayNexus)entityToAttack).isDestroyed() 
+					|| !((EntityClayNexus)entityToAttack).isActive() 
+					|| ((EntityClayNexus)entityToAttack).getColor() < 0) {
+				entityToAttack = null;
+				setPathToEntity((PathEntity)null);
+			}
+		}
+		
+		EntityPlayer ep = this.worldObj.getClosestPlayerToEntity(this, 20D);
+		if (entityToAttack == null && (targetFollow == null || targetFollow == ep) && ep != null && canEntityBeSeen(ep)) {
+			ItemStack held = ep.getCurrentEquippedItem();
+			if (held != null) {
+				if (held.itemID == 0) {
+					targetFollow = null;
+				} else if (held.itemID == Item.dyePowder.itemID && held.getItemDamage() == teamDye(getDataWatcherShort("clayTeam"))) {
+					targetFollow = ep;
+				} else if (held.itemID == Item.melonSeeds.itemID && getDataWatcherShort("clayTeam")==16) {
+					targetFollow = ep;
+				} else if (held.itemID == Item.pumpkinSeeds.itemID && getDataWatcherShort("clayTeam")==17) {
+					targetFollow = ep;
+				} else if (held.itemID == Block.torchWood.blockID && getDataWatcherShort("clayTeam")==18) {
+					targetFollow = ep;
+				} else if (held.itemID == Block.torchRedstoneActive.blockID && getDataWatcherShort("clayTeam")==19) {
+					targetFollow = ep;
+				} else {
+					targetFollow = null;
+				}
+			} else
+				targetFollow = null;
+		}
+			
+		if (targetFollow != null && targetFollow.isDead) {
+			targetFollow = null;
+			setPathToEntity((PathEntity)null);
+		} else if (targetFollow != null && rand.nextInt(25) == 0 && (getDistanceToEntity(targetFollow) > goggleView() || !canEntityBeSeen(targetFollow))) {
+			targetFollow = null;
+			setPathToEntity((PathEntity)null);
+		}
+		
+		if (blazeStock > 0 && ticksExisted % (20 + (rand.nextInt(2)==0?-1:1)*rand.nextInt(4)) == 0) {
+			CSMModRegistry.proxy.showEffect(worldObj, this, 18);
+		}
+		
+		if (smokeTime <= 0 && entCount > 2 + rand.nextInt(2) && health > 0) {
+			entCount = 0;
+			List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(goggleView(), 5D, goggleView()));
+			for (int j = 0; j < list.size(); j++) {
+				Entity entity = (Entity)list.get(j);
+				if (victory <= 0 && entity instanceof EntityClayMan && rand.nextInt(3) == 0 && canEntityBeSeen(entity) && !hasLogs() && !hasGlister()) {
+					EntityClayMan clayman = (EntityClayMan)entity;
+					if (clayman.health > 0 && (!isCorrupt() && !neutral && !villager && (clayman.getDataWatcherShort("clayTeam") != this.getDataWatcherShort("clayTeam") || brawler)) || (isCorrupt() && !clayman.isCorrupt())) {
+						if (clayman.isCamouflaged() && !hasGoggles()) {
+							continue;
+						}
+						if (clayman.hasCrown()) {
+							if (entityToAttack != null && entityToAttack instanceof EntityClayMan) {
+								EntityClayMan clayman2 = (EntityClayMan)entityToAttack;
+								if (!clayman2.hasCrown()) {
+									entityToAttack = clayman;
+									break;
+								}
+							} else {
+								entityToAttack = clayman;
+								break;
+							}
+						} else if (entityToAttack == null) {
+							entityToAttack = clayman;
+							break;
+						}
+					} else if (clayman.health > 0 && targetFollow == null && entityToAttack == null && clayman.hasCrown() && clayman.getDataWatcherShort("clayTeam") == this.getDataWatcherShort("clayTeam") && getDistanceToEntity(clayman) > 3.0D) {
+						targetFollow = clayman;
+						break;
+					}
+				} else if (victory <= 0 && !neutral && !villager && entity instanceof EntityClayNexus && rand.nextInt(3) == 0 && canEntityBeSeen(entity) && !hasLogs() && !hasGlister()) {
+					EntityClayNexus nexus = (EntityClayNexus)entity;
+					if (nexus.func_110143_aJ() > 0 && nexus.getColor() != this.getDataWatcherShort("clayTeam") && nexus.getColor() >= 0 && !nexus.isDestroyed() && nexus.isActive() ) {
+						if (entityToAttack == null) {
+							entityToAttack = nexus;
+							break;
+						}
+					}
+				} else if (victory <= 0 && !isCorrupt() && !villager && entityToAttack == null && entity instanceof EntityMob && canEntityBeSeen(entity)) {
+					EntityMob mob = (EntityMob)entity;
+					if (mob.getEntityToAttack() != null) {
+						entityToAttack = mob;
+						break;
+					}
+				} else if (victory <= 0 && isCorrupt() && entityToAttack == null && entity instanceof EntityPlayer && canEntityBeSeen(entity)) {
+					entityToAttack = entity;
+					break;
+				} else if (isCorrupt()) {
+					continue;
+				} else if (hasGlister() && entity instanceof EntityClayMan && canEntityBeSeen(entity)) {
+					EntityClayMan ecm = (EntityClayMan)entity;
+					if (ecm.getDataWatcherShort("clayTeam") == this.getDataWatcherShort("clayTeam") && ecm.func_110143_aJ() < (int)(ecm.func_110138_aP() / 100F * 75F) && !isCorrupt() && !brawler && !ecm.isCorrupt() && !ecm.brawler && !ecm.hasGlister()) {
+						entityToAttack = entity;
+						break;
+					}
+				} else if (entityToAttack == null && targetFollow == null && !heavyCore && !hasLogs() && ridingEntity == null && (entity instanceof EntityHorse || entity instanceof EntityTurtle || entity instanceof IMount) && entity.riddenByEntity == null && canEntityBeSeen(entity)) {
+					targetFollow = entity;
+					break;
+				} else if (entityToAttack == null && targetFollow == null && entity instanceof EntityFishHook && canEntityBeSeen(entity)) {
+					targetFollow = entity;
+					break;
+				} else if (entityToAttack == null && (targetFollow == null || targetFollow instanceof EntityClayMan) && entity instanceof EntityItem && canEntityBeSeen(entity)) {
+					EntityItem item = (EntityItem)entity;
+					if (item.getDataWatcher().getWatchableObjectItemStack(10) != null) {
+						ItemStack stack = item.getDataWatcher().getWatchableObjectItemStack(10);
+						if (stack.stackSize > 0) {
+							if (checkIfItemIsValid(stack, 0)) {
+								targetFollow = item;
+								break;
+							}
+						}
+					}
+				} else if (entityToAttack == null && targetFollow == null && rand.nextInt(4) == 0 && entity instanceof EntityMinecartContainer && canEntityBeSeen(entity)) {
+					EntityMinecartContainer cart = (EntityMinecartContainer)entity;
+					if (cartOperations(cart, false)) {
+						targetFollow = cart;
+						break;
+					}
+				}
+			}
+			
+			if (entityToAttack != null) {
+				if (hasBlazeRod() && strikeTime <= 0 && canEntityBeSeen(entityToAttack) && getDistanceToEntity(entityToAttack) < 0.6D + entityToAttack.width + (entityToAttack instanceof EntityPlayer ? 1.0F : 0F) + (rand.nextFloat() * 0.2D)) {
+					if (hasCoal) {
+						entityToAttack.setFire(8);
+					} else {
+						entityToAttack.setFire(4);
+					}
+					if (hasBlazeRod()) {
+						this.updateDataWatcher("rodPoints", (short)(this.getDataWatcherShort("rodPoints") - 1));
+					}
+					if (entityToAttack.attackEntityFrom(DamageSource.causeMobDamage(this), (3 + rand.nextInt(2)) + (isSuper() ? 2 : 0) + ((timeBombReady && rand.nextInt(4) == 0) ? 2 : 0)))
+						if (isSuper()) {
+							CSMModRegistry.proxy.showEffect(this.worldObj, entityToAttack, 9);
+						}
+					if (entityToAttack instanceof EntityLiving) {
+						if (((EntityLiving)entityToAttack).func_110143_aJ() <= 0) {
+							if (!isCorrupt()) {
+								victory = 50;
+							}
+							entityToAttack = null;
+							setPathToEntity((PathEntity)null);
+						}
+					}
+				} else if (strikeTime <= 0 && canEntityBeSeen(entityToAttack) && getDistanceToEntity(entityToAttack) < (hasStick() ? 0.6D : 0.3D) + (hasBone() ? 0.4D : 0.0D) + entityToAttack.width + (entityToAttack instanceof EntityPlayer ? 1.0F : 0F) + (rand.nextFloat() * 0.2D)) {
+					if (toxinStock > 0 && (entityToAttack instanceof EntityLiving) && !((EntityLiving)entityToAttack).isPotionActive(Potion.harm)) {
+						toxinStock--;
+						((EntityLiving)entityToAttack).addPotionEffect(new PotionEffect(Potion.harm.getId(), 15, 0));
+					}
+					if (hitTargetMakesDead(entityToAttack)) {
+						entityToAttack = null;
+						setPathToEntity((PathEntity)null);
+					}
+				} else if ((hasRocks() || hasSnowballs() || hasFireballs()) && throwTime <= 0 && canEntityBeSeen(entityToAttack)) {
+					double frogman = getDistanceToEntity(entityToAttack);
+					if (frogman >= 1.75D && frogman <= 7D) {
+						if (hasRocks()) updateDataWatcher("rockPoints", (short)(getDataWatcherShort("rockPoints")-1));
+						if (hasSnowballs()) updateDataWatcher("snowbPoints", (short)(getDataWatcherShort("snowbPoints")-1));
+						if (hasFireballs()) updateDataWatcher("firecPoints", (short)(getDataWatcherShort("firecPoints")-1));
+						throwTime = 20;
+						throwRockAtEnemy(entityToAttack);
+					}
+				}
+			} else if (!isCorrupt() && targetFollow != null) {
+				if (!hasPath() || rand.nextInt(10) == 0) {
+					setPathToEntity(worldObj.getPathEntityToEntity(targetFollow, this, 16F, false, false, false, false));
+				}
+				if (targetFollow instanceof EntityItem) {
+					EntityItem item = (EntityItem)targetFollow;
+					if (item.getDataWatcher().getWatchableObjectItemStack(10) != null && canEntityBeSeen(item) && getDistanceToEntity(item) < 0.75D) {
+						ItemStack stack = item.getDataWatcher().getWatchableObjectItemStack(10);
+						if (stack.stackSize > 0) {
+							applyStatsFromDroppedItem(stack, item);
+						}
+					}
+				} else if (targetFollow instanceof EntityClayMan && getDistanceToEntity(targetFollow) < 1.75D) {
+					targetFollow = null;
+				} else if (targetFollow instanceof EntityFishHook && getDistanceToEntity(targetFollow) < 1.0D) {
+					targetFollow = null;
+				} else if ((targetFollow instanceof EntityHorse || targetFollow instanceof EntityTurtle || targetFollow instanceof IMount) && getDistanceToEntity(targetFollow) < 0.75D && !isGooey()) {
+					if (ridingEntity == null && targetFollow.riddenByEntity == null && !heavyCore && !hasLogs()) {
+						mountEntity(targetFollow);
+						worldObj.playSoundAtEntity(this, "step.gravel", 0.6F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
+					}
+					targetFollow = null;
+				} else if (targetFollow instanceof EntityMinecartContainer && getDistanceToEntity(targetFollow) < 1.25D) {
+					cartOperations((EntityMinecartContainer)targetFollow, true);
+					targetFollow = null;
+				}
+			} else if (!isCorrupt()) {
+				updateBlockFinder();
+				if (hasLogs() && rand.nextInt(16) == 0) {
+					updateBuildings();
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
+    {
+		super.writeEntityToNBT(nbttagcompound);
+		nbttagcompound.setShort("ClayTeam", getDataWatcherShort("clayTeam"));
+		nbttagcompound.setShort("WeaponPoints", getDataWatcherShort("stickPoints"));
+		nbttagcompound.setShort("RodPoints", getDataWatcherShort("rodPoints"));
+		nbttagcompound.setShort("BonePoints", getDataWatcherShort("bonePoints"));
+		nbttagcompound.setShort("ArmorPoints", getDataWatcherShort("armorPoints"));
+		nbttagcompound.setShort("FoodLeft", (short)foodLeft);
+		nbttagcompound.setShort("SugarTime", (short)sugarTime);
+		nbttagcompound.setShort("ResPoints", (short)resPoints);
+		nbttagcompound.setShort("GhastTearPts", (short)ghastTearPts);
+		nbttagcompound.setShort("StrikeTime", (short)strikeTime);
+		nbttagcompound.setShort("ClimbTime", (short)climbTime);
+		nbttagcompound.setShort("GooTime", getDataWatcherShort("gooTime"));
+		nbttagcompound.setShort("SmokeTime", (short)smokeTime);
+		nbttagcompound.setShort("GooStock", (short)gooStock);
+		nbttagcompound.setShort("BlazeStock", (short)blazeStock);
+		nbttagcompound.setShort("SmokeStock", (short)smokeStock);
+		nbttagcompound.setShort("Logs", getDataWatcherShort("logPoints"));
+		nbttagcompound.setShort("Rocks", getDataWatcherShort("rockPoints"));
+		nbttagcompound.setShort("SoldierSnowballs", getDataWatcherShort("snowbPoints"));
+		nbttagcompound.setShort("SoldierFireballs", getDataWatcherShort("firecPoints"));
+		nbttagcompound.setShort("ShieldPts", getDataWatcherShort("shieldPoints"));
+		nbttagcompound.setShort("Essence", (short)essence);
+		nbttagcompound.setShort("Ink", getDataWatcherShort("padColor"));
+		nbttagcompound.setShort("CapeInk", getDataWatcherShort("capeColor"));
+		nbttagcompound.setShort("melons", getDataWatcherShort("glisterPoints"));
+		nbttagcompound.setShort("poisoner", (short)toxinStock);
+		nbttagcompound.setShort("TimeBombTicks", (short)timeBombTicks);
+		
+		nbttagcompound.setBoolean("Gunpowdered", hasGunPowder());
+		nbttagcompound.setBoolean("TimeBomb", timeBombReady);
+		nbttagcompound.setBoolean("KingCrowned", hasCrown());
+		nbttagcompound.setBoolean("Glowing", isGlowing());
+		nbttagcompound.setBoolean("StickSharp", isStickSharp());
+		nbttagcompound.setBoolean("HeavyCore", heavyCore);
+		nbttagcompound.setBoolean("HasFeather", hasFeather);
+		nbttagcompound.setBoolean("FeatherDeployed", holdFeather());
+		nbttagcompound.setBoolean("Goggles", hasGoggles());
+		nbttagcompound.setBoolean("superSoldier", isSuper());
+		nbttagcompound.setBoolean("Corrupt", isCorrupt());
+		nbttagcompound.setBoolean("hasWheat", villager);
+		nbttagcompound.setBoolean("hasNetherwart", brawler);
+		nbttagcompound.setBoolean("RARE", hasSpecSkin());
+		nbttagcompound.setBoolean("ALT", hasAltSkin());
+		nbttagcompound.setBoolean("coals", hasCoal);
+		nbttagcompound.setBoolean("studs", isShieldStud());
+		nbttagcompound.setBoolean("pants", hasPants());
+		nbttagcompound.setBoolean("reeds", hasReed());
+		nbttagcompound.setBoolean("fromNexus", fromNexus);
+		nbttagcompound.setBoolean("isNeutral", neutral);
+		nbttagcompound.setBoolean("camouflaged", isCamouflaged());
+		nbttagcompound.setBoolean("hasBrick", hasBrick());
+		nbttagcompound.setBoolean("hasString", hasString());
+		nbttagcompound.setBoolean("goldBlocked", goldBlocked);
+		nbttagcompound.setBoolean("glowBlocked", glowBlocked);
+		nbttagcompound.setBoolean("snowBlocked", snowBlocked);
+		nbttagcompound.setBoolean("hasWheatSeeds", hasWheatSeeds());
+		
+		nbttagcompound.setShort("MusicDiscID", getDataWatcherShort("musDiskID"));
+		nbttagcompound.setShort("shearAPts", getDataWatcherShort("shearPointsA"));
+		nbttagcompound.setShort("shearBPts", getDataWatcherShort("shearPointsB"));
+	}
+}
