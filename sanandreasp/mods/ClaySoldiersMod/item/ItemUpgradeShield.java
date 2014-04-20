@@ -13,14 +13,14 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemDebugShield extends ItemGlobal
+public class ItemUpgradeShield extends ItemGlobal
 {
     
     @SideOnly(Side.CLIENT)
     private Icon studdedIcon, starIcon, studStarIcon;
     private Icon[] icoList;
     
-    public ItemDebugShield(int par1)
+    public ItemUpgradeShield(int par1)
     {
         super(par1);
     }
@@ -29,9 +29,10 @@ public class ItemDebugShield extends ItemGlobal
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.itemIcon = par1IconRegister.registerIcon("ClaySoldiersMod:shield");
-        this.studdedIcon =
+        this.itemIcon =
                 par1IconRegister.registerIcon("ClaySoldiersMod:shields");
+        this.studdedIcon =
+                par1IconRegister.registerIcon("ClaySoldiersMod:shield");
         this.starIcon =
                 par1IconRegister.registerIcon("ClaySoldiersMod:starfruitSlice");
         this.studStarIcon =

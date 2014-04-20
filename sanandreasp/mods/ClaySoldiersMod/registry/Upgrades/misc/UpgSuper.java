@@ -11,7 +11,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import sanandreasp.mods.ClaySoldiersMod.client.render.UpgradeRenderHelper;
+import sanandreasp.mods.ClaySoldiersMod.entity.EntityClayMan;
 import sanandreasp.mods.ClaySoldiersMod.packet.PacketSendParticle;
 import sanandreasp.mods.ClaySoldiersMod.registry.CSMModRegistry;
 import sanandreasp.mods.ClaySoldiersMod.registry.Upgrades.IUpgradeEntity;
@@ -20,37 +22,22 @@ import sanandreasp.mods.ClaySoldiersMod.registry.Upgrades.rightHand.UpgShearBlad
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class UpgGlowstone extends MiscUpgrade
+public class UpgSuper extends MiscUpgrade
 {
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onPreRender(IUpgradeEntity entity, RenderManager manager,
-            float partTicks, ModelBase model)
-    {
-        UpgradeRenderHelper.onGlowPreRender(this, manager, entity, partTicks,
-                model);
-    }
     
     @Override
     public void initUpgrade(IUpgradeEntity entity, NBTTagCompound nbt)
     {
-        
-    }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void onPostRender(IUpgradeEntity entity, RenderManager manager,
-            float partTicks, ModelBase model)
-    {
-        UpgradeRenderHelper.onGlowPostRender(this, manager, entity, partTicks,
-                model);
+        EntityClayMan cs = (EntityClayMan) entity;
+        cs.isSuper = true;
+        cs.moveSpeed *= 1.5F;
+        cs.setHealth(cs.getHealth() * 20);
     }
     
     @Override
     public ItemStack getItemStack(IUpgradeEntity entity)
     {
-        return new ItemStack(Item.glowstone);
+        return new ItemStack(Item.diamond);
     }
     
     @Override
@@ -58,6 +45,18 @@ public class UpgGlowstone extends MiscUpgrade
     public ItemStack getHeldItem(IUpgradeEntity entity)
     {
         return null;
+    }
+    
+    @Override
+    public float onHit(IUpgradeEntity entity, DamageSource source,
+            float initAmount)
+    {
+        int thisUpgID = CSMModRegistry.clayUpgRegistry.getIDByUpgrade(this);
+        NBTTagCompound nbt = entity.getUpgradeNBT(thisUpgID);
+        // byte pts = (byte)(nbt.getByte("points") - 1);
+        // nbt.setByte("points", pts);
+        // if( pts <= 0 ) entity.breakUpgrade(thisUpgID);
+        return initAmount / 4F;
     }
     
 }

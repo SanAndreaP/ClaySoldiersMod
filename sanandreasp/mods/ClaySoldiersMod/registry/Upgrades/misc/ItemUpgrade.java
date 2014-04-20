@@ -23,13 +23,13 @@ import net.minecraft.util.DamageSource;
 import sanandreasp.mods.ClaySoldiersMod.registry.Upgrades.IUpgradeEntity;
 import sanandreasp.mods.ClaySoldiersMod.registry.Upgrades.IUpgradeItem;
 
-public abstract class MiscUpgrade implements IUpgradeItem
+public abstract class ItemUpgrade implements IUpgradeItem
 {
     
     @Override
     public final int getType()
     {
-        return 3;
+        return 5;
     }
     
     @Override
@@ -83,9 +83,9 @@ public abstract class MiscUpgrade implements IUpgradeItem
     @Override
     public void onDrop(IUpgradeEntity entity, Random rnd)
     {
-        entity.getEntity().entityDropItem(
-                new ItemStack(this.getItemStack(entity).itemID, this
-                        .getItemStack(entity).getItemDamage(), 1), 0.0F);
+        // entity.getEntity().entityDropItem(new
+        // ItemStack(this.getItemStack(entity).itemID,
+        // this.getItemStack(entity).getItemDamage(), 1), 0.0F);
     }
     
     @Override
