@@ -1,7 +1,6 @@
 package sanandreasp.mods.ClaySoldiersMod.registry.Upgrades.misc;
 
 import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -23,38 +22,65 @@ import sanandreasp.mods.ClaySoldiersMod.registry.Upgrades.rightHand.UpgShearBlad
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class UpgGlowstoneInf extends MiscUpgrade {
+public class UpgGlowstoneInf extends ItemUpgrade
+{
     
     @Override
-    public void onPickup(IUpgradeEntity entity, EntityItem item, NBTTagCompound nbt) {
+    public void onPickup(IUpgradeEntity entity, EntityItem item,
+            NBTTagCompound nbt)
+    {
         entity.getEntity().playSound(
                 "random.glass",
                 0.6F,
-                ((entity.getEntity().getRNG().nextFloat() - entity.getEntity().getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F
-        );
+                ((entity.getEntity().getRNG().nextFloat() - entity.getEntity()
+                        .getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
         
-        entity.addUpgrade(CSMModRegistry.clayUpgRegistry.getIDByUpgradeClass(UpgGlowstone.class));
+        entity.addUpgrade(CSMModRegistry.clayUpgRegistry
+                .getIDByUpgradeClass(UpgGlowstoneInf.class));
     }
     
-    @Override
-    public void initUpgrade(IUpgradeEntity entity, NBTTagCompound nbt) {
-        
-    }
-    
-    @Override
-    public boolean isCompatibleWith(IUpgradeItem upgrade) {
-        return super.isCompatibleWith(upgrade) && upgrade.getClass() != UpgGlowstone.class;
-    }
-    
-    @Override
-    public ItemStack getItemStack(IUpgradeEntity entity) {
-        return new ItemStack(Block.glowStone);
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getHeldItem(IUpgradeEntity entity) {
+    public void onPreRender(IUpgradeEntity entity, RenderManager manager,
+            float partTicks, ModelBase model)
+    {
+        UpgradeRenderHelper.onGlowPreRender(this, manager, entity, partTicks,
+                model);
+    }
+    
+    @Override
+    public void initUpgrade(IUpgradeEntity entity, NBTTagCompound nbt)
+    {
+        
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onPostRender(IUpgradeEntity entity, RenderManager manager,
+            float partTicks, ModelBase model)
+    {
+        UpgradeRenderHelper.onGlowPostRender(this, manager, entity, partTicks,
+                model);
+    }
+    
+    @Override
+    public boolean isCompatibleWith(IUpgradeItem upgrade)
+    {
+        return super.isCompatibleWith(upgrade)
+                && upgrade.getClass() != UpgGlowstone.class;
+    }
+    
+    @Override
+    public ItemStack getItemStack(IUpgradeEntity entity)
+    {
+        return new ItemStack(Block.glowStone);
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ItemStack getHeldItem(IUpgradeEntity entity)
+    {
         return null;
     }
-
+    
 }
