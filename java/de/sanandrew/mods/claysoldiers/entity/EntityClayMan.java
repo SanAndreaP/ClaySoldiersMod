@@ -2,11 +2,11 @@ package de.sanandrew.mods.claysoldiers.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,8 +15,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * @author SanAndreasP
@@ -29,6 +30,8 @@ public class EntityClayMan
     public static final int DW_TEAM = 20;
 
     public boolean shouldDropDoll = false;
+
+    private final Vector<ISoldierUpgrade> upgrades_ = new Vector<>();
 
     public EntityClayMan(World world) {
         super(world);
@@ -69,6 +72,17 @@ public class EntityClayMan
         }
 
         return super.attackEntityFrom(damageSource, damage);
+    }
+
+    @Override
+    public void onUpdate() {
+        Iterator<ISoldierUpgrade> iter = upgrades_.iterator();
+        while( iter.hasNext() ) {
+            if(iter.next().onUpdate(this)) {
+                iter.remove();
+            }
+        }
+        super.onUpdate();
     }
 
     @Override
