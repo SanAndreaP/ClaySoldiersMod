@@ -2,14 +2,19 @@ package de.sanandrew.mods.claysoldiers.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade;
+import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.mods.claysoldiers.util.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
+import de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -31,7 +36,9 @@ public class EntityClayMan
 
     public boolean shouldDropDoll = false;
 
-    private final Vector<ISoldierUpgrade> upgrades_ = new Vector<>();
+    private final Vector<SoldierUpgradeInst> upgrades_ = new Vector<>();
+
+    private Entity targetFollow_ = null;
 
     public EntityClayMan(World world) {
         super(world);
@@ -76,9 +83,10 @@ public class EntityClayMan
 
     @Override
     public void onUpdate() {
-        Iterator<ISoldierUpgrade> iter = upgrades_.iterator();
+        Iterator<SoldierUpgradeInst> iter = upgrades_.iterator();
         while( iter.hasNext() ) {
-            if(iter.next().onUpdate(this)) {
+            SoldierUpgradeInst upg = iter.next();
+            if( upg.getUpgrade().onUpdate(this, upg) ) {
                 iter.remove();
             }
         }
@@ -100,13 +108,24 @@ public class EntityClayMan
 
         if( !this.worldObj.isRemote ) {
             if( this.entityToAttack == null ) {
-                List<EntityClayMan> claymen = (List<EntityClayMan>) this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.getTargetArea());
-                for (EntityClayMan uberhaxornova : claymen) {
-                    if( uberhaxornova.getClayTeam().equals(this.getClayTeam()) || uberhaxornova == this || uberhaxornova.isDead || !this.canEntityBeSeen(uberhaxornova)|| rand.nextInt(4) != 0 ) {
-                        continue;
-                    }
+                if( rand.nextInt(4) != 0 ) {
+                    List<EntityClayMan> claymen = (List<EntityClayMan>) this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.getTargetArea());
+                    for( EntityClayMan uberhaxornova : claymen ) {
+                        if( uberhaxornova == this || uberhaxornova.isDead || rand.nextInt(4) != 0 ) {
+                            continue;
+                        }
+                        boolean shouldTargetCheck = true;
+                        for( SoldierUpgradeInst upg : this.upgrades_ ) {
+                            if( upg.getUpgrade().allowSoldierTarget(this, upg, uberhaxornova) ) {
+                                shouldTargetCheck = false;
+                                break;
+                            }
+                        }
+                        if( shouldTargetCheck && (uberhaxornova.getClayTeam().equals(this.getClayTeam()) || !this.canEntityBeSeen(uberhaxornova)) ) {
+                            continue;
+                        }
 
-                    this.entityToAttack = uberhaxornova;
+                        this.entityToAttack = uberhaxornova;
 
 //                    for (int id : this.upgrades.keySet())
 //                        this.entityToAttack = CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).onTargeting(this, uberhaxornova);
@@ -116,7 +135,81 @@ public class EntityClayMan
 //                            this.entityToAttack = CSMModRegistry.clayUpgRegistry.getUpgradeByID(id2).onTargeted((IUpgradeEntity) this.entityToAttack, this);
 //                    }
 
-                    break;
+                        break;
+                    }
+                } else {
+                    if( this.targetFollow_ == null ) {
+                        List<EntityItem> items = (List<EntityItem>)this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.getTargetArea());
+                        items: for( EntityItem seamus : items ) {
+                            if( !this.canEntityBeSeen(seamus) ) {
+                                continue;
+                            }
+
+                            ISoldierUpgrade upgrade = SoldierUpgrades.getUpgradeFromItem(seamus.getEntityItem());
+                            if( upgrade != null ) {
+                                for( SoldierUpgradeInst upgradeInst : this.upgrades_ ) {
+                                    if( upgrade == upgradeInst.getUpgrade() || !upgrade.isCompatibleWith(upgradeInst.getUpgrade()) ) {
+                                        continue items;
+                                    }
+                                }
+                            }
+
+                            this.targetFollow_ = seamus;
+
+                            break;
+                        }
+                    }
+//                    if( this.targetFollow_ == null && this.ridingEntity == null ) {
+//                        List<IMount> items = (List<IMount>)this.worldObj.getEntitiesWithinAABB(IMount.class, this.getTargetArea());
+//                        for( IMount mount : items ) {
+//                            if( !(mount instanceof EntityLivingBase) ) continue;
+//                            if( this.rand.nextInt(4) != 0 ) continue;
+//                            EntityLivingBase slyfox = (EntityLivingBase)mount;
+//                            if( !slyfox.canEntityBeSeen(this) ) continue;
+//                            if( slyfox.riddenByEntity != null ) continue;
+//                            this.targetFollow_ = slyfox;
+//                            break;
+//                        }
+//                    }
+
+                    if( this.targetFollow_ != null ) {
+                        if( this.targetFollow_.isDead ) {
+                            this.targetFollow_ = null;
+                        } else if( !this.canEntityBeSeen(this.targetFollow_) ) {
+                            this.targetFollow_ = null;
+                        } else if( !hasPath() || rand.nextInt(10) == 0 ) {
+                            setPathToEntity(worldObj.getPathEntityToEntity(this.targetFollow_, this, 8.0F, false, false, false, false));
+                        }
+
+                        if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
+                            EntityItem item = (EntityItem)this.targetFollow_;
+                            ISoldierUpgrade upgrade = SoldierUpgrades.getUpgradeFromItem(item.getEntityItem());
+                            if( upgrade != null ) {
+                                SoldierUpgradeInst upgradeInst = new SoldierUpgradeInst(upgrade);
+                                this.upgrades_.add(upgradeInst);
+                                this.targetFollow_ = null;
+                            }
+                        }
+
+//                        if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
+//                            for( IUpgradeItem upgrade : CSMModRegistry.clayUpgRegistry.getUpgrades() ) {
+//                                if( !CommonUsedStuff.areStacksEqualWithWCV(upgrade.getItemStack(this), ((EntityItem)this.targetFollow_).getEntityItem()) ) continue;
+//                                if( this.upgrades.containsKey(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade)) ) continue;
+//                                NBTTagCompound nbt = new NBTTagCompound();
+//                                this.upgrades.put(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade), nbt);
+//                                upgrade.onPickup(this, (EntityItem)this.targetFollow_, nbt);
+//                                this.targetFollow_ = null;
+//                                break;
+//                            }
+//                        } else if( this.targetFollow_ instanceof IMount ) {
+//                            if( this.targetFollow_.riddenByEntity != null ) {
+//                                this.targetFollow_ = null;
+//                            } else if( this.targetFollow_.getDistanceToEntity(this) < 0.5D ) {
+//                                this.mountEntity(this.targetFollow_);
+//                                this.targetFollow_ = null;
+//                            }
+//                        }
+                    }
                 }
             } else {
                 if( this.entityToAttack.isDead || !this.canEntityBeSeen(this.entityToAttack) ) {
@@ -127,14 +220,13 @@ public class EntityClayMan
 //                        atkRng = Math.max(CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).getTargetRange(this), atkRng);
 
                     if( this.getDistanceToEntity(this.entityToAttack) < atkRng && this.entityToAttack instanceof EntityLivingBase && !this.entityToAttack.isEntityInvulnerable() ) {
-                        if( ((EntityLivingBase)this.entityToAttack).hurtTime == 0 ) {
+                        EntityLivingBase target = (EntityLivingBase)this.entityToAttack;
+                        if( target.hurtTime == 0 ) {
                             float damage = 1.0F;
-//                            List<Integer> currUpgrades = new ArrayList<Integer>(this.upgrades.keySet());
-//                            for( int i : currUpgrades ) {
-//                                IUpgradeItem upg = CSMModRegistry.clayUpgRegistry.getUpgradeByID(i);
-//                                damage = upg.onAttack(this, (EntityLivingBase)this.entityToAttack, damage);
-//                            }
-                            this.entityToAttack.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+                            for( SoldierUpgradeInst upg : this.upgrades_ ) {
+                                damage = Math.max(damage, upg.getUpgrade().onEntityAttack(this, upg, target, damage));
+                            }
+                            target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
                         }
                     }
                 }
@@ -157,6 +249,14 @@ public class EntityClayMan
         super.readEntityFromNBT(nbt);
 
         this.dataWatcher.updateObject(DW_TEAM, nbt.getString("team"));
+
+        NBTTagList upgNbtList = nbt.getTagList("upgrades", NbtTypes.NBT_COMPOUND);
+        for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
+            NBTTagCompound savedUpg = upgNbtList.getCompoundTagAt(i);
+            SoldierUpgradeInst upgInst = new SoldierUpgradeInst(SoldierUpgrades.getUpgradeFromName(savedUpg.getString("name")));
+            upgInst.setNbtTag(savedUpg.getCompoundTag("data"));
+            this.upgrades_.add(upgInst);
+        }
     }
 
     @Override
@@ -164,6 +264,15 @@ public class EntityClayMan
         super.writeEntityToNBT(nbt);
 
         nbt.setString("team", this.getClayTeam());
+
+        NBTTagList upgNbtList = new NBTTagList();
+        for( SoldierUpgradeInst upg : this.upgrades_ ) {
+            NBTTagCompound savedUpg = new NBTTagCompound();
+            savedUpg.setString("name", SoldierUpgrades.getNameFromUpgrade(upg.getUpgrade()));
+            savedUpg.setTag("data", upg.getNbtTag());
+            upgNbtList.appendTag(savedUpg);
+        }
+        nbt.setTag("upgrades", upgNbtList);
     }
 
     private AxisAlignedBB getTargetArea() {
