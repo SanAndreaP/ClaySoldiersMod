@@ -33,6 +33,8 @@ public class EntityClayMan
         implements IDisruptable
 {
     public static final int DW_TEAM = 20;
+    public static final int DW_UPG_RENDER1 = 21;
+    public static final int DW_UPG_RENDER2 = 22;
 
     public boolean shouldDropDoll = false;
 
@@ -60,6 +62,8 @@ public class EntityClayMan
         super.entityInit();
 
         this.dataWatcher.addObject(DW_TEAM, ClaymanTeam.DEFAULT_TEAM);
+        this.dataWatcher.addObject(DW_UPG_RENDER1, 0L);
+        this.dataWatcher.addObject(DW_UPG_RENDER2, 0L);
     }
 
     @Override
@@ -83,6 +87,7 @@ public class EntityClayMan
 
     @Override
     public void onUpdate() {
+        super.onUpdate();
         Iterator<SoldierUpgradeInst> iter = upgrades_.iterator();
         while( iter.hasNext() ) {
             SoldierUpgradeInst upg = iter.next();
@@ -90,7 +95,6 @@ public class EntityClayMan
                 iter.remove();
             }
         }
-        super.onUpdate();
     }
 
     @Override
@@ -187,6 +191,11 @@ public class EntityClayMan
                             if( upgrade != null ) {
                                 SoldierUpgradeInst upgradeInst = new SoldierUpgradeInst(upgrade);
                                 this.upgrades_.add(upgradeInst);
+                                upgradeInst.getUpgrade().onConstruct(this, upgradeInst);
+                                upgradeInst.getUpgrade().onPickup(this, item.getEntityItem());
+                                if( item.getEntityItem().stackSize <= 0 ) {
+                                    item.setDead();
+                                }
                                 this.targetFollow_ = null;
                             }
                         }
@@ -298,5 +307,9 @@ public class EntityClayMan
     @Override
     public void disrupt(EntityPlayer player) {
         this.attackEntityFrom(DamageSource.causePlayerDamage(player), 99999);
+    }
+
+    public void setUpgradeRender() {
+
     }
 }

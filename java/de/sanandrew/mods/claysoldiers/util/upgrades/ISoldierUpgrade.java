@@ -2,6 +2,7 @@ package de.sanandrew.mods.claysoldiers.util.upgrades;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 
 import java.util.Iterator;
 
@@ -11,6 +12,8 @@ import java.util.Iterator;
  */
 public interface ISoldierUpgrade
 {
+    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst);
+
     /**
      * Determines if the soldier should be targeted, regardless if it isn't originally (or due to other upgrades) supposed to be one.
      * Note that it does NOT allow targeting of other soldiers if they are marked as dead!
@@ -45,4 +48,6 @@ public interface ISoldierUpgrade
      * @return true, if the upgrade can co-exist with this upgrade
      */
     public boolean isCompatibleWith(ISoldierUpgrade upgrade);
+
+    public void onPickup(EntityClayMan clayMan, ItemStack stack);
 }
