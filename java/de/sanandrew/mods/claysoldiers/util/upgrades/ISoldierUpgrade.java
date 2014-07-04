@@ -1,5 +1,8 @@
 package de.sanandrew.mods.claysoldiers.util.upgrades;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -50,4 +53,9 @@ public interface ISoldierUpgrade
     public boolean isCompatibleWith(ISoldierUpgrade upgrade);
 
     public void onPickup(EntityClayMan clayMan, ItemStack stack);
+
+    @SideOnly(Side.CLIENT)
+    public void onRender(RenderStage stage, EntityClayMan clayMan, RenderClayMan clayManRender, double x, double y, double z, float yawPitch, float partTicks);
+
+    public enum RenderStage { PRE, POST }
 }

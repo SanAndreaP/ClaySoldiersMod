@@ -35,6 +35,8 @@ public class EntityClayMan
     public static final int DW_TEAM = 20;
     public static final int DW_UPG_RENDER1 = 21;
     public static final int DW_UPG_RENDER2 = 22;
+    public static final int DW_UPG_RENDER3 = 23;
+    public static final int DW_UPG_RENDER4 = 24;
 
     public boolean shouldDropDoll = false;
 
@@ -62,8 +64,10 @@ public class EntityClayMan
         super.entityInit();
 
         this.dataWatcher.addObject(DW_TEAM, ClaymanTeam.DEFAULT_TEAM);
-        this.dataWatcher.addObject(DW_UPG_RENDER1, 0L);
-        this.dataWatcher.addObject(DW_UPG_RENDER2, 0L);
+        this.dataWatcher.addObject(DW_UPG_RENDER1, 0);
+        this.dataWatcher.addObject(DW_UPG_RENDER2, 0);
+        this.dataWatcher.addObject(DW_UPG_RENDER3, 0);
+        this.dataWatcher.addObject(DW_UPG_RENDER4, 0);
     }
 
     @Override
@@ -250,7 +254,7 @@ public class EntityClayMan
 
     @Override
     protected String getHurtSound() {
-        return "dig.gravel";
+        return "claysoldiers:mob.soldier.hurt";
     }
 
     @Override
@@ -309,7 +313,8 @@ public class EntityClayMan
         this.attackEntityFrom(DamageSource.causePlayerDamage(player), 99999);
     }
 
-    public void setUpgradeRender() {
+    @SideOnly(Side.CLIENT)
+    public void renderUpgrades() {
 
     }
 }
