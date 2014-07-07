@@ -71,7 +71,7 @@ public class EntityClayMan
         this.dataWatcher.addObject(DW_UPG_RENDER[2], 0);
         this.dataWatcher.addObject(DW_UPG_RENDER[3], 0);
         this.dataWatcher.addObject(DW_MISC_COLOR, (byte) 15);
-        this.dataWatcher.addObject(DW_IS_RARE, ((byte) rand.nextInt(100)==0 ? 1 : 0));
+        this.dataWatcher.addObject(DW_IS_RARE, (byte) (rand.nextInt(100)==0 ? 1 : 0));
     }
 
     @Override
