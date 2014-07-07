@@ -3,8 +3,16 @@ item.claysoldiers:disruptor_cooked.name=Hardened Clay Disruptor
 
 item.claysoldiers:claydoll.clay.name=Clay Soldier
 item.claysoldiers:claydoll.red.name=Red Soldier
+item.claysoldiers:claydoll.orange.name=Orange Soldier
 item.claysoldiers:claydoll.yellow.name=Yellow Soldier
+item.claysoldiers:claydoll.lime.name=Lime Soldier
 item.claysoldiers:claydoll.green.name=Green Soldier
+item.claysoldiers:claydoll.cyan.name=Cyan Soldier
 item.claysoldiers:claydoll.blue.name=Blue Soldier
+item.claysoldiers:claydoll.purple.name=Purple Soldier
+item.claysoldiers:claydoll.brown.name=Brown Soldier
+item.claysoldiers:claydoll.black.name=Black Soldier
+item.claysoldiers:claydoll.white.name=White Soldier
+item.claysoldiers:claydoll.melon.name=Melon Soldier
 
 itemGroup.claysoldiers:clay_tab=Clay Soldiers
