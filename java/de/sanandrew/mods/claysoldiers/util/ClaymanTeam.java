@@ -24,16 +24,17 @@ public class ClaymanTeam
     private static final Map<String, ClaymanTeam> TEAMS_ = Maps.newHashMap();
     private static final List<String> TEAM_NAMES_ = new ArrayList<>();
 
+    // NOTE: use http://www.colorpicker.com/ to pick a fitting color
     static {
         registerTeam(DEFAULT_TEAM, 0x808080, new String[] {"claysoldiers:textures/entity/soldiers/gray.png"}, null, null);
-        registerTeam("red", 0xc73232, new String[] {"claysoldiers:textures/entity/soldiers/red.png"}, null, null);
-        registerTeam("orange", 0xc85c32, new String[] {"claysoldiers:textures/entity/soldiers/orange.png"}, null, null);
-        registerTeam("yellow", 0xc7a632, new String[] {"claysoldiers:textures/entity/soldiers/yellow.png"}, null, null);
-        registerTeam("lime", 0x83c832, new String[] {"claysoldiers:textures/entity/soldiers/lime.png"}, null, null);
-        registerTeam("green", 0x32c746, new String[] {"claysoldiers:textures/entity/soldiers/green.png"}, null, null);
-        registerTeam("cyan", 0x32bfc8, new String[] {"claysoldiers:textures/entity/soldiers/cyan.png"}, null, null);
-        registerTeam("blue", 0x3e32c7, new String[] {"claysoldiers:textures/entity/soldiers/blue.png"}, null, null);
-        registerTeam("purple", 0xbc32c8, new String[] {"claysoldiers:textures/entity/soldiers/purple.png"}, null, null);
+        registerTeam("red", 0xF00000, new String[] {"claysoldiers:textures/entity/soldiers/red.png"}, null, null);
+        registerTeam("orange", 0xFF8000, new String[] {"claysoldiers:textures/entity/soldiers/orange.png"}, null, null);
+        registerTeam("yellow", 0xFFFF00, new String[] {"claysoldiers:textures/entity/soldiers/yellow.png"}, null, null);
+        registerTeam("lime", 0x00FF00, new String[] {"claysoldiers:textures/entity/soldiers/lime.png"}, null, null);
+        registerTeam("green", 0x008000, new String[] {"claysoldiers:textures/entity/soldiers/green.png"}, null, null);
+        registerTeam("cyan", 0x00FFFF, new String[] {"claysoldiers:textures/entity/soldiers/cyan.png"}, null, null);
+        registerTeam("blue", 0x0000FF, new String[] {"claysoldiers:textures/entity/soldiers/blue.png"}, null, null);
+        registerTeam("purple", 0xB000FF, new String[] {"claysoldiers:textures/entity/soldiers/purple.png"}, null, null);
     }
 
     private String name_;
