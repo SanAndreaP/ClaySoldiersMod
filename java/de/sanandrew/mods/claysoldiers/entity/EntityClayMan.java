@@ -41,12 +41,10 @@ public class EntityClayMan
     public static final int DW_IS_RARE = 26;
 
     public boolean shouldDropDoll = false;
-    public int isRare = 0;
 
     private final Map<ISoldierUpgrade, SoldierUpgradeInst> upgrades_ = new ConcurrentHashMap<>();
 
     private Entity targetFollow_ = null;
-//    private List<Byte> renderedUpgrades_;
 
     public EntityClayMan(World world) {
         super(world);
@@ -60,9 +58,6 @@ public class EntityClayMan
 
     public EntityClayMan(World world, String team) {
         this(world);
-        if(rand.nextInt(100)==0)
-        	isRare=1;
-        this.dataWatcher.updateObject(DW_IS_RARE, isRare);
         this.dataWatcher.updateObject(DW_TEAM, team);
     }
 
@@ -76,7 +71,7 @@ public class EntityClayMan
         this.dataWatcher.addObject(DW_UPG_RENDER[2], 0);
         this.dataWatcher.addObject(DW_UPG_RENDER[3], 0);
         this.dataWatcher.addObject(DW_MISC_COLOR, (byte) 15);
-        this.dataWatcher.addObject(DW_IS_RARE, isRare);
+        this.dataWatcher.addObject(DW_IS_RARE, ((byte) rand.nextInt(100)==0 ? 1 : 0));
     }
 
     @Override
@@ -191,7 +186,7 @@ public class EntityClayMan
                             ISoldierUpgrade upgrade = SoldierUpgrades.getUpgradeFromItem(seamus.getEntityItem());
                             if( upgrade != null ) {
                                 if( this.hasUpgrade(upgrade) || !upgrade.canBePickedUp(this, seamus.getEntityItem(), null) ) {
-                                    continue items;
+                                    continue;
                                 } else {
                                     for( SoldierUpgradeInst upgradeInst : this.upgrades_.values() ) {
                                         if( upgrade == upgradeInst.getUpgrade() || !upgrade.canBePickedUp(this, seamus.getEntityItem(), upgradeInst.getUpgrade()) ) {
@@ -200,7 +195,7 @@ public class EntityClayMan
                                     }
                                 }
                             } else {
-                                continue items;
+                                continue;
                             }
 
                             this.targetFollow_ = seamus;
@@ -310,7 +305,7 @@ public class EntityClayMan
     protected String getHurtSound() {
         return "claysoldiers:mob.soldier.hurt";
     }
-    
+
     @Override
     protected String getDeathSound() {
         return "dig.gravel";
@@ -321,7 +316,7 @@ public class EntityClayMan
         super.readEntityFromNBT(nbt);
 
         this.dataWatcher.updateObject(DW_TEAM, nbt.getString("team"));
-        this.dataWatcher.updateObject(DW_IS_RARE, nbt.getInteger("isRare"));
+        this.dataWatcher.updateObject(DW_IS_RARE, nbt.getByte("isRare"));
 
         NBTTagList upgNbtList = nbt.getTagList("upgrades", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
@@ -337,7 +332,7 @@ public class EntityClayMan
         super.writeEntityToNBT(nbt);
 
         nbt.setString("team", this.getClayTeam());
-        nbt.setInteger("isRare", this.dataWatcher.getWatchableObjectInt(DW_IS_RARE));
+        nbt.setInteger("isRare", this.dataWatcher.getWatchableObjectByte(DW_IS_RARE));
 
         NBTTagList upgNbtList = new NBTTagList();
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
@@ -366,10 +361,11 @@ public class EntityClayMan
 
     @SideOnly(Side.CLIENT)
     public ResourceLocation getTexture() {
-    	if(this.dataWatcher.getWatchableObjectInt(DW_IS_RARE)==0)
-    		return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getDefaultTextures()[0];
-    	else
-    		return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getRareTextures()[0];
+    	if( this.dataWatcher.getWatchableObjectInt(DW_IS_RARE) == 1 ) {
+            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getRareTextures()[0];
+        } else {
+            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getDefaultTextures()[0];
+        }
     }
 
     @Override
