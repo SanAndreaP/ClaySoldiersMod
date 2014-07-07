@@ -1,13 +1,19 @@
 package de.sanandrew.mods.claysoldiers.util.upgrades;
 
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Bytes;
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeLeather;
+import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeWool;
+import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeBlazeRod;
+import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeStick;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import java.util.Map;
@@ -24,8 +30,8 @@ public final class SoldierUpgrades
     private static final Map<ISoldierUpgrade, Byte> UPGRADE_TO_RENDER_ID_MAP_ = Maps.newHashMap();
     private static final Map<Byte, ISoldierUpgrade> RENDER_ID_TO_UPGRADE_MAP_ = Maps.newHashMap();
 
-    public static void registerUpgrade(String upgradeName, ItemStack upgradeItem, ISoldierUpgrade upgradeInst) {
-        registerUpgrade(upgradeName, upgradeItem, upgradeInst, -1);
+    public static void registerUpgrade(String name, ItemStack item, ISoldierUpgrade instance) {
+        registerUpgrade(name, item, instance, -1);
     }
 
     public static void registerUpgrade(String upgradeName, ItemStack upgradeItem, ISoldierUpgrade upgradeInst, int cltRenderId) {
@@ -49,21 +55,52 @@ public final class SoldierUpgrades
         return NAME_TO_UPGRADE_MAP_.get(name);
     }
 
-    public static String getNameFromUpgrade(ISoldierUpgrade upgr) {
-        return UPGRADE_TO_NAME_MAP_.get(upgr);
+    public static String getNameFromUpgrade(ISoldierUpgrade upgrade) {
+        return UPGRADE_TO_NAME_MAP_.get(upgrade);
     }
 
     public static ISoldierUpgrade getUpgradeFromItem(ItemStack item) {
         if( item != null ) {
-            Pair<Item, Integer> pair = Pair.with(item.getItem(), item.getItemDamage());
+            Pair<Item, Integer> pair = Pair.with(item.getItem(), OreDictionary.WILDCARD_VALUE);
             if( ITEM_TO_UPGRADE_MAP_.containsKey(pair) ) {
                 return ITEM_TO_UPGRADE_MAP_.get(pair);
+            } else {
+                pair = Pair.with(item.getItem(), item.getItemDamage());
+                if( ITEM_TO_UPGRADE_MAP_.containsKey(pair) ) {
+                    return ITEM_TO_UPGRADE_MAP_.get(pair);
+                }
             }
         }
+
         return null;
     }
 
+    public static byte getRenderIdFromUpgrade(ISoldierUpgrade upgrade) {
+        if( UPGRADE_TO_RENDER_ID_MAP_.containsKey(upgrade) ) {
+            return UPGRADE_TO_RENDER_ID_MAP_.get(upgrade);
+        } else {
+            return -1;
+        }
+    }
+
+    public static ISoldierUpgrade getUpgradeFromRenderId(int renderId) {
+        return RENDER_ID_TO_UPGRADE_MAP_.get((byte) renderId);
+    }
+
+    public static byte[] getAvailableRenderIds() {
+        return Bytes.toArray(RENDER_ID_TO_UPGRADE_MAP_.keySet());
+    }
+
+    public static final String UPG_STICK = "stick";
+    public static final String UPG_BLAZEROD = "blazerod";
+    public static final String UPG_LEATHER = "leather";
+    public static final String UPG_WOOL = "wool";
+
     static {
-        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade());
+        registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
+        registerUpgrade(UPG_BLAZEROD, new ItemStack(Items.blaze_rod), new UpgradeBlazeRod(), 1);
+        registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), 2);
+        registerUpgrade(UPG_WOOL, new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWool(), 3);
+//        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }

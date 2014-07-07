@@ -5,10 +5,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ClaymanTeam;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,16 +37,22 @@ public class ItemClayDoll extends Item
             return true;
         } else {
             Block block = world.getBlock(blockX, blockY, blockZ);
-            blockX += Facing.offsetsXForSide[side];
-            blockY += Facing.offsetsYForSide[side];
-            blockZ += Facing.offsetsZForSide[side];
             double entityOffY = 0.0D;
+            int maxSpawns = stack.stackSize;
+
+            if( player.isSneaking() ) {
+                maxSpawns = 1;
+            }
 
             if( side == 1 && block.getRenderType() == 11 ) {
                 entityOffY = 0.5D;
             }
 
-            for( int i = 0; i < stack.stackSize; i++ ) {
+            blockX += Facing.offsetsXForSide[side];
+            blockY += Facing.offsetsYForSide[side];
+            blockZ += Facing.offsetsZForSide[side];
+
+            for( int i = 0; i < maxSpawns; i++ ) {
                 EntityClayMan dan = spawnClayMan(world, getTeam(stack).getTeamName(), (double) blockX + 0.5D, (double) blockY + entityOffY, (double) blockZ + 0.5D);
 
                 if( dan != null ) {
@@ -125,5 +129,10 @@ public class ItemClayDoll extends Item
             stack.setTagCompound(nbt);
             stacks.add(stack);
         }
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack par1ItemStack) {
+        return super.getUnlocalizedName(par1ItemStack) + "." + getTeam(par1ItemStack).getTeamName().toLowerCase();
     }
 }

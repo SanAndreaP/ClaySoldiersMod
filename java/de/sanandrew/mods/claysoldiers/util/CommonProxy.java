@@ -1,9 +1,14 @@
 package de.sanandrew.mods.claysoldiers.util;
 
-/**
- * Created by SanAndreasP on 02.07.2014.
- */
-public class CommonProxy {
+import de.sanandrew.mods.claysoldiers.network.ServerPacketHandler;
 
-    public void registerRenderers() {}
+/**
+ * @author SanAndreasP
+ * @version 1.0
+ */
+public class CommonProxy
+{
+    public void modInit() {
+        CSM_Main.channel.register(new ServerPacketHandler());
+    }
 }

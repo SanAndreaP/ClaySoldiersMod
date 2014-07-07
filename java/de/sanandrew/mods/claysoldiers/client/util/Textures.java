@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Created by SanAndreas on 02.07.2014.
  */
-public class Textures {
-    public static final ResourceLocation CLAYMAN = new ResourceLocation("claysoldiers", "textures/entity/clayman.png");
+public final class Textures {
+    public static final ResourceLocation CLAYMAN_LEATHER_ARMOR = new ResourceLocation("claysoldiers", "textures/entity/wearables/leather.png");
+    public static final ResourceLocation CLAYMAN_PADDING = new ResourceLocation("claysoldiers", "textures/entity/wearables/padding.png");
 }

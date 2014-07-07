@@ -17,14 +17,14 @@ public class ModItems
 
     public static void registerItems() {
         soldierDoll.setCreativeTab(CSM_Main.clayTab);
-        soldierDoll.setUnlocalizedName("sap.csm.claydoll");
+        soldierDoll.setUnlocalizedName(CSM_Main.MOD_ID + ":claydoll");
 
         disruptor.setCreativeTab(CSM_Main.clayTab);
-        disruptor.setUnlocalizedName("sap.csm.disruptor");
+        disruptor.setUnlocalizedName(CSM_Main.MOD_ID + ":disruptor");
 
         disruptorHardened.setCreativeTab(CSM_Main.clayTab);
-        disruptorHardened.setUnlocalizedName("sap.csm.disruptor_cooked");
+        disruptorHardened.setUnlocalizedName(CSM_Main.MOD_ID + ":disruptor_cooked");
 
-        SAPUtils.registerItems("sap.csm.item", soldierDoll, disruptor, disruptorHardened);
+        SAPUtils.registerItems("item", soldierDoll, disruptor, disruptorHardened);
     }
 }

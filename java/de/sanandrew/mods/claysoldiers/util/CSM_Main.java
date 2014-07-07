@@ -4,6 +4,9 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.EventBus;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,13 +24,17 @@ public class CSM_Main
     public static final String MOD_ID = "claysoldiers";
     public static final String VERSION = "2.0";
     public static final String MOD_LOG = "ClaySoldiers";
+    public static final String MOD_CHANNEL = "ClaySoldiersNWCH";
 
     @Mod.Instance(CSM_Main.MOD_ID)
     public static CSM_Main instance;
     @SidedProxy(modId = CSM_Main.MOD_ID, clientSide = "de.sanandrew.mods.claysoldiers.client.util.ClientProxy", serverSide = "de.sanandrew.mods.claysoldiers.util.CommonProxy")
     public static CommonProxy proxy;
+    public static FMLEventChannel channel;
 
-    public static CreativeTabs clayTab = new CreativeTabs("sap.csm.clay_tab") {
+    public static final EventBus EVENT_BUS = new EventBus();
+
+    public static CreativeTabs clayTab = new CreativeTabs(CSM_Main.MOD_ID + ":clay_tab") {
         @Override
         public Item getTabIconItem() {
             return Item.getItemFromBlock(Blocks.hardened_clay);
@@ -43,11 +50,13 @@ public class CSM_Main
     @Mod.EventHandler
     @SuppressWarnings("unused")
     public void modInit(FMLInitializationEvent event) {
-        proxy.registerRenderers();
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CSM_Main.MOD_CHANNEL);
+
+        proxy.modInit();
 
         int entityId = 0;
-        EntityRegistry.registerGlobalEntityID(EntityClayMan.class, "sap.csm.clayman", EntityRegistry.findGlobalUniqueEntityId(), 0xFFFFFF, 0x000000);
-        EntityRegistry.registerModEntity(EntityClayMan.class, "sap.csm.clayman", entityId++, this, 64, 1, true);
+        EntityRegistry.registerGlobalEntityID(EntityClayMan.class, CSM_Main.MOD_ID + ":clayman", EntityRegistry.findGlobalUniqueEntityId(), 0xFFFFFF, 0x000000);
+        EntityRegistry.registerModEntity(EntityClayMan.class, CSM_Main.MOD_ID + ":clayman", entityId++, this, 64, 1, true);
 
     }
 }
