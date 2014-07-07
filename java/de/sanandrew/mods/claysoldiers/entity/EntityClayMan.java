@@ -332,7 +332,7 @@ public class EntityClayMan
         super.writeEntityToNBT(nbt);
 
         nbt.setString("team", this.getClayTeam());
-        nbt.setInteger("isRare", this.dataWatcher.getWatchableObjectByte(DW_IS_RARE));
+        nbt.setByte("isRare", this.dataWatcher.getWatchableObjectByte(DW_IS_RARE));
 
         NBTTagList upgNbtList = new NBTTagList();
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
