@@ -26,10 +26,14 @@ public class ClaymanTeam
 
     static {
         registerTeam(DEFAULT_TEAM, 0x808080, new String[] {"claysoldiers:textures/entity/soldiers/gray.png"}, null, null);
-        registerTeam("red", 0xB24444, new String[] {"claysoldiers:textures/entity/soldiers/red.png"}, null, null);
-        registerTeam("yellow", 0xD2D228, new String[] {"claysoldiers:textures/entity/soldiers/yellow.png"}, null, null);
-        registerTeam("green", 0x309630, new String[] {"claysoldiers:textures/entity/soldiers/green.png"}, null, null);
-        registerTeam("blue", 0x3458A4, new String[] {"claysoldiers:textures/entity/soldiers/blue.png"}, null, null);
+        registerTeam("red", 0xc73232, new String[] {"claysoldiers:textures/entity/soldiers/red.png"}, null, null);
+        registerTeam("orange", 0xc85c32, new String[] {"claysoldiers:textures/entity/soldiers/orange.png"}, null, null);
+        registerTeam("yellow", 0xc7a632, new String[] {"claysoldiers:textures/entity/soldiers/yellow.png"}, null, null);
+        registerTeam("lime", 0x83c832, new String[] {"claysoldiers:textures/entity/soldiers/lime.png"}, null, null);
+        registerTeam("green", 0x32c746, new String[] {"claysoldiers:textures/entity/soldiers/green.png"}, null, null);
+        registerTeam("cyan", 0x32bfc8, new String[] {"claysoldiers:textures/entity/soldiers/cyan.png"}, null, null);
+        registerTeam("blue", 0x3e32c7, new String[] {"claysoldiers:textures/entity/soldiers/blue.png"}, null, null);
+        registerTeam("purple", 0xbc32c8, new String[] {"claysoldiers:textures/entity/soldiers/purple.png"}, null, null);
     }
 
     private String name_;

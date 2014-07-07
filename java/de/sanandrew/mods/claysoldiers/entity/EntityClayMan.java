@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author SanAndreasP
+ * @author SanAndreasP, CliffracerX
  * @version 1.0
  */
 public class EntityClayMan
@@ -303,6 +303,11 @@ public class EntityClayMan
     @Override
     protected String getHurtSound() {
         return "claysoldiers:mob.soldier.hurt";
+    }
+    
+    @Override
+    protected String getDeathSound() {
+        return "dig.gravel";
     }
 
     @Override
