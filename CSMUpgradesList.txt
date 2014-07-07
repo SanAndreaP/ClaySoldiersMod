@@ -18,10 +18,8 @@ SECOND HAND
 | |FireCharge, 15 use, thrown for 1-2 damage, causes burn time on hit
 /^\nexus needs an option to put ranged weapons in mount slot to act as a tower which attacks enemy colors rather than spawning soldiers.
 | |Bowl, 20 use, reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
-/^\Durability was crashing the game on my version, need to fix that.
 /^\no longer should entirely block ranged attacks, only reduce damage from them
 | |ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
-/^\Durability was crashing the game on my version, need to fix that.
 | |Emerald, 5 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
 | |NetherQuartz, 4 use, deals heavy knockback to all targets nearby if soldier takes too many hits
 ------------------
@@ -48,6 +46,7 @@ Misc
 /^\Leather and Rabbit Hide should be incompatible and have similar visuals.
 | |Food, 4 use, heals soldier for 10 hp when below 25%
 /^\small idea, make number of uses be the number of hunger points restored, and make mushroom stew drop bowl?
+~SanAndreasP: How about healed XP is (10 / hungerPoints * 25%)? And uses are still 4
 | |GoldNugget, gives soldier a crown, all of team follows the king
 | |Glowstone, makes soldier glow, block gives to infinite soldiers
 | |Gunpowder, soldier explodes on death, incompatible with magmacream/firework star
@@ -78,7 +77,7 @@ Misc
 ------------------
 Upgrades
 ------------------
-\v/ any kind of durabillity / uses? For now they wear out when the upgraded upgrade wears out
+~SanAndreasP: any kind of durabillity / uses? For now they wear out when the upgraded upgrade wears out
 | |Flint, boosts stick melee damage by 2 points (total bonus 4-5, same as arrow), REQUIRES: STICK
 | |Prismarine Shard, boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
 |x|Wool, reduces incoming physical damage by 1, REQUIRES: LEATHER/RABBIT HIDE
