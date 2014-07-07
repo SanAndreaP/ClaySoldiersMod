@@ -71,7 +71,7 @@ public class EntityClayMan
         this.dataWatcher.addObject(DW_UPG_RENDER[2], 0);
         this.dataWatcher.addObject(DW_UPG_RENDER[3], 0);
         this.dataWatcher.addObject(DW_MISC_COLOR, (byte) 15);
-        this.dataWatcher.addObject(DW_IS_RARE, (byte) (rand.nextInt(100)==0 ? 1 : 0));
+        this.dataWatcher.addObject(DW_IS_RARE, (byte) (rand.nextInt(8192)==0 ? 1 : 0));
     }
 
     @Override
@@ -361,7 +361,7 @@ public class EntityClayMan
 
     @SideOnly(Side.CLIENT)
     public ResourceLocation getTexture() {
-    	if( this.dataWatcher.getWatchableObjectInt(DW_IS_RARE) == 1 ) {
+    	if( this.dataWatcher.getWatchableObjectByte(DW_IS_RARE) == 1 ) {
             return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getRareTextures()[0];
         } else {
             return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getDefaultTextures()[0];
