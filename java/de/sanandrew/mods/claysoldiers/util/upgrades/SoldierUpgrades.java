@@ -110,7 +110,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), 2);
         registerUpgrade(UPG_WOOL, new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWool(), 3);
         registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
-        registerUpgrade(UPG_EGG, new ItemStack(Items.coal), new UpgradeEgg(), 4);
+        registerUpgrade(UPG_EGG, new ItemStack(Items.egg), new UpgradeEgg(), 4);
         registerUpgrade(UPG_WOODBUTTON, new ItemStack(Blocks.wooden_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWoodButton(), 5);
         registerUpgrade(UPG_STONEBUTTON, new ItemStack(Blocks.stone_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeStoneButton(), 6);
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
