@@ -39,6 +39,7 @@ public class EntityClayMan
     public static final int[] DW_UPG_RENDER = { 21, 22, 23, 24 };
     public static final int DW_MISC_COLOR = 25;
     public static final int DW_IS_RARE = 26;
+    public float speed = 0.5f;
 
     public boolean shouldDropDoll = false;
 
@@ -81,7 +82,7 @@ public class EntityClayMan
 
     @Override
     public float getAIMoveSpeed() {
-        return 0.5F;
+        return speed;
     }
 
     @Override
@@ -306,7 +307,7 @@ public class EntityClayMan
 
     @Override
     protected String getDeathSound() {
-        return "dig.gravel";
+        return "step.gravel";
     }
 
     @Override
@@ -315,6 +316,7 @@ public class EntityClayMan
 
         this.dataWatcher.updateObject(DW_TEAM, nbt.getString("team"));
         this.dataWatcher.updateObject(DW_IS_RARE, nbt.getByte("isRare"));
+        this.speed=nbt.getFloat("speed");
 
         NBTTagList upgNbtList = nbt.getTagList("upgrades", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
@@ -331,6 +333,7 @@ public class EntityClayMan
 
         nbt.setString("team", this.getClayTeam());
         nbt.setByte("isRare", this.dataWatcher.getWatchableObjectByte(DW_IS_RARE));
+        nbt.setFloat("speed", speed);
 
         NBTTagList upgNbtList = new NBTTagList();
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {

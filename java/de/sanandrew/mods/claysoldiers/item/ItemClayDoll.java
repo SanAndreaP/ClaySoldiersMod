@@ -84,7 +84,7 @@ public class ItemClayDoll extends Item
         jordan.rotationYawHead = jordan.rotationYaw;
         jordan.renderYawOffset = jordan.rotationYaw;
         world.spawnEntityInWorld(jordan);
-        jordan.playSound("dig.gravel", 1.0F, 1.0F);
+        jordan.playSound("step.gravel", 1.0F, 1.0F);
 
         return jordan;
     }

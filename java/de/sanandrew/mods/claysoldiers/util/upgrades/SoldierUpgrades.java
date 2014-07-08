@@ -107,6 +107,7 @@ public final class SoldierUpgrades
     public static final String UPG_WHEAT = "wheat";
     public static final String UPG_NETHERWART = "netherwart";
     public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
+    public static final String UPG_SUGAR = "sugar";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
@@ -124,6 +125,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_WHEAT, new ItemStack(Items.wheat), new UpgradeWheat());
         registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
         registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
+        registerUpgrade(UPG_SUGAR, new ItemStack(Items.sugar), new UpgradeSugar());
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }
