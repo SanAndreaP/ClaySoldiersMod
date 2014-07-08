@@ -158,7 +158,7 @@ public class EntityClayMan
 
                         ISoldierUpgrade.AttackState targetResult = uberhaxornova.onBeingTargeted(this);
                         if( targetResult != ISoldierUpgrade.AttackState.DENY ) {
-                            this.targetSoldier(uberhaxornova);
+                            this.entityToAttack = uberhaxornova;
                         } else {
                             continue;
                         }
@@ -419,7 +419,22 @@ public class EntityClayMan
     }
 
     public boolean targetSoldier(EntityClayMan target) {
+        return this.targetSoldier(target, true);
+    }
+
+    public boolean targetSoldier(EntityClayMan target, boolean withUpgradeCheck) {
         if( this.entityToAttack == null || this.entityToAttack.isDead ) {
+            if( withUpgradeCheck ) {
+                for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+                    ISoldierUpgrade.AttackState result = upg.getUpgrade().onTargeting(this, upg, target);
+                    if( result == ISoldierUpgrade.AttackState.DENY ) {
+                        return false;
+                    } else if( result == ISoldierUpgrade.AttackState.ALLOW ) {
+                        this.entityToAttack = target;
+                        return true;
+                    }
+                }
+            }
             this.entityToAttack = target;
             return true;
         } else {

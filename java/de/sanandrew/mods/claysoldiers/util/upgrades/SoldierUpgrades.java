@@ -6,6 +6,9 @@ import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeFermSpiderEye;
+import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeNetherwart;
+import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeWheat;
 import de.sanandrew.mods.claysoldiers.util.upgrades.lefthand.UpgradeShearBladeLeft;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.*;
 import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.*;
@@ -101,6 +104,9 @@ public final class SoldierUpgrades
     public static final String UPG_STONEBUTTON = "stonebutton";
     public static final String UPG_SHEARLEFT = "shear_l";
     public static final String UPG_SHEARRIGHT = "shear_r";
+    public static final String UPG_WHEAT = "wheat";
+    public static final String UPG_NETHERWART = "netherwart";
+    public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
@@ -115,6 +121,9 @@ public final class SoldierUpgrades
         registerUpgrade("shear_helper", new ItemStack(Items.shears), new UpgradeHelperShearBlade());
         registerUpgrade(UPG_SHEARLEFT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeLeft(), 7);
         registerUpgrade(UPG_SHEARRIGHT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeRight(), 8);
+        registerUpgrade(UPG_WHEAT, new ItemStack(Items.wheat), new UpgradeWheat());
+        registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
+        registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }
