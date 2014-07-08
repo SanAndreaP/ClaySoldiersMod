@@ -30,11 +30,11 @@ public class RenderClayMan
         GL11.glPopMatrix();
     }
 
-
     @Override
     protected void renderLivingAt(EntityLivingBase entityLivingBase, double x, double y, double z) {
         super.renderLivingAt(entityLivingBase, x, y, z);
         GL11.glScalef(0.2F, 0.2F, 0.2F);
+        CSM_Main.EVENT_BUS.post(new SoldierRenderEvent.RenderLivingEvent((EntityClayMan)entityLivingBase, this, x, y, z));
     }
 
     @Override

@@ -23,6 +23,13 @@ public class RenderBodyUpgradesEvent
         }
     }
 
+    @SubscribeEvent
+    public void onSoldierLivingRender(SoldierRenderEvent.RenderLivingEvent event) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_IRONINGOT)) ) {
+            GL11.glScalef(1.19F, 1.19F, 1.19F);
+        }
+    }
+
     private void renderStealthEffect(EntityClayMan clayMan, RenderClayMan clayManRender, RenderStage stage) {
         if( stage == RenderStage.PRE ) {
             GL11.glEnable(GL11.GL_BLEND);

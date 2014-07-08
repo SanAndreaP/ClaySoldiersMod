@@ -21,22 +21,7 @@ public class UpgradeSugar
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         NBTTagCompound nbt = upgradeInst.getNbtTag();
-        //nbt.setInteger("timeLeft", 20*60);
         clayMan.speed+=1;
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-    	/*upgradeInst.getNbtTag().setInteger("timeLeft", upgradeInst.getNbtTag().getInteger("timeLeft") - 1);
-    	if( upgradeInst.getNbtTag().getInteger("timeLeft") <= 0 ) {
-            clayMan.playSound("random.break", 1.0F, 1.0F);
-            clayMan.speed-=1;
-            PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
-                    Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ, Item.itemRegistry.getNameForObject(Items.stick))
-            );
-            return true;
-        }*/
-        return false;
     }
 
     @Override

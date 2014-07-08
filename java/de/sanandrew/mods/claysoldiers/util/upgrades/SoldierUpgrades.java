@@ -9,6 +9,7 @@ import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeFermSpiderEye;
 import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeNetherwart;
 import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeWheat;
+import de.sanandrew.mods.claysoldiers.util.upgrades.core.UpgradeIronIngot;
 import de.sanandrew.mods.claysoldiers.util.upgrades.lefthand.UpgradeShearBladeLeft;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.*;
 import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.*;
@@ -108,6 +109,7 @@ public final class SoldierUpgrades
     public static final String UPG_NETHERWART = "netherwart";
     public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
     public static final String UPG_SUGAR = "sugar";
+    public static final String UPG_IRONINGOT = "ironingot";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
@@ -126,6 +128,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
         registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
         registerUpgrade(UPG_SUGAR, new ItemStack(Items.sugar), new UpgradeSugar());
+        registerUpgrade(UPG_IRONINGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), 9);
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }

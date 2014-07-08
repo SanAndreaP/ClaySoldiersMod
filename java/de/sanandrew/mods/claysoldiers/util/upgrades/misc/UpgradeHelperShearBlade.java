@@ -32,6 +32,9 @@ public class UpgradeHelperShearBlade
             }
         } else {
             if( !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) ) {
+                if( clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
+                    clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
+                }
                 upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARLEFT);
             } else if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
                 if( upgrade == null ) {

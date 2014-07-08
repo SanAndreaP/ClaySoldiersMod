@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderArmorUpgradeEvent
 {
+    public ModelRenderer buffedBody;
     public ModelRenderer armorBody;
     public ModelRenderer armorRightArm;
     public ModelRenderer armorLeftArm;
@@ -22,6 +23,10 @@ public class RenderArmorUpgradeEvent
     public boolean isInitialized = false;
 
     public void initRenderer(RenderClayMan renderClayMan) {
+        this.buffedBody = new ModelRenderer(renderClayMan.modelBipedMain, 16, 16);
+        this.buffedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 6, 4, 0.0F);
+        this.buffedBody.setRotationPoint(0.0F, -0.4F, 0.0F);
+
         this.armorBody = new ModelRenderer(renderClayMan.modelBipedMain, 16, 16);
         this.armorBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.0F);
         this.armorBody.setRotationPoint(0.0F, -0.4F, 0.0F);
@@ -40,6 +45,19 @@ public class RenderArmorUpgradeEvent
         if( !this.isInitialized ) {
             this.isInitialized = true;
             this.initRenderer(event.clayManRender);
+        }
+
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_IRONINGOT)) ) {
+            ModelBiped model = event.clayManRender.modelBipedMain;
+
+            this.buffedBody.rotateAngleX = model.bipedBody.rotateAngleX;
+            this.buffedBody.rotateAngleY = model.bipedBody.rotateAngleY;
+            this.buffedBody.rotateAngleZ = model.bipedBody.rotateAngleZ;
+
+            GL11.glPushMatrix();
+            GL11.glScalef(1.5F, 1.5F, 1.5F);
+            this.buffedBody.render(event.partTicks);
+            GL11.glPopMatrix();
         }
 
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_LEATHER)) ) {

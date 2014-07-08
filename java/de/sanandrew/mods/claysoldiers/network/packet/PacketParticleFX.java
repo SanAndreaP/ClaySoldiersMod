@@ -32,7 +32,7 @@ public class PacketParticleFX
             case FX_BREAK: {
                 Quartet<Double, Double, Double, String> data = Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF());
                 Item item = (Item) Item.itemRegistry.getObject(data.getValue3());
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 5; i++) {
                     EntityBreakingFX fx = new EntityBreakingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), item);
                     mc.effectRenderer.addEffect(fx);
                 }

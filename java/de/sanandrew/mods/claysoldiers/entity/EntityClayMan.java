@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.util.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade;
@@ -39,9 +40,10 @@ public class EntityClayMan
     public static final int[] DW_UPG_RENDER = { 21, 22, 23, 24 };
     public static final int DW_MISC_COLOR = 25;
     public static final int DW_IS_RARE = 26;
-    public float speed = 0.5f;
 
     public boolean shouldDropDoll = false;
+    public float speed = 0.5f;
+    public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
 
     private final Map<ISoldierUpgrade, SoldierUpgradeInst> upgrades_ = new ConcurrentHashMap<>();
 
@@ -124,9 +126,9 @@ public class EntityClayMan
     @Override
     public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
         super.knockBack(par1Entity, par2, par3, par5);
-        this.motionX *= 0.8D;
-        this.motionY *= 0.8D;
-        this.motionZ *= 0.8D;
+        this.motionX *= knockBack.getValue0();
+        this.motionY *= knockBack.getValue1();
+        this.motionZ *= knockBack.getValue2();
     }
 
     @Override
@@ -272,6 +274,7 @@ public class EntityClayMan
                             float damage = 1.0F;
                             if( target instanceof EntityClayMan ) {
                                 EntityClayMan soldierTarget = (EntityClayMan) target;
+                                soldierTarget.knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
                                 for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
                                     damage = Math.max(damage, upg.getUpgrade().onSoldierAttack(this, upg, soldierTarget, damage));
                                 }

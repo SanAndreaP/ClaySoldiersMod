@@ -45,6 +45,12 @@ public class SoldierRenderEvent
         }
     }
 
+    public static class RenderLivingEvent extends SoldierRenderEvent {
+        public RenderLivingEvent(EntityClayMan clayMan, RenderClayMan clayManRender, double x, double y, double z) {
+            super(clayMan, RenderStage.LIVING, clayManRender, x, y, z, 0.0F, 0.0F);
+        }
+    }
+
     /**
      * <p>An Enum for the different render stages the
      * {@link #onRender(de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade.RenderStage, de.sanandrew.mods.claysoldiers.entity.EntityClayMan, de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan, double, double, double, float, float) onRender}
@@ -53,5 +59,5 @@ public class SoldierRenderEvent
      * <code>POST</code> - Stage after the rendering happened.<br>
      * <code>EQUIPPED</code> - Stage during rendering of the equipped items.
      */
-    public static enum RenderStage { PRE, POST, EQUIPPED, MODEL }
+    public static enum RenderStage { PRE, POST, EQUIPPED, MODEL, LIVING }
 }
