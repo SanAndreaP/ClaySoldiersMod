@@ -3,6 +3,7 @@ package de.sanandrew.mods.claysoldiers.client.util;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.event.RenderArmorUpgradeEvent;
+import de.sanandrew.mods.claysoldiers.client.util.event.RenderBodyUpgradesEvent;
 import de.sanandrew.mods.claysoldiers.client.util.event.RenderRightHandUpgradesEvent;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
@@ -25,5 +26,6 @@ public class ClientProxy extends CommonProxy
 
         CSM_Main.EVENT_BUS.register(new RenderRightHandUpgradesEvent());
         CSM_Main.EVENT_BUS.register(new RenderArmorUpgradeEvent());
+        CSM_Main.EVENT_BUS.register(new RenderBodyUpgradesEvent());
     }
 }

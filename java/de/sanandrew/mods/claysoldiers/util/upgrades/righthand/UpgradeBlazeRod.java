@@ -26,14 +26,12 @@ public class UpgradeBlazeRod
 
     @Override
     public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
-    	if(!clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_COAL)))
-    	{
+    	if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_COAL)) ) {
     		target.setFire(3);
-    	}
-    	else
-    	{
+    	} else {
     		target.setFire(6);
     	}
+
         return damage + 1.0F + clayMan.getRNG().nextFloat();
     }
 

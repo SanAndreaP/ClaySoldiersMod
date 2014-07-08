@@ -120,14 +120,12 @@ public class EntityClayMan
         }
     }
 
-
-
     @Override
     public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
         super.knockBack(par1Entity, par2, par3, par5);
-        this.motionX *= 0.9D;
-        this.motionY *= 0.9D;
-        this.motionZ *= 0.9D;
+        this.motionX *= 0.8D;
+        this.motionY *= 0.8D;
+        this.motionZ *= 0.8D;
     }
 
     @Override
