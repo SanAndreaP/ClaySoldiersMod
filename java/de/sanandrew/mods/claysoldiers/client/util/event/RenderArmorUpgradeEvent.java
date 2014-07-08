@@ -37,8 +37,7 @@ public class RenderArmorUpgradeEvent
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onSoldierRenderArmor(SoldierRenderEvent.RenderModelEvent event) {
-        if( !this.isInitialized ) {
-            this.isInitialized = true;
+        if( !isInitialized ) {
             this.initRenderer(event.clayManRender);
         }
 
