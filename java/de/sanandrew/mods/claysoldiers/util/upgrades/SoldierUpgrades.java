@@ -2,9 +2,11 @@ package de.sanandrew.mods.claysoldiers.util.upgrades;
 
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Bytes;
+
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeCoal;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeLeather;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeWool;
 import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeBlazeRod;
@@ -14,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.logging.log4j.Level;
 
 import java.util.Map;
@@ -95,12 +98,14 @@ public final class SoldierUpgrades
     public static final String UPG_BLAZEROD = "blazerod";
     public static final String UPG_LEATHER = "leather";
     public static final String UPG_WOOL = "wool";
+    public static final String UPG_COAL = "coal";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
         registerUpgrade(UPG_BLAZEROD, new ItemStack(Items.blaze_rod), new UpgradeBlazeRod(), 1);
         registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), 2);
         registerUpgrade(UPG_WOOL, new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWool(), 3);
+        registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal(), 4);
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }

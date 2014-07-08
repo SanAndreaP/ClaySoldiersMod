@@ -5,6 +5,7 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,14 @@ public class UpgradeBlazeRod
 
     @Override
     public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
-        target.setFire(3);
+    	if(!clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_COAL)))
+    	{
+    		target.setFire(3);
+    	}
+    	else
+    	{
+    		target.setFire(6);
+    	}
         return damage + 1.0F + clayMan.getRNG().nextFloat();
     }
 
