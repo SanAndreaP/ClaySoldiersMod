@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author SanAndreas
  * @version 1.0
  */
-public abstract class TestUpgrade
+public abstract class ATestUpgrade
     implements ISoldierUpgrade
 {
     @Override
