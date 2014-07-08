@@ -68,8 +68,8 @@ Misc
 | |LillyPad, soldier has pants and will float on water, no effect when used with iron ingot
 | |Egg, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
 | |WheatSeed, soldier can NOT be infected by any zombification
-| |WoodButton, increases melee damage by 1 when no weapon is equipped, incompatible with stone button
-| |StoneButton, increases melee damage by 2 when no weapon is equipped, incompatible with wood button
+|x|WoodButton, increases melee damage by 1 when no weapon is equipped, incompatible with stone button
+|x|StoneButton, increases melee damage by 2 when no weapon is equipped, incompatible with wood button
 | |MobHead, gives the soldier a mask to wear
 | |FireworkStar, soldier explodes on death in a firework effect, incompatible with gunpowder/magmacream
 | |Rabbit Foot, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.

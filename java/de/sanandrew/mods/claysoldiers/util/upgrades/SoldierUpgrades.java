@@ -7,11 +7,13 @@ import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeCoal;
-import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeEgg;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeLeather;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeWool;
 import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeBlazeRod;
 import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeStick;
+import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeStoneButton;
+import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeWoodButton;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -100,15 +102,17 @@ public final class SoldierUpgrades
     public static final String UPG_LEATHER = "leather";
     public static final String UPG_WOOL = "wool";
     public static final String UPG_COAL = "coal";
-    public static final String UPG_EGG = "egg";
+    public static final String UPG_WOODBUTTON = "woodbutton";
+    public static final String UPG_STONEBUTTON = "stonebutton";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
         registerUpgrade(UPG_BLAZEROD, new ItemStack(Items.blaze_rod), new UpgradeBlazeRod(), 1);
         registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), 2);
         registerUpgrade(UPG_WOOL, new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWool(), 3);
-        registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
-        registerUpgrade(UPG_EGG, new ItemStack(Items.egg), new UpgradeEgg(), 4);
+        registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal(), 4);
+        registerUpgrade(UPG_WOODBUTTON, new ItemStack(Block.getBlockById(143), 1, OreDictionary.WILDCARD_VALUE), new UpgradeWoodButton(), 5);
+        registerUpgrade(UPG_STONEBUTTON, new ItemStack(Block.getBlockById(77), 1, OreDictionary.WILDCARD_VALUE), new UpgradeStoneButton(), 6);
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }

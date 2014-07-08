@@ -5,8 +5,10 @@ import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -17,6 +19,8 @@ public class RenderRightHandUpgradesEvent
 {
     private final ItemStack itemStick_ = new ItemStack(Items.stick);
     private final ItemStack itemBlazeRod_ = new ItemStack(Items.blaze_rod);
+    private final ItemStack itemWoodButton_ = new ItemStack(Block.getBlockById(143));
+    private final ItemStack itemStoneButton_ = new ItemStack(Block.getBlockById(77));
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
@@ -25,6 +29,10 @@ public class RenderRightHandUpgradesEvent
                 renderRightHandItem(event.clayMan, event.clayManRender, itemStick_);
             } else if (event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD))) {
                 renderRightHandItem(event.clayMan, event.clayManRender, itemBlazeRod_);
+            } else if (event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_WOODBUTTON)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD))) {
+                renderRightHandItem(event.clayMan, event.clayManRender, itemWoodButton_);
+            } else if (event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STONEBUTTON)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD))) {
+                renderRightHandItem(event.clayMan, event.clayManRender, itemStoneButton_);
             }
         }
     }
