@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @version 1.0
  */
 public class UpgradeBlazeRod
-        extends UpgradeRightHanded
+        extends AUpgradeRightHanded
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {

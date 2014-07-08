@@ -4,11 +4,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
-import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -19,20 +19,23 @@ public class RenderRightHandUpgradesEvent
 {
     private final ItemStack itemStick_ = new ItemStack(Items.stick);
     private final ItemStack itemBlazeRod_ = new ItemStack(Items.blaze_rod);
-    private final ItemStack itemWoodButton_ = new ItemStack(Block.getBlockById(143));
-    private final ItemStack itemStoneButton_ = new ItemStack(Block.getBlockById(77));
+    private final ItemStack itemWoodButton_ = new ItemStack(Blocks.wooden_button);
+    private final ItemStack itemStoneButton_ = new ItemStack(Blocks.stone_button);
+    private final ItemStack itemShearBlade_ = new ItemStack(ModItems.shearBlade);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
         if( event.stage == SoldierRenderEvent.RenderStage.EQUIPPED ) {
-            if (event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK))) {
-                renderRightHandItem(event.clayMan, event.clayManRender, itemStick_);
-            } else if (event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD))) {
-                renderRightHandItem(event.clayMan, event.clayManRender, itemBlazeRod_);
-            } else if (event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_WOODBUTTON)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD))) {
-                renderRightHandItem(event.clayMan, event.clayManRender, itemWoodButton_);
-            } else if (event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STONEBUTTON)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK)) && !event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD))) {
-                renderRightHandItem(event.clayMan, event.clayManRender, itemStoneButton_);
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK)) ) {
+                renderRightHandItem(event.clayMan, event.clayManRender, this.itemStick_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD)) ) {
+                renderRightHandItem(event.clayMan, event.clayManRender, this.itemBlazeRod_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_WOODBUTTON)) ) {
+                renderRightHandItem(event.clayMan, event.clayManRender, this.itemWoodButton_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STONEBUTTON)) ) {
+                renderRightHandItem(event.clayMan, event.clayManRender, this.itemStoneButton_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARRIGHT)) ) {
+                renderRightHandItem(event.clayMan, event.clayManRender, this.itemShearBlade_);
             }
         }
     }

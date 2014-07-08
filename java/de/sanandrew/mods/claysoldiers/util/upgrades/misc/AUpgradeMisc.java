@@ -11,13 +11,11 @@ import net.minecraft.util.DamageSource;
  * @author SanAndreas
  * @version 1.0
  */
-public abstract class UpgradeMisc
+public abstract class AUpgradeMisc
     implements ISoldierUpgrade
 {
     @Override
-    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-
-    }
+    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { }
 
     @Override
     public AttackState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
@@ -35,9 +33,7 @@ public abstract class UpgradeMisc
     }
 
     @Override
-    public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-
-    }
+    public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) { }
 
     @Override
     public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage) {
@@ -55,7 +51,5 @@ public abstract class UpgradeMisc
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-
-    }
+    public void onPickup(EntityClayMan clayMan, ItemStack stack) { }
 }

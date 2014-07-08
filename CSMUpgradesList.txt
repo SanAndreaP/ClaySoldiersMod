@@ -6,7 +6,7 @@ MAIN HAND
 | |Arrow, 20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
 |x|BlazeRod, 20 use, increases melee damage by 1-2 points, causes burn time on target
 | |Bone, 30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
-| |ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
+|x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 /^\Durability was crashing the game on my version, need to fix that.
 | |GoldMelon, 25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 /^\all weapons should have increased reach while riding mounts, bone's reach bonus should be slightly greater than mounted reach bonus
@@ -66,7 +66,7 @@ Misc
 | |RedMushroom, 1 use, applies poison to target
 | |BrownMushroom 2 use, heals soldier for 10 hp when below 25%
 | |LillyPad, soldier has pants and will float on water, no effect when used with iron ingot
-| |Egg, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
+|x|Egg, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
 | |WheatSeed, soldier can NOT be infected by any zombification
 |x|WoodButton, increases melee damage by 1 when no weapon is equipped, incompatible with stone button
 |x|StoneButton, increases melee damage by 2 when no weapon is equipped, incompatible with wood button

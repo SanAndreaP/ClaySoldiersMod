@@ -1,19 +1,17 @@
 package de.sanandrew.mods.claysoldiers.util.upgrades.misc;
 
-import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 
 /**
  * @author SanAndreas
  * @version 1.0
  */
 public class UpgradeCoal
-    extends UpgradeMisc
+    extends AUpgradeMisc
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -25,7 +23,7 @@ public class UpgradeCoal
 
     @Override
     public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-    	stack.stackSize--;
+        stack.stackSize--;
         clayMan.playSound("random.fizz", 1.0F, 1.0F);
     }
 

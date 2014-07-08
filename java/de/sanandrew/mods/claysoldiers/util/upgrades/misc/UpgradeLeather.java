@@ -17,7 +17,7 @@ import net.minecraft.util.DamageSource;
  * @version 1.0
  */
 public class UpgradeLeather
-    extends UpgradeMisc
+    extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -30,7 +30,9 @@ public class UpgradeLeather
         if( upgradeInst.getNbtTag().getInteger("uses") <= 0 ) {
             clayMan.playSound("random.break", 1.0F, 1.0F);
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
-                    Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ, Item.itemRegistry.getNameForObject(Items.leather))
+                                            Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
+                                                         Item.itemRegistry.getNameForObject(Items.leather)
+                                            )
             );
             return true;
         }

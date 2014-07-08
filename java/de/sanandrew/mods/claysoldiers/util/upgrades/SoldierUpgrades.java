@@ -5,14 +5,10 @@ import com.google.common.primitives.Bytes;
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
-import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeCoal;
-import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeEgg;
-import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeLeather;
-import de.sanandrew.mods.claysoldiers.util.upgrades.misc.UpgradeWool;
-import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeBlazeRod;
-import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeStick;
-import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeStoneButton;
-import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.UpgradeWoodButton;
+import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.upgrades.lefthand.UpgradeShearBladeLeft;
+import de.sanandrew.mods.claysoldiers.util.upgrades.misc.*;
+import de.sanandrew.mods.claysoldiers.util.upgrades.righthand.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -103,6 +99,8 @@ public final class SoldierUpgrades
     public static final String UPG_EGG = "egg";
     public static final String UPG_WOODBUTTON = "woodbutton";
     public static final String UPG_STONEBUTTON = "stonebutton";
+    public static final String UPG_SHEARLEFT = "shear_l";
+    public static final String UPG_SHEARRIGHT = "shear_r";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
@@ -113,6 +111,10 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_EGG, new ItemStack(Items.egg), new UpgradeEgg(), 4);
         registerUpgrade(UPG_WOODBUTTON, new ItemStack(Blocks.wooden_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWoodButton(), 5);
         registerUpgrade(UPG_STONEBUTTON, new ItemStack(Blocks.stone_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeStoneButton(), 6);
+        registerUpgrade("shear_helper", new ItemStack(ModItems.shearBlade), new UpgradeHelperShearBlade());
+        registerUpgrade("shear_helper", new ItemStack(Items.shears), new UpgradeHelperShearBlade());
+        registerUpgrade(UPG_SHEARLEFT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeLeft(), 7);
+        registerUpgrade(UPG_SHEARRIGHT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeRight(), 8);
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }

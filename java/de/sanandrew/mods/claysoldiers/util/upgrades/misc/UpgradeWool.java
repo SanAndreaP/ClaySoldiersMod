@@ -13,7 +13,7 @@ import net.minecraft.util.DamageSource;
  * @version 1.0
  */
 public class UpgradeWool
-    extends UpgradeMisc
+    extends AUpgradeMisc
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {

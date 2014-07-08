@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
  * @version 1.0
  */
 public class UpgradeEgg
-    extends UpgradeMisc
+    extends AUpgradeMisc
 {
 //    @Override
 //    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -42,9 +42,9 @@ public class UpgradeEgg
     }
 
     @Override
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
+    public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
         target.targetSoldier(clayMan);
-        return super.onSoldierAttack(clayMan, upgradeInst, target, damage);
+        super.onSoldierDamage(clayMan, upgradeInst, target);
     }
 
     @Override

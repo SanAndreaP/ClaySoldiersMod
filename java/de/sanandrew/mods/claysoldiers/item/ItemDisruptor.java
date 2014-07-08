@@ -1,7 +1,6 @@
 package de.sanandrew.mods.claysoldiers.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,6 +49,6 @@ public class ItemDisruptor extends Item
 
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(this.isHard_ ? "claysoldiers:disruptor_cooked" : "claysoldiers:disruptor");
+        this.itemIcon = iconRegister.registerIcon(CSM_Main.MOD_ID + (this.isHard_ ? ":disruptor_cooked" : ":disruptor"));
     }
 }

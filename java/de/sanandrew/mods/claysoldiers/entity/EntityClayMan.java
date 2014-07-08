@@ -408,33 +408,6 @@ public class EntityClayMan
         }
     }
 
-//    @SideOnly(Side.CLIENT)
-//    public void renderUpgrades(ISoldierUpgrade.RenderStage stage, RenderClayMan clayManRender, double x, double y, double z, float yaw, float partTicks) {
-////        if( stage == ISoldierUpgrade.RenderStage.PRE ) {
-////            this.renderedUpgrades_ = new ArrayList<>();
-////
-////            int[] dwValues = new int[DW_UPG_RENDER.length];
-////            for (int i = 0; i < DW_UPG_RENDER.length; i++) {
-////                dwValues[i] = this.dataWatcher.getWatchableObjectInt(DW_UPG_RENDER[i]);
-////            }
-////
-////            for (byte renderId : SoldierUpgrades.getAvailableRenderIds()) {
-////                int renderFlag = 1 << (renderId % 32);
-////                int renderStorageDw = (renderId / 32);
-////                int dwValue = dwValues[renderStorageDw];
-////
-////                if ((dwValue & renderFlag) == renderFlag) {
-////                    renderedUpgrades_.add(renderId);
-////                    SoldierUpgrades.getUpgradeFromRenderId(renderId).onRender(stage, this, clayManRender, x, y, z, yaw, partTicks);
-////                }
-////            }
-////        } else {
-////            for( byte renderId : this.renderedUpgrades_ ) {
-////                SoldierUpgrades.getUpgradeFromRenderId(renderId).onRender(stage, this, clayManRender, x, y, z, yaw, partTicks);
-////            }
-////        }
-//    }
-
     public ISoldierUpgrade.AttackState onBeingTargeted(EntityClayMan attacker) {
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
             ISoldierUpgrade.AttackState result = upg.getUpgrade().onBeingTargeted(this, upg, attacker);
@@ -454,8 +427,22 @@ public class EntityClayMan
         }
     }
 
+    @Override
+    public Entity getEntityToAttack() {
+        return this.entityToAttack;
+    }
+
     public boolean hasUpgrade(ISoldierUpgrade upgrade) {
         return this.upgrades_.containsKey(upgrade);
+    }
+
+    public boolean hasUpgradeInst(Class<? extends ISoldierUpgrade> upgradeClass) {
+        for( ISoldierUpgrade upgrade : this.upgrades_.keySet() ) {
+            if( upgradeClass.isInstance(upgrade) ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public SoldierUpgradeInst getUpgradeData(ISoldierUpgrade upgrade) {
@@ -470,6 +457,12 @@ public class EntityClayMan
         if( this.hasUpgrade(upgrade) ) {
             this.upgrades_.remove(upgrade);
         }
+    }
+
+    public SoldierUpgradeInst addNewUpgrade(ISoldierUpgrade upgrade) {
+        SoldierUpgradeInst upgradeInst = new SoldierUpgradeInst(upgrade);
+        this.upgrades_.put(upgrade, upgradeInst);
+        return upgradeInst;
     }
 
     public int getMiscColor() {
