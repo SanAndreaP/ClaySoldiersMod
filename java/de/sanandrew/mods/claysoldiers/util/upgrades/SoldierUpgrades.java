@@ -130,6 +130,7 @@ public final class SoldierUpgrades
     public static final String UPG_SUGAR = "sugar";
     public static final String UPG_IRONINGOT = "ironingot";
     public static final String UPG_GLOWSTONE = "glowstone";
+    public static final String UPG_GUNPOWDER = "gunpowder";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -155,6 +156,10 @@ public final class SoldierUpgrades
                                 new ItemStack(Items.glowstone_dust),
                                 new ItemStack(Blocks.glowstone)
                         }, new UpgradeGlowstone(), getNewRenderId());
+        registerUpgrade(UPG_GUNPOWDER, new ItemStack[] {
+                                new ItemStack(Items.gunpowder),
+                                new ItemStack(Blocks.tnt)
+                        }, new UpgradeGunpowder(), getNewRenderId());
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
 }
 

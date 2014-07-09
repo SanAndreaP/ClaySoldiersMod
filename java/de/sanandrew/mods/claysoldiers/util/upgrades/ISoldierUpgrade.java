@@ -59,6 +59,8 @@ public interface ISoldierUpgrade
      */
     public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target);
 
+    public void onSoldierDeath(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source);
+
     public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage);
 
     /**
@@ -84,32 +86,6 @@ public interface ISoldierUpgrade
      * @param stack the ItemStack which is picked up
      */
     public void onPickup(EntityClayMan clayMan, ItemStack stack);
-
-//    /**
-//     * Called when a soldier is rendered.
-//     * @param stage The stage this method is called. See
-//     *              {@link de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade.RenderStage RenderStage}
-//     *              for more information.
-//     * @param clayMan The soldier calling the method.
-//     * @param clayManRender The renderer of the calling soldier.
-//     * @param x X-Position of the calling soldier.
-//     * @param y Y-Position of the calling soldier.
-//     * @param z Z-Position of the calling soldier.
-//     * @param yaw The yaw of the calling soldier.
-//     * @param partTicks The partial ticks of the soldier renderer.
-//     */
-//    @SideOnly(Side.CLIENT)
-//    public void onRender(RenderStage stage, EntityClayMan clayMan, RenderClayMan clayManRender, double x, double y, double z, float yaw, float partTicks);
-//
-//    /**
-//     * <p>An Enum for the different render stages the
-//     * {@link #onRender(de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade.RenderStage, de.sanandrew.mods.claysoldiers.entity.EntityClayMan, de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan, double, double, double, float, float) onRender}
-//     * method can be called in.</p>
-//     * <code>PRE</code> - Stage before the rendering happens.<br>
-//     * <code>POST</code> - Stage after the rendering happened.<br>
-//     * <code>EQUIPPED</code> - Stage during rendering of the equipped items.
-//     */
-//    public static enum RenderStage { PRE, POST, EQUIPPED }
 
     /**
      * <p>An Enum for determining the attack behavior of the soldier.</p>

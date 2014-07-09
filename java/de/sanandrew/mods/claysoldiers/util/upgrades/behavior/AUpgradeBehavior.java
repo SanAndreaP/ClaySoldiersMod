@@ -52,4 +52,7 @@ public abstract class AUpgradeBehavior
 
     @Override
     public void onPickup(EntityClayMan clayMan, ItemStack stack) { }
+
+    @Override
+    public void onSoldierDeath(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source) { }
 }

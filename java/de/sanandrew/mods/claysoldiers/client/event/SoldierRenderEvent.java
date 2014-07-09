@@ -37,7 +37,7 @@ public class SoldierRenderEvent
         public final float pitch;
 
         public RenderModelEvent(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch, float partTicks) {
-            super(clayMan, RenderStage.MODEL, clayManRender, clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.rotationYaw, partTicks);
+            super(clayMan, RenderStage.MODEL, clayManRender, clayMan.posX, clayMan.posY, clayMan.posZ, rotYaw, partTicks);
             this.limbSwing = limbSwing;
             this.limbSwingAmount = limbSwingAmount;
             this.rotFloat = rotFloat;
@@ -52,9 +52,7 @@ public class SoldierRenderEvent
     }
 
     /**
-     * <p>An Enum for the different render stages the
-     * {@link #onRender(de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade.RenderStage, de.sanandrew.mods.claysoldiers.entity.EntityClayMan, de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan, double, double, double, float, float) onRender}
-     * method can be called in.</p>
+     * <p>An Enum for the different render stages this event can be called in.</p>
      * <code>PRE</code> - Stage before the rendering happens.<br>
      * <code>POST</code> - Stage after the rendering happened.<br>
      * <code>EQUIPPED</code> - Stage during rendering of the equipped items.

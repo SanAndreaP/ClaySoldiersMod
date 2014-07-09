@@ -6,7 +6,7 @@ import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
-import de.sanandrew.mods.claysoldiers.client.util.event.RenderArmorUpgradeEvent;
+import de.sanandrew.mods.claysoldiers.client.util.event.RenderModelUpgradeEvent;
 import de.sanandrew.mods.claysoldiers.client.util.event.RenderBodyUpgradesEvent;
 import de.sanandrew.mods.claysoldiers.client.util.event.RenderLeftHandUpgradesEvent;
 import de.sanandrew.mods.claysoldiers.client.util.event.RenderRightHandUpgradesEvent;
@@ -36,7 +36,7 @@ public class ClientProxy extends CommonProxy
 
         CSM_Main.EVENT_BUS.register(new RenderRightHandUpgradesEvent());
         CSM_Main.EVENT_BUS.register(new RenderLeftHandUpgradesEvent());
-        CSM_Main.EVENT_BUS.register(new RenderArmorUpgradeEvent());
+        CSM_Main.EVENT_BUS.register(new RenderModelUpgradeEvent());
         CSM_Main.EVENT_BUS.register(new RenderBodyUpgradesEvent());
     }
 

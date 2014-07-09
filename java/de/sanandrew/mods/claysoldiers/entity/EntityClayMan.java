@@ -291,6 +291,17 @@ public class EntityClayMan
     }
 
     @Override
+    public void onDeath(DamageSource damageSource) {
+        super.onDeath(damageSource);
+
+        if( !worldObj.isRemote ) {
+            for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+                upg.getUpgrade().onSoldierDeath(this, upg, damageSource);
+            }
+        }
+    }
+
+    @Override
     protected String getLivingSound() {
         return null;
     }
@@ -385,7 +396,6 @@ public class EntityClayMan
 
                 if ((dwValue & renderFlag) == renderFlag) {
                     this.upgrades_.put(SoldierUpgrades.getUpgradeFromRenderId(renderId), new SoldierUpgradeInst(null));
-                    //SoldierUpgrades.getUpgradeFromRenderId(renderId).onRender(stage, this, clayManRender, x, y, z, yaw, partTicks);
                 }
             }
         } else {

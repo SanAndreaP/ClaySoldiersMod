@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
  * @author SanAndreas
  * @version 1.0
  */
-public class RenderArmorUpgradeEvent
+public class RenderModelUpgradeEvent
 {
     public ModelRenderer buffedBody;
     public ModelRenderer armorBody;
@@ -47,6 +47,13 @@ public class RenderArmorUpgradeEvent
             this.initRenderer(event.clayManRender);
         }
 
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_GUNPOWDER)) ) {
+            event.clayManRender.bindTexture(Textures.CLAYMAN_GUNPOWDER);
+            GL11.glPushMatrix();
+            event.clayManRender.modelBipedMain.render(event.clayMan, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
+            GL11.glPopMatrix();
+        }
+
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_IRONINGOT)) ) {
             ModelBiped model = event.clayManRender.modelBipedMain;
 
@@ -54,6 +61,7 @@ public class RenderArmorUpgradeEvent
             this.buffedBody.rotateAngleY = model.bipedBody.rotateAngleY;
             this.buffedBody.rotateAngleZ = model.bipedBody.rotateAngleZ;
 
+            event.clayManRender.bindTexture(event.clayMan.getTexture());
             GL11.glPushMatrix();
             GL11.glScalef(1.5F, 1.5F, 1.5F);
             this.buffedBody.render(event.partTicks);
