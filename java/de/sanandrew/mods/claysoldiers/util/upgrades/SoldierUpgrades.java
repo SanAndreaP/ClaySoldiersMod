@@ -39,9 +39,19 @@ public final class SoldierUpgrades
     }
 
     public static void registerUpgrade(String upgradeName, ItemStack upgradeItem, ISoldierUpgrade upgradeInst, int cltRenderId) {
+        registerUpgrade(upgradeName, new ItemStack[]{upgradeItem}, upgradeInst, cltRenderId);
+    }
+
+    public static void registerUpgrade(String upgradeName, ItemStack[] upgradeItems, ISoldierUpgrade upgradeInst) {
+        registerUpgrade(upgradeName, upgradeItems, upgradeInst, -1);
+    }
+
+    public static void registerUpgrade(String upgradeName, ItemStack[] upgradeItems, ISoldierUpgrade upgradeInst, int cltRenderId) {
         NAME_TO_UPGRADE_MAP_.put(upgradeName, upgradeInst);
         UPGRADE_TO_NAME_MAP_.put(upgradeInst, upgradeName);
-        ITEM_TO_UPGRADE_MAP_.put(Pair.with(upgradeItem.getItem(), upgradeItem.getItemDamage()), upgradeInst);
+        for( ItemStack upgradeItem : upgradeItems ) {
+            ITEM_TO_UPGRADE_MAP_.put(Pair.with(upgradeItem.getItem(), upgradeItem.getItemDamage()), upgradeInst);
+        }
 
         if( cltRenderId >= 0 ) {
             if( cltRenderId > 127 ) {
@@ -110,6 +120,7 @@ public final class SoldierUpgrades
     public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
     public static final String UPG_SUGAR = "sugar";
     public static final String UPG_IRONINGOT = "ironingot";
+    public static final String UPG_GLOWSTONE = "glowstone";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
@@ -120,8 +131,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_EGG, new ItemStack(Items.egg), new UpgradeEgg(), 4);
         registerUpgrade(UPG_WOODBUTTON, new ItemStack(Blocks.wooden_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWoodButton(), 5);
         registerUpgrade(UPG_STONEBUTTON, new ItemStack(Blocks.stone_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeStoneButton(), 6);
-        registerUpgrade("shear_helper", new ItemStack(ModItems.shearBlade), new UpgradeHelperShearBlade());
-        registerUpgrade("shear_helper", new ItemStack(Items.shears), new UpgradeHelperShearBlade());
+        registerUpgrade("shear_helper", new ItemStack[] { new ItemStack(ModItems.shearBlade), new ItemStack(Items.shears) }, new UpgradeHelperShearBlade());
         registerUpgrade(UPG_SHEARLEFT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeLeft(), 7);
         registerUpgrade(UPG_SHEARRIGHT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeRight(), 8);
         registerUpgrade(UPG_WHEAT, new ItemStack(Items.wheat), new UpgradeWheat());
@@ -129,6 +139,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
         registerUpgrade(UPG_SUGAR, new ItemStack(Items.sugar), new UpgradeSugar());
         registerUpgrade(UPG_IRONINGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), 9);
+        registerUpgrade(UPG_GLOWSTONE, new ItemStack[] { new ItemStack(Items.glowstone_dust), new ItemStack(Blocks.glowstone) }, new UpgradeGlowstone(), 10);
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
     }
 }

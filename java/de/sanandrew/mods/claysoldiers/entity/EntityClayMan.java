@@ -166,14 +166,6 @@ public class EntityClayMan
                             continue;
                         }
 
-//                    for (int id : this.upgrades.keySet())
-//                        this.entityToAttack = CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).onTargeting(this, uberhaxornova);
-
-//                    if (this.entityToAttack != null && this.entityToAttack instanceof IUpgradeEntity) {
-//                        for (int id2 : ((IUpgradeEntity) this.entityToAttack).getUpgrades())
-//                            this.entityToAttack = CSMModRegistry.clayUpgRegistry.getUpgradeByID(id2).onTargeted((IUpgradeEntity) this.entityToAttack, this);
-//                    }
-
                         break;
                     }
                 } else {
