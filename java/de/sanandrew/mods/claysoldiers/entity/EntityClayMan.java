@@ -48,6 +48,7 @@ public class EntityClayMan
     private final Map<ISoldierUpgrade, SoldierUpgradeInst> upgrades_ = new ConcurrentHashMap<>();
 
     private Entity targetFollow_ = null;
+	public boolean canMove = true;
 
     public EntityClayMan(World world) {
         super(world);
@@ -85,6 +86,13 @@ public class EntityClayMan
     @Override
     public float getAIMoveSpeed() {
         return speed;
+    }
+    
+    @Override
+    public void moveEntity(double motionX, double motionY, double motionZ)
+    {
+    	if(canMove)
+    		super.moveEntity(motionX, motionY, motionZ);
     }
 
     @Override
@@ -323,6 +331,7 @@ public class EntityClayMan
         this.dataWatcher.updateObject(DW_TEAM, nbt.getString("team"));
         this.dataWatcher.updateObject(DW_IS_RARE, nbt.getByte("isRare"));
         this.speed=nbt.getFloat("speed");
+        this.canMove=nbt.getBoolean("canMove");
 
         NBTTagList upgNbtList = nbt.getTagList("upgrades", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
@@ -340,6 +349,7 @@ public class EntityClayMan
         nbt.setString("team", this.getClayTeam());
         nbt.setByte("isRare", this.dataWatcher.getWatchableObjectByte(DW_IS_RARE));
         nbt.setFloat("speed", speed);
+        nbt.setBoolean("canMove", canMove);
 
         NBTTagList upgNbtList = new NBTTagList();
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {

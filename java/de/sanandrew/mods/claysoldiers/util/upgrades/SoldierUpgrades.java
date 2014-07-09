@@ -2,6 +2,7 @@ package de.sanandrew.mods.claysoldiers.util.upgrades;
 
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Bytes;
+
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
@@ -9,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeFermSpiderEye;
 import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeNetherwart;
 import de.sanandrew.mods.claysoldiers.util.upgrades.behavior.UpgradeWheat;
+import de.sanandrew.mods.claysoldiers.util.upgrades.core.UpgradeBrick;
 import de.sanandrew.mods.claysoldiers.util.upgrades.core.UpgradeIronIngot;
 import de.sanandrew.mods.claysoldiers.util.upgrades.lefthand.UpgradeShearBladeLeft;
 import de.sanandrew.mods.claysoldiers.util.upgrades.misc.*;
@@ -18,6 +20,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.logging.log4j.Level;
 
 import java.util.Map;
@@ -131,6 +134,7 @@ public final class SoldierUpgrades
     public static final String UPG_IRONINGOT = "ironingot";
     public static final String UPG_GLOWSTONE = "glowstone";
     public static final String UPG_GUNPOWDER = "gunpowder";
+    public static final String UPG_BRICK = "brick";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -160,6 +164,7 @@ public final class SoldierUpgrades
                                 new ItemStack(Items.gunpowder),
                                 new ItemStack(Blocks.tnt)
                         }, new UpgradeGunpowder(), getNewRenderId());
+        registerUpgrade(UPG_BRICK, new ItemStack(Items.brick), new UpgradeBrick(), getNewRenderId());
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
 }
 
