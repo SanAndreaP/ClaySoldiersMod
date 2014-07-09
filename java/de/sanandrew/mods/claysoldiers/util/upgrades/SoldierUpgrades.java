@@ -34,6 +34,8 @@ public final class SoldierUpgrades
     private static final Map<ISoldierUpgrade, Byte> UPGRADE_TO_RENDER_ID_MAP_ = Maps.newHashMap();
     private static final Map<Byte, ISoldierUpgrade> RENDER_ID_TO_UPGRADE_MAP_ = Maps.newHashMap();
 
+    private static byte currRenderId = 0;
+
     public static void registerUpgrade(String name, ItemStack item, ISoldierUpgrade instance) {
         registerUpgrade(name, item, instance, -1);
     }
@@ -105,6 +107,13 @@ public final class SoldierUpgrades
         return Bytes.toArray(RENDER_ID_TO_UPGRADE_MAP_.keySet());
     }
 
+    public static byte getNewRenderId() {
+        if( currRenderId == 127 ) {
+            throw new RenderIdException();
+        }
+        return currRenderId++;
+    }
+
     public static final String UPG_STICK = "stick";
     public static final String UPG_BLAZEROD = "blazerod";
     public static final String UPG_LEATHER = "leather";
@@ -123,23 +132,35 @@ public final class SoldierUpgrades
     public static final String UPG_GLOWSTONE = "glowstone";
 
     static {
-        registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), 0);
-        registerUpgrade(UPG_BLAZEROD, new ItemStack(Items.blaze_rod), new UpgradeBlazeRod(), 1);
-        registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), 2);
-        registerUpgrade(UPG_WOOL, new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWool(), 3);
+        registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
+        registerUpgrade(UPG_BLAZEROD, new ItemStack(Items.blaze_rod), new UpgradeBlazeRod(), getNewRenderId());
+        registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), getNewRenderId());
+        registerUpgrade(UPG_WOOL, new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWool(), getNewRenderId());
         registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
-        registerUpgrade(UPG_EGG, new ItemStack(Items.egg), new UpgradeEgg(), 4);
-        registerUpgrade(UPG_WOODBUTTON, new ItemStack(Blocks.wooden_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWoodButton(), 5);
-        registerUpgrade(UPG_STONEBUTTON, new ItemStack(Blocks.stone_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeStoneButton(), 6);
-        registerUpgrade("shear_helper", new ItemStack[] { new ItemStack(ModItems.shearBlade), new ItemStack(Items.shears) }, new UpgradeHelperShearBlade());
-        registerUpgrade(UPG_SHEARLEFT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeLeft(), 7);
-        registerUpgrade(UPG_SHEARRIGHT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeRight(), 8);
+        registerUpgrade(UPG_EGG, new ItemStack(Items.egg), new UpgradeEgg(), getNewRenderId());
+        registerUpgrade(UPG_WOODBUTTON, new ItemStack(Blocks.wooden_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWoodButton(), getNewRenderId());
+        registerUpgrade(UPG_STONEBUTTON, new ItemStack(Blocks.stone_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeStoneButton(), getNewRenderId());
+        registerUpgrade("shear_helper", new ItemStack[] {
+                                new ItemStack(ModItems.shearBlade),
+                                new ItemStack(Items.shears)
+                        }, new UpgradeHelperShearBlade());
+        registerUpgrade(UPG_SHEARLEFT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeLeft(), getNewRenderId());
+        registerUpgrade(UPG_SHEARRIGHT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeRight(), getNewRenderId());
         registerUpgrade(UPG_WHEAT, new ItemStack(Items.wheat), new UpgradeWheat());
         registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
         registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
         registerUpgrade(UPG_SUGAR, new ItemStack(Items.sugar), new UpgradeSugar());
-        registerUpgrade(UPG_IRONINGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), 9);
-        registerUpgrade(UPG_GLOWSTONE, new ItemStack[] { new ItemStack(Items.glowstone_dust), new ItemStack(Blocks.glowstone) }, new UpgradeGlowstone(), 10);
+        registerUpgrade(UPG_IRONINGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), getNewRenderId());
+        registerUpgrade(UPG_GLOWSTONE, new ItemStack[] {
+                                new ItemStack(Items.glowstone_dust),
+                                new ItemStack(Blocks.glowstone)
+                        }, new UpgradeGlowstone(), getNewRenderId());
 //        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
+}
+
+    public static class RenderIdException extends RuntimeException {
+        public RenderIdException() {
+            super("There are no more render IDs for soldier upgrades available!");
+        }
     }
 }
