@@ -1,6 +1,6 @@
 package de.sanandrew.mods.claysoldiers.util;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 
 /**
  * @author SanAndreas
@@ -8,5 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public interface IDisruptable
 {
-    public void disrupt(EntityPlayer player);
+    public static DamageSource disruptDamage = new DamageSource(CSM_Main.MOD_ID + ":disrupt").setDamageBypassesArmor().setMagicDamage();
+
+    public void disrupt();
 }

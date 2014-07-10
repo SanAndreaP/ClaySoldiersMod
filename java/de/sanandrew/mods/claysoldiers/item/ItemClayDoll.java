@@ -91,17 +91,17 @@ public class ItemClayDoll extends Item
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        return this.getTeam(stack).getIconInstance();
+        return getTeam(stack).getIconInstance();
     }
 
     @Override
     public IIcon getIconIndex(ItemStack stack) {
-        return this.getTeam(stack).getIconInstance();
+        return getTeam(stack).getIconInstance();
     }
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return this.getTeam(stack).getIconColor();
+        return getTeam(stack).getIconColor();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class ItemClayDoll extends Item
         ClaymanTeam.registerIcons(iconRegister);
     }
 
-    private ClaymanTeam getTeam(ItemStack stack) {
+    public static ClaymanTeam getTeam(ItemStack stack) {
         NBTTagCompound itemNbt = stack.getTagCompound();
         if( itemNbt != null && itemNbt.hasKey("team")) {
             return ClaymanTeam.getTeamFromName(itemNbt.getString("team"));

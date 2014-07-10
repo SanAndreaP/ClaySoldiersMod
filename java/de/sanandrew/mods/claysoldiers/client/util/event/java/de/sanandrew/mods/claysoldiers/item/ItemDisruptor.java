@@ -1,6 +1,6 @@
 package de.sanandrew.mods.claysoldiers.client.util.event.java.de.sanandrew.mods.claysoldiers.item;
 
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,23 +28,32 @@ public class ItemDisruptor extends Item
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        disrupt(stack, world, player.posX, player.posY, player.posZ, player);
+        return stack;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void disrupt(ItemStack stack, World world, double x, double y, double z, EntityPlayer player) {
         if( !world.isRemote ) {
             List<IDisruptable> disruptables = world.getEntitiesWithinAABB(IDisruptable.class, AxisAlignedBB.getBoundingBox(
-                    player.posX - 16D, player.posY - 16D, player.posZ - 16D,
-                    player.posX + 16D, player.posY + 16D, player.posZ + 16D
-            ));
+                                                                                  x - 16D, y - 16D, z - 16D,
+                                                                                  x + 16D, y + 16D, z + 16D
+                                                                          ));
             for( IDisruptable disruptable : disruptables ) {
-                disruptable.disrupt(player);
+                disruptable.disrupt();
             }
 
-            if( !player.capabilities.isCreativeMode ) {
-                stack.damageItem(1, player);
+            if( player != null ) {
+                if( !player.capabilities.isCreativeMode ) {
+                    stack.damageItem(1, player);
+                }
+            } else {
+                if( stack.attemptDamageItem(1, SAPUtils.RANDOM) ) {
+                    stack.stackSize--;
+                }
             }
         }
-
-        return stack;
     }
 
     @Override

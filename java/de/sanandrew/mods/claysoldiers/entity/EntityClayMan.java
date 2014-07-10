@@ -87,7 +87,7 @@ public class EntityClayMan
     public float getAIMoveSpeed() {
         return speed;
     }
-    
+
     @Override
     public void moveEntity(double motionX, double motionY, double motionZ)
     {
@@ -386,8 +386,8 @@ public class EntityClayMan
     }
 
     @Override
-    public void disrupt(EntityPlayer player) {
-        this.attackEntityFrom(DamageSource.causePlayerDamage(player), 99999);
+    public void disrupt() {
+        this.attackEntityFrom(IDisruptable.disruptDamage, 99999);
     }
 
     private void updateUpgradeRenders() {
@@ -438,6 +438,11 @@ public class EntityClayMan
 
     public boolean targetSoldier(EntityClayMan target) {
         return this.targetSoldier(target, true);
+    }
+
+    @Override
+    protected boolean canDespawn() {
+        return false;
     }
 
     public boolean targetSoldier(EntityClayMan target, boolean withUpgradeCheck) {
