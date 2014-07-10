@@ -27,7 +27,8 @@ import java.util.Map;
  */
 public final class PacketProcessor
 {
-    public static final short PKG_PARTICLES = 0;
+    public static final short PKG_SOLDIER_RENDERS = 0;
+    public static final short PKG_PARTICLES = 1;
 
     private static final Map<Short, Class<? extends IPacket>> ID_TO_PACKET_MAP_ = Maps.newHashMap();
 

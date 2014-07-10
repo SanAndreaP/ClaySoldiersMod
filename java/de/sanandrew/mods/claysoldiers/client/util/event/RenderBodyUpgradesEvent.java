@@ -5,7 +5,7 @@ import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.RenderStage;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
 

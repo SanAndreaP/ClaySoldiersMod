@@ -1,15 +1,21 @@
 package de.sanandrew.mods.claysoldiers.entity;
 
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.mods.claysoldiers.util.ClaymanTeam;
+import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
+import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
+import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
-import de.sanandrew.mods.claysoldiers.util.upgrades.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
+import de.sanandrew.mods.claysoldiers.util.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffectInst;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,16 +43,19 @@ public class EntityClayMan
         implements IDisruptable
 {
     public static final int DW_TEAM = 20;
-    public static final int[] DW_UPG_RENDER = { 21, 22, 23, 24 };
-    public static final int DW_MISC_COLOR = 25;
-    public static final int DW_IS_RARE = 26;
+    //public static final int[] DW_UPG_RENDER = { 21, 22, 23, 24 };
+    public static final int DW_MISC_COLOR = 21;
+    public static final int DW_IS_RARE = 22;
 
     public boolean shouldDropDoll = false;
     public float speed = 0.5f;
     public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
 
     private final Map<ISoldierUpgrade, SoldierUpgradeInst> upgrades_ = new ConcurrentHashMap<>();
+    private final Map<ISoldierEffect, SoldierEffectInst> effects_ = new ConcurrentHashMap<>();
 
+    private long[] upgradeRenderFlags_ = new long[2];
+    private long[] effectRenderFlags_ = new long[2];
     private Entity targetFollow_ = null;
 	public boolean canMove = true;
 
@@ -70,10 +79,10 @@ public class EntityClayMan
         super.entityInit();
 
         this.dataWatcher.addObject(DW_TEAM, ClaymanTeam.DEFAULT_TEAM);
-        this.dataWatcher.addObject(DW_UPG_RENDER[0], 0);
-        this.dataWatcher.addObject(DW_UPG_RENDER[1], 0);
-        this.dataWatcher.addObject(DW_UPG_RENDER[2], 0);
-        this.dataWatcher.addObject(DW_UPG_RENDER[3], 0);
+//        this.dataWatcher.addObject(DW_UPG_RENDER[0], 0);
+//        this.dataWatcher.addObject(DW_UPG_RENDER[1], 0);
+//        this.dataWatcher.addObject(DW_UPG_RENDER[2], 0);
+//        this.dataWatcher.addObject(DW_UPG_RENDER[3], 0);
         this.dataWatcher.addObject(DW_MISC_COLOR, (byte) 15);
         this.dataWatcher.addObject(DW_IS_RARE, (byte) (rand.nextInt(8192)==0 ? 1 : 0));
     }
@@ -118,11 +127,19 @@ public class EntityClayMan
     @Override
     public void onUpdate() {
         super.onUpdate();
-        Iterator<Map.Entry<ISoldierUpgrade, SoldierUpgradeInst>> iter = upgrades_.entrySet().iterator();
-        while( !this.worldObj.isRemote && iter.hasNext() ) {
-            SoldierUpgradeInst upg = iter.next().getValue();
+
+        Iterator<Map.Entry<ISoldierUpgrade, SoldierUpgradeInst>> iterUpgrades = upgrades_.entrySet().iterator();
+        while( !this.worldObj.isRemote && iterUpgrades.hasNext() ) {
+            SoldierUpgradeInst upg = iterUpgrades.next().getValue();
             if( upg.getUpgrade().onUpdate(this, upg) ) {
-                iter.remove();
+                iterUpgrades.remove();
+            }
+        }
+        Iterator<Map.Entry<ISoldierEffect, SoldierEffectInst>> iterEffects = effects_.entrySet().iterator();
+        while( !this.worldObj.isRemote && iterEffects.hasNext() ) {
+            SoldierEffectInst upg = iterEffects.next().getValue();
+            if( upg.getEffect().onUpdate(this, upg) ) {
+                iterEffects.remove();
             }
         }
 
@@ -155,10 +172,10 @@ public class EntityClayMan
 
                         boolean shouldTargetCheck = false;
                         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-                            ISoldierUpgrade.AttackState result = upg.getUpgrade().onTargeting(this, upg, uberhaxornova);
-                            if( result == ISoldierUpgrade.AttackState.DENY ) {
+                            AttackState result = upg.getUpgrade().onTargeting(this, upg, uberhaxornova);
+                            if( result == AttackState.DENY ) {
                                 continue targetLoop;
-                            } else if( result == ISoldierUpgrade.AttackState.ALLOW ) {
+                            } else if( result == AttackState.ALLOW ) {
                                 shouldTargetCheck = true;
                                 break;
                             }
@@ -167,8 +184,8 @@ public class EntityClayMan
                             continue;
                         }
 
-                        ISoldierUpgrade.AttackState targetResult = uberhaxornova.onBeingTargeted(this);
-                        if( targetResult != ISoldierUpgrade.AttackState.DENY ) {
+                        AttackState targetResult = uberhaxornova.onBeingTargeted(this);
+                        if( targetResult != AttackState.DENY ) {
                             this.entityToAttack = uberhaxornova;
                         } else {
                             continue;
@@ -230,9 +247,9 @@ public class EntityClayMan
 //                        if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
 //                            for( IUpgradeItem upgrade : CSMModRegistry.clayUpgRegistry.getUpgrades() ) {
 //                                if( !CommonUsedStuff.areStacksEqualWithWCV(upgrade.getItemStack(this), ((EntityItem)this.targetFollow_).getEntityItem()) ) continue;
-//                                if( this.upgrades.containsKey(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade)) ) continue;
+//                                if( this.upgrade.containsKey(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade)) ) continue;
 //                                NBTTagCompound nbt = new NBTTagCompound();
-//                                this.upgrades.put(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade), nbt);
+//                                this.upgrade.put(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade), nbt);
 //                                upgrade.onPickup(this, (EntityItem)this.targetFollow_, nbt);
 //                                this.targetFollow_ = null;
 //                                break;
@@ -265,7 +282,7 @@ public class EntityClayMan
                     this.entityToAttack = null;
                 } else {
                     float atkRng = 0.5F;
-//                    for( int id : this.upgrades.keySet() )
+//                    for( int id : this.upgrade.keySet() )
 //                        atkRng = Math.max(CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).getTargetRange(this), atkRng);
 
                     if( this.getDistanceToEntity(this.entityToAttack) < atkRng && this.entityToAttack instanceof EntityLivingBase && !this.entityToAttack.isEntityInvulnerable() ) {
@@ -333,7 +350,7 @@ public class EntityClayMan
         this.speed=nbt.getFloat("speed");
         this.canMove=nbt.getBoolean("canMove");
 
-        NBTTagList upgNbtList = nbt.getTagList("upgrades", NbtTypes.NBT_COMPOUND);
+        NBTTagList upgNbtList = nbt.getTagList("upgrade", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
             NBTTagCompound savedUpg = upgNbtList.getCompoundTagAt(i);
             SoldierUpgradeInst upgInst = new SoldierUpgradeInst(SoldierUpgrades.getUpgradeFromName(savedUpg.getString("name")));
@@ -358,7 +375,7 @@ public class EntityClayMan
             savedUpg.setTag("data", upg.getNbtTag());
             upgNbtList.appendTag(savedUpg);
         }
-        nbt.setTag("upgrades", upgNbtList);
+        nbt.setTag("upgrade", upgNbtList);
     }
 
     private AxisAlignedBB getTargetArea() {
@@ -394,46 +411,55 @@ public class EntityClayMan
         if( this.worldObj.isRemote ) {
             this.upgrades_.clear();
 
-            int[] dwValues = new int[DW_UPG_RENDER.length];
-            for (int i = 0; i < DW_UPG_RENDER.length; i++) {
-                dwValues[i] = this.dataWatcher.getWatchableObjectInt(DW_UPG_RENDER[i]);
-            }
+//            int[] dwValues = new int[DW_UPG_RENDER.length];
+//            for (int i = 0; i < this.upgradeRenderFlags_.length; i++) {
+//                dwValues[i] = this.dataWatcher.getWatchableObjectInt(DW_UPG_RENDER[i]);
+//            }
 
             for (byte renderId : SoldierUpgrades.getAvailableRenderIds()) {
-                int renderFlag = 1 << (renderId % 32);
-                int renderStorageDw = (renderId / 32);
-                int dwValue = dwValues[renderStorageDw];
+                long renderFlag = 1 << (renderId % 64);
+                int renderStorageDw = (renderId / 64);
+                long dwValue = this.upgradeRenderFlags_[renderStorageDw];
 
                 if ((dwValue & renderFlag) == renderFlag) {
                     this.upgrades_.put(SoldierUpgrades.getUpgradeFromRenderId(renderId), new SoldierUpgradeInst(null));
                 }
             }
         } else {
-            for (int dwId : DW_UPG_RENDER) {
-                this.dataWatcher.updateObject(dwId, 0);
-            }
+//            for (long dwId : this.upgradeRenderFlags_) {
+//                this.dataWatcher.updateObject(dwId, 0);
+//            }
+
+            this.upgradeRenderFlags_[0] = 0;
+            this.upgradeRenderFlags_[1] = 0;
+            this.effectRenderFlags_[0] = 0;
+            this.effectRenderFlags_[1] = 0;
 
             for (SoldierUpgradeInst upgInst : this.upgrades_.values()) {
                 int renderId = SoldierUpgrades.getRenderIdFromUpgrade(upgInst.getUpgrade());
                 if (renderId >= 0) {
-                    int renderFlag = 1 << (renderId % 32);
-                    int renderStorageDw = renderId / 32;
-                    int prevDwValue = this.dataWatcher.getWatchableObjectInt(DW_UPG_RENDER[renderStorageDw]);
+                    long renderFlag = 1 << (renderId % 64);
+                    int renderStorageDw = renderId / 64;
+                    long prevDwValue = upgradeRenderFlags_[renderStorageDw];
 
-                    this.dataWatcher.updateObject(DW_UPG_RENDER[renderStorageDw], prevDwValue | renderFlag);
+                    upgradeRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
                 }
             }
+
+            PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64D,
+                                            Quintet.with(this.getEntityId(), )
+            );
         }
     }
 
-    public ISoldierUpgrade.AttackState onBeingTargeted(EntityClayMan attacker) {
+    public AttackState onBeingTargeted(EntityClayMan attacker) {
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-            ISoldierUpgrade.AttackState result = upg.getUpgrade().onBeingTargeted(this, upg, attacker);
-            if( result == ISoldierUpgrade.AttackState.DENY || result == ISoldierUpgrade.AttackState.ALLOW ) {
+            AttackState result = upg.getUpgrade().onBeingTargeted(this, upg, attacker);
+            if( result == AttackState.DENY || result == AttackState.ALLOW ) {
                 return result;
             }
         }
-        return ISoldierUpgrade.AttackState.SKIP;
+        return AttackState.SKIP;
     }
 
     public boolean targetSoldier(EntityClayMan target) {
@@ -449,10 +475,10 @@ public class EntityClayMan
         if( this.entityToAttack == null || this.entityToAttack.isDead ) {
             if( withUpgradeCheck ) {
                 for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-                    ISoldierUpgrade.AttackState result = upg.getUpgrade().onTargeting(this, upg, target);
-                    if( result == ISoldierUpgrade.AttackState.DENY ) {
+                    AttackState result = upg.getUpgrade().onTargeting(this, upg, target);
+                    if( result == AttackState.DENY ) {
                         return false;
-                    } else if( result == ISoldierUpgrade.AttackState.ALLOW ) {
+                    } else if( result == AttackState.ALLOW ) {
                         this.entityToAttack = target;
                         return true;
                     }
@@ -511,5 +537,20 @@ public class EntityClayMan
         if( colorIndex >= 0 && colorIndex < ItemDye.field_150922_c.length ) {
             this.dataWatcher.updateObject(DW_MISC_COLOR, (byte) colorIndex);
         }
+    }
+
+    public SoldierEffectInst applyEffect(ISoldierEffect effect) {
+        SoldierEffectInst effectInst = new SoldierEffectInst(effect);
+        this.effects_.put(effect, effectInst);
+        effect.onConstruct(this, effectInst);
+        return effectInst;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void applyRenderFlags(long... flags) {
+        this.upgradeRenderFlags_[0] = flags[0];
+        this.upgradeRenderFlags_[1] = flags[1];
+        this.effectRenderFlags_[0] = flags[2];
+        this.effectRenderFlags_[1] = flags[3];
     }
 }

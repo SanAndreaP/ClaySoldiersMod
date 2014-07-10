@@ -22,7 +22,7 @@ import net.minecraft.item.Item;
  */
 
 @Mod(modid = CSM_Main.MOD_ID, version = CSM_Main.VERSION, name = "Clay Soldiers Mod")
-public class CSM_Main
+public final class CSM_Main
 {
     public static final String MOD_ID = "claysoldiers";
     public static final String VERSION = "2.0";

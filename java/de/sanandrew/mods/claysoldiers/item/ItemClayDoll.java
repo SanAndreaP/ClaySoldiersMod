@@ -3,7 +3,7 @@ package de.sanandrew.mods.claysoldiers.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.ClaymanTeam;
+import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;

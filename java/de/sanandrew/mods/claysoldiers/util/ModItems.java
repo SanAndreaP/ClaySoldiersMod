@@ -10,7 +10,7 @@ import net.minecraft.item.Item;
  * @author SanAndreas
  * @version 1.0
  */
-public class ModItems
+public final class ModItems
 {
     public static Item soldierDoll = new ItemClayDoll();
     public static Item disruptor = new ItemDisruptor(false);

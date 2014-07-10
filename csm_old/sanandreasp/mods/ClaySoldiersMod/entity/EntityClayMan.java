@@ -39,15 +39,15 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 {
     public static final float baseMoveSpeed = 0.3F;
     public float moveSpeed = this.baseMoveSpeed;
-    
+
     private boolean fromNexus = false;
     private boolean isSwinging;
     private boolean isSwingingLeft;
     private float swingLeft;
-    
+
     private Entity targetFollow = null;
     public Entity attackingEntity = null;
-    
+
     private Map<Integer, NBTTagCompound> upgrades = Maps.newHashMap();
     private int upgHash = this.upgrades.hashCode();
 
@@ -58,21 +58,21 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 		this.setSize(0.15F, 0.2F);
 		this.renderDistanceWeight = 5D;
 	}
-	
+
 	public EntityClayMan(World world, double xPos, double yPos, double zPos, int team) {
 		this(world);
 		this.setPosition(xPos, yPos, zPos);
 		this.setClayTeam(team);
-        
+
 	    int rareTextIndex = this.rand.nextInt(8196) == 0 ? rand.nextInt(3) == 0 ? 0 : rand.nextInt(Textures.CLAYMAN[1][this.getClayTeam()].length) : -1;
 	    this.setRareTexture(rareTextIndex);
         this.setClayTexture(rand.nextInt(3) == 0 ? 0 : rand.nextInt(Textures.CLAYMAN[0][this.getClayTeam()].length));
 	}
-	
+
 	public Entity getFollowEntity() {
         return this.targetFollow;
     }
-	
+
 	@Override
 	public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
 	    super.knockBack(par1Entity, par2, par3, par5);
@@ -80,46 +80,46 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 	    this.motionY *= 0.9D;
 	    this.motionZ *= 0.9D;
 	}
-	
+
 	@Override
 	protected void entityInit() {
 	    super.entityInit();
-        
+
         this.dataWatcher.addObject(20, (short)0); // clay team
         this.dataWatcher.addObject(21, (int)0); // clay Texture
         this.dataWatcher.addObject(22, (int)-1); // rare Texture
         this.dataWatcher.addObject(23, (int)-1); // unique Texture
 	}
-	
+
 	@Override
 	public float getAIMoveSpeed() {
 	    return this.moveSpeed * (this.entityToAttack != null || this.targetFollow != null ? 1.6F : 1.0F);
 	}
-	
+
 	private AxisAlignedBB getTargetArea() {
 		double radius = 8.0D;
 		return AxisAlignedBB.getBoundingBox(
-				this.posX - radius, 
-				this.posY - radius, 
-				this.posZ - radius, 
-				this.posX + radius, 
-				this.posY + radius, 
+				this.posX - radius,
+				this.posY - radius,
+				this.posZ - radius,
+				this.posX + radius,
+				this.posY + radius,
 				this.posZ + radius);
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		if( this.upgHash != this.upgrades.hashCode() && !this.worldObj.isRemote ) {
 			this.upgHash = this.upgrades.hashCode();
 			PacketSendSldUpgrades.sendUpgrades(this);
 		}
-		
+
 		if( this.ticksExisted == 5 && this.worldObj.isRemote )
 		    PacketSendSldUpgrades.requestUpgrades(this);
-		
+
 		super.onUpdate();
 	}
-	
+
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 	    if( this.entityToAttack == null && !(par1DamageSource.getEntity() instanceof EntityPlayer) )
@@ -137,11 +137,11 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
         }
 	    return super.attackEntityFrom(par1DamageSource, par2);
 	}
-	
+
 	@Override
 	protected void updateEntityActionState() {
 		super.updateEntityActionState();
-		
+
 		if( !this.worldObj.isRemote ) {
 			if( this.entityToAttack == null ) {
 				List<EntityClayMan> claymen = (List<EntityClayMan>)this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.getTargetArea());
@@ -150,9 +150,9 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 					if( uberhaxornova.isDead ) continue;
 					if( !this.canEntityBeSeen(uberhaxornova) ) continue;
 					if( rand.nextInt(4) != 0 ) continue;
-                    
+
 					this.entityToAttack = uberhaxornova;
-					
+
                     for( int id : this.upgrades.keySet() )
                         this.entityToAttack = CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).onTargeting(this, uberhaxornova);
 
@@ -160,10 +160,10 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
                         for( int id2 : ((IUpgradeEntity)this.entityToAttack).getUpgrades() )
                             this.entityToAttack = CSMModRegistry.clayUpgRegistry.getUpgradeByID(id2).onTargeted((IUpgradeEntity)this.entityToAttack, this);
                     }
-                    
+
 					break;
 				}
-				
+
 				if( this.entityToAttack == null ) {
 				    if( this.targetFollow == null ) {
     					List<EntityItem> items = (List<EntityItem>)this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.getTargetArea());
@@ -194,7 +194,7 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
                             break;
                         }
                     }
-					
+
 					if( this.targetFollow != null ) {
 						if( this.targetFollow.isDead )
 							this.targetFollow = null;
@@ -202,7 +202,7 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
                             this.targetFollow = null;
 						else if( !hasPath() || rand.nextInt(10) == 0 )
 							setPathToEntity(worldObj.getPathEntityToEntity(this.targetFollow, this, 8.0F, false, false, false, false));
-						
+
 						if( this.targetFollow instanceof EntityItem && this.targetFollow.getDistanceToEntity(this) < 0.5F ) {
 							for( IUpgradeItem upgrade : CSMModRegistry.clayUpgRegistry.getUpgrades() ) {
 								if( !CommonUsedStuff.areStacksEqualWithWCV(upgrade.getItemStack(this), ((EntityItem)this.targetFollow).getEntityItem()) ) continue;
@@ -230,7 +230,7 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
                     float atkRng = 0.5F;
                     for( int id : this.upgrades.keySet() )
                         atkRng = Math.max(CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).getTargetRange(this), atkRng);
-                    
+
 					if( this.getDistanceToEntity(this.entityToAttack) < atkRng && this.entityToAttack instanceof EntityLivingBase && !this.entityToAttack.isEntityInvulnerable() ) {
 						if( ((EntityLivingBase)this.entityToAttack).hurtTime == 0 ) {
     						float damage = 1.0F;
@@ -246,14 +246,14 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 			}
 		}
 	}
-	
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound par1nbtTagCompound) {
 		super.writeEntityToNBT(par1nbtTagCompound);
 
 		par1nbtTagCompound.setInteger("clayTeam", this.getClayTeam());
 		par1nbtTagCompound.setIntArray("clayTextures", new int[] {this.getClayTexture(), this.getRareTexture(), this.getUniqTexture() });
-		
+
 		NBTTagList upgrades = new NBTTagList("upgradeList");
 		for( int id : this.upgrades.keySet() ) {
 		    NBTTagCompound upgNbt = new NBTTagCompound("upgElem");
@@ -261,86 +261,86 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 		    upgNbt.setTag("upgTag", this.upgrades.get(id));
 		    upgrades.appendTag(upgNbt);
 		}
-		par1nbtTagCompound.setTag("upgrades", upgrades);
+		par1nbtTagCompound.setTag("upgrade", upgrades);
 	}
-	
+
 	@Override
 	public void readEntityFromNBT(NBTTagCompound par1nbtTagCompound) {
 		super.readEntityFromNBT(par1nbtTagCompound);
-		
+
 		try { // workaround for older worlds
 			this.setClayTeam(par1nbtTagCompound.getInteger("clayTeam"));
-	        
+
 	        int[] textures = par1nbtTagCompound.getIntArray("clayTextures");
 	        if( textures.length > 0 ) {
 	            this.setClayTexture(textures[0]);
 	            this.setRareTexture(textures[1]);
 	            this.setUniqTexture(textures[2]);
 	        }
-	        
+
 	        this.upgrades.clear();
-	        NBTTagList upgList = par1nbtTagCompound.getTagList("upgrades");
+	        NBTTagList upgList = par1nbtTagCompound.getTagList("upgrade");
 	        for( int i = 0; i < upgList.tagCount(); i++ ) {
 	            NBTTagCompound upgNbt = (NBTTagCompound) upgList.tagAt(i);
 	            this.upgrades.put(upgNbt.getInteger("id"), (NBTTagCompound) upgNbt.getTag("upgTag"));
 	        }
             this.upgHash = -1;
-	        
+
 		} catch(Exception e) {
 		    FMLLog.log(CSMModRegistry.modID, Level.WARNING, "%s", "There was an exception during load of a clay soldier! Probably an old world?");
 		    e.printStackTrace();
 			this.setClayTeam(par1nbtTagCompound.getShort("clayTeam"));
 		}
 	}
-	
+
 	public int getClayTeam() {
 		return this.dataWatcher.getWatchableObjectShort(20);
 	}
-	
+
 	public void setClayTeam(int team) {
 		this.dataWatcher.updateObject(20, (short)team);
 	}
-    
+
     public int getClayTexture() {
         return this.dataWatcher.getWatchableObjectInt(21);
     }
-    
+
     public void setClayTexture(int index) {
         this.dataWatcher.updateObject(21, index);
     }
-	
+
 	public int getRareTexture() {
 	    return this.dataWatcher.getWatchableObjectInt(22);
 	}
-	
+
 	public void setRareTexture(int index) {
         this.dataWatcher.updateObject(22, index);
 	}
-	
+
     public int getUniqTexture() {
         return this.dataWatcher.getWatchableObjectInt(23);
     }
-    
+
     public void setUniqTexture(int index) {
         this.dataWatcher.updateObject(23, index);
     }
-	
+
 	public boolean isJumping() {
 	    return this.isJumping;
     }
-	
+
 	public float getMoveForward() {
 	    return this.moveForward;
 	}
-    
+
     public float getMoveStrafing() {
         return this.moveStrafing;
     }
-    
+
     public float getSpeedMulti() {
         return this.moveSpeed / this.baseMoveSpeed;
     }
-    
+
     @Override
     public void onDeath(DamageSource par1DamageSource) {
         if( !this.fromNexus && !this.worldObj.isRemote ) {
@@ -356,20 +356,20 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
         }
         super.onDeath(par1DamageSource);
     }
-    
+
     @Override
     protected void onDeathUpdate() {
         this.setDead();
     }
-    
+
     public boolean spawnedFromNexus() {
         return this.fromNexus;
     }
-    
+
     public void setNexusSpawn() {
         this.fromNexus = true;
     }
-    
+
     public void swingArm() {
         if (!isSwinging) {
             isSwinging = true;
@@ -377,14 +377,14 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
             swingProgress = 0.0F;
         }
     }
-    
+
     public void swingLeftArm() {
         if (!isSwingingLeft) {
             isSwingingLeft = true;
             swingLeft = 0.01F;
         }
     }
-    
+
 //    public int teamCloth(int teamNum) {
 //        if (teamNum == 0) {
 //            return 8;
@@ -426,7 +426,7 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 //            return 8;
 //        }
 //    }
-//    
+//
 //    public int teamDye(int teamNum) {
 //        if (teamNum == 0) {
 //            return 8;
@@ -494,7 +494,7 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
 		    this.upgrades.put(id, nbt);
 		    upg.initUpgrade(this, nbt);
 		}
-		    
+
 	}
 
 	@Override
@@ -517,7 +517,7 @@ public class EntityClayMan extends EntityCreature implements IUpgradeEntity
     public boolean hasUpgrade(int id) {
         return this.upgrades.containsKey(id);
     }
-    
+
     @Override
     protected boolean canDespawn() {
         return false;

@@ -4,7 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
-import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import org.lwjgl.opengl.GL11;

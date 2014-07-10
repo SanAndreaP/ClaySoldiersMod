@@ -5,7 +5,7 @@ import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
-import de.sanandrew.mods.claysoldiers.util.upgrades.SoldierUpgrades;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

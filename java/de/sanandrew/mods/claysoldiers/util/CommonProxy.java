@@ -14,4 +14,6 @@ public class CommonProxy
     }
 
     public void spawnParticles(byte particleId, Tuple data) { }
+
+    public void applySoldierRenderFlags(int entityId, long upgFlags1, long upgFlags2, long effFlags1, long effFlags2) { }
 }
