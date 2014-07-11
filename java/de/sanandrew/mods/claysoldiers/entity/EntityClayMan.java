@@ -416,7 +416,7 @@ public class EntityClayMan
 //                dwValues[i] = this.dataWatcher.getWatchableObjectInt(DW_UPG_RENDER[i]);
 //            }
 
-            for (byte renderId : SoldierUpgrades.getAvailableRenderIds()) {
+            for (byte renderId : SoldierUpgrades.getRegisteredRenderIds()) {
                 long renderFlag = 1 << (renderId % 64);
                 int renderStorageDw = (renderId / 64);
                 long dwValue = this.upgradeRenderFlags_[renderStorageDw];

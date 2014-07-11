@@ -70,4 +70,6 @@ public interface ISoldierEffect
      * @return true, if the upgrade should be removed from the soldiers upgrade list
      */
     public boolean onUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst);
+
+    public void onClientUpdate(EntityClayMan clayMan);
 }

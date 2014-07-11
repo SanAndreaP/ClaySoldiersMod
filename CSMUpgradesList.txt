@@ -56,7 +56,9 @@ Misc
 | |Clay, 4 use, revives fallen soldiers of own color
 | |GhastTear, 2 use, revives brick dolls to own color
 | |RedstoneDust, causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
+~SanAndreasP: how often can a soldier apply this?
 | |Slimeball, causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
+~SanAndreasP: how often can a soldier apply this?
 | |Feather, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing, no effect with iron ingot or while mounted
 | |GlassBottle/Pane/Block, doubles vision range, soldier can see stealthed enemies, bottles and panes are single soldier, block is infinite soldiers
 | |Paper/Book, gives a plain cape, dyed paper and books give colored capes, book gives to infinite soldiers

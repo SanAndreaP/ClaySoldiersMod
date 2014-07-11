@@ -43,29 +43,29 @@ public final class SoldierUpgrades
         registerUpgrade(name, item, instance, -1);
     }
 
-    public static void registerUpgrade(String upgradeName, ItemStack upgradeItem, ISoldierUpgrade upgradeInst, int cltRenderId) {
-        registerUpgrade(upgradeName, new ItemStack[]{upgradeItem}, upgradeInst, cltRenderId);
+    public static void registerUpgrade(String name, ItemStack item, ISoldierUpgrade instance, int clientRenderId) {
+        registerUpgrade(name, new ItemStack[]{item}, instance, clientRenderId);
     }
 
-    public static void registerUpgrade(String upgradeName, ItemStack[] upgradeItems, ISoldierUpgrade upgradeInst) {
-        registerUpgrade(upgradeName, upgradeItems, upgradeInst, -1);
+    public static void registerUpgrade(String name, ItemStack[] items, ISoldierUpgrade instance) {
+        registerUpgrade(name, items, instance, -1);
     }
 
-    public static void registerUpgrade(String upgradeName, ItemStack[] upgradeItems, ISoldierUpgrade upgradeInst, int cltRenderId) {
-        NAME_TO_UPGRADE_MAP_.put(upgradeName, upgradeInst);
-        UPGRADE_TO_NAME_MAP_.put(upgradeInst, upgradeName);
-        for( ItemStack upgradeItem : upgradeItems ) {
-            ITEM_TO_UPGRADE_MAP_.put(Pair.with(upgradeItem.getItem(), upgradeItem.getItemDamage()), upgradeInst);
+    public static void registerUpgrade(String name, ItemStack[] items, ISoldierUpgrade instance, int clientRenderId) {
+        NAME_TO_UPGRADE_MAP_.put(name, instance);
+        UPGRADE_TO_NAME_MAP_.put(instance, name);
+        for( ItemStack upgradeItem : items ) {
+            ITEM_TO_UPGRADE_MAP_.put(Pair.with(upgradeItem.getItem(), upgradeItem.getItemDamage()), instance);
         }
 
-        if( cltRenderId >= 0 ) {
-            if( cltRenderId > 127 ) {
-                FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", upgradeName);
-            } else if( RENDER_ID_TO_UPGRADE_MAP_.containsKey((byte) cltRenderId) ) {
-                FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is already registered!", upgradeName);
+        if( clientRenderId >= 0 ) {
+            if( clientRenderId > 127 ) {
+                FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", name);
+            } else if( RENDER_ID_TO_UPGRADE_MAP_.containsKey((byte) clientRenderId) ) {
+                FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is already registered!", name);
             } else {
-                UPGRADE_TO_RENDER_ID_MAP_.put(upgradeInst, (byte) cltRenderId);
-                RENDER_ID_TO_UPGRADE_MAP_.put((byte) cltRenderId, upgradeInst);
+                UPGRADE_TO_RENDER_ID_MAP_.put(instance, (byte) clientRenderId);
+                RENDER_ID_TO_UPGRADE_MAP_.put((byte) clientRenderId, instance);
             }
         }
     }
@@ -80,13 +80,13 @@ public final class SoldierUpgrades
 
     public static ISoldierUpgrade getUpgradeFromItem(ItemStack item) {
         if( item != null ) {
-            Pair<Item, Integer> pair = Pair.with(item.getItem(), OreDictionary.WILDCARD_VALUE);
-            if( ITEM_TO_UPGRADE_MAP_.containsKey(pair) ) {
-                return ITEM_TO_UPGRADE_MAP_.get(pair);
+            Pair<Item, Integer> itemData = Pair.with(item.getItem(), OreDictionary.WILDCARD_VALUE);
+            if( ITEM_TO_UPGRADE_MAP_.containsKey(itemData) ) {
+                return ITEM_TO_UPGRADE_MAP_.get(itemData);
             } else {
-                pair = Pair.with(item.getItem(), item.getItemDamage());
-                if( ITEM_TO_UPGRADE_MAP_.containsKey(pair) ) {
-                    return ITEM_TO_UPGRADE_MAP_.get(pair);
+                itemData = Pair.with(item.getItem(), item.getItemDamage());
+                if( ITEM_TO_UPGRADE_MAP_.containsKey(itemData) ) {
+                    return ITEM_TO_UPGRADE_MAP_.get(itemData);
                 }
             }
         }
@@ -106,7 +106,7 @@ public final class SoldierUpgrades
         return RENDER_ID_TO_UPGRADE_MAP_.get((byte) renderId);
     }
 
-    public static byte[] getAvailableRenderIds() {
+    public static byte[] getRegisteredRenderIds() {
         return Bytes.toArray(RENDER_ID_TO_UPGRADE_MAP_.keySet());
     }
 
@@ -135,6 +135,7 @@ public final class SoldierUpgrades
     public static final String UPG_GLOWSTONE = "glowstone";
     public static final String UPG_GUNPOWDER = "gunpowder";
     public static final String UPG_BRICK = "brick";
+    public static final String UPG_SLIMEBALLS = "slimeball";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -165,6 +166,7 @@ public final class SoldierUpgrades
                                 new ItemStack(Blocks.tnt)
                         }, new UpgradeGunpowder(), getNewRenderId());
         registerUpgrade(UPG_BRICK, new ItemStack(Items.brick), new UpgradeBrick(), getNewRenderId());
+        registerUpgrade(UPG_SLIMEBALLS, new ItemStack(Items.slime_ball), new UpgradeSlimeball());
     }
 
     public static class RenderIdException extends RuntimeException {
