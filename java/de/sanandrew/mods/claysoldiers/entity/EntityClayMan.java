@@ -56,7 +56,7 @@ public class EntityClayMan
     private Entity targetFollow_ = null;
 	public boolean canMove = true;
 
-    private EntityClayMan(World world) {
+    public EntityClayMan(World world) {
         super(world);
 
         this.yOffset = 0.0F;
