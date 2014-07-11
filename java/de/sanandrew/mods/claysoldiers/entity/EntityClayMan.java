@@ -1,16 +1,14 @@
 package de.sanandrew.mods.claysoldiers.entity;
 
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
-import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ISoldierUpgrade;
@@ -42,24 +40,23 @@ public class EntityClayMan
         extends EntityCreature
         implements IDisruptable
 {
-    public static final int DW_TEAM = 20;
-    //public static final int[] DW_UPG_RENDER = { 21, 22, 23, 24 };
-    public static final int DW_MISC_COLOR = 21;
-    public static final int DW_IS_RARE = 22;
+    private static final int DW_TEAM = 20;
+    private static final int DW_MISC_COLOR = 21;
+    private static final int DW_IS_RARE = 22;
 
     public boolean shouldDropDoll = false;
-    public float speed = 0.5f;
+    public float speed = 0.5F;
     public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
 
     private final Map<ISoldierUpgrade, SoldierUpgradeInst> upgrades_ = new ConcurrentHashMap<>();
     private final Map<ISoldierEffect, SoldierEffectInst> effects_ = new ConcurrentHashMap<>();
+    private final long[] upgradeRenderFlags_ = new long[2];
+    private final long[] effectRenderFlags_ = new long[2];
 
-    private long[] upgradeRenderFlags_ = new long[2];
-    private long[] effectRenderFlags_ = new long[2];
     private Entity targetFollow_ = null;
 	public boolean canMove = true;
 
-    public EntityClayMan(World world) {
+    private EntityClayMan(World world) {
         super(world);
 
         this.yOffset = 0.0F;
@@ -79,10 +76,6 @@ public class EntityClayMan
         super.entityInit();
 
         this.dataWatcher.addObject(DW_TEAM, ClaymanTeam.DEFAULT_TEAM);
-//        this.dataWatcher.addObject(DW_UPG_RENDER[0], 0);
-//        this.dataWatcher.addObject(DW_UPG_RENDER[1], 0);
-//        this.dataWatcher.addObject(DW_UPG_RENDER[2], 0);
-//        this.dataWatcher.addObject(DW_UPG_RENDER[3], 0);
         this.dataWatcher.addObject(DW_MISC_COLOR, (byte) 15);
         this.dataWatcher.addObject(DW_IS_RARE, (byte) (rand.nextInt(8192)==0 ? 1 : 0));
     }
@@ -94,14 +87,17 @@ public class EntityClayMan
 
     @Override
     public float getAIMoveSpeed() {
-        return speed;
+        return this.speed;
     }
 
     @Override
     public void moveEntity(double motionX, double motionY, double motionZ)
     {
-    	if(canMove)
-    		super.moveEntity(motionX, motionY, motionZ);
+    	if( this.canMove ) {
+            super.moveEntity(motionX, motionY, motionZ);
+        } else {
+            super.moveEntity(0.0D, motionY / 2D, 0.0D);
+        }
     }
 
     @Override
@@ -129,10 +125,14 @@ public class EntityClayMan
         super.onUpdate();
 
         Iterator<Map.Entry<ISoldierUpgrade, SoldierUpgradeInst>> iterUpgrades = upgrades_.entrySet().iterator();
-        while( !this.worldObj.isRemote && iterUpgrades.hasNext() ) {
-            SoldierUpgradeInst upg = iterUpgrades.next().getValue();
-            if( upg.getUpgrade().onUpdate(this, upg) ) {
-                iterUpgrades.remove();
+        while( iterUpgrades.hasNext() ) {
+            if( !this.worldObj.isRemote ) {
+                SoldierUpgradeInst upg = iterUpgrades.next().getValue();
+                if( upg.getUpgrade().onUpdate(this, upg) ) {
+                    iterUpgrades.remove();
+                }
+            } else {
+                iterUpgrades.next().getKey().onClientUpdate(this);
             }
         }
         Iterator<Map.Entry<ISoldierEffect, SoldierEffectInst>> iterEffects = effects_.entrySet().iterator();
@@ -447,7 +447,7 @@ public class EntityClayMan
             }
 
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64D,
-                                            Quintet.with(this.getEntityId(), )
+                                            Triplet.with(this.getEntityId(), this.upgradeRenderFlags_, this.effectRenderFlags_)
             );
         }
     }

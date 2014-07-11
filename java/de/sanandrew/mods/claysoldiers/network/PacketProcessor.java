@@ -9,6 +9,7 @@ import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSoldierRender;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -115,5 +116,6 @@ public final class PacketProcessor
 
     static {
         ID_TO_PACKET_MAP_.put(PKG_PARTICLES, PacketParticleFX.class);
+        ID_TO_PACKET_MAP_.put(PKG_SOLDIER_RENDERS, PacketSoldierRender.class);
     }
 }

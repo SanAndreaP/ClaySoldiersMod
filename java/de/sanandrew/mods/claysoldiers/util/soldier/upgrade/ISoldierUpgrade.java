@@ -37,7 +37,7 @@ public interface ISoldierUpgrade
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      * @param attacker the solder targeting the calling soldier
      * @return An AttackStage Enum value. See
-     *         {@link de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ISoldierUpgrade.AttackState AttackStage}
+     *         {@link de.sanandrew.mods.claysoldiers.util.soldier.AttackState AttackStage}
      *         for more information.
      */
     public AttackState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker);
@@ -71,6 +71,8 @@ public interface ISoldierUpgrade
      * @return true, if the upgrade should be removed from the soldiers upgrade list
      */
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst);
+
+    public void onClientUpdate(EntityClayMan clayMan);
 
     /**
      * Checks if the given upgrade is compatible with this upgrade.

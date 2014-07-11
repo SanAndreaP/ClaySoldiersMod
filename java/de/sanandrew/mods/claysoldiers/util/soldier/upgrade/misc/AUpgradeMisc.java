@@ -56,4 +56,7 @@ public abstract class AUpgradeMisc
 
     @Override
     public void onSoldierDeath(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source) { }
+
+    @Override
+    public void onClientUpdate(EntityClayMan clayMan) { }
 }

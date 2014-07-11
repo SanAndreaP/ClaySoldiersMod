@@ -1,6 +1,6 @@
 package de.sanandrew.mods.claysoldiers.network.packet;
 
-import de.sanandrew.core.manpack.util.javatuples.Quintet;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.IPacket;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
@@ -25,11 +25,11 @@ public class PacketSoldierRender
     @Override
     @SuppressWarnings("unchecked")
     public void writeData(ByteBufOutputStream stream, Tuple dataTuple) throws IOException {
-        Quintet<Integer, Long, Long, Long, Long> data = (Quintet) dataTuple;
-        stream.writeInt(data.getValue0());      // entity id
-        stream.writeLong(data.getValue1());     // upgrade flags 1
-        stream.writeLong(data.getValue2());     // upgrade flags 2
-        stream.writeLong(data.getValue3());     // effect flags 1
-        stream.writeLong(data.getValue4());     // effect flags 2
+        Triplet<Integer, long[], long[]> data = (Triplet) dataTuple;
+        stream.writeInt(data.getValue0());          // entity id
+        stream.writeLong(data.getValue1()[0]);      // upgrade flags 1
+        stream.writeLong(data.getValue1()[1]);      // upgrade flags 2
+        stream.writeLong(data.getValue2()[0]);      // effect flags 1
+        stream.writeLong(data.getValue2()[1]);      // effect flags 2
     }
 }

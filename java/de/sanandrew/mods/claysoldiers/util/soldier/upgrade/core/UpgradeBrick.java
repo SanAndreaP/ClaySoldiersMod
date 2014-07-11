@@ -15,19 +15,24 @@ public class UpgradeBrick
     extends AUpgradeCore
 {
     @Override
-    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-    	clayMan.speed-=0.5f;
-    	clayMan.canMove=false;
-    }
+    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { }
 
     @Override
     public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage) {
-        //if( source.getEntity() instanceof EntityClayMan && ((EntityClayMan) source.getEntity()).hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_IRONINGOT)) ) {
-        //    clayMan.knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
-        //} else {
-            clayMan.knockBack = Triplet.with(0.0D, 0.0D, 0.0D);
-        //}
+        clayMan.knockBack = Triplet.with(0.0D, 0.0D, 0.0D);
         return super.onSoldierHurt(clayMan, upgradeInst, source, damage);
+    }
+
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        clayMan.canMove = false;
+        return super.onUpdate(clayMan, upgradeInst);
+    }
+
+    @Override
+    public void onClientUpdate(EntityClayMan clayMan) {
+        clayMan.canMove = false;
+        super.onClientUpdate(clayMan);
     }
 
     @Override

@@ -3,12 +3,9 @@ package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Bytes;
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ISoldierUpgrade;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import java.util.Map;
@@ -41,9 +38,6 @@ public class SoldierEffects
     public static void registerUpgrade(String upgradeName, ItemStack[] upgradeItems, ISoldierUpgrade upgradeInst, int cltRenderId) {
         NAME_TO_UPGRADE_MAP_.put(upgradeName, upgradeInst);
         UPGRADE_TO_NAME_MAP_.put(upgradeInst, upgradeName);
-        for( ItemStack upgradeItem : upgradeItems ) {
-            ITEM_TO_UPGRADE_MAP_.put(Pair.with(upgradeItem.getItem(), upgradeItem.getItemDamage()), upgradeInst);
-        }
 
         if( cltRenderId >= 0 ) {
             if( cltRenderId > 127 ) {
@@ -63,22 +57,6 @@ public class SoldierEffects
 
     public static String getNameFromUpgrade(ISoldierUpgrade upgrade) {
         return UPGRADE_TO_NAME_MAP_.get(upgrade);
-    }
-
-    public static ISoldierUpgrade getUpgradeFromItem(ItemStack item) {
-        if( item != null ) {
-            Pair<Item, Integer> pair = Pair.with(item.getItem(), OreDictionary.WILDCARD_VALUE);
-            if( ITEM_TO_UPGRADE_MAP_.containsKey(pair) ) {
-                return ITEM_TO_UPGRADE_MAP_.get(pair);
-            } else {
-                pair = Pair.with(item.getItem(), item.getItemDamage());
-                if( ITEM_TO_UPGRADE_MAP_.containsKey(pair) ) {
-                    return ITEM_TO_UPGRADE_MAP_.get(pair);
-                }
-            }
-        }
-
-        return null;
     }
 
     public static byte getRenderIdFromUpgrade(ISoldierUpgrade upgrade) {
@@ -102,5 +80,11 @@ public class SoldierEffects
             throw new RenderIdException();
         }
         return currRenderId++;
+    }
+
+    public static class RenderIdException extends RuntimeException {
+        public RenderIdException() {
+            super("There are no more render IDs for soldier upgrade available!");
+        }
     }
 }

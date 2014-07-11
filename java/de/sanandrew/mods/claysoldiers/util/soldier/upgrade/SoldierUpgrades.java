@@ -165,8 +165,7 @@ public final class SoldierUpgrades
                                 new ItemStack(Blocks.tnt)
                         }, new UpgradeGunpowder(), getNewRenderId());
         registerUpgrade(UPG_BRICK, new ItemStack(Items.brick), new UpgradeBrick(), getNewRenderId());
-//        registerUpgrade("testUpg", new ItemStack(Item.getItemFromBlock(Blocks.command_block)), new TestUpgrade(), 0);
-}
+    }
 
     public static class RenderIdException extends RuntimeException {
         public RenderIdException() {

@@ -18,7 +18,9 @@ import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityBreakingFX;
 import net.minecraft.client.particle.EntityCritFX;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.world.World;
 
 /**
  * @author SanAndreasP
@@ -69,6 +71,16 @@ public class ClientProxy extends CommonProxy
                 break;
             }
         }
+    }
 
+    @Override
+    public void applySoldierRenderFlags(int entityId, long upgFlags1, long upgFlags2, long effFlags1, long effFlags2) {
+        World world = Minecraft.getMinecraft().theWorld;
+        Entity entity = world.getEntityByID(entityId);
+
+        if( entity instanceof EntityClayMan ) {
+            EntityClayMan clayman = (EntityClayMan) entity;
+            clayman.applyRenderFlags(upgFlags1, upgFlags2, effFlags1, effFlags2);
+        }
     }
 }
