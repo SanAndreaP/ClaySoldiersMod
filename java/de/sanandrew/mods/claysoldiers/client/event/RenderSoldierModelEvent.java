@@ -1,7 +1,6 @@
-package de.sanandrew.mods.claysoldiers.client.util.event;
+package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
@@ -13,7 +12,7 @@ import org.lwjgl.opengl.GL11;
  * @author SanAndreas
  * @version 1.0
  */
-public class RenderModelUpgradeEvent
+public class RenderSoldierModelEvent
 {
     public ModelRenderer buffedBody;
     public ModelRenderer armorBody;

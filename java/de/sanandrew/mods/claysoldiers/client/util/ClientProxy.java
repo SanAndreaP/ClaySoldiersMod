@@ -5,12 +5,9 @@ import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.claysoldiers.client.event.RenderHudOverlayEvent;
+import de.sanandrew.mods.claysoldiers.client.event.*;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
-import de.sanandrew.mods.claysoldiers.client.util.event.RenderModelUpgradeEvent;
-import de.sanandrew.mods.claysoldiers.client.util.event.RenderBodyUpgradesEvent;
-import de.sanandrew.mods.claysoldiers.client.util.event.RenderLeftHandUpgradesEvent;
-import de.sanandrew.mods.claysoldiers.client.util.event.RenderRightHandUpgradesEvent;
+import de.sanandrew.mods.claysoldiers.client.event.RenderSoldierBodyEvent;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
@@ -38,10 +35,10 @@ public class ClientProxy extends CommonProxy
 
         RenderingRegistry.registerEntityRenderingHandler(EntityClayMan.class, new RenderClayMan());
 
-        CSM_Main.EVENT_BUS.register(new RenderRightHandUpgradesEvent());
-        CSM_Main.EVENT_BUS.register(new RenderLeftHandUpgradesEvent());
-        CSM_Main.EVENT_BUS.register(new RenderModelUpgradeEvent());
-        CSM_Main.EVENT_BUS.register(new RenderBodyUpgradesEvent());
+        CSM_Main.EVENT_BUS.register(new RenderSoldierRightHandEvent());
+        CSM_Main.EVENT_BUS.register(new RenderSoldierLeftHandEvent());
+        CSM_Main.EVENT_BUS.register(new RenderSoldierModelEvent());
+        CSM_Main.EVENT_BUS.register(new RenderSoldierBodyEvent());
 
         MinecraftForge.EVENT_BUS.register(new RenderHudOverlayEvent());
     }
