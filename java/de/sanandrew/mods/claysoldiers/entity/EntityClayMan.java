@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffectInst;
+import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
@@ -130,8 +131,20 @@ public class EntityClayMan
     }
 
     @Override
+    public boolean canBePushed() {
+        return this.canMove;
+    }
+
+    @Override
     public void onUpdate() {
         super.onUpdate();
+
+        if( !this.canMove ) {
+            this.motionX = 0.0F;
+            this.motionY = 0.0F;
+            this.motionZ = 0.0F;
+            this.isJumping = false;
+        }
 
         Iterator<Map.Entry<ISoldierUpgrade, SoldierUpgradeInst>> iterUpgrades = upgrades_.entrySet().iterator();
         while( iterUpgrades.hasNext() ) {
@@ -153,12 +166,15 @@ public class EntityClayMan
         }
 
         if( (ticksExisted % 5) == 0 ) {
-            this.updateUpgradeRenders();
+            this.updateUpgradeEffectRenders();
         }
     }
 
     @Override
     public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
+        if( !this.canMove ) {
+            return;
+        }
         super.knockBack(par1Entity, par2, par3, par5);
         this.motionX *= knockBack.getValue0();
         this.motionY *= knockBack.getValue1();
@@ -366,6 +382,13 @@ public class EntityClayMan
             upgInst.setNbtTag(savedUpg.getCompoundTag("data"));
             this.upgrades_.put(upgInst.getUpgrade(), upgInst);
         }
+        NBTTagList effNbtList = nbt.getTagList("effect", NbtTypes.NBT_COMPOUND);
+        for( int i = 0; i < effNbtList.tagCount(); i++ ) {
+            NBTTagCompound savedEff = effNbtList.getCompoundTagAt(i);
+            SoldierEffectInst effInst = new SoldierEffectInst(SoldierEffects.getEffectFromName(savedEff.getString("name")));
+            effInst.setNbtTag(savedEff.getCompoundTag("data"));
+            this.effects_.put(effInst.getEffect(), effInst);
+        }
     }
 
     @Override
@@ -385,6 +408,15 @@ public class EntityClayMan
             upgNbtList.appendTag(savedUpg);
         }
         nbt.setTag("upgrade", upgNbtList);
+
+        NBTTagList effNbtList = new NBTTagList();
+        for( SoldierEffectInst eff : this.effects_.values() ) {
+            NBTTagCompound savedEff = new NBTTagCompound();
+            savedEff.setString("name", SoldierEffects.getNameFromEffect(eff.getEffect()));
+            savedEff.setTag("data", eff.getNbtTag());
+            effNbtList.appendTag(savedEff);
+        }
+        nbt.setTag("effect", effNbtList);
     }
 
     private AxisAlignedBB getTargetArea() {
@@ -416,22 +448,33 @@ public class EntityClayMan
         this.attackEntityFrom(IDisruptable.disruptDamage, 99999);
     }
 
-    private void updateUpgradeRenders() {
+    private void updateUpgradeEffectRenders() {
         if( this.worldObj.isRemote ) {
             this.upgrades_.clear();
+            this.effects_.clear();
 
 //            int[] dwValues = new int[DW_UPG_RENDER.length];
 //            for (int i = 0; i < this.upgradeRenderFlags_.length; i++) {
 //                dwValues[i] = this.dataWatcher.getWatchableObjectInt(DW_UPG_RENDER[i]);
 //            }
 
-            for (byte renderId : SoldierUpgrades.getRegisteredRenderIds()) {
+            for( byte renderId : SoldierUpgrades.getRegisteredRenderIds() ) {
                 long renderFlag = 1 << (renderId % 64);
                 int renderStorageDw = (renderId / 64);
                 long dwValue = this.upgradeRenderFlags_[renderStorageDw];
 
-                if ((dwValue & renderFlag) == renderFlag) {
+                if( (dwValue & renderFlag) == renderFlag ) {
                     this.upgrades_.put(SoldierUpgrades.getUpgradeFromRenderId(renderId), new SoldierUpgradeInst(null));
+                }
+            }
+
+            for( byte renderId : SoldierEffects.getRegisteredRenderIds() ) {
+                long renderFlag = 1 << (renderId % 64);
+                int renderStorageDw = (renderId / 64);
+                long dwValue = this.effectRenderFlags_[renderStorageDw];
+
+                if( (dwValue & renderFlag) == renderFlag ) {
+                    this.effects_.put(SoldierEffects.getEffectFromRenderId(renderId), new SoldierEffectInst(null));
                 }
             }
         } else {
@@ -444,14 +487,25 @@ public class EntityClayMan
             this.effectRenderFlags_[0] = 0;
             this.effectRenderFlags_[1] = 0;
 
-            for (SoldierUpgradeInst upgInst : this.upgrades_.values()) {
+            for( SoldierUpgradeInst upgInst : this.upgrades_.values() ) {
                 int renderId = SoldierUpgrades.getRenderIdFromUpgrade(upgInst.getUpgrade());
-                if (renderId >= 0) {
+                if( renderId >= 0 ) {
                     long renderFlag = 1 << (renderId % 64);
                     int renderStorageDw = renderId / 64;
                     long prevDwValue = upgradeRenderFlags_[renderStorageDw];
 
                     upgradeRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
+                }
+            }
+
+            for( SoldierEffectInst effInst : this.effects_.values() ) {
+                int renderId = SoldierEffects.getRenderIdFromEffect(effInst.getEffect());
+                if( renderId >= 0 ) {
+                    long renderFlag = 1 << (renderId % 64);
+                    int renderStorageDw = renderId / 64;
+                    long prevDwValue = effectRenderFlags_[renderStorageDw];
+
+                    effectRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
                 }
             }
 
@@ -561,5 +615,9 @@ public class EntityClayMan
         this.upgradeRenderFlags_[1] = flags[1];
         this.effectRenderFlags_[0] = flags[2];
         this.effectRenderFlags_[1] = flags[3];
+    }
+
+    public boolean hasEffect(ISoldierEffect effect) {
+        return this.effects_.containsKey(effect);
     }
 }

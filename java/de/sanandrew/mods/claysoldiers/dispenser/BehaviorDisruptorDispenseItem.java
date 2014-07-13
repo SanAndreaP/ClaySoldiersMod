@@ -1,6 +1,6 @@
 package de.sanandrew.mods.claysoldiers.dispenser;
 
-import de.sanandrew.mods.claysoldiers.client.util.event.java.de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IBlockSource;

@@ -14,7 +14,7 @@ public class EffectSlimeFeet
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        effectInst.getNbtTag().setShort("ticksRemain", (short)100);
+        effectInst.getNbtTag().setShort("ticksRemain", (short)60);
     }
 
     @Override
@@ -23,6 +23,7 @@ public class EffectSlimeFeet
         short ticksRemain = (short) (effectInst.getNbtTag().getShort("ticksRemain") - 1);
 
         if( ticksRemain == 0 ) {
+            clayMan.canMove = true;
             return true;
         }
 

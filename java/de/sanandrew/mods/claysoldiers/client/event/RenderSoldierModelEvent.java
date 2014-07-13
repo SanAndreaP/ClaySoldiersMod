@@ -3,6 +3,7 @@ package de.sanandrew.mods.claysoldiers.client.event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
+import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -18,6 +19,8 @@ public class RenderSoldierModelEvent
     public ModelRenderer armorBody;
     public ModelRenderer armorRightArm;
     public ModelRenderer armorLeftArm;
+    public ModelRenderer slimeRightLeg;
+    public ModelRenderer slimeLeftLeg;
 
     public boolean isInitialized = false;
 
@@ -36,6 +39,14 @@ public class RenderSoldierModelEvent
         this.armorLeftArm.mirror = true;
         this.armorLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, 0.0F);
         this.armorLeftArm.setRotationPoint(5.0F, 1.6F, 0.0F);
+
+        this.slimeRightLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 24);
+        this.slimeRightLeg.addBox(-2.0F, 8.0F, -2.0F, 4, 4, 4, 0.0F);
+        this.slimeRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
+        this.slimeLeftLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 24);
+        this.slimeLeftLeg.mirror = true;
+        this.slimeLeftLeg.addBox(-2.0F, 8.0F, -2.0F, 4, 4, 4, 0.0F);
+        this.slimeLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
     }
 
     @SubscribeEvent
@@ -100,6 +111,25 @@ public class RenderSoldierModelEvent
                 this.armorRightArm.render(event.partTicks);
                 GL11.glPopMatrix();
             }
+        }
+
+        if( event.clayMan.hasEffect(SoldierEffects.getEffectFromName(SoldierEffects.EFF_SLIMEFEET)) ) {
+            ModelBiped model = event.clayManRender.modelBipedMain;
+
+            this.slimeLeftLeg.rotateAngleX = model.bipedLeftLeg.rotateAngleX;
+            this.slimeLeftLeg.rotateAngleY = model.bipedLeftLeg.rotateAngleY;
+            this.slimeLeftLeg.rotateAngleZ = model.bipedLeftLeg.rotateAngleZ;
+            this.slimeRightLeg.rotateAngleX = model.bipedRightLeg.rotateAngleX;
+            this.slimeRightLeg.rotateAngleY = model.bipedRightLeg.rotateAngleY;
+            this.slimeRightLeg.rotateAngleZ = model.bipedRightLeg.rotateAngleZ;
+
+            event.clayManRender.bindTexture(Textures.CLAYMAN_SLIMEFEET);
+            GL11.glPushMatrix();
+            GL11.glScalef(1.2F, 1.2F, 1.2F);
+            GL11.glTranslatef(0.0F, -0.2F, 0.0F);
+            this.slimeLeftLeg.render(event.partTicks);
+            this.slimeRightLeg.render(event.partTicks);
+            GL11.glPopMatrix();
         }
     }
 
