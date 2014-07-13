@@ -7,6 +7,7 @@ import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
+import de.sanandrew.mods.claysoldiers.util.ModConfig;
 import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ISoldierEffect;
@@ -17,6 +18,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemDye;
@@ -69,6 +71,13 @@ public class EntityClayMan
     public EntityClayMan(World world, String team) {
         this(world);
         this.dataWatcher.updateObject(DW_TEAM, team);
+    }
+
+    @Override
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(ModConfig.soldierBaseHealth);
     }
 
     @Override
@@ -288,7 +297,7 @@ public class EntityClayMan
                     if( this.getDistanceToEntity(this.entityToAttack) < atkRng && this.entityToAttack instanceof EntityLivingBase && !this.entityToAttack.isEntityInvulnerable() ) {
                         EntityLivingBase target = (EntityLivingBase)this.entityToAttack;
                         if( target.hurtTime == 0 ) {
-                            float damage = 1.0F;
+                            float damage = ModConfig.soldierBaseDamage;
                             if( target instanceof EntityClayMan ) {
                                 EntityClayMan soldierTarget = (EntityClayMan) target;
                                 soldierTarget.knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
@@ -333,7 +342,7 @@ public class EntityClayMan
 
     @Override
     protected String getHurtSound() {
-        return "claysoldiers:mob.soldier.hurt";
+        return ModConfig.useOldHurtSound ? "claysoldiers:mob.soldier.hurt" : "dig.gravel";
     }
 
     @Override

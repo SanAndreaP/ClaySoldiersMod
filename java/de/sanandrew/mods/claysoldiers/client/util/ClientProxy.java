@@ -5,6 +5,7 @@ import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.mods.claysoldiers.client.event.RenderHudOverlayEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.event.RenderModelUpgradeEvent;
 import de.sanandrew.mods.claysoldiers.client.util.event.RenderBodyUpgradesEvent;
@@ -21,6 +22,7 @@ import net.minecraft.client.particle.EntityCritFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * @author SanAndreasP
@@ -40,6 +42,8 @@ public class ClientProxy extends CommonProxy
         CSM_Main.EVENT_BUS.register(new RenderLeftHandUpgradesEvent());
         CSM_Main.EVENT_BUS.register(new RenderModelUpgradeEvent());
         CSM_Main.EVENT_BUS.register(new RenderBodyUpgradesEvent());
+
+        MinecraftForge.EVENT_BUS.register(new RenderHudOverlayEvent());
     }
 
     @Override

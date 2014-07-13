@@ -1,0 +1,16 @@
+[
+{
+  "modid": "claysoldiers",
+  "name": "Clay Soldiers Mod",
+  "description": "This mod adds tiny soldiers made out of clay, which will fight for your entertainment! You can upgrade them and also give them mounts and companions!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["SanAndreasP", "SilverChiren", "CliffracerX"],
+  "credits": "The Forge and FML guys",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["required-after:sapmanpack@[2.0.0,)"]
+}
+]

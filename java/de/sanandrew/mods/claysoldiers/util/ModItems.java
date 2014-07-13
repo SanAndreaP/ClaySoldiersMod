@@ -2,6 +2,7 @@ package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.item.ItemClayDoll;
+import de.sanandrew.mods.claysoldiers.item.ItemClayMonitor;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.item.ItemShearBlade;
 import net.minecraft.item.Item;
@@ -16,6 +17,7 @@ public final class ModItems
     public static Item disruptor = new ItemDisruptor(false);
     public static Item disruptorHardened = new ItemDisruptor(true);
     public static Item shearBlade = new ItemShearBlade();
+    public static Item statDisplay = new ItemClayMonitor();
 
     public static void registerItems() {
         soldierDoll.setCreativeTab(CSM_Main.clayTab);
@@ -30,7 +32,9 @@ public final class ModItems
         shearBlade.setCreativeTab(CSM_Main.clayTab);
         shearBlade.setUnlocalizedName(CSM_Main.MOD_ID + ":shear_blade");
 
+        statDisplay.setCreativeTab(CSM_Main.clayTab);
+        statDisplay.setUnlocalizedName(CSM_Main.MOD_ID + ":stat_display");
 
-        SAPUtils.registerItems(soldierDoll, disruptor, disruptorHardened, shearBlade);
+        SAPUtils.registerItems(soldierDoll, disruptor, disruptorHardened, shearBlade, statDisplay);
     }
 }
