@@ -59,13 +59,13 @@ public class EntityClayNexus extends EntityCreature {
 		setSize(0.3F, 0.3F);
         innerRotation = rand.nextInt(0x186a0);
 	}
-	
+
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(60.0D);
 	}
-	
+
 	public boolean isActive() {
 		return (this.dataWatcher.getWatchableObjectByte(13) & 1) == 1;
 	}
@@ -94,7 +94,7 @@ public class EntityClayNexus extends EntityCreature {
 		byte prevDW = this.dataWatcher.getWatchableObjectByte(13);
 		this.dataWatcher.updateObject(13, (byte)(flag ? prevDW | 8 : prevDW & ~8));
 	}
-    
+
     public float[] getTeamColor() {
     	switch(getColor()) {
 	    	case 0: return new float[] {0.5F, 0.5F, 0.5F};
@@ -120,78 +120,78 @@ public class EntityClayNexus extends EntityCreature {
 	    	default: return new float[] {0.5F, 0.5F, 0.5F};
     	}
     }
-    
+
     @Override
     public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
     	return false;
     }
-    
+
     public void setSrvMaxHealth(float heal) {
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(heal);
     }
-	
+
 	public int getColor() {
 		return this.dataWatcher.getWatchableObjectShort(18);
 	}
 	public void setColor(int clr) {
 		this.dataWatcher.updateObject(18, (short)clr);
 	}
-	
+
 	public short getWaveDurSec() {
 		return this.dataWatcher.getWatchableObjectShort(14);
 	}
 	public void setWaveDurSec(int wds) {
 		this.dataWatcher.updateObject(14, (short)wds);
 	}
-	
+
 	public short getMaxSpwnSoldiers() {
 		return this.dataWatcher.getWatchableObjectShort(15);
 	}
 	public void setMaxSpwnSoldiers(int mspsl) {
 		this.dataWatcher.updateObject(15, (short)mspsl);
 	}
-	
+
 	public short getMaxLvngSoldiers() {
 		return this.dataWatcher.getWatchableObjectShort(16);
 	}
 	public void setMaxLvngSoldiers(int mlsl) {
 		this.dataWatcher.updateObject(16, (short)mlsl);
 	}
-	
+
 	public short getChanceGetNone() {
 		return this.dataWatcher.getWatchableObjectShort(17);
 	}
 	public void setChanceGetNone(int cgn) {
 		this.dataWatcher.updateObject(17, (short)cgn);
 	}
-	
+
 	public EntityClayNexus(World par1World, double x, double y, double z) {
 		this(par1World);
 		setPositionAndRotation(x, y, z, 0F, 0F);
 	}
-	
+
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
 		if (par1DamageSource.getEntity() instanceof EntityPlayer && !par1DamageSource.isMagicDamage()) {
 			setDead();
 		}
-		
+
 		if (this.getHealth() - par2 < 1) {
 			CSMModRegistry.proxy.showEffect(this.worldObj, this, 11);
 			setDestroyed(true);
 			setHealth(this.getMaxHealth());
 			return false;
 		}
-		
+
 		if (this.hurtTime <= 0) {
 			setHealth(this.getHealth()-par2);
 			hurtTime = 10;
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean hasTeamKing() {
 		List<Entity> list = worldObj.loadedEntityList;
 		for (Entity entity : list) {
@@ -203,117 +203,117 @@ public class EntityClayNexus extends EntityCreature {
 		}
 		return false;
 	}
-	
+
 	public boolean checkIfItemIsValidAndApply(ItemStack item, EntityClayMan soldier, boolean isUpgrade) {
 		boolean valid = false;
-		
-//		if (!isUpgrade && !soldier.hasString() && !soldier.heavyCore && !soldier.brawler && !soldier.isCorrupt() && item.itemID == Item.silk.itemID) {
+
+//		if (!isUpgrade && !soldier.hasString() && !soldier.heavyCore && !soldier.brawler && !soldier.isCorrupt() && itemData.itemID == Item.silk.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasRightShear() && !soldier.villager && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick() && item.itemID == Item.stick.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.hasRightShear() && !soldier.villager && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick() && itemData.itemID == Item.stick.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasRightShear() && !soldier.villager && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick() && item.itemID == Item.blazeRod.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.hasRightShear() && !soldier.villager && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick() && itemData.itemID == Item.blazeRod.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.brawler && !soldier.isCorrupt() && !soldier.hasGlister() && item.itemID == Item.speckledMelon.itemID && !((soldier.gooStock > 0) || (soldier.smokeStock > 0) || (soldier.blazeStock > 0) ||  soldier.hasBlazeRod() || soldier.hasBone() || soldier.hasFireballs() || soldier.hasRocks() || soldier.hasShield() || soldier.hasSnowballs() || soldier.hasTimeBomb() || soldier.hasStick() || (soldier.toxinStock > 0))) {
+//		} else if (!isUpgrade && !soldier.brawler && !soldier.isCorrupt() && !soldier.hasGlister() && itemData.itemID == Item.speckledMelon.itemID && !((soldier.gooStock > 0) || (soldier.smokeStock > 0) || (soldier.blazeStock > 0) ||  soldier.hasBlazeRod() || soldier.hasBone() || soldier.hasFireballs() || soldier.hasRocks() || soldier.hasShield() || soldier.hasSnowballs() || soldier.hasTimeBomb() || soldier.hasStick() || (soldier.toxinStock > 0))) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasArmor() && item.itemID == Item.leather.itemID) {
+//		} else if (!isUpgrade && !soldier.hasArmor() && itemData.itemID == Item.leather.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasArmor() && item.itemID == Item.leather.itemID) {
+//		} else if (!isUpgrade && !soldier.hasArmor() && itemData.itemID == Item.leather.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && !soldier.timeBombReady && !soldier.hasGunPowder() && item.itemID == Item.magmaCream.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && !soldier.timeBombReady && !soldier.hasGunPowder() && itemData.itemID == Item.magmaCream.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasPants() && item.itemID == Block.waterlily.blockID) {
+//		} else if (!isUpgrade && !soldier.hasPants() && itemData.itemID == Block.waterlily.blockID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasReed() && item.itemID == Item.reed.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.hasReed() && itemData.itemID == Item.reed.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.neutral && item.itemID == Item.fermentedSpiderEye.itemID && !soldier.villager) {
+//		} else if (!isUpgrade && !soldier.neutral && itemData.itemID == Item.fermentedSpiderEye.itemID && !soldier.villager) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.isCorrupt() && item.itemID == CSMModRegistry.shearBlade.itemID && !soldier.hasGlister() && ((!soldier.hasLeftShear() && !soldier.hasShield() && !soldier.hasRocks() && !soldier.hasSnowballs() && !soldier.hasFireballs()) || (!soldier.hasRightShear() && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick()))) {
+//		} else if (!isUpgrade && !soldier.isCorrupt() && itemData.itemID == CSMModRegistry.shearBlade.itemID && !soldier.hasGlister() && ((!soldier.hasLeftShear() && !soldier.hasShield() && !soldier.hasRocks() && !soldier.hasSnowballs() && !soldier.hasFireballs()) || (!soldier.hasRightShear() && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick()))) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasShield() && !soldier.hasLeftShear() && item.itemID == Item.bowlEmpty.itemID && !soldier.hasRocks() && !soldier.hasSnowballs() && !soldier.hasFireballs() && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.hasShield() && !soldier.hasLeftShear() && itemData.itemID == Item.bowlEmpty.itemID && !soldier.hasRocks() && !soldier.hasSnowballs() && !soldier.hasFireballs() && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && !soldier.hasLeftShear() && !soldier.hasRocks() && item.itemID == Block.gravel.blockID && !soldier.hasShield() && !soldier.hasSnowballs() && !soldier.hasFireballs() && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && !soldier.hasLeftShear() && !soldier.hasRocks() && itemData.itemID == Block.gravel.blockID && !soldier.hasShield() && !soldier.hasSnowballs() && !soldier.hasFireballs() && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && !soldier.hasLeftShear() && !soldier.hasRocks() && item.itemID == Item.fireballCharge.itemID && !soldier.hasShield() && !soldier.hasSnowballs() && !soldier.hasFireballs() && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && !soldier.hasLeftShear() && !soldier.hasRocks() && itemData.itemID == Item.fireballCharge.itemID && !soldier.hasShield() && !soldier.hasSnowballs() && !soldier.hasFireballs() && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && !soldier.hasLeftShear()  && !soldier.hasSnowballs() && !soldier.hasRocks() && item.itemID == Item.snowball.itemID && !soldier.hasShield() && !soldier.hasFireballs() && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && !soldier.hasLeftShear()  && !soldier.hasSnowballs() && !soldier.hasRocks() && itemData.itemID == Item.snowball.itemID && !soldier.hasShield() && !soldier.hasFireballs() && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && soldier.toxinStock <= 0 && item.itemID == Block.mushroomRed.blockID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && soldier.toxinStock <= 0 && itemData.itemID == Block.mushroomRed.blockID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && soldier.foodLeft <= 0 && item.itemID == Block.mushroomBrown.blockID) {
+//		} else if (!isUpgrade && soldier.foodLeft <= 0 && itemData.itemID == Block.mushroomBrown.blockID) {
 //			valid = true;
-//		} else if (isUpgrade && !soldier.hasCoal && !soldier.villager && item.itemID == Item.coal.itemID && (soldier.hasBlazeRod() || soldier.hasFireballs())) {
+//		} else if (isUpgrade && !soldier.hasCoal && !soldier.villager && itemData.itemID == Item.coal.itemID && (soldier.hasBlazeRod() || soldier.hasFireballs())) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.isGlowing() && item.itemID == Item.glowstone.itemID) {
+//		} else if (!isUpgrade && !soldier.isGlowing() && itemData.itemID == Item.glowstone.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && !soldier.brawler && item.itemID == Item.wheat.itemID) {
+//		} else if (!isUpgrade && !soldier.villager && !soldier.brawler && itemData.itemID == Item.wheat.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && !soldier.brawler && item.itemID == Item.netherStalkSeeds.itemID) {
+//		} else if (!isUpgrade && !soldier.villager && !soldier.brawler && itemData.itemID == Item.netherStalkSeeds.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasCrown() && !soldier.brawler && !hasTeamKing() && item.itemID == Item.goldNugget.itemID) {
+//		} else if (!isUpgrade && !soldier.hasCrown() && !soldier.brawler && !hasTeamKing() && itemData.itemID == Item.goldNugget.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.isSuper() && !soldier.isCaped() && item.itemID == Item.diamond.itemID) {
+//		} else if (!isUpgrade && !soldier.isSuper() && !soldier.isCaped() && itemData.itemID == Item.diamond.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.isSuper() && !soldier.isCaped() && item.itemID == Item.paper.itemID) {
+//		} else if (!isUpgrade && !soldier.isSuper() && !soldier.isCaped() && itemData.itemID == Item.paper.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.isCorrupt() && item.itemID == Item.enderPearl.itemID) {
+//		} else if (!isUpgrade && !soldier.isCorrupt() && itemData.itemID == Item.enderPearl.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasGunPowder() && item.itemID == Item.gunpowder.itemID) {
+//		} else if (!isUpgrade && !soldier.hasGunPowder() && itemData.itemID == Item.gunpowder.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.isCamouflaged() && item.itemID == Item.egg.itemID) {
+//		} else if (!isUpgrade && !soldier.isCamouflaged() && itemData.itemID == Item.egg.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.isSuper() && soldier.sugarTime <= 0 && item.itemID == Item.sugar.itemID) {
+//		} else if (!isUpgrade && !soldier.isSuper() && soldier.sugarTime <= 0 && itemData.itemID == Item.sugar.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && soldier.foodLeft <= 0 && item.getItem() != null && item.getItem() instanceof ItemFood) {
+//		} else if (!isUpgrade && soldier.foodLeft <= 0 && itemData.getItem() != null && itemData.getItem() instanceof ItemFood) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.brawler && soldier.resPoints <= 0 && item.itemID == Item.clay.itemID) {
+//		} else if (!isUpgrade && !soldier.brawler && soldier.resPoints <= 0 && itemData.itemID == Item.clay.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.brawler && soldier.ghastTearPts <= 0 && item.itemID == Item.ghastTear.itemID) {
+//		} else if (!isUpgrade && !soldier.brawler && soldier.ghastTearPts <= 0 && itemData.itemID == Item.ghastTear.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && soldier.gooStock <= 0 && item.itemID == Item.slimeBall.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && soldier.gooStock <= 0 && itemData.itemID == Item.slimeBall.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && soldier.smokeStock <= 0 && item.itemID == Item.redstone.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && soldier.smokeStock <= 0 && itemData.itemID == Item.redstone.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.villager && soldier.blazeStock <= 0 && item.itemID == Item.blazePowder.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.villager && soldier.blazeStock <= 0 && itemData.itemID == Item.blazePowder.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (isUpgrade && !soldier.villager && soldier.hasStick() && !soldier.isStickSharp() && item.itemID == Item.flint.itemID) {
+//		} else if (isUpgrade && !soldier.villager && soldier.hasStick() && !soldier.isStickSharp() && itemData.itemID == Item.flint.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasRightShear() && !soldier.villager && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick() && item.itemID == Item.arrow.itemID && !soldier.hasGlister()) {
+//		} else if (!isUpgrade && !soldier.hasRightShear() && !soldier.villager && !soldier.hasBlazeRod() && !soldier.hasBone() && !soldier.hasStick() && itemData.itemID == Item.arrow.itemID && !soldier.hasGlister()) {
 //			valid = true;
-//		} else if (isUpgrade && ((soldier.hasArmor() && !soldier.isPadded()) || soldier.isCaped()) && item.itemID == Block.cloth.blockID) {
+//		} else if (isUpgrade && ((soldier.hasArmor() && !soldier.isPadded()) || soldier.isCaped()) && itemData.itemID == Block.cloth.blockID) {
 //			valid = true;
-//		} else if (isUpgrade && soldier.hasShield() && !soldier.isShieldStud() && item.itemID == Block.blockIron.blockID) {
+//		} else if (isUpgrade && soldier.hasShield() && !soldier.isShieldStud() && itemData.itemID == Block.blockIron.blockID) {
 //			valid = true;
-//		} else if (!soldier.hasGoggles() && (item.itemID == Block.glass.blockID || item.itemID == Item.glassBottle.itemID || item.itemID == Block.thinGlass.blockID)) {
+//		} else if (!soldier.hasGoggles() && (itemData.itemID == Block.glass.blockID || itemData.itemID == Item.glassBottle.itemID || itemData.itemID == Block.thinGlass.blockID)) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.heavyCore && ridingEntity == null && !soldier.hasFeather && item.itemID == Item.ingotIron.itemID) {
+//		} else if (!isUpgrade && !soldier.heavyCore && ridingEntity == null && !soldier.hasFeather && itemData.itemID == Item.ingotIron.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && !soldier.hasFeather && !soldier.heavyCore && item.itemID == Item.feather.itemID) {
+//		} else if (!isUpgrade && !soldier.hasFeather && !soldier.heavyCore && itemData.itemID == Item.feather.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && item.itemID == CSMModRegistry.clayCookie.itemID) {
+//		} else if (!isUpgrade && itemData.itemID == CSMModRegistry.clayCookie.itemID) {
 //			valid = true;
-//		} else if (!isUpgrade && item.itemID == Item.monsterPlacer.itemID && item.getItemDamage() == soldier.teamEgg(soldier.getClayTeam()) && !soldier.hasSpecSkin()) {
+//		} else if (!isUpgrade && itemData.itemID == Item.monsterPlacer.itemID && itemData.getItemDamage() == soldier.teamEgg(soldier.getClayTeam()) && !soldier.hasSpecSkin()) {
 //			valid = true;
 //		}
-//		
+//
 //		if (getChanceGetNone() > 0 && rand.nextInt(getChanceGetNone()) == 0)
 //			valid = false;
-//		
+//
 //		if (valid) {
-//			applyItemForSoldier(item, soldier);		
+//			applyItemForSoldier(itemData, soldier);
 //			return true;
 //		}
-		
+
 		return false;
 	}
-	
+
 	public void applyItemForSoldier(ItemStack item, EntityClayMan soldier) {
-//		soldier.applyStatsFromItem(item);
+//		soldier.applyStatsFromItem(itemData);
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		
+
 		this.renderYawOffset = 0F;
 		this.prevRotationPitch = 0F;
 		this.prevRotationYaw = 0F;
@@ -321,24 +321,24 @@ public class EntityClayNexus extends EntityCreature {
 		this.rotationPitch = 0F;
 		this.rotationYaw = 0F;
 		this.rotationYawHead = 0F;
-		
-		if (isActive() && !isDestroyed()) { 
+
+		if (isActive() && !isDestroyed()) {
 			ticksSpawn++;
 	        innerRotation++;
 		}
-		
+
 		if (this.worldObj.isRemote) return;
-		
+
 		if (getWaveDurSec() < 1) setWaveDurSec(1);
 		if (getMaxLvngSoldiers() < 1) setMaxLvngSoldiers(1);
 		if (getMaxSpwnSoldiers() < 1) setMaxSpwnSoldiers(1);
 		if (getChanceGetNone() < 0) setChanceGetNone(0);
 		if (ticksSpawn >= 10000 || !isActive() || isDestroyed()) ticksSpawn = 0;
-		
+
 		if (ticksSpawn % (getWaveDurSec() * 20) == 0 && !isDestroyed() && isActive() && (getColor() >= 0 || getSpawnMount())) {
 			spawnSoldiers();
 		}
-		
+
 		if (nexusIS[0] != null && nexusIS[0].stackSize > 0 && nexusIS[0].getItem() instanceof ItemClayMan) {
 			setColor(nexusIS[0].getItemDamage());
 			setSpawnMount(false);
@@ -348,24 +348,24 @@ public class EntityClayNexus extends EntityCreature {
 			setColor(-1);
 			setSpawnMount(false);
 		}
-		
+
 		int cPosX = (int) Math.floor(posX);
     	int cPosY = (int) Math.floor(posY);
     	int cPosZ = (int) Math.floor(posZ);
-    	
+
 		if (worldObj.isBlockIndirectlyGettingPowered(cPosX, cPosY-1, cPosZ) || worldObj.getStrongestIndirectPower(cPosX, cPosY, cPosZ) > 0)
 			setActive(true);
 		else
 			setActive(false);
 	}
-	
+
 	@Override
 	public void setDead() {
 		if (worldObj.isRemote) {
 			super.setDead();
 			return;
 		}
-		
+
 //		spawnExplosionParticle();
 		CSMModRegistry.proxy.showEffect(this.worldObj, this, 11);
 		if (!this.worldObj.getWorldInfo().getGameType().isCreative())
@@ -377,7 +377,7 @@ public class EntityClayNexus extends EntityCreature {
 		}
 		super.setDead();
 	}
-	
+
 	@Override
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 	    if (this.worldObj.isRemote) {
@@ -387,29 +387,29 @@ public class EntityClayNexus extends EntityCreature {
 	    par1EntityPlayer.openGui(CSMModRegistry.instance, 0, this.worldObj, this.entityId, 0, 0);
 	    return true;
 	}
-	
+
 	private void spawnSoldiers() {
 
 		if (worldObj.isRemote) return;
-		
+
 		for (int i = 0; i < getMaxSpwnSoldiers() && !isMaxSpawningReached(); i++) {
 			double clayX;
 			double clayY;
 			double clayZ;
-			
+
 			clayX = posX + rand.nextInt(2)*0.5F*(rand.nextBoolean() ? -1 : 1)+0.2D;
 			clayY = posY + 0.5F;
 			clayZ = posZ + rand.nextInt(2)*0.5F*(rand.nextBoolean() ? -1 : 1)+0.2D;
-			
+
 			EntityClayMan ec = null;
 
 			if (!getSpawnMount()) {
 				ec = new EntityClayMan(worldObj, (int) Math.floor(clayX), (int) Math.floor(clayY), (int) Math.floor(clayZ), getColor());
 				ec.setNexusSpawn();
 			}
-			
+
 			EntityLiving mount = null;
-			
+
 			if (nexusIS[1] != null && nexusIS[1].stackSize > 0) {
 				if (nexusIS[1].itemID == CSMModRegistry.horseDoll.itemID)
 					mount = new EntityHorse(worldObj, clayX, clayY, clayZ, nexusIS[1].getItemDamage()).setSpawnedFromNexus();
@@ -425,7 +425,7 @@ public class EntityClayNexus extends EntityCreature {
 
 			if (!getSpawnMount()) {
 				boolean[] usedStacks = new boolean[nexusIS.length];
-				
+
 				for (int j = 2; j < nexusIS.length && !hasRandItems(); j++) {
 					if (nexusIS[j] != null && nexusIS[j].stackSize > 0 && !usedStacks[j]) {
 						if (checkIfItemIsValidAndApply(nexusIS[j], ec, false)) {
@@ -434,13 +434,13 @@ public class EntityClayNexus extends EntityCreature {
 						usedStacks[j] = true;
 					}
 				}
-				
+
 				if (hasRandItems()) {
 					int loopInd = 0;
-					
+
 					do {
 						int index = rand.nextInt(nexusIS.length - 2) + 2;
-						
+
 						if (nexusIS[index] != null && nexusIS[index].stackSize > 0 && !usedStacks[index]) {
 							loopInd = 0;
 							if (checkIfItemIsValidAndApply(nexusIS[index], ec, false)) {
@@ -450,10 +450,10 @@ public class EntityClayNexus extends EntityCreature {
 						} else {
 							loopInd++;
 						}
-						
+
 					} while(loopInd < nexusIS.length - 2);
 				}
-				
+
 				worldObj.spawnEntityInWorld(ec);
 				CSMModRegistry.proxy.showEffect(this.worldObj, ec, 11);
 //				ec.spawnExplosionParticle();
@@ -465,7 +465,7 @@ public class EntityClayNexus extends EntityCreature {
 			}
 		}
 	}
-	
+
 	private void checkForUpgradeItem(EntityClayMan ec) {
 		for (int j = 2; j < nexusIS.length; j++) {
 			if (nexusIS[j] != null && nexusIS[j].stackSize > 0) {
@@ -495,14 +495,14 @@ public class EntityClayNexus extends EntityCreature {
 				}
 			}
 		}
-		
+
 		return count >= getMaxLvngSoldiers();
 	}
-	
+
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		
+
         for (int k = 0; k < 2 && isActive() && !isDestroyed() && CSMModRegistry.proxy.isClient(); k++)
         {
         	//TODO: nexus FX
@@ -521,32 +521,32 @@ public class EntityClayNexus extends EntityCreature {
 	protected boolean isMovementBlocked() {
 		return true;
 	}
-	
+
 	@Override
 	protected String getDeathSound() {
 		return "step.stone";
 	}
-	
+
 	@Override
 	protected String getHurtSound() {
 		return "step.stone";
 	}
-	
+
 	@Override
 	protected String getLivingSound() {
 		return "";
 	}
-	
+
 	@Override
 	public void moveEntity(double par1, double par3, double par5) {
 //		super.moveEntity(par1, par3, par5);
 	}
-	
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound par1nbtTagCompound) {
 		super.writeEntityToNBT(par1nbtTagCompound);
 		par1nbtTagCompound.setShort("CSM_WaveDurSec", getWaveDurSec());
-		
+
 //		par1nbtTagCompound.setInteger("CSM_CNhealth", getSrvHealth());
 		par1nbtTagCompound.setShort("CSM_spwnSldMax", getMaxSpwnSoldiers());
 		par1nbtTagCompound.setFloat("CSM_CNmaxHealthF", getMaxHealth());
@@ -555,7 +555,7 @@ public class EntityClayNexus extends EntityCreature {
 		par1nbtTagCompound.setShort("CSM_color", (short)getColor());
 		par1nbtTagCompound.setBoolean("CSM_destroyed", isDestroyed());
 		par1nbtTagCompound.setBoolean("CSM_randomItems", hasRandItems());
-		
+
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.nexusIS.length; ++var3)
@@ -571,7 +571,7 @@ public class EntityClayNexus extends EntityCreature {
 
         par1nbtTagCompound.setTag("CSM_Items", var2);
 	}
-	
+
 	@Override
 	public void readEntityFromNBT(NBTTagCompound par1nbtTagCompound) {
 		super.readEntityFromNBT(par1nbtTagCompound);
@@ -588,7 +588,7 @@ public class EntityClayNexus extends EntityCreature {
                 this.nexusIS[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
-		
+
 		if (par1nbtTagCompound.hasKey("CSM_WaveDurSec"))
 			setWaveDurSec(par1nbtTagCompound.getShort("CSM_WaveDurSec"));
 		if (par1nbtTagCompound.hasKey("CSM_spwnSldMax"))
@@ -610,5 +610,5 @@ public class EntityClayNexus extends EntityCreature {
 		if (par1nbtTagCompound.hasKey("CSM_randomItems"))
 			setRandItems(par1nbtTagCompound.getBoolean("CSM_randomItems"));
 	}
-	
+
 }

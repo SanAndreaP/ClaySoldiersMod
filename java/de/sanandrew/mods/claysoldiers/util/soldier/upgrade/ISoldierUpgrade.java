@@ -84,7 +84,7 @@ public interface ISoldierUpgrade
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ISoldierUpgrade upgrade);
 
     /**
-     * Called when a soldier picks the item up
+     * Called when a soldier picks the itemData up
      * @param clayMan the soldier calling the method
      * @param stack the ItemStack which is picked up
      */

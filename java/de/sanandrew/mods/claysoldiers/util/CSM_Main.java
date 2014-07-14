@@ -14,6 +14,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -71,10 +72,10 @@ public final class CSM_Main
         proxy.modInit();
 
         int entityId = 0;
-        EntityRegistry.registerGlobalEntityID(EntityClayMan.class, CSM_Main.MOD_ID + ":clayman", EntityRegistry.findGlobalUniqueEntityId(), 0xFFFFFF, 0x000000);
         EntityRegistry.registerModEntity(EntityClayMan.class, CSM_Main.MOD_ID + ":clayman", entityId++, this, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityHorseMount.class, CSM_Main.MOD_ID + ":horsemount", entityId++, this, 64, 1, true);
 
-        BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.soldierDoll, new BehaviorSoldierDispenseItem());
+        BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.dollSoldier, new BehaviorSoldierDispenseItem());
         BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.disruptor, new BehaviorDisruptorDispenseItem());
         BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.disruptorHardened, new BehaviorDisruptorDispenseItem());
     }

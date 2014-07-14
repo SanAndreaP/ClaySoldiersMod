@@ -1,5 +1,5 @@
 /*******************************************************************************************************************
- * Name:      EntityHorse.java
+ * Name:      EntityHorseMount.java
  * Author:    SanAndreasP
  * Copyright: SanAndreasP and SilverChiren
  * License:   Attribution-NonCommercial-ShareAlike 3.0 Unported (http://creativecommons.org/licenses/by-nc-sa/3.0/)
@@ -36,7 +36,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityHorse extends EntityCreature implements IMount {
 	protected float moveSpeed;
-    
+
 	public EntityHorse(World world) {
 		super(world);
 		this.dataWatcher.addObject(19, (short)0); // horseType
@@ -46,40 +46,40 @@ public class EntityHorse extends EntityCreature implements IMount {
 //		health = 30;
 		yOffset = 0.0F;
 		stepHeight = 0.1F;
-		moveSpeed = 0.6F; 
+		moveSpeed = 0.6F;
 		setSize(0.25F, 0.4F);
 		setPosition(posX, posY, posZ);
 //		texture = dirtHorseTexture(0);
 		renderDistanceWeight = 5D;
 	}
-	
+
 	@Override
 	public float getAIMoveSpeed() {
 	    return moveSpeed;
 	}
-    
+
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(30.0D);
     }
-    
+
     public int getAltTex() {
         return this.dataWatcher.getWatchableObjectInt(20);
     }
-    
+
     public void setAltTex(int index) {
         this.dataWatcher.updateObject(20, index);
     }
-    
+
     public boolean isNightmare() {
         return this.dataWatcher.getWatchableObjectByte(18) != 0;
     }
-    
+
     public void setNightmare(boolean b) {
         this.dataWatcher.updateObject(18, (byte)(b ? 1 : 0));
     }
-	
+
 	public EntityHorse(World world, double x, double y, double z, int i) {
 		this(world);
 		this.dataWatcher.updateObject(19, (short)i);
@@ -143,13 +143,13 @@ public class EntityHorse extends EntityCreature implements IMount {
 //		}
 //		return epona + ".png";
 //	}
-//	
+//
 //	@Override
 //	@SideOnly(Side.CLIENT)
 //	public String getTexture() {
 //		return dirtHorseTexture(this.dataWatcher.getWatchableObjectShort(19));
 //	}
-	
+
 	@Override
 	public void onUpdate() {
         super.onUpdate();
@@ -182,7 +182,7 @@ public class EntityHorse extends EntityCreature implements IMount {
             gotRider = false;
         }
     }
-	
+
 	@Override
 	public void updateEntityActionState() {
 		if (riddenByEntity == null || !(riddenByEntity instanceof EntityClayMan)) {
@@ -196,18 +196,18 @@ public class EntityHorse extends EntityCreature implements IMount {
 			rotationPitch = prevRotationPitch = rider.rotationPitch;
 			rider.renderYawOffset = renderYawOffset;
 			riddenByEntity.fallDistance = 0.0F;
-			
+
 			if (rider.isDead || rider.getHealth() <= 0) {
 				rider.mountEntity(null);
 			}
 		}
 	}
-    
+
     private void updateHealth(float f) {
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(f);
         this.setHealth(f);
     }
-	
+
 	public void setHorseSpecs(int i) {
 		if (this.isNightmare()) {
 		    updateHealth(50);
@@ -244,7 +244,7 @@ public class EntityHorse extends EntityCreature implements IMount {
 			moveSpeed = 1.1f;
 		}
 	}
-	
+
 //	public boolean hasAltSkin1() {
 //		return (this.dataWatcher.getWatchableObjectByte(20) & 1) == 1;
 //	}
@@ -259,7 +259,7 @@ public class EntityHorse extends EntityCreature implements IMount {
 //		byte byt = this.dataWatcher.getWatchableObjectByte(20);
 //		this.dataWatcher.updateObject(20, (byte) (b ? (byt | 2) : (byt & ~2)));
 //	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound)
     {
@@ -273,7 +273,7 @@ public class EntityHorse extends EntityCreature implements IMount {
 //		nbttagcompound.setBoolean("altSkin1", this.hasAltSkin1());
 //		nbttagcompound.setBoolean("altSkin2", this.hasAltSkin2());
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound)
     {
@@ -289,49 +289,49 @@ public class EntityHorse extends EntityCreature implements IMount {
 //		this.setAltSkin1(nbttagcompound.getBoolean("altSkin1"));
 //		this.setAltSkin2(nbttagcompound.getBoolean("altSkin2"));
 	}
-	
+
 	@Override
 	protected String getHurtSound()
     {
 		worldObj.playSoundAtEntity(this, "step.gravel", 0.6F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
 		return "";
     }
-	
+
 	@Override
 	protected String getDeathSound()
     {
 		return "step.gravel";
     }
-	
+
 	@Override
 	protected void jump()
     {
 		motionY = 0.4D;
     }
-	
+
 	@Override
 	public void mountEntity(Entity e) {
 		if (!(e != null && e instanceof EntityMinecart)) {
 			super.mountEntity(e);
 		}
 	}
-	
+
 	@Override
 	protected boolean canDespawn()
     {
         return false;
     }
-	
+
 	@Override
 	protected void dropFewItems(boolean flag, int i) {
 		Item item1 = CSMModRegistry.horseDoll;
 		dropItem(item1.itemID, 1, this.dataWatcher.getWatchableObjectShort(19));
 	}
-	
+
 	protected void dropItem(int itemID, int i, int j) {
 		entityDropItem(new ItemStack(itemID, i, j), 0.0F);
 	}
-	
+
 	@Override
 	public EntityItem entityDropItem(ItemStack par1ItemStack, float par2) {
 		return spawnedFromNexus || specDeath ? null : super.entityDropItem(par1ItemStack, par2);
@@ -340,21 +340,21 @@ public class EntityHorse extends EntityCreature implements IMount {
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float i) {
 	    float origDmg = i;
-		
+
 		boolean hasSpec = rand.nextInt(16) == 0;
-		
+
 		if (damagesource.isFireDamage() && this.dataWatcher.getWatchableObjectByte(18) <= 0 && hasSpec)
 			specDeath = true;
 		else
 			specDeath = false;
-		
+
 		Entity e = damagesource.getSourceOfDamage();
 		if ((e == null || !(e instanceof EntityClayMan)) && !damagesource.isFireDamage()) {
 			i = 100;
 		} if (damagesource.isFireDamage() && this.dataWatcher.getWatchableObjectByte(18) > 0) {
 			i = 0;
 		}
-		
+
 		if (riddenByEntity != null && riddenByEntity instanceof EntityClayMan) {
 			if (e instanceof EntityGravelChunk) {
 				if (((EntityGravelChunk)e).getClayTeam() == ((EntityClayMan)riddenByEntity).getClayTeam())
@@ -375,7 +375,7 @@ public class EntityHorse extends EntityCreature implements IMount {
 					i = origDmg;
 			}
 		}
-		
+
 		boolean fred = super.attackEntityFrom(damagesource, i);
 		if (fred && this.getHealth() <= 0) {
 //				Item item1 = CSM_ModRegistry.horseDoll;
@@ -399,7 +399,7 @@ public class EntityHorse extends EntityCreature implements IMount {
 		}
 		return fred;
 	}
-	
+
 	@Override
 	public void knockBack(Entity entity, float i, double d, double d1)
     {
@@ -410,7 +410,7 @@ public class EntityHorse extends EntityCreature implements IMount {
 			motionZ *= 0.6D;
 		}
     }
-	
+
 	@Override
 	public boolean isOnLadder() {
 		return false;
@@ -426,18 +426,18 @@ public class EntityHorse extends EntityCreature implements IMount {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean interact(EntityPlayer e) {
 		return false;
 	}
-	
+
 	@Override
 	public EntityHorse setSpawnedFromNexus() {
 		spawnedFromNexus = true;
 		return this;
 	}
-	
+
 //	@Override
 //	public int getMaxHealth() {
 //		if (!postInit)
@@ -456,7 +456,7 @@ public class EntityHorse extends EntityCreature implements IMount {
 //			default: return 30;
 //		}
 //	}
-	
+
 	public boolean gotRider, spawnedFromNexus = false, specDeath = false;
 	public boolean postInit = false;
 	@Override

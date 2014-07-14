@@ -26,17 +26,17 @@ import net.minecraft.util.DamageSource;
 public interface IUpgradeItem
 {
     /**
-     * The pickup method for the upgrade. Fired everytime a soldier tries to pick up an item.
+     * The pickup method for the upgrade. Fired everytime a soldier tries to pick up an itemData.
      **/
     public void onPickup(IUpgradeEntity entity, EntityItem item, NBTTagCompound nbt);
-    
+
     public void initUpgrade(IUpgradeEntity entity, NBTTagCompound nbt);
-    
+
 	/**
 	 * The update method for the upgrade. Fired everytime a soldier updates.
 	 **/
 	public void onUpdate(IUpgradeEntity entity);
-	
+
 	/**
 	 * The attack method for the upgrade. Fired every time a soldier hits something.
 	 **/
@@ -46,12 +46,12 @@ public interface IUpgradeItem
      * The hit method for the upgrade. Fired every time a soldier gets hit.
      **/
     public float onHit(IUpgradeEntity attacker, DamageSource source, float initAmount);
-	
+
 	/**
 	 * The drop method for the upgrade. Fired once a soldier dies.
 	 **/
 	public void onDrop(IUpgradeEntity entity, Random rnd);
-    
+
     /**
      * The target method for the upgrade. Fired every time a soldier targets something.
      * Return null if you want to prevent targeting.
@@ -63,7 +63,7 @@ public interface IUpgradeItem
      * Return null if you want to prevent targeting.
      **/
     public Entity onTargeted(IUpgradeEntity target, Entity attacker);
-    
+
     public float getTargetRange(IUpgradeEntity attacker);
 
     /**
@@ -84,24 +84,24 @@ public interface IUpgradeItem
      **/
     @SideOnly(Side.CLIENT)
     public void onPostRender(IUpgradeEntity entity, RenderManager manager, float partTicks, ModelBase model);
-	
+
 	/**
 	 * The break method for the upgrade. Fired once a soldier breaks its upgrade.
 	 **/
 	public void onBreak(IUpgradeEntity entity, Random rnd);
-	
+
 	/**
-	 * The ItemStack which is supposed to be the upgrading item. Will be collected by the soldier.
+	 * The ItemStack which is supposed to be the upgrading itemData. Will be collected by the soldier.
 	 **/
 	public ItemStack getItemStack(IUpgradeEntity attacker);
-	
+
 	/**
-	 * The ItemStack which shall be held when the soldier is upgraded. Return null for no held item.
+	 * The ItemStack which shall be held when the soldier is upgraded. Return null for no held itemData.
 	 * CLIENT-SIDE ONLY!
 	 **/
 	@SideOnly(Side.CLIENT)
 	public ItemStack getHeldItem(IUpgradeEntity attacker);
-	
+
 	/** The upgrade type:<br>
 	 * - 0: left-handed<br>
 	 * - 1: right-handed<br>
@@ -110,7 +110,7 @@ public interface IUpgradeItem
 	 * - 4: behavior
 	 **/
 	public int getType();
-	
+
 	/**
 	 * A check for the soldier if the upgrade is compatible with another upgrade.
 	 **/

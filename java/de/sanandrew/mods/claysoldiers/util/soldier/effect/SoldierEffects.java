@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import com.google.common.collect.Maps;
@@ -8,10 +14,6 @@ import org.apache.logging.log4j.Level;
 
 import java.util.Map;
 
-/**
- * @author SanAndreasP
- * @version 1.0
- */
 public class SoldierEffects
 {
     private static final Map<String, ISoldierEffect> NAME_TO_EFFECT_MAP_ = Maps.newHashMap();

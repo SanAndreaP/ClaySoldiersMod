@@ -1,5 +1,5 @@
 /*******************************************************************************************************************
- * Name:      ModelHorse.java
+ * Name:      ModelHorseMount.java
  * Author:    SanAndreasP
  * Copyright: SanAndreasP and SilverChiren
  * License:   Attribution-NonCommercial-ShareAlike 3.0 Unported (http://creativecommons.org/licenses/by-nc-sa/3.0/)
@@ -30,45 +30,45 @@ public class ModelHorse extends ModelBiped
         bipedHead = new ModelRenderer(this, 0, 0);
         bipedHead.addBox(-1F, 0F, -4F, 2, 2, 4, f + 0.2F);
         bipedHead.setRotationPoint(0.0F, -3.75F + f1, -7.75F);
-		
+
         bipedEar1 = new ModelRenderer(this, 0, 0);
         bipedEar1.addBox(-1.25F, -0.8F, -1F, 1, 1, 1, f - 0.1F);
         bipedEar1.setRotationPoint(0.0F, -3.75F + f1, -7.75F);
-		
+
 		bipedEar2 = new ModelRenderer(this, 0, 0);
         bipedEar2.addBox(0.25F, -0.8F, -1F, 1, 1, 1, f - 0.1F);
         bipedEar2.setRotationPoint(0.0F, -3.75F + f1, -7.75F);
-		
+
         bipedBody = new ModelRenderer(this, 0, 8);
         bipedBody.addBox(-2F, 0.0F, -4F, 4, 4, 8, f);
         bipedBody.setRotationPoint(0.0F, 0.0F + f1, 0.0F);
-		
+
 		bipedNeck = new ModelRenderer(this, 12, 0);
         bipedNeck.addBox(-1F, 0.0F, -6.0F, 2, 2, 6, f + 0.4F);
         bipedNeck.setRotationPoint(0.0F, 0.0F + f1, -2.0F);
-		
+
 		bipedMane = new ModelRenderer(this, 28, 0);
         bipedMane.addBox(-1F, -1.1F, -6.0F, 2, 1, 6, f);
         bipedMane.setRotationPoint(0.0F, 0.0F + f1, -2.0F);
-		
+
         bipedRightArm = new ModelRenderer(this, 24, 10);
         bipedRightArm.addBox(-1F, 0.0F, -1F, 2, 8, 2, f - 0.25F);
         bipedRightArm.setRotationPoint(-1F, 3.75F + f1, -2.75F);
-		
+
         bipedLeftArm = new ModelRenderer(this, 24, 10);
         bipedLeftArm.mirror = true;
         bipedLeftArm.addBox(-1F, 0.0F, -1F, 2, 8, 2, f - 0.25F);
         bipedLeftArm.setRotationPoint(1.0F, 3.75F + f1, -2.75F);
-		
+
         bipedRightLeg = new ModelRenderer(this, 24, 10);
         bipedRightLeg.addBox(-1F, 0.0F, -1F, 2, 8, 2, f - 0.25F);
         bipedRightLeg.setRotationPoint(-1F, 3.75F + f1, 2.75F);
-		
+
         bipedLeftLeg = new ModelRenderer(this, 24, 10);
         bipedLeftLeg.mirror = true;
         bipedLeftLeg.addBox(-1F, 0.0F, -1F, 2, 8, 2, f - 0.25F);
         bipedLeftLeg.setRotationPoint(1.0F, 3.75F + f1, 2.75F);
-		
+
 		bipedTail = new ModelRenderer(this, 36, 11);
         bipedTail.addBox(-0.5F, 0.0F, -0.5F, 1, 5, 1, f + 0.15F);
         bipedTail.setRotationPoint(0F, 0F + f1, 3.75F);
@@ -84,7 +84,7 @@ public class ModelHorse extends ModelBiped
         bipedLeftArm.render(f5);
         bipedRightLeg.render(f5);
         bipedLeftLeg.render(f5);
-		
+
 		bipedNeck.render(f5);
 		bipedMane.render(f5);
 		bipedTail.render(f5);
@@ -143,14 +143,14 @@ public class ModelHorse extends ModelBiped
             bipedRightArm.rotateAngleY += bipedBody.rotateAngleY * 2.0F;
             bipedRightArm.rotateAngleZ = MathHelper.sin(onGround * 3.141593F) * -0.4F;
         }
-		
+
 		bipedTail.rotateAngleX = 0.3F + (bipedRightArm.rotateAngleX * bipedRightArm.rotateAngleX);
 		bipedMane.rotateAngleX = bipedNeck.rotateAngleX = -0.6F;
-		
+
 		bipedEar1.rotateAngleX = bipedEar2.rotateAngleX = bipedHead.rotateAngleX;
 		bipedEar1.rotateAngleY = bipedEar2.rotateAngleY = bipedHead.rotateAngleY;
     }
-	
+
 	public ModelRenderer bipedEar1, bipedEar2;
 	public ModelRenderer bipedTail, bipedNeck, bipedMane;
 }

@@ -8,7 +8,9 @@ import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.event.*;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.event.RenderSoldierBodyEvent;
+import de.sanandrew.mods.claysoldiers.client.render.entity.RenderHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
@@ -34,6 +36,7 @@ public class ClientProxy extends CommonProxy
         CSM_Main.channel.register(new ClientPacketHandler());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityClayMan.class, new RenderClayMan());
+        RenderingRegistry.registerEntityRenderingHandler(EntityHorseMount.class, new RenderHorseMount());
 
         CSM_Main.EVENT_BUS.register(new RenderSoldierRightHandEvent());
         CSM_Main.EVENT_BUS.register(new RenderSoldierLeftHandEvent());

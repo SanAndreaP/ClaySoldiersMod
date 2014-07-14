@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -9,10 +15,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import org.lwjgl.opengl.GL11;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class RenderSoldierModelEvent
 {
     public ModelRenderer buffedBody;

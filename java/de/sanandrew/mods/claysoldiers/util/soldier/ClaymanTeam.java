@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier;
 
 import com.google.common.collect.Maps;
@@ -14,10 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author SanAndreasP
- * @version 1.0
- */
 public final class ClaymanTeam
 {
     public static final String DEFAULT_TEAM = "clay";

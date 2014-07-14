@@ -1,6 +1,6 @@
 package de.sanandrew.mods.claysoldiers.dispenser;
 
-import de.sanandrew.mods.claysoldiers.item.ItemClayDoll;
+import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
@@ -38,7 +38,7 @@ public class BehaviorSoldierDispenseItem
         double x = position.getX();
         double y = position.getY() - (facing == EnumFacing.UP ? 0.0D : 0.3D);
         double z = position.getZ();
-        ItemClayDoll.spawnClayMan(world, ItemClayDoll.getTeam(stack).getTeamName(), x, y, z);
+        ItemClayManDoll.spawnClayMan(world, ItemClayManDoll.getTeam(stack).getTeamName(), x, y, z);
     }
 
     /**

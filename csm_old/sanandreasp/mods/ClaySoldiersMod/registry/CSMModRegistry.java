@@ -88,9 +88,9 @@ public class CSMModRegistry
 	public static final String channelID = "ClaySoldiers";
 	public static final String proxyCmn = "sanandreasp.mods.ClaySoldiersMod.registry.CommonProxy";
 	public static final String proxyClt = "sanandreasp.mods.ClaySoldiersMod.client.registry.ClientProxy";
-	
+
 	@Instance("ClaySoldiersMod") public static CSMModRegistry instance;
-	
+
 	@SidedProxy(clientSide=CSMModRegistry.proxyClt, serverSide=CSMModRegistry.proxyCmn)
 	public static CommonProxy proxy;
 
@@ -108,11 +108,11 @@ public class CSMModRegistry
 	public static Item shearBlade;
 	public static Item brickLump;
 	public static Item arenaPlacer;
-	
+
 	public static UpgradeRegistry clayUpgRegistry;
-	
+
 	public static CreativeTabs claySoldierTab;
-    
+
     public static int[] itemIDs = new int[] {
     	6849, // disruptor
     	6850, // soldier doll
@@ -129,34 +129,34 @@ public class CSMModRegistry
     	6861,  // brickLump
     	6858  // arenaPlacer
     };
-    
+
 	public static ManagerPackHelper manHelper = new ManagerPackHelper();
-    
+
     private void setIDs() {
         String[] itemNames = new String[] {
-        	"disruptor", "soldierDoll", "horseDoll", "pegasusDoll", "brickDoll", "clayCookie",
+        	"disruptor", "dollSoldier", "horseDoll", "pegasusDoll", "brickDoll", "clayCookie",
         	"turtleDoll", "bunnyDoll", "geckoDoll", "shield", "clayNexus", "shearBlade", "brickLump", "arenaPlacer"
         };
-        
+
     	manHelper.getCfgMan().addStaticItemIDs(itemNames, itemIDs);
-    	
+
     	manHelper.getCfgMan().loadConfig();
-    	
+
     	itemIDs = manHelper.getCfgMan().getItemIDs(itemNames);
-    }	
+    }
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		manHelper.checkManPack(event.getModMetadata().name);
-		
+
 		if (!manHelper.loading) return;
-		
+
 		manHelper.initMan(
 				new SAPConfigManager("ClaySoldiersMod", "ClaySoldiers.txt", "/sanandreasp/"),
 				new SAPLanguageManager("/sanandreasp/ClaySoldiers/", "1.0", "Clay Soldiers Mod"),
 				new SAPUpdateManager("Clay Soldiers Mod", 2, 0, 0, "http://dl.dropbox.com/u/56920617/ClaySoldiersMod2_latest.txt", "http://www.minecraftforum.net/topic/964897-")
 		);
-		
+
 		claySoldierTab = new CreativeTabs("ClaySoldiers") {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -164,9 +164,9 @@ public class CSMModRegistry
 				return CSMModRegistry.greyDoll.itemID;
 			}
 		};
-		
+
 		setIDs();
-		
+
 		SoldierTeams.initDefTeams();
 
 		// Items
@@ -185,18 +185,18 @@ public class CSMModRegistry
 			brickLump = (new ItemGlobal(itemIDs[12]-256)).setIconFile("ClaySoldiersMod:brickLump").setUnlocalizedName("brickLump").setCreativeTab(this.claySoldierTab);
 			arenaPlacer = (new ItemArenaPlacer(itemIDs[13]-256)).setUnlocalizedName("arenaPlacer").setCreativeTab(this.claySoldierTab);
 	}
-	
+
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		if (!manHelper.loading) return;
-		
+
 		proxy.registerRenderInformation();
 		NetworkRegistry.instance().registerGuiHandler(instance, new GuiHandler());
 		TickRegistry.registerTickHandler(new Handler_ServerTicks(), Side.SERVER);
 		if (FMLCommonHandler.instance().getSide().isClient())
 			TickRegistry.registerTickHandler(new Handler_ClientTicks(), Side.CLIENT);
 //		claySoldierTab.setBackgroundImageName(this.CSMTAB_TEXTURE);
-		
+
 		// Dispenser handler
 		BlockDispenser.dispenseBehaviorRegistry.putObject(greyDoll, new Handler_BehaviorDispenseItem());
 		BlockDispenser.dispenseBehaviorRegistry.putObject(horseDoll, new Handler_BehaviorDispenseItem());
@@ -215,16 +215,16 @@ public class CSMModRegistry
 		EntityRegistry.registerModEntity(EntityTurtle.class, "CSM_ClayTurtle", 7, this, 64, 1, true);
 		EntityRegistry.registerModEntity(EntityGecko.class, "CSM_Gecko", 8, this, 64, 1, true);
 		EntityRegistry.registerModEntity(EntityClayNexus.class, "CSM_ClayNexus", 9, this, 64, 1, true);
-		
+
 		this.clayUpgRegistry = new UpgradeRegistry();
 	}
-	
+
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		if (!manHelper.loading) return;
-		
+
 	// Language stuff
-		
+
 		manHelper.getLangMan().addLangProp(clayDisruptor,"Clay Disruptor");
 		manHelper.getLangMan().addLangProp(brickDoll, "Lifeless Brick Doll");
 		manHelper.getLangMan().addLangProp(clayCookie, "Clay Cookie");
@@ -232,7 +232,7 @@ public class CSMModRegistry
 		manHelper.getLangMan().addLangProp(shearBlade, "Shear Blade");
 		manHelper.getLangMan().addLangProp(brickLump, "Brick Lump");
 		manHelper.getLangMan().addLangProp("itemGroup.ClaySoldiers", "Clay Soldier Items");
-		
+
 //		String soldierNames[] = new String[] {
 //				"Clay Soldier", "Red Soldier", "Yellow Soldier", "Green Soldier", "Blue Soldier",
 //				"Orange Soldier", "Purple Soldier", "Pink Soldier", "Brown Soldier", "White Soldier",
@@ -256,7 +256,7 @@ public class CSMModRegistry
 				"Stone Turtle", "Mossy Turtle", "Netherrack Turtle",
 				"Melon Turtle", "Sandstone Turtle", "Endstone Turtle", "Pumpkin Turtle"
 			};
-		
+
         for( int sldInd : SoldierTeams.getTeamsList().keySet() )
         	if( sldInd < 4096 )
         		manHelper.getLangMan().addLangProp(greyDoll.getUnlocalizedName(new ItemStack(greyDoll,1,sldInd)) + ".name", SoldierTeams.getTeamsList().get(sldInd).localName);
@@ -269,30 +269,30 @@ public class CSMModRegistry
         	manHelper.getLangMan().addLangProp(bunnyDoll.getUnlocalizedName(new ItemStack(bunnyDoll,1,i)) + ".name", bunnyNames[i]);
         for (i = 0; i < turtleNames.length; i++)
         	manHelper.getLangMan().addLangProp(turtleDoll.getUnlocalizedName(new ItemStack(turtleDoll,1,i)) + ".name", turtleNames[i]);
-        
+
         String geckoPrefix[] = new String[] { "Oakwood", "Birchwood", "Pinewood", "Junglewood" };
-		
+
         for (i = 0; i < 16; i++)
         	manHelper.getLangMan().addLangProp(geckoDoll.getUnlocalizedName(new ItemStack(geckoDoll,1,i)) + ".name", getGeckoNameFromIndex(i, geckoPrefix, 0));
-        
+
         manHelper.getLangMan().loadLangs();
-        
+
     // Crafting and Smelting
-        
+
         GameRegistry.addRecipe(new ItemStack(greyDoll, 4, 0),
     			"$",
     			"#",
     			'$', Block.slowSand,
     			'#', Block.blockClay
 		);
-		
+
 		GameRegistry.addRecipe(new ItemStack(brickDoll, 4, 0),
 			"$",
 			"#",
 			'$', Block.slowSand,
 			'#', Block.brick
 		);
-		
+
 		ItemStack horsePegasiMaterial[] = new ItemStack[] {
 				new ItemStack(Block.dirt),
 				new ItemStack(Block.sand),
@@ -303,16 +303,16 @@ public class CSMModRegistry
 				new ItemStack(Block.blockClay),
 				new ItemStack(Item.carrot)
 		};
-		
+
 		for (i = 0; i < horsePegasiMaterial.length; i++) {
-			GameRegistry.addRecipe(new ItemStack(horseDoll, 2, i), 
+			GameRegistry.addRecipe(new ItemStack(horseDoll, 2, i),
 				"#$#",
 				"# #",
 				'$', Block.slowSand,
 				'#', horsePegasiMaterial[i]
 			);
-			
-			GameRegistry.addRecipe(new ItemStack(pegasusDoll, 2, i), 
+
+			GameRegistry.addRecipe(new ItemStack(pegasusDoll, 2, i),
 				" @ ",
 				"#$#",
 				"# #",
@@ -329,7 +329,7 @@ public class CSMModRegistry
 			'#', Item.clay,
 			'@', Item.redstone
 		);
-		
+
 		ItemStack turtleMaterial[] = new ItemStack[] {
 				new ItemStack(Block.cobblestone, 1),
 				new ItemStack(Block.cobblestoneMossy, 1),
@@ -339,7 +339,7 @@ public class CSMModRegistry
 				new ItemStack(Block.whiteStone, 1),
 				new ItemStack(Block.pumpkin, 1)
 		};
-		
+
 		for (i = 0; i < turtleMaterial.length; i++) {
 			GameRegistry.addRecipe(new ItemStack(turtleDoll, 2, i),
 				" ##",
@@ -350,89 +350,89 @@ public class CSMModRegistry
 		}
 
 		GameRegistry.addSmelting(greyDoll.itemID, new ItemStack(brickDoll, 1), 0F);
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(shearBlade, 2),
             new ItemStack(Item.shears, 1)
         );
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.shears, 1),
-            new ItemStack(shearBlade, 1), 
+            new ItemStack(shearBlade, 1),
             new ItemStack(shearBlade, 1)
         );
 
 		GameRegistry.addShapelessRecipe(new ItemStack(clayCookie, 16),
             new ItemStack(Item.clay, 1), new ItemStack(Item.sugar, 1)
         );
-		
+
 		int soldierDyeIndex[] = new int[] {
 				1, 11, 2, 4, 14, 5, 9, 3, 15, 0, 6, 7, 10, 12, 13
 		};
-		
+
 		for (i = 0; i < soldierDyeIndex.length; i++) {
 			GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, i+1), new Object[] {
 	            new ItemStack(greyDoll, 1), new ItemStack(Item.dyePowder, 1, soldierDyeIndex[i])
 	        });
 		}
-		
-		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 0), 
+
+		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 0),
             new ItemStack(brickDoll, 1), new ItemStack(Item.ghastTear, 1)
         );
-				
+
 		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 4, 16),
             new ItemStack(greyDoll, 1), new ItemStack(greyDoll, 1), new ItemStack(greyDoll, 1), new ItemStack(greyDoll, 1), new ItemStack(Block.melon, 1, 0)
         );
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 4, 17),
             new ItemStack(greyDoll, 1), new ItemStack(greyDoll, 1), new ItemStack(greyDoll, 1), new ItemStack(greyDoll, 1), new ItemStack(Block.pumpkin, 1, 0)
         );
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 16),
             new ItemStack(greyDoll, 1), new ItemStack(Item.melonSeeds, 1)
         );
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 17),
             new ItemStack(greyDoll, 1), new ItemStack(Item.pumpkinSeeds, 1)
         );
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 18),
             new ItemStack(greyDoll, 1), new ItemStack(Item.coal, 1)
         );
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 18),
             new ItemStack(greyDoll, 1), new ItemStack(Item.coal, 1, 1)
         );
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 19),
             new ItemStack(greyDoll, 1), new ItemStack(Item.redstone, 1)
         );
-		
+
 		for (i = 0; i < 20; i++) {
 			GameRegistry.addRecipe(new ItemStack(greyDoll, 8, 0),
 				"###", "#X#", "###",
 				'#', new ItemStack(greyDoll, 1, i),
-				'X', new ItemStack(Item.bucketWater, 1)	
+				'X', new ItemStack(Item.bucketWater, 1)
 			);
 			GameRegistry.addShapelessRecipe(new ItemStack(greyDoll, 1, 0),
 				new ItemStack(greyDoll, 1, i),
-				new ItemStack(Item.bucketWater, 1)	
+				new ItemStack(Item.bucketWater, 1)
 			);
 		}
-		
+
 		for (i = 0; i < 16; i++) {
 			GameRegistry.addRecipe(new ItemStack(bunnyDoll, 4, i),
 				"#X#",
 				'#', new ItemStack(Block.cloth, 1, i),
-				'X', new ItemStack(Block.slowSand, 1)	
+				'X', new ItemStack(Block.slowSand, 1)
 			);
 		}
-		
+
 		ItemStack geckoMaterial[] = new ItemStack[] {
 				new ItemStack(Block.sapling, 1, 0),
 				new ItemStack(Block.sapling, 1, 2),
 				new ItemStack(Block.sapling, 1, 1),
 				new ItemStack(Block.sapling, 1, 3)
 		};
-		
+
 		for (i = 0; i < geckoMaterial.length; i++) {
 			for (int j = 0; j < geckoMaterial.length; j++) {
 				int dmg = i*4 + j;
@@ -444,21 +444,21 @@ public class CSMModRegistry
 				);
 			}
 		}
-		
+
 		GameRegistry.addRecipe(new ItemStack(nexus, 1),
 			"CDC", "SOS", "OOO",
 			'C', new ItemStack(Item.clay, 1),
 			'D', new ItemStack(Item.diamond, 1),
 			'S', new ItemStack(Block.slowSand, 1),
-			'O', new ItemStack(Block.obsidian, 1)			
+			'O', new ItemStack(Block.obsidian, 1)
 		);
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.brick, 1), new ItemStack(this.brickLump, 1));
 	}
-	
+
 	private String getGeckoNameFromIndex(int ind, String[] prefStrings, int lang) {
 		int x = 0, y = 0;
-		
+
 		if (ind < 4) {
 			x = ind;
 			y = 0;
@@ -472,10 +472,10 @@ public class CSMModRegistry
 			x = ind-12;
 			y = 3;
 		}
-		
+
 		return prefStrings[x] + "-" + prefStrings[y] + "-" + "Gecko";
 	}
-	
+
 	public static int getWaveTime(EntityPlayer player) {
 		if (waveTimes.containsKey(player.username)) {
 			return waveTimes.get(player.username);
@@ -484,11 +484,11 @@ public class CSMModRegistry
 			return 0;
 		}
 	}
-	
+
 	public static void setWaveTime(EntityPlayer player, int waveSec) {
 		waveTimes.put(player.username, Integer.valueOf(waveSec));
 	}
-	
+
 	public static EntityPlayer prevPlayer;
 	public static EntityClayCam claycam;
 	public static Map<String, Integer> waveTimes = Maps.newHashMap();

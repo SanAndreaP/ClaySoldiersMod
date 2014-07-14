@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP, CliffracerX
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
+ *            (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity;
 
 import cpw.mods.fml.relauncher.Side;
@@ -5,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import de.sanandrew.mods.claysoldiers.entity.mounts.IMount;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
@@ -35,10 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author SanAndreasP, CliffracerX
- * @version 1.0
- */
 public class EntityClayMan
         extends EntityCreature
         implements IDisruptable
@@ -62,7 +65,6 @@ public class EntityClayMan
     public EntityClayMan(World world) {
         super(world);
 
-        this.yOffset = 0.0F;
         this.stepHeight = 0.1F;
         this.renderDistanceWeight = 5.0D;
 
@@ -133,6 +135,15 @@ public class EntityClayMan
     @Override
     public boolean canBePushed() {
         return this.canMove;
+    }
+
+    @Override
+    protected boolean isMovementBlocked() {
+        return !this.canMove || super.isMovementBlocked();
+    }
+
+    public boolean isJumping() {
+        return this.isJumping;
     }
 
     @Override
@@ -267,39 +278,27 @@ public class EntityClayMan
                                 }
                                 this.targetFollow_ = null;
                             }
+                        }  else if( this.targetFollow_ instanceof IMount ) {
+                            if( this.targetFollow_.riddenByEntity != null ) {
+                                this.targetFollow_ = null;
+                            } else if( this.targetFollow_.getDistanceToEntity(this) < 0.5D ) {
+                                this.mountEntity(this.targetFollow_);
+                                this.targetFollow_ = null;
+                            }
                         }
-
-//                        if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
-//                            for( IUpgradeItem upgrade : CSMModRegistry.clayUpgRegistry.getUpgrades() ) {
-//                                if( !CommonUsedStuff.areStacksEqualWithWCV(upgrade.getItemStack(this), ((EntityItem)this.targetFollow_).getEntityItem()) ) continue;
-//                                if( this.upgrade.containsKey(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade)) ) continue;
-//                                NBTTagCompound nbt = new NBTTagCompound();
-//                                this.upgrade.put(CSMModRegistry.clayUpgRegistry.getIDByUpgrade(upgrade), nbt);
-//                                upgrade.onPickup(this, (EntityItem)this.targetFollow_, nbt);
-//                                this.targetFollow_ = null;
-//                                break;
-//                            }
-//                        } else if( this.targetFollow_ instanceof IMount ) {
-//                            if( this.targetFollow_.riddenByEntity != null ) {
-//                                this.targetFollow_ = null;
-//                            } else if( this.targetFollow_.getDistanceToEntity(this) < 0.5D ) {
-//                                this.mountEntity(this.targetFollow_);
-//                                this.targetFollow_ = null;
-//                            }
-//                        }
                     }
-//                    if( this.targetFollow_ == null && this.ridingEntity == null ) {
-//                        List<IMount> items = (List<IMount>)this.worldObj.getEntitiesWithinAABB(IMount.class, this.getTargetArea());
-//                        for( IMount mount : items ) {
-//                            if( !(mount instanceof EntityLivingBase) ) continue;
-//                            if( this.rand.nextInt(4) != 0 ) continue;
-//                            EntityLivingBase slyfox = (EntityLivingBase)mount;
-//                            if( !slyfox.canEntityBeSeen(this) ) continue;
-//                            if( slyfox.riddenByEntity != null ) continue;
-//                            this.targetFollow_ = slyfox;
-//                            break;
-//                        }
-//                    }
+                    if( this.targetFollow_ == null && this.ridingEntity == null ) {
+                        List<IMount> items = (List<IMount>)this.worldObj.getEntitiesWithinAABB(IMount.class, this.getTargetArea());
+                        for( IMount mount : items ) {
+                            EntityLivingBase slyfox = (EntityLivingBase)mount;
+                            if( this.rand.nextInt(4) != 0 || !slyfox.canEntityBeSeen(this) || slyfox.riddenByEntity != null ) {
+                                continue;
+                            }
+
+                            this.targetFollow_ = slyfox;
+                            break;
+                        }
+                    }
 
                 }
             } else {
