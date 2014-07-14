@@ -124,6 +124,18 @@ public class EntityClayMan
                 damage = result.getValue0();
             }
         }
+        
+        if( !(damageSource.getEntity() instanceof EntityPlayer) )
+        {
+        	if(this.ridingEntity!=null)
+        	{
+        		if(rand.nextInt(4)==0)
+        		{
+        			this.ridingEntity.attackEntityFrom(damageSource, damage);
+        			damage=0;
+        		}
+        	}
+        }
 
         if( damageSource.getEntity() instanceof EntityPlayer) {
             damage = 999;
