@@ -1,0 +1,8 @@
+[
+    {
+        "type": "local_mod", 
+        "mod": "SAPManagerPack", 
+        "path": "build/libs", 
+        "file": "SAPManPack*-deobf.jar"
+    }
+]
