@@ -17,7 +17,8 @@ public final class ModItems
     public static Item disruptorHardened = new ItemDisruptor(true);
     public static Item shearBlade = new ItemShearBlade();
     public static Item statDisplay = new ItemClayMonitor();
-    public static Item dollHorseMount = new ItemHorseDoll();
+
+    public static ItemHorseDoll dollHorseMount = new ItemHorseDoll();
 
     public static void registerItems() {
         dollSoldier.setCreativeTab(CSM_Main.clayTab);

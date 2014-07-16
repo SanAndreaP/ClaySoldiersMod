@@ -4,19 +4,16 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author SanAndreas
  * @version 1.0
  */
 public class UpgradeWoodButton
-    extends AUpgradeRightHanded
+    extends AUpgradeRightHanded //TODO: this is a MISC upgrade, not a RIGHTHAND upgrade! Please change!
 {
     @Override
-    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        NBTTagCompound nbt = upgradeInst.getNbtTag();
-    }
+    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { }
 
     @Override
     public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
@@ -25,7 +22,10 @@ public class UpgradeWoodButton
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STONEBUTTON)) && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK)) && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD)) ) {
+        //TODO: If soldier has no stone button and no blaze rod and no stick, then destroy upgrade. What???
+        if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STONEBUTTON))
+                && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK))
+                && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD)) ) {
             return true;
         }
         return false;

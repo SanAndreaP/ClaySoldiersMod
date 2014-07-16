@@ -97,11 +97,13 @@ public class ItemHorseDoll extends Item
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass) {
         return this.icons.get(getType(stack));
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack) {
         return this.icons.get(getType(stack));
     }
@@ -109,6 +111,11 @@ public class ItemHorseDoll extends Item
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
         return getType(stack).itemData.getValue1();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromType(EnumHorseType type) {
+        return this.icons.get(type);
     }
 
     @Override

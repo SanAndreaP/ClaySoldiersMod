@@ -1,13 +1,12 @@
 package de.sanandrew.mods.claysoldiers.client.util;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.event.*;
+import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
-import de.sanandrew.mods.claysoldiers.client.event.RenderSoldierBodyEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
@@ -16,10 +15,7 @@ import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityBreakingFX;
-import net.minecraft.client.particle.EntityCritFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -47,33 +43,23 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void spawnParticles(byte particleId, Tuple particleData) {
         Minecraft mc = Minecraft.getMinecraft();
         switch( particleId ) {
-            case PacketParticleFX.FX_BREAK: {
-                @SuppressWarnings("unchecked")
-                Quartet<Double, Double, Double, String> data = (Quartet) particleData;
-                Item item = (Item) Item.itemRegistry.getObject(data.getValue3());
-
-                for (int i = 0; i < 5; i++) {
-                    EntityBreakingFX fx = new EntityBreakingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), item);
-                    mc.effectRenderer.addEffect(fx);
-                }
-
+            case PacketParticleFX.FX_BREAK:
+                ParticleHelper.spawnBreakFx((Quartet) particleData, mc);
                 break;
-            }
-            case PacketParticleFX.FX_CRIT: {
-                @SuppressWarnings("unchecked")
-                Triplet<Double, Double, Double> data = (Triplet) particleData;
-                for (int i = 0; i < 10; i++) {
-                    double motX = SAPUtils.RANDOM.nextDouble() - 0.5D;
-                    double motY = SAPUtils.RANDOM.nextDouble() * 0.5D;
-                    double motZ = SAPUtils.RANDOM.nextDouble() - 0.5D;
-                    EntityCritFX fx = new EntityCritFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), motX, motY, motZ);
-                    mc.effectRenderer.addEffect(fx);
-                }
+            case PacketParticleFX.FX_CRIT:
+                ParticleHelper.spawnCritFx((Triplet) particleData, mc);
                 break;
-            }
+            case PacketParticleFX.FX_SOLDIER_DEATH:
+                ParticleHelper.spawnSoldierDeathFx((Quartet) particleData, mc);
+                break;
+            case PacketParticleFX.FX_HORSE_DEATH:
+                ParticleHelper.spawnHorseDeathFx((Quartet) particleData, mc);
+                break;
+
         }
     }
 

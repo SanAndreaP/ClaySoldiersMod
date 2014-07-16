@@ -17,7 +17,6 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 
@@ -49,7 +48,7 @@ public final class CSM_Main
     public static CreativeTabs clayTab = new CreativeTabs(CSM_Main.MOD_ID + ":clay_tab") {
         @Override
         public Item getTabIconItem() {
-            return Item.getItemFromBlock(Blocks.hardened_clay);
+            return ModItems.dollSoldier;
         }
     };
 

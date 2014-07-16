@@ -10,6 +10,7 @@ package de.sanandrew.mods.claysoldiers.entity.mounts;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -232,6 +233,10 @@ public class EntityHorseMount
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float damage) {
+        if( source == IDisruptable.disruptDamage ) {
+            return super.attackEntityFrom(source, damage);
+        }
+
 		boolean shouldSpawnSpecial = rand.nextInt(16) == 0;
 
         this.specialDeath = source.isFireDamage() && !this.isSpecial() && shouldSpawnSpecial;
@@ -287,10 +292,16 @@ public class EntityHorseMount
                     specialHorse.setHorseSpecs();
 					this.worldObj.spawnEntityInWorld(specialHorse);
 				}
-				this.isDead = true;
 		}
 		return damageSuccess;
 	}
+
+    @Override
+    protected void onDeathUpdate() {
+        this.deathTime = 20;
+        this.setDead();
+        ParticlePacketSender.sendHorseDeathFx(this.posX, this.posY, this.posZ, this.dimension, (byte) this.getType());
+    }
 
 	@Override
 	public void knockBack(Entity entity, float i, double d, double d1) {

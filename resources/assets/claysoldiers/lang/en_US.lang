@@ -18,8 +18,6 @@ item.claysoldiers:clayman_doll.black.name=Black Soldier
 item.claysoldiers:clayman_doll.gray.name=Gray Soldier
 item.claysoldiers:clayman_doll.white.name=White Soldier
 item.claysoldiers:clayman_doll.melon.name=Melon Soldier
-item.claysoldiers:shear_blade.name=Shear Blade
-item.claysoldiers:stat_display.name=Clay Statistics Display
 item.claysoldiers:horsemount_doll.dirt.name=Dirt Horse
 item.claysoldiers:horsemount_doll.sand.name=Sand Horse
 item.claysoldiers:horsemount_doll.gravel.name=Gravel Horse
@@ -30,5 +28,8 @@ item.claysoldiers:horsemount_doll.clay.name=Clay Horse
 item.claysoldiers:horsemount_doll.carrot.name=Carrot Horse
 item.claysoldiers:horsemount_doll.soulsand.name=Soulsand Horse
 item.claysoldiers:horsemount_doll.cake.name=Cake Horse
+
+item.claysoldiers:shear_blade.name=Shear Blade
+item.claysoldiers:stat_display.name=Clay Statistics Display
 
 itemGroup.claysoldiers:clay_tab=Clay Soldiers

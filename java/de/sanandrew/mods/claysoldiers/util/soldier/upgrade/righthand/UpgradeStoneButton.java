@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @version 1.0
  */
 public class UpgradeStoneButton
-    extends AUpgradeRightHanded
+    extends AUpgradeRightHanded //TODO: this is a MISC upgrade, not a RIGHTHAND upgrade! Please change!
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -25,7 +25,10 @@ public class UpgradeStoneButton
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_WOODBUTTON)) && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK)) && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD)) ) {
+        //TODO: If soldier has no wooden button and no blaze rod and no stick, then destroy upgrade. What???
+        if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_WOODBUTTON))
+                && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_STICK))
+                && !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_BLAZEROD)) ) {
             return true;
         }
         return false;

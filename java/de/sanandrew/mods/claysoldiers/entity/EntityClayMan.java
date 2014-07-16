@@ -13,6 +13,7 @@ import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.mounts.IMount;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
+import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
 import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
@@ -69,6 +70,8 @@ public class EntityClayMan
         this.renderDistanceWeight = 5.0D;
 
         this.setSize(0.17F, 0.4F);
+
+        this.yOffset = 0.0001F;
     }
 
     public EntityClayMan(World world, String team) {
@@ -113,35 +116,34 @@ public class EntityClayMan
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damageSource, float damage) {
+    public boolean attackEntityFrom(DamageSource source, float damage) {
+        if( source == IDisruptable.disruptDamage ) {
+            return super.attackEntityFrom(source, damage);
+        }
+
         Iterator<Map.Entry<ISoldierUpgrade, SoldierUpgradeInst>> iter = upgrades_.entrySet().iterator();
         while( !this.worldObj.isRemote && iter.hasNext() ) {
             SoldierUpgradeInst upg = iter.next().getValue();
-            Pair<Float, Boolean> result = upg.getUpgrade().onSoldierHurt(this, upg, damageSource, damage);
+            Pair<Float, Boolean> result = upg.getUpgrade().onSoldierHurt(this, upg, source, damage);
             if( !result.getValue1() ) {
                 return false;
             } else {
                 damage = result.getValue0();
             }
         }
-        
-        if( !(damageSource.getEntity() instanceof EntityPlayer) )
-        {
-        	if(this.ridingEntity!=null)
-        	{
-        		if(rand.nextInt(4)==0)
-        		{
-        			this.ridingEntity.attackEntityFrom(damageSource, damage);
-        			damage=0;
+
+        if( !(source.getEntity() instanceof EntityPlayer) ) {
+        	if( this.ridingEntity!=null ) {
+        		if( rand.nextInt(4)==0 ) {
+        			this.ridingEntity.attackEntityFrom(source, damage);
+        			return false;
         		}
         	}
-        }
-
-        if( damageSource.getEntity() instanceof EntityPlayer) {
+        } else {
             damage = 999;
         }
 
-        return super.attackEntityFrom(damageSource, damage);
+        return super.attackEntityFrom(source, damage);
     }
 
     @Override
@@ -346,9 +348,17 @@ public class EntityClayMan
     }
 
     @Override
+    protected boolean interact(EntityPlayer p_70085_1_) {
+        p_70085_1_.mountEntity(this);
+
+        return super.interact(p_70085_1_);
+    }
+
+    @Override
     protected void onDeathUpdate() {
         this.deathTime = 20;
         this.setDead();
+        ParticlePacketSender.sendSoldierDeathFx(this.posX, this.posY, this.posZ, this.dimension, this.getClayTeam());
     }
 
     @Override
@@ -464,11 +474,6 @@ public class EntityClayMan
             this.upgrades_.clear();
             this.effects_.clear();
 
-//            int[] dwValues = new int[DW_UPG_RENDER.length];
-//            for (int i = 0; i < this.upgradeRenderFlags_.length; i++) {
-//                dwValues[i] = this.dataWatcher.getWatchableObjectInt(DW_UPG_RENDER[i]);
-//            }
-
             for( byte renderId : SoldierUpgrades.getRegisteredRenderIds() ) {
                 long renderFlag = 1 << (renderId % 64);
                 int renderStorageDw = (renderId / 64);
@@ -489,10 +494,6 @@ public class EntityClayMan
                 }
             }
         } else {
-//            for (long dwId : this.upgradeRenderFlags_) {
-//                this.dataWatcher.updateObject(dwId, 0);
-//            }
-
             this.upgradeRenderFlags_[0] = 0;
             this.upgradeRenderFlags_[1] = 0;
             this.effectRenderFlags_[0] = 0;

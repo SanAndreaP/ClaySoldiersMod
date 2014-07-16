@@ -1,13 +1,10 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand;
 
-import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
-import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -44,9 +41,7 @@ public class UpgradeBlazeRod
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         if( upgradeInst.getNbtTag().getInteger("uses") <= 0 ) {
             clayMan.playSound("random.break", 1.0F, 1.0F);
-            PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
-                    Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ, Item.itemRegistry.getNameForObject(Items.blaze_rod))
-            );
+            ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, Items.blaze_rod);
             return true;
         }
         return false;

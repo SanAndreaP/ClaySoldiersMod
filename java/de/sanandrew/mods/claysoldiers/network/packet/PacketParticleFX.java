@@ -20,6 +20,8 @@ public class PacketParticleFX
 {
     public static final byte FX_BREAK = 0;
     public static final byte FX_CRIT = 1;
+    public static final byte FX_SOLDIER_DEATH = 2;
+    public static final byte FX_HORSE_DEATH = 3;
 
     @Override
     public void process(ByteBufInputStream stream, INetHandler handler) throws IOException {
@@ -29,6 +31,12 @@ public class PacketParticleFX
                 break;
             case FX_CRIT:
                 CSM_Main.proxy.spawnParticles(FX_CRIT, Triplet.with(stream.readDouble(), stream.readDouble() + 0.1D, stream.readDouble()));
+                break;
+            case FX_SOLDIER_DEATH:
+                CSM_Main.proxy.spawnParticles(FX_SOLDIER_DEATH, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
+                break;
+            case FX_HORSE_DEATH:
+                CSM_Main.proxy.spawnParticles(FX_HORSE_DEATH, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readByte()));
                 break;
         }
     }
@@ -48,6 +56,18 @@ public class PacketParticleFX
                 stream.writeDouble((double) dataTuple.getValue(1));
                 stream.writeDouble((double) dataTuple.getValue(2));
                 stream.writeDouble((double) dataTuple.getValue(3));
+                break;
+            case FX_SOLDIER_DEATH:
+                stream.writeDouble((double) dataTuple.getValue(1));
+                stream.writeDouble((double) dataTuple.getValue(2));
+                stream.writeDouble((double) dataTuple.getValue(3));
+                stream.writeUTF((String) dataTuple.getValue(4));
+                break;
+            case FX_HORSE_DEATH:
+                stream.writeDouble((double) dataTuple.getValue(1));
+                stream.writeDouble((double) dataTuple.getValue(2));
+                stream.writeDouble((double) dataTuple.getValue(3));
+                stream.writeByte((byte) dataTuple.getValue(4));
                 break;
         }
     }
