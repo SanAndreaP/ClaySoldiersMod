@@ -63,9 +63,7 @@ public class ItemClayManDoll extends Item
                     }
 
                     if( !player.capabilities.isCreativeMode ) {
-                        --stack.stackSize;
-                    } else {
-                        dan.shouldDropDoll = false;
+                        dan.dollItem = stack.splitStack(1);
                     }
                 }
             }
@@ -126,11 +124,15 @@ public class ItemClayManDoll extends Item
     public void getSubItems(Item itemInst, CreativeTabs creativeTab, List stacks) {
         for( String team : ClaymanTeam.getTeamNames() ) {
             ItemStack stack = new ItemStack(this, 1);
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setString("team", team);
-            stack.setTagCompound(nbt);
+            setTeamForItem(team, stack);
             stacks.add(stack);
         }
+    }
+
+    public static void setTeamForItem(String team, ItemStack stack) {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("team", team);
+        stack.setTagCompound(nbt);
     }
 
     @Override

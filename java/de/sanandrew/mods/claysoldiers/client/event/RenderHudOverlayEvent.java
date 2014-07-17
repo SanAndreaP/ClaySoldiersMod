@@ -1,13 +1,21 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
+import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.mounts.EnumHorseType;
+import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
@@ -15,19 +23,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class RenderHudOverlayEvent
     extends Gui
 {
@@ -60,7 +66,7 @@ public class RenderHudOverlayEvent
     private void renderSoldiers(Minecraft mc) {
         @SuppressWarnings("unchecked")
         List<EntityClayMan> soldiers = mc.theWorld.getEntitiesWithinAABB(EntityClayMan.class, this.getRangeAabbFromPlayer(mc.thePlayer));
-        List<Triplet<Integer, String, Integer>> teams = new ArrayList<>();
+        List<Quartet<Integer, String, Integer, ItemStack>> teams = new ArrayList<>(); // team background color, team name, team count
 
         Map<String, Integer> teamCounts = Maps.newHashMap();
         for( EntityClayMan dex : soldiers ) {
@@ -73,7 +79,9 @@ public class RenderHudOverlayEvent
         }
         for( Entry<String, Integer> team : teamCounts.entrySet() ) {
             ClaymanTeam teamInst = ClaymanTeam.getTeamFromName(team.getKey());
-            teams.add(Triplet.with(teamInst.getTeamColor(), team.getKey(), team.getValue()));
+            ItemStack renderedItem = new ItemStack(ModItems.dollSoldier);
+            ItemClayManDoll.setTeamForItem(team.getKey(), renderedItem);
+            teams.add(Quartet.with(teamInst.getTeamColor(), team.getKey(), team.getValue(), renderedItem));
         }
         renderStats(mc, "Soldiers", teams, 5, 5);
     }
@@ -81,7 +89,7 @@ public class RenderHudOverlayEvent
     private void renderMounts(Minecraft mc) {
         @SuppressWarnings("unchecked")
         List<EntityHorseMount> horses = mc.theWorld.getEntitiesWithinAABB(EntityHorseMount.class, this.getRangeAabbFromPlayer(mc.thePlayer));
-        List<Triplet<Integer, String, Integer>> teams = new ArrayList<>();
+        List<Quartet<Integer, String, Integer, ItemStack>> teams = new ArrayList<>();
 
         Map<String, Integer> teamCounts = Maps.newHashMap();
         for( EntityHorseMount dex : horses ) {
@@ -94,12 +102,12 @@ public class RenderHudOverlayEvent
         }
         for( Entry<String, Integer> team : teamCounts.entrySet() ) {
             EnumHorseType teamInst = EnumHorseType.valueOf(team.getKey());
-            teams.add(Triplet.with(teamInst.typeColor, team.getKey(), team.getValue()));
+            teams.add(Quartet.with(teamInst.typeColor, team.getKey(), team.getValue(), (ItemStack) null));
         }
         renderStats(mc, "Mounts", teams, 110, 5);
     }
 
-    private void renderStats(Minecraft mc, String title, List<Triplet<Integer, String, Integer>> teams, int xPos, int yPos) {
+    private void renderStats(Minecraft mc, String title, List<Quartet<Integer, String, Integer, ItemStack>> teams, int xPos, int yPos) {
         this.drawGradientRect(xPos, yPos, xPos + 100, yPos + 13, 0x00000000, 0x80FFFFFF);
 
         this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2 - 1, yPos + 1, 0x000000);
@@ -112,13 +120,20 @@ public class RenderHudOverlayEvent
         this.drawGradientRect(xPos + 100, yPos - 1, xPos + 101, yPos + 13, 0x00000000, 0xC0000000);
 
         int pos = 0;
-        for( Triplet<Integer, String, Integer> team : teams ) {
+        for( Quartet<Integer, String, Integer, ItemStack> team : teams ) {
             String text = team.getValue1() + ": " + team.getValue2().toString();
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 24 + pos * 11, 0x80FFFFFF);
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 23 + pos * 11, 0xC0000000 | team.getValue0());
             this.statRenderer.drawString(text, xPos + 50 - this.statRenderer.getStringWidth(text) / 2, yPos + 14 + pos * 11,
                                          this.getContrastTextColor(team.getValue0())
             );
+
+            GL11.glPushMatrix();
+            GL11.glScalef(0.5F, 0.5F, 0.5F);
+            ItemRenderHelper.renderItemInGui(mc, team.getValue3(), xPos * 2, (yPos + 14 + pos * 11) * 2);
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glPopMatrix();
+
             pos++;
         }
 

@@ -31,6 +31,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemDye;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
@@ -51,7 +52,7 @@ public class EntityClayMan
     private static final int DW_MISC_COLOR = 21;
     private static final int DW_IS_RARE = 22;
 
-    public boolean shouldDropDoll = false;
+    public ItemStack dollItem = null;
     public float speed = 0.5F;
     public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
 
@@ -320,8 +321,6 @@ public class EntityClayMan
                     this.entityToAttack = null;
                 } else {
                     float atkRng = 0.5F;
-//                    for( int id : this.upgrade.keySet() )
-//                        atkRng = Math.max(CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).getTargetRange(this), atkRng);
 
                     if( this.getDistanceToEntity(this.entityToAttack) < atkRng && this.entityToAttack instanceof EntityLivingBase && !this.entityToAttack.isEntityInvulnerable() ) {
                         EntityLivingBase target = (EntityLivingBase)this.entityToAttack;
@@ -395,6 +394,9 @@ public class EntityClayMan
         this.dataWatcher.updateObject(DW_IS_RARE, nbt.getByte("isRare"));
         this.speed=nbt.getFloat("speed");
         this.canMove=nbt.getBoolean("canMove");
+        if( nbt.hasKey("dollItem") ) {
+            this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
+        }
 
         NBTTagList upgNbtList = nbt.getTagList("upgrade", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
@@ -420,6 +422,11 @@ public class EntityClayMan
         nbt.setByte("isRare", this.dataWatcher.getWatchableObjectByte(DW_IS_RARE));
         nbt.setFloat("speed", speed);
         nbt.setBoolean("canMove", canMove);
+        if( this.dollItem != null ) {
+            NBTTagCompound stackNbt = new NBTTagCompound();
+            this.dollItem.writeToNBT(stackNbt);
+            nbt.setTag("dollItem", stackNbt);
+        }
 
         NBTTagList upgNbtList = new NBTTagList();
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {

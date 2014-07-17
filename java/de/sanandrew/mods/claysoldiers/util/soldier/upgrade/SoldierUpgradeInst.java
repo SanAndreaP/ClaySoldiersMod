@@ -1,5 +1,6 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -9,10 +10,15 @@ import net.minecraft.nbt.NBTTagCompound;
 public final class SoldierUpgradeInst
 {
     private ISoldierUpgrade upgrade_;
+    private ItemStack storedItem;
     private NBTTagCompound nbt_ = new NBTTagCompound();
 
     public SoldierUpgradeInst(ISoldierUpgrade upgrade) {
         this.upgrade_ = upgrade;
+    }
+
+    public void setStoredItem(ItemStack stack) {
+        this.storedItem = stack;
     }
 
     public NBTTagCompound getNbtTag() {

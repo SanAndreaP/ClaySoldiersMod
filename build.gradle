@@ -22,8 +22,12 @@ group = "de.sanandrew.mods.claysoldiers"
 archivesBaseName = "ClaySoldiersMod"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
+    version = "1.7.10-10.13.0.1186"
     runDir = "eclipse/assets"
+}
+
+dependencies {
+    compile fileTree(dir: 'build/dependencies', include: ['SAPManPack*-deobf.jar'])
 }
 
 processResources {
@@ -49,10 +53,6 @@ sourceSets {
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    compile fileTree(dir: 'dependencies', include: 'SAPManPack*-deobf.jar')
 }
 
 tasks.withType(JavaCompile) {
