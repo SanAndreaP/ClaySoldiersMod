@@ -13,6 +13,7 @@ For both, you'll also need to get the Manager Pack Coremod from here -> [SanAndr
 
 ###For Developers
 I recommend you use the [ForgeGradleWrapper](https://github.com/SanAndreasP/ForgeGradleWrapper) to setup/build the mod. Use following steps:
+
 1. Run the fGradleW.py file (if you have python 2.7)
 2. Choose "[1] setup Forge", use the build which is listed inside the build.gradle under "minecraft->version". If you've already built with the wrapper, but have a different build number, update the workspace
 3. Clone the SAPManagerPack repo and put the repo folder (either directly or per symbolic link) inside the src folder of your workspace (like forge/src/SAPManagerPack/)
@@ -29,4 +30,4 @@ I recommend you use the [ForgeGradleWrapper](https://github.com/SanAndreasP/Forg
   6. ???
   7. Zoidberg
 
-Have fun playing ☺
+Have fun playing
