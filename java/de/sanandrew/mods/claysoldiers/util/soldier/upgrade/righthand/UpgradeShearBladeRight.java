@@ -6,6 +6,7 @@ import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -21,13 +22,13 @@ public class UpgradeShearBladeRight
     }
 
     @Override
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         float baseDmg = 1.0F;
         if( clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_EGG)) && target.getEntityToAttack() == null ) {
             baseDmg = 3.0F;
             ParticlePacketSender.sendCritFx(target.posX, target.posY, target.posZ, target.dimension);
         }
-        return damage + baseDmg + clayMan.getRNG().nextFloat();
+        damage.add(baseDmg + clayMan.getRNG().nextFloat());
     }
 
     @Override

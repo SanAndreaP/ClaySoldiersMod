@@ -1,6 +1,7 @@
 package de.sanandrew.mods.claysoldiers.network.packet;
 
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
+import de.sanandrew.core.manpack.util.javatuples.Sextet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.IPacket;
@@ -22,6 +23,8 @@ public class PacketParticleFX
     public static final byte FX_CRIT = 1;
     public static final byte FX_SOLDIER_DEATH = 2;
     public static final byte FX_HORSE_DEATH = 3;
+    public static final byte FX_DIGGING = 4;
+    public static final byte FX_SPELL = 5;
 
     @Override
     public void process(ByteBufInputStream stream, INetHandler handler) throws IOException {
@@ -37,6 +40,14 @@ public class PacketParticleFX
                 break;
             case FX_HORSE_DEATH:
                 CSM_Main.proxy.spawnParticles(FX_HORSE_DEATH, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readByte()));
+                break;
+            case FX_DIGGING:
+                CSM_Main.proxy.spawnParticles(FX_DIGGING, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
+                break;
+            case FX_SPELL:
+                CSM_Main.proxy.spawnParticles(FX_SPELL, Sextet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(),
+                                                                      stream.readDouble(), stream.readDouble(), stream.readDouble())
+                );
                 break;
         }
     }
@@ -68,6 +79,20 @@ public class PacketParticleFX
                 stream.writeDouble((double) dataTuple.getValue(2));
                 stream.writeDouble((double) dataTuple.getValue(3));
                 stream.writeByte((byte) dataTuple.getValue(4));
+                break;
+            case FX_DIGGING:
+                stream.writeDouble((double) dataTuple.getValue(1));
+                stream.writeDouble((double) dataTuple.getValue(2));
+                stream.writeDouble((double) dataTuple.getValue(3));
+                stream.writeUTF((String) dataTuple.getValue(4));
+                break;
+            case FX_SPELL:
+                stream.writeDouble((double) dataTuple.getValue(1));
+                stream.writeDouble((double) dataTuple.getValue(2));
+                stream.writeDouble((double) dataTuple.getValue(3));
+                stream.writeDouble((double) dataTuple.getValue(4));
+                stream.writeDouble((double) dataTuple.getValue(5));
+                stream.writeDouble((double) dataTuple.getValue(6));
                 break;
         }
     }

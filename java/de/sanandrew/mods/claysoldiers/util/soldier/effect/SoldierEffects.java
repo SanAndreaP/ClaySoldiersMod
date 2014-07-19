@@ -16,18 +16,18 @@ import java.util.Map;
 
 public class SoldierEffects
 {
-    private static final Map<String, ISoldierEffect> NAME_TO_EFFECT_MAP_ = Maps.newHashMap();
-    private static final Map<ISoldierEffect, String> EFFECT_TO_NAME_MAP_ = Maps.newHashMap();
-    private static final Map<ISoldierEffect, Byte> EFFECT_TO_RENDER_ID_MAP_ = Maps.newHashMap();
-    private static final Map<Byte, ISoldierEffect> RENDER_ID_TO_EFFECT_MAP_ = Maps.newHashMap();
+    private static final Map<String, ASoldierEffect> NAME_TO_EFFECT_MAP_ = Maps.newHashMap();
+    private static final Map<ASoldierEffect, String> EFFECT_TO_NAME_MAP_ = Maps.newHashMap();
+    private static final Map<ASoldierEffect, Byte> EFFECT_TO_RENDER_ID_MAP_ = Maps.newHashMap();
+    private static final Map<Byte, ASoldierEffect> RENDER_ID_TO_EFFECT_MAP_ = Maps.newHashMap();
 
     private static byte currRenderId = 0;
 
-    public static void registerEffect(String name, ISoldierEffect instance) {
+    public static void registerEffect(String name, ASoldierEffect instance) {
         registerEffect(name, instance, -1);
     }
 
-    public static void registerEffect(String name, ISoldierEffect instance, int clientRenderId) {
+    public static void registerEffect(String name, ASoldierEffect instance, int clientRenderId) {
         NAME_TO_EFFECT_MAP_.put(name, instance);
         EFFECT_TO_NAME_MAP_.put(instance, name);
 
@@ -43,15 +43,15 @@ public class SoldierEffects
         }
     }
 
-    public static ISoldierEffect getEffectFromName(String name) {
+    public static ASoldierEffect getEffectFromName(String name) {
         return NAME_TO_EFFECT_MAP_.get(name);
     }
 
-    public static String getNameFromEffect(ISoldierEffect effect) {
+    public static String getNameFromEffect(ASoldierEffect effect) {
         return EFFECT_TO_NAME_MAP_.get(effect);
     }
 
-    public static byte getRenderIdFromEffect(ISoldierEffect upgrade) {
+    public static byte getRenderIdFromEffect(ASoldierEffect upgrade) {
         if( EFFECT_TO_RENDER_ID_MAP_.containsKey(upgrade) ) {
             return EFFECT_TO_RENDER_ID_MAP_.get(upgrade);
         } else {
@@ -59,7 +59,7 @@ public class SoldierEffects
         }
     }
 
-    public static ISoldierEffect getEffectFromRenderId(int renderId) {
+    public static ASoldierEffect getEffectFromRenderId(int renderId) {
         return RENDER_ID_TO_EFFECT_MAP_.get((byte) renderId);
     }
 
@@ -75,14 +75,16 @@ public class SoldierEffects
     }
 
     public static final String EFF_SLIMEFEET = "slimefeet";
+    public static final String EFF_SLOWMOTION = "slowmotion";
 
     static {
         registerEffect(EFF_SLIMEFEET, new EffectSlimeFeet(), getNewRenderId());
+        registerEffect(EFF_SLOWMOTION, new EffectSlowMotion());
     }
 
     public static class RenderIdException extends RuntimeException {
         public RenderIdException() {
-            super("There are no more render IDs for soldier upgrade available!");
+            super("There are no more render IDs for the soldier effect available!");
         }
     }
 }

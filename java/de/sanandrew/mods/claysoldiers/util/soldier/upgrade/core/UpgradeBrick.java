@@ -1,11 +1,11 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core;
 
-import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -18,7 +18,7 @@ public class UpgradeBrick
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { }
 
     @Override
-    public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage) {
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         clayMan.knockBack = Triplet.with(0.0D, 0.0D, 0.0D);
         return super.onSoldierHurt(clayMan, upgradeInst, source, damage);
     }
@@ -36,8 +36,8 @@ public class UpgradeBrick
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

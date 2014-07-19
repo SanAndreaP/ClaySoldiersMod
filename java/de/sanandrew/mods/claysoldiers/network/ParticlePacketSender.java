@@ -8,7 +8,9 @@ package de.sanandrew.mods.claysoldiers.network;
 
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
+import de.sanandrew.core.manpack.util.javatuples.Septet;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 public final class ParticlePacketSender
@@ -20,6 +22,18 @@ public final class ParticlePacketSender
     public static void sendBreakFx(double x, double y, double z, int dimension, Item item) {
         PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, dimension, x, y, z, 64.0D,
                                         Quintet.with(PacketParticleFX.FX_BREAK, x, y, z, Item.itemRegistry.getNameForObject(item))
+        );
+    }
+
+    public static void sendDiggingFx(double x, double y, double z, int dimension, Block block) {
+        PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, dimension, x, y, z, 64.0D,
+                                        Quintet.with(PacketParticleFX.FX_DIGGING, x, y, z, Block.blockRegistry.getNameForObject(block))
+        );
+    }
+
+    public static void sendSpellFx(double x, double y, double z, int dimension, double red, double green, double blue) {
+        PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, dimension, x, y, z, 64.0D,
+                                        Septet.with(PacketParticleFX.FX_SPELL, x, y, z, red, green, blue)
         );
     }
 

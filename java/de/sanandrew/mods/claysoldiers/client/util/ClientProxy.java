@@ -1,28 +1,24 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.util;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import de.sanandrew.core.manpack.util.javatuples.Quartet;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.event.*;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
-import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
-import de.sanandrew.mods.claysoldiers.client.render.entity.RenderHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
-import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
+import de.sanandrew.mods.claysoldiers.util.ModEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-/**
- * @author SanAndreasP
- * @version 1.0
- */
 public class ClientProxy extends CommonProxy
 {
     @Override
@@ -31,8 +27,7 @@ public class ClientProxy extends CommonProxy
 
         CSM_Main.channel.register(new ClientPacketHandler());
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityClayMan.class, new RenderClayMan());
-        RenderingRegistry.registerEntityRenderingHandler(EntityHorseMount.class, new RenderHorseMount());
+        ModEntities.registerRenderers();
 
         CSM_Main.EVENT_BUS.register(new RenderSoldierRightHandEvent());
         CSM_Main.EVENT_BUS.register(new RenderSoldierLeftHandEvent());
@@ -45,22 +40,7 @@ public class ClientProxy extends CommonProxy
     @Override
     @SuppressWarnings("unchecked")
     public void spawnParticles(byte particleId, Tuple particleData) {
-        Minecraft mc = Minecraft.getMinecraft();
-        switch( particleId ) {
-            case PacketParticleFX.FX_BREAK:
-                ParticleHelper.spawnBreakFx((Quartet) particleData, mc);
-                break;
-            case PacketParticleFX.FX_CRIT:
-                ParticleHelper.spawnCritFx((Triplet) particleData, mc);
-                break;
-            case PacketParticleFX.FX_SOLDIER_DEATH:
-                ParticleHelper.spawnSoldierDeathFx((Quartet) particleData, mc);
-                break;
-            case PacketParticleFX.FX_HORSE_DEATH:
-                ParticleHelper.spawnHorseDeathFx((Quartet) particleData, mc);
-                break;
-
-        }
+        ParticleHelper.spawnParticles(particleId, particleData);
     }
 
     @Override

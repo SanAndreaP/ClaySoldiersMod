@@ -12,7 +12,10 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeNethe
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.UpgradeBrick;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.UpgradeIronIngot;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeFirecharge;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeGravel;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeShearBladeLeft;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeSnow;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.*;
 import net.minecraft.init.Blocks;
@@ -31,27 +34,27 @@ import java.util.Map;
  */
 public final class SoldierUpgrades
 {
-    private static final Map<String, ISoldierUpgrade> NAME_TO_UPGRADE_MAP_ = Maps.newHashMap();
-    private static final Map<ISoldierUpgrade, String> UPGRADE_TO_NAME_MAP_ = Maps.newHashMap();
-    private static final Map<Pair<Item, Integer>, ISoldierUpgrade> ITEM_TO_UPGRADE_MAP_ = Maps.newHashMap();
-    private static final Map<ISoldierUpgrade, Byte> UPGRADE_TO_RENDER_ID_MAP_ = Maps.newHashMap();
-    private static final Map<Byte, ISoldierUpgrade> RENDER_ID_TO_UPGRADE_MAP_ = Maps.newHashMap();
+    private static final Map<String, ASoldierUpgrade> NAME_TO_UPGRADE_MAP_ = Maps.newHashMap();
+    private static final Map<ASoldierUpgrade, String> UPGRADE_TO_NAME_MAP_ = Maps.newHashMap();
+    private static final Map<Pair<Item, Integer>, ASoldierUpgrade> ITEM_TO_UPGRADE_MAP_ = Maps.newHashMap();
+    private static final Map<ASoldierUpgrade, Byte> UPGRADE_TO_RENDER_ID_MAP_ = Maps.newHashMap();
+    private static final Map<Byte, ASoldierUpgrade> RENDER_ID_TO_UPGRADE_MAP_ = Maps.newHashMap();
 
     private static byte currRenderId = 0;
 
-    public static void registerUpgrade(String name, ItemStack item, ISoldierUpgrade instance) {
+    public static void registerUpgrade(String name, ItemStack item, ASoldierUpgrade instance) {
         registerUpgrade(name, item, instance, -1);
     }
 
-    public static void registerUpgrade(String name, ItemStack item, ISoldierUpgrade instance, int clientRenderId) {
+    public static void registerUpgrade(String name, ItemStack item, ASoldierUpgrade instance, int clientRenderId) {
         registerUpgrade(name, new ItemStack[]{item}, instance, clientRenderId);
     }
 
-    public static void registerUpgrade(String name, ItemStack[] items, ISoldierUpgrade instance) {
+    public static void registerUpgrade(String name, ItemStack[] items, ASoldierUpgrade instance) {
         registerUpgrade(name, items, instance, -1);
     }
 
-    public static void registerUpgrade(String name, ItemStack[] items, ISoldierUpgrade instance, int clientRenderId) {
+    public static void registerUpgrade(String name, ItemStack[] items, ASoldierUpgrade instance, int clientRenderId) {
         NAME_TO_UPGRADE_MAP_.put(name, instance);
         UPGRADE_TO_NAME_MAP_.put(instance, name);
         for( ItemStack upgradeItem : items ) {
@@ -70,15 +73,15 @@ public final class SoldierUpgrades
         }
     }
 
-    public static ISoldierUpgrade getUpgradeFromName(String name) {
+    public static ASoldierUpgrade getUpgradeFromName(String name) {
         return NAME_TO_UPGRADE_MAP_.get(name);
     }
 
-    public static String getNameFromUpgrade(ISoldierUpgrade upgrade) {
+    public static String getNameFromUpgrade(ASoldierUpgrade upgrade) {
         return UPGRADE_TO_NAME_MAP_.get(upgrade);
     }
 
-    public static ISoldierUpgrade getUpgradeFromItem(ItemStack item) {
+    public static ASoldierUpgrade getUpgradeFromItem(ItemStack item) {
         if( item != null ) {
             Pair<Item, Integer> itemData = Pair.with(item.getItem(), OreDictionary.WILDCARD_VALUE);
             if( ITEM_TO_UPGRADE_MAP_.containsKey(itemData) ) {
@@ -94,7 +97,7 @@ public final class SoldierUpgrades
         return null;
     }
 
-    public static byte getRenderIdFromUpgrade(ISoldierUpgrade upgrade) {
+    public static byte getRenderIdFromUpgrade(ASoldierUpgrade upgrade) {
         if( UPGRADE_TO_RENDER_ID_MAP_.containsKey(upgrade) ) {
             return UPGRADE_TO_RENDER_ID_MAP_.get(upgrade);
         } else {
@@ -102,7 +105,7 @@ public final class SoldierUpgrades
         }
     }
 
-    public static ISoldierUpgrade getUpgradeFromRenderId(int renderId) {
+    public static ASoldierUpgrade getUpgradeFromRenderId(int renderId) {
         return RENDER_ID_TO_UPGRADE_MAP_.get((byte) renderId);
     }
 
@@ -136,6 +139,9 @@ public final class SoldierUpgrades
     public static final String UPG_GUNPOWDER = "gunpowder";
     public static final String UPG_BRICK = "brick";
     public static final String UPG_SLIMEBALLS = "slimeball";
+    public static final String UPG_GRAVEL = "gravel";
+    public static final String UPG_SNOW = "snow";
+    public static final String UPG_FIRECHARGE = "firecharge";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -167,6 +173,13 @@ public final class SoldierUpgrades
                         }, new UpgradeGunpowder(), getNewRenderId());
         registerUpgrade(UPG_BRICK, new ItemStack(Items.brick), new UpgradeBrick(), getNewRenderId());
         registerUpgrade(UPG_SLIMEBALLS, new ItemStack(Items.slime_ball), new UpgradeSlimeball());
+        registerUpgrade(UPG_GRAVEL, new ItemStack(Blocks.gravel), new UpgradeGravel(), getNewRenderId());
+        registerUpgrade(UPG_SNOW, new ItemStack[] {
+                                new ItemStack(Blocks.snow),
+                                new ItemStack(Blocks.snow_layer),
+                                new ItemStack(Items.snowball)
+                        }, new UpgradeSnow(), getNewRenderId());
+        registerUpgrade(UPG_FIRECHARGE, new ItemStack(Items.fire_charge), new UpgradeFirecharge(), getNewRenderId());
     }
 
     public static class RenderIdException extends RuntimeException {

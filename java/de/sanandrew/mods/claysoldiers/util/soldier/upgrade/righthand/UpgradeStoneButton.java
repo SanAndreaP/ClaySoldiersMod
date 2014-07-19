@@ -4,7 +4,7 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -14,13 +14,8 @@ public class UpgradeStoneButton
     extends AUpgradeRightHanded //TODO: this is a MISC upgrade, not a RIGHTHAND upgrade! Please change!
 {
     @Override
-    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        NBTTagCompound nbt = upgradeInst.getNbtTag();
-    }
-
-    @Override
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
-        return damage + 2.0F + clayMan.getRNG().nextFloat();
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
+        damage.add(2.0F + clayMan.getRNG().nextFloat());
     }
 
     @Override
@@ -35,8 +30,8 @@ public class UpgradeStoneButton
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

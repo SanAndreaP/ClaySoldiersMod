@@ -1,7 +1,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
+import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
 
@@ -13,8 +13,8 @@ public class UpgradeEgg
     extends AUpgradeMisc
 {
     @Override
-    public AttackState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
-        return AttackState.DENY;
+    public MethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
+        return MethodState.DENY;
     }
 
     @Override
@@ -24,8 +24,8 @@ public class UpgradeEgg
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

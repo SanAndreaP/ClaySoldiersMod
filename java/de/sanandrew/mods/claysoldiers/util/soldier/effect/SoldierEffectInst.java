@@ -8,10 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public final class SoldierEffectInst
 {
-    private ISoldierEffect effect_;
+    private ASoldierEffect effect_;
     private NBTTagCompound nbt_ = new NBTTagCompound();
 
-    public SoldierEffectInst(ISoldierEffect effect) {
+    public SoldierEffectInst(ASoldierEffect effect) {
         this.effect_ = effect;
     }
 
@@ -19,7 +19,7 @@ public final class SoldierEffectInst
         return this.nbt_;
     }
 
-    public ISoldierEffect getEffect() {
+    public ASoldierEffect getEffect() {
         return this.effect_;
     }
 

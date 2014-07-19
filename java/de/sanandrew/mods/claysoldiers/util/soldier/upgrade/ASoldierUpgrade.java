@@ -1,23 +1,29 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
-import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
+import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
+import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MovingObjectPosition;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
  * @version 1.0
  */
-public interface ISoldierUpgrade
+public abstract class ASoldierUpgrade
 {
     /**
      * Fired when an instance for this upgrade is created. Use this to initiate all needed values in the NBT provided by the instance
      * @param clayMan the soldier calling the method
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      */
-    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst);
+    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+
+    }
 
     /**
      * Determines if the calling soldier should target the other soldier.
@@ -29,7 +35,9 @@ public interface ISoldierUpgrade
      *         <code>DENY, forces the calling soldier to ignore the other soldier<br>
      *         <code>SKIP, if the calling soldier should skip this upgrade for checking
      */
-    public AttackState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target);
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+        return MethodState.SKIP;
+    }
 
     /**
      * Determines if the calling soldier should be targeted by the targeting soldier.
@@ -37,10 +45,12 @@ public interface ISoldierUpgrade
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      * @param attacker the solder targeting the calling soldier
      * @return An AttackStage Enum value. See
-     *         {@link de.sanandrew.mods.claysoldiers.util.soldier.AttackState AttackStage}
+     *         {@link de.sanandrew.mods.claysoldiers.util.soldier.MethodState AttackStage}
      *         for more information.
      */
-    public AttackState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker);
+    public MethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
+        return MethodState.SKIP;
+    }
 
     /**
      * Triggered when a soldier attempts to attack the target.
@@ -50,7 +60,13 @@ public interface ISoldierUpgrade
      * @param damage the initial damage the soldier would've dealt
      * @return the new damage value. Note that with multiple upgrade modifying the damage value, the highest damage from those upgrade will be applied!
      */
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage);
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
+
+    }
+
+    public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
+
+    }
 
     /**
      * Triggered when a soldier successfully damaged the target.
@@ -58,11 +74,17 @@ public interface ISoldierUpgrade
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      * @param target the soldier which is targeted
      */
-    public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target);
+    public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
 
-    public void onSoldierDeath(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source);
+    }
 
-    public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage);
+    public void onSoldierDeath(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source) {
+
+    }
+
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
+        return true;
+    }
 
     /**
      * Called when a soldier holding the upgrade updates.
@@ -70,9 +92,13 @@ public interface ISoldierUpgrade
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      * @return true, if the upgrade should be removed from the soldiers upgrade list
      */
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst);
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return false;
+    }
 
-    public void onClientUpdate(EntityClayMan clayMan);
+    public void onClientUpdate(EntityClayMan clayMan) {
+
+    }
 
     /**
      * Checks if the given upgrade is compatible with this upgrade.
@@ -81,12 +107,27 @@ public interface ISoldierUpgrade
      * @param upgrade the upgrade to be checked
      * @return true, if the upgrade can co-exist with this upgrade
      */
-    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ISoldierUpgrade upgrade);
+    public abstract boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade);
 
     /**
      * Called when a soldier picks the itemData up
      * @param clayMan the soldier calling the method
      * @param stack the ItemStack which is picked up
      */
-    public void onPickup(EntityClayMan clayMan, ItemStack stack);
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+
+    }
+
+    public void getAiMoveSpeed(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableFloat speed) {
+
+    }
+
+    public void onProjectileHit(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MovingObjectPosition target,
+                                ISoldierProjectile<? extends EntityThrowable> projectile) {
+
+    }
+
+    protected void consumeItem(ItemStack stack, SoldierUpgradeInst upgInst) {
+        upgInst.setStoredItem(stack.splitStack(1));
+    }
 }

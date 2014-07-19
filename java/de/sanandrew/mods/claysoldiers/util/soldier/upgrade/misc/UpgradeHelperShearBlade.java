@@ -2,7 +2,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.AUpgradeLeftHanded;
@@ -22,39 +22,44 @@ public class UpgradeHelperShearBlade
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        ISoldierUpgrade upgrade = null;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        ASoldierUpgrade upgrade = null;
+        ItemStack savedItem = null;
+
         if( stack.getItem() == ModItems.shearBlade ) {
             if( !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) ) {
                 upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARLEFT);
+                savedItem = stack;
             } else if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
                 upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARRIGHT);
+                savedItem = stack;
             }
         } else {
             if( !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) ) {
-                if( clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
-                    clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
-                }
+                clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
                 upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARLEFT);
+                savedItem = new ItemStack(ModItems.shearBlade, 1);
             } else if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
-                if( upgrade == null ) {
-                    clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
-                }
-
+                clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
                 upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARRIGHT);
+                savedItem = new ItemStack(ModItems.shearBlade, 1);
             }
         }
 
         if( upgrade != null ) {
+            if( savedItem != stack ) {
+                stack.stackSize--;
+            }
+
             SoldierUpgradeInst upgradeInst = clayMan.addNewUpgrade(upgrade);
+            this.consumeItem(savedItem, upgradeInst);
             upgrade.onConstruct(clayMan, upgradeInst);
-            stack.stackSize--;
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         }
     }
 
     @Override
-    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ISoldierUpgrade upgrade) {
+    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         return !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) || !clayMan.hasUpgradeInst(AUpgradeRightHanded.class);
     }
 }

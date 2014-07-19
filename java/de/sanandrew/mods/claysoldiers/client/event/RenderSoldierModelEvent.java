@@ -52,7 +52,6 @@ public class RenderSoldierModelEvent
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onSoldierRenderArmor(SoldierRenderEvent.RenderModelEvent event) {
         if( !this.isInitialized ) {
             this.isInitialized = true;

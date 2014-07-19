@@ -9,23 +9,43 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public final class SoldierUpgradeInst
 {
-    private ISoldierUpgrade upgrade_;
-    private ItemStack storedItem;
+    private ASoldierUpgrade upgrade_;
+    private ItemStack storedItem_;
     private NBTTagCompound nbt_ = new NBTTagCompound();
 
-    public SoldierUpgradeInst(ISoldierUpgrade upgrade) {
+    public SoldierUpgradeInst(ASoldierUpgrade upgrade) {
         this.upgrade_ = upgrade;
     }
 
+    public ItemStack getStoredItem() {
+        return this.storedItem_;
+    }
+
     public void setStoredItem(ItemStack stack) {
-        this.storedItem = stack;
+        this.storedItem_ = stack;
+    }
+
+    public void readStoredItemFromNBT(NBTTagCompound nbt) {
+        if( nbt != null ) {
+            this.storedItem_ = ItemStack.loadItemStackFromNBT(nbt);
+        }
+    }
+
+    public NBTTagCompound saveStoredItemToNBT() {
+        if( this.storedItem_ != null ) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            this.storedItem_.writeToNBT(nbt);
+            return nbt;
+        }
+
+        return null;
     }
 
     public NBTTagCompound getNbtTag() {
         return this.nbt_;
     }
 
-    public ISoldierUpgrade getUpgrade() {
+    public ASoldierUpgrade getUpgrade() {
         return this.upgrade_;
     }
 

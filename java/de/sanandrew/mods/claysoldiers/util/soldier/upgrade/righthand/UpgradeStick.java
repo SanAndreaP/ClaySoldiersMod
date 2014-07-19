@@ -6,6 +6,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -21,8 +22,8 @@ public class UpgradeStick
     }
 
     @Override
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
-        return damage + 2.0F + clayMan.getRNG().nextFloat();
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
+        damage.add(2.0F + clayMan.getRNG().nextFloat());
     }
 
     @Override
@@ -41,8 +42,8 @@ public class UpgradeStick
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

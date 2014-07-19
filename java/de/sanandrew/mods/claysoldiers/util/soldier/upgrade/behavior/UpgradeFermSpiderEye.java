@@ -1,17 +1,17 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
-import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
+import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -33,12 +33,12 @@ public class UpgradeFermSpiderEye
     }
 
     @Override
-    public AttackState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        return AttackState.DENY;
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+        return MethodState.DENY;
     }
 
     @Override
-    public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage) {
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         if( source.getEntity() instanceof EntityClayMan ) {
             clayMan.targetSoldier((EntityClayMan)source.getEntity(), false);
         }
@@ -46,8 +46,8 @@ public class UpgradeFermSpiderEye
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

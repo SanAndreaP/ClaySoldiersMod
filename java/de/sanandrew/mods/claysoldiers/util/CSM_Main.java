@@ -10,11 +10,8 @@ import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
-import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -53,7 +50,6 @@ public final class CSM_Main
     };
 
     @Mod.EventHandler
-    @SuppressWarnings("unused")
     public void modPreInit(FMLPreInitializationEvent event) {
         ModConfig.config = new Configuration(event.getSuggestedConfigurationFile());
         ModConfig.syncConfig();
@@ -62,7 +58,6 @@ public final class CSM_Main
     }
 
     @Mod.EventHandler
-    @SuppressWarnings("unused")
     public void modInit(FMLInitializationEvent event) {
         FMLCommonHandler.instance().bus().register(this.instance);
 
@@ -70,9 +65,7 @@ public final class CSM_Main
 
         proxy.modInit();
 
-        int entityId = 0;
-        EntityRegistry.registerModEntity(EntityClayMan.class, CSM_Main.MOD_ID + ":clayman", entityId++, this, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityHorseMount.class, CSM_Main.MOD_ID + ":horsemount", entityId++, this, 64, 1, true);
+        ModEntities.registerEntities(this);
 
         BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.dollSoldier, new BehaviorSoldierDispenseItem());
         BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.disruptor, new BehaviorDisruptorDispenseItem());
@@ -80,7 +73,6 @@ public final class CSM_Main
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onConfigChanged(OnConfigChangedEvent eventArgs) {
         if( eventArgs.modID.equals(MOD_ID) ) {
             ModConfig.syncConfig();

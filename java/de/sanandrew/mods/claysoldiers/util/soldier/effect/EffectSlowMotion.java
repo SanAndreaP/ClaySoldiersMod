@@ -7,32 +7,30 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
-public class EffectSlimeFeet
+public class EffectSlowMotion
     extends ASoldierEffect
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        effectInst.getNbtTag().setShort("ticksRemain", (short)60);
+        effectInst.getNbtTag().setShort("ticksRemaining", (short) 60);
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        clayMan.canMove = false;
-        short ticksRemain = (short) (effectInst.getNbtTag().getShort("ticksRemain") - 1);
-
-        if( ticksRemain == 0 ) {
-            return true;
+        if( clayMan.ticksExisted % 10 == 0 ) {
+            ParticlePacketSender.sendSpellFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, 1.0D, 1.0D, 1.0D);
         }
 
-        effectInst.getNbtTag().setShort("ticksRemain", ticksRemain);
-        return false;
+        short remaining = (short) (effectInst.getNbtTag().getShort("ticksRemaining") - 1);
+        effectInst.getNbtTag().setShort("ticksRemaining", remaining);
+        return remaining == 0;
     }
 
-
-
     @Override
-    public void onClientUpdate(EntityClayMan clayMan) {
-        clayMan.canMove = false;
+    public void getAiMoveSpeed(EntityClayMan clayMan, SoldierEffectInst effectInst, MutableFloat speed) {
+        speed.setValue(speed.getValue() / 2.0F);
     }
 }

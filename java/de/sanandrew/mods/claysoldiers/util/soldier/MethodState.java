@@ -10,7 +10,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier;
  * <code>SKIP</code> - if the called soldier should skip this upgrade for checking
  */
 
-public enum AttackState
+public enum MethodState
 {
     ALLOW, DENY, SKIP
 }

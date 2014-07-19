@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -21,11 +22,11 @@ public class UpgradeShearBladeLeft
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         NBTTagCompound nbt = upgradeInst.getNbtTag();
-        nbt.setInteger("uses", 25);
+        nbt.setShort("uses", (short) 25);
     }
 
     @Override
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         float baseDmg = 1.0F;
         if( clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_EGG)) && target.getEntityToAttack() == null ) {
             baseDmg = 3.0F;
@@ -33,12 +34,12 @@ public class UpgradeShearBladeLeft
                                             Quartet.with(PacketParticleFX.FX_CRIT, target.posX, target.posY, target.posZ)
             );
         }
-        return damage + baseDmg + clayMan.getRNG().nextFloat();
+        damage.add(baseDmg + clayMan.getRNG().nextFloat());
     }
 
     @Override
     public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        upgradeInst.getNbtTag().setInteger("uses", upgradeInst.getNbtTag().getInteger("uses") - 1);
+        upgradeInst.getNbtTag().setShort("uses",  (short) (upgradeInst.getNbtTag().getShort("uses") - 1));
     }
 
     @Override

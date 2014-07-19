@@ -3,10 +3,10 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -22,14 +22,9 @@ public class UpgradeBlazeRod
     }
 
     @Override
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
-    	if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_COAL)) ) {
-    		target.setFire(3);
-    	} else {
-    		target.setFire(6);
-    	}
-
-        return damage + 1.0F + clayMan.getRNG().nextFloat();
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
+    	target.setFire(3);
+        damage.add(1.0F + clayMan.getRNG().nextFloat());
     }
 
     @Override
@@ -48,8 +43,8 @@ public class UpgradeBlazeRod
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

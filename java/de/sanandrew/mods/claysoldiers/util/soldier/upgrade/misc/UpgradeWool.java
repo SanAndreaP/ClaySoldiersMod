@@ -1,12 +1,12 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
-import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -24,18 +24,24 @@ public class UpgradeWool
     }
 
     @Override
-    public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage) {
-        return Pair.with(damage >= 1.0F ? damage - 1.0F : 0.0F, true);
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
+        if( damage.floatValue() >= 1.0F ) {
+            damage.subtract(1.0F);
+        } else {
+            damage.setValue(0.0F);
+        }
+
+        return true;
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         clayMan.setMiscColor(15 - stack.getItemDamage());
         clayMan.playSound("dig.cloth", 1.0F, 1.0F);
     }
 
     @Override
-    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ISoldierUpgrade upgrade) {
+    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         return clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_LEATHER));
     }
 }

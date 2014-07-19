@@ -19,7 +19,7 @@ public class EntityHorseDeathFX
     public EntityHorseDeathFX(World world, double x, double y, double z, EnumHorseType type) {
         super(world, x, y, z, ModItems.dollHorseMount);
 
-        RGBAValues splitClr = SAPUtils.getRgbaFromColorInt(type.itemData.getValue1());
+        RGBAValues splitClr = SAPUtils.getRgbaFromColorInt(type.typeColor);
 
         this.setParticleIcon(ModItems.dollHorseMount.getIconFromType(type));
 

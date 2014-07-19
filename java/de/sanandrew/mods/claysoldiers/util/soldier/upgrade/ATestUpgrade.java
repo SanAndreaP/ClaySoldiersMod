@@ -1,16 +1,17 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.AttackState;
+import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
  * @version 1.0
  */
 public abstract class ATestUpgrade
-    implements ISoldierUpgrade
+    extends ASoldierUpgrade
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -19,20 +20,20 @@ public abstract class ATestUpgrade
     }
 
     @Override
-    public AttackState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        return AttackState.SKIP;
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+        return MethodState.SKIP;
     }
 
     @Override
-    public AttackState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
-        return AttackState.DENY;
+    public MethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
+        return MethodState.DENY;
     }
 
     @Override
-    public float onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, float damage) {
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         upgradeInst.getNbtTag().setInteger("uses", upgradeInst.getNbtTag().getInteger("uses")-1);
         target.targetSoldier(clayMan);
-        return 10F;
+        damage.setValue(10.0F);
     }
 
     @Override
@@ -50,13 +51,12 @@ public abstract class ATestUpgrade
     }
 
     @Override
-    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ISoldierUpgrade upgrade) {
+    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         return false;
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 

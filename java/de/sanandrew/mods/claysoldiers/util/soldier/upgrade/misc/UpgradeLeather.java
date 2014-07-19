@@ -1,6 +1,5 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
-import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
@@ -11,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * @author SanAndreas
@@ -40,14 +40,15 @@ public class UpgradeLeather
     }
 
     @Override
-    public Pair<Float, Boolean> onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, float damage) {
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         upgradeInst.getNbtTag().setInteger("uses", upgradeInst.getNbtTag().getInteger("uses") - 1);
-        return Pair.with(damage / 2.0F, true);
+        damage.setValue(damage.floatValue() / 2.0F);
+        return true;
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, ItemStack stack) {
-        stack.stackSize--;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }
