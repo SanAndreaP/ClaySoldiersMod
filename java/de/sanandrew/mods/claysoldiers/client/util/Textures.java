@@ -10,4 +10,7 @@ public final class Textures {
     public static final ResourceLocation CLAYMAN_PADDING = new ResourceLocation("claysoldiers", "textures/entity/wearables/padding.png");
     public static final ResourceLocation CLAYMAN_GUNPOWDER = new ResourceLocation("claysoldiers", "textures/entity/wearables/gunpowder.png");
     public static final ResourceLocation CLAYMAN_SLIMEFEET = new ResourceLocation("claysoldiers", "textures/entity/wearables/slimefeet.png");
+
+    public static final ResourceLocation NEXUS_TEXTURE = new ResourceLocation("claysoldiers", "textures/entity/nexus/normal.png");
+    public static final ResourceLocation NEXUS_GLOWING = new ResourceLocation("claysoldiers", "textures/entity/nexus/glow_map.png");
 }

@@ -54,7 +54,8 @@ public final class CSM_Main
         ModConfig.config = new Configuration(event.getSuggestedConfigurationFile());
         ModConfig.syncConfig();
 
-        ModItems.registerItems();
+        ModItems.register();
+        ModBlocks.register();
     }
 
     @Mod.EventHandler

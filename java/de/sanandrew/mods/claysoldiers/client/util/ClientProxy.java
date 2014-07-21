@@ -6,11 +6,14 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.util;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.event.*;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
+import de.sanandrew.mods.claysoldiers.client.render.tileentity.RenderClayNexus;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
+import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.util.ModEntities;
@@ -33,6 +36,8 @@ public class ClientProxy extends CommonProxy
         CSM_Main.EVENT_BUS.register(new RenderSoldierLeftHandEvent());
         CSM_Main.EVENT_BUS.register(new RenderSoldierModelEvent());
         CSM_Main.EVENT_BUS.register(new RenderSoldierBodyEvent());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayNexus.class, new RenderClayNexus());
 
         MinecraftForge.EVENT_BUS.register(new RenderHudOverlayEvent());
     }

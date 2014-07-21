@@ -20,7 +20,7 @@ public final class ModItems
 
     public static ItemHorseDoll dollHorseMount = new ItemHorseDoll();
 
-    public static void registerItems() {
+    public static void register() {
         dollSoldier.setCreativeTab(CSM_Main.clayTab);
         dollSoldier.setUnlocalizedName(CSM_Main.MOD_ID + ":clayman_doll");
 
