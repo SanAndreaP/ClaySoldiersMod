@@ -15,6 +15,7 @@ import de.sanandrew.mods.claysoldiers.entity.mounts.IMount;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
+import de.sanandrew.mods.claysoldiers.util.BugfixHelper;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
@@ -227,6 +228,15 @@ public class EntityClayMan
     @Override
     @SuppressWarnings("unchecked")
     protected void updateEntityActionState() {
+        //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
+        if( !this.hasAttacked && this.entityToAttack != null ) {
+            this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.entityToAttack, 16.0F, true, false, false, true));
+        } else if( !this.hasAttacked && (!this.hasPath() && this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0)
+                && this.entityAge < 100 )
+        {
+            this.updateWanderPath();
+        }
+
         super.updateEntityActionState();
 
         if( !this.worldObj.isRemote ) {
@@ -294,7 +304,7 @@ public class EntityClayMan
                         } else if( !this.canEntityBeSeen(this.targetFollow_) ) {
                             this.targetFollow_ = null;
                         } else if( !hasPath() || rand.nextInt(10) == 0 ) {
-                            setPathToEntity(worldObj.getPathEntityToEntity(this.targetFollow_, this, 8.0F, false, false, false, false));
+                            setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 8.0F, false, false, false, false));
                         }
 
                         if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
@@ -411,6 +421,39 @@ public class EntityClayMan
         return "step.gravel";
     }
 
+    //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
+    @Override
+    protected void updateWanderPath() {
+        this.worldObj.theProfiler.startSection("stroll");
+        boolean blockFound = false;
+        int x = -1;
+        int y = -1;
+        int z = -1;
+        float maxPathWeight = -99999.0F;
+
+        for( int l = 0; l < 10; ++l ) {
+            int currX = MathHelper.floor_double(this.posX + (double)this.rand.nextInt(13) - 6.0D);
+            int currY = MathHelper.floor_double(this.posY + (double)this.rand.nextInt(7) - 3.0D);
+            int currZ = MathHelper.floor_double(this.posZ + (double)this.rand.nextInt(13) - 6.0D);
+            float pathWeight = this.getBlockPathWeight(currX, currY, currZ);
+
+            if( pathWeight > maxPathWeight ) {
+                maxPathWeight = pathWeight;
+                x = currX;
+                y = currY;
+                z = currZ;
+                blockFound = true;
+            }
+        }
+
+        if( blockFound ) {
+            this.setPathToEntity(BugfixHelper.getEntityPathToXYZ(this.worldObj, this, x, y, z, 10.0F, true, false, false, true));
+        }
+
+        this.worldObj.theProfiler.endSection();
+    }
+    //BUGFIX END
+
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
@@ -440,6 +483,15 @@ public class EntityClayMan
             effInst.setNbtTag(savedEff.getCompoundTag("data"));
             this.effects_.put(effInst.getEffect(), effInst);
         }
+    }
+
+    //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
+    @Override
+    public boolean canEntityBeSeen(Entity p_70685_1_) {
+        return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ),
+                                           Vec3.createVectorHelper(p_70685_1_.posX, p_70685_1_.posY + (double) p_70685_1_.getEyeHeight(), p_70685_1_.posZ), false,
+                                           true, false
+        ) == null;
     }
 
     @Override

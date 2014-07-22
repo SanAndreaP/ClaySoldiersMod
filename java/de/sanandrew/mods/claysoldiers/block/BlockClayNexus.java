@@ -10,8 +10,10 @@ import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -23,17 +25,17 @@ public class BlockClayNexus
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(int meta) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, int meta) {
         return new TileEntityClayNexus();
     }
 
     @Override
-    public MapColor getMapColor(int p_149728_1_) {
+    public MapColor getMapColor(int meta) {
         return MapColor.obsidianColor;
     }
 
@@ -55,5 +57,17 @@ public class BlockClayNexus
     @Override
     public IIcon getIcon(int side, int meta) {
         return Blocks.obsidian.getIcon(side, meta);
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        return null;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float offX, float offY, float offZ) {
+        TileEntityClayNexus teNexus = (TileEntityClayNexus) world.getTileEntity(x, y, z);
+        teNexus.isActive = !teNexus.isActive;
+        return true;
     }
 }
