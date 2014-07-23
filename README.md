@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/SanAndreasP/ClaySoldiersMod/master/resources/assets/claysoldiers/logo.png)
+![](https://raw.githubusercontent.com/SanAndreasP/ClaySoldiersMod/c68469697af8eb163348182866e35ebd62c6fc13/resources/assets/claysoldiers/logo.png)
 ===============
 A Minecraft Mod which adds tiny clay soldiers and additional content for those.
 
