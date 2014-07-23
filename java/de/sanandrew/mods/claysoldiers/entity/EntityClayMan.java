@@ -487,9 +487,9 @@ public class EntityClayMan
 
     //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
     @Override
-    public boolean canEntityBeSeen(Entity p_70685_1_) {
+    public boolean canEntityBeSeen(Entity target) {
         return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ),
-                                           Vec3.createVectorHelper(p_70685_1_.posX, p_70685_1_.posY + (double) p_70685_1_.getEyeHeight(), p_70685_1_.posZ), false,
+                                           Vec3.createVectorHelper(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ), false,
                                            true, false
         ) == null;
     }

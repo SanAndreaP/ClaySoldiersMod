@@ -9,10 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.core.manpack.util.javatuples.Quartet;
-import de.sanandrew.core.manpack.util.javatuples.Sextet;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.core.manpack.util.javatuples.*;
 import de.sanandrew.mods.claysoldiers.entity.mounts.EnumHorseType;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
@@ -49,6 +46,9 @@ public final class ParticleHelper
                 break;
             case PacketParticleFX.FX_SPELL:
                 ParticleHelper.spawnSpellFx((Sextet) particleData, mc);
+                break;
+            case PacketParticleFX.FX_NEXUS:
+                ParticleHelper.spawnNexusFx((Sextet) particleData, mc);
                 break;
         }
     }
@@ -106,5 +106,19 @@ public final class ParticleHelper
                                                                  data.getValue2(), data.getValue3(), data.getValue4(), data.getValue5());
             mc.effectRenderer.addEffect(fx);
         }
+    }
+
+    public static void spawnNexusFx(Sextet<Double, Double, Double, Float, Float, Float> data, Minecraft mc) {
+        EntityNexusFX fx = new EntityNexusFX(mc.theWorld,
+                                             data.getValue0() + 0.2F + SAPUtils.RANDOM.nextDouble() * 0.6F,
+                                             data.getValue1(),
+                                             data.getValue2() + 0.2F + SAPUtils.RANDOM.nextDouble() * 0.6F,
+                                             0.1F + SAPUtils.RANDOM.nextFloat() * 0.2F,
+                                             data.getValue3(),
+                                             data.getValue4(),
+                                             data.getValue5(),
+                                             true, 1.0F);
+        fx.motionY = 0.02F;
+        mc.effectRenderer.addEffect(fx);
     }
 }

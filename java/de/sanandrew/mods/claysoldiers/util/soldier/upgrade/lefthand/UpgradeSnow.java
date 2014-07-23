@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntitySnowChunk;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeSnow
     extends AUpgradeLeftHanded
+    implements IThrowableUpgrade
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {

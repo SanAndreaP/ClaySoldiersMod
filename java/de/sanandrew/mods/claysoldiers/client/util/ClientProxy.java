@@ -40,6 +40,7 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayNexus.class, new RenderClayNexus());
 
         MinecraftForge.EVENT_BUS.register(new RenderHudOverlayEvent());
+        MinecraftForge.EVENT_BUS.register(new RenderQueuedParticlesEvent());
     }
 
     @Override

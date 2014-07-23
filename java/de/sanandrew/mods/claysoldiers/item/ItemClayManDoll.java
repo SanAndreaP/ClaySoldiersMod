@@ -111,11 +111,15 @@ public class ItemClayManDoll extends Item
     }
 
     public static ClaymanTeam getTeam(ItemStack stack) {
-        NBTTagCompound itemNbt = stack.getTagCompound();
-        if( itemNbt != null && itemNbt.hasKey("team")) {
-            return ClaymanTeam.getTeamFromName(itemNbt.getString("team"));
+        if( stack != null ) {
+            NBTTagCompound itemNbt = stack.getTagCompound();
+            if( itemNbt != null && itemNbt.hasKey("team") ) {
+                return ClaymanTeam.getTeamFromName(itemNbt.getString("team"));
+            } else {
+                return ClaymanTeam.getTeamFromName(ClaymanTeam.DEFAULT_TEAM);
+            }
         } else {
-            return ClaymanTeam.getTeamFromName("clay");
+            return ClaymanTeam.getTeamFromName(ClaymanTeam.DEFAULT_TEAM);
         }
     }
 

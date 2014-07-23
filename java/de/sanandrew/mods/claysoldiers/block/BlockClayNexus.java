@@ -7,11 +7,13 @@
 package de.sanandrew.mods.claysoldiers.block;
 
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
+import de.sanandrew.mods.claysoldiers.util.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -67,6 +69,14 @@ public class BlockClayNexus
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float offX, float offY, float offZ) {
         TileEntityClayNexus teNexus = (TileEntityClayNexus) world.getTileEntity(x, y, z);
+        ItemStack playerItem = player.getCurrentEquippedItem();
+        if( !world.isRemote && playerItem != null && playerItem.getItem() == ModItems.dollSoldier ) {
+            teNexus.setInventorySlotContents(0, player.getCurrentEquippedItem());
+            teNexus.markDirty();
+            world.markBlockForUpdate(x, y, z);
+            return true;
+        }
+
         teNexus.isActive = !teNexus.isActive;
         return true;
     }

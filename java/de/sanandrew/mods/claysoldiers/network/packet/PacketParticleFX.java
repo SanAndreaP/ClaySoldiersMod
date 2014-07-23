@@ -25,6 +25,7 @@ public class PacketParticleFX
     public static final byte FX_HORSE_DEATH = 3;
     public static final byte FX_DIGGING = 4;
     public static final byte FX_SPELL = 5;
+    public static final byte FX_NEXUS = 6;
 
     @Override
     public void process(ByteBufInputStream stream, INetHandler handler) throws IOException {
@@ -48,6 +49,8 @@ public class PacketParticleFX
                 CSM_Main.proxy.spawnParticles(FX_SPELL, Sextet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(),
                                                                       stream.readDouble(), stream.readDouble(), stream.readDouble())
                 );
+                break;
+            case FX_NEXUS:
                 break;
         }
     }
