@@ -69,15 +69,19 @@ public class BlockClayNexus
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float offX, float offY, float offZ) {
         TileEntityClayNexus teNexus = (TileEntityClayNexus) world.getTileEntity(x, y, z);
-        ItemStack playerItem = player.getCurrentEquippedItem();
-        if( !world.isRemote && playerItem != null && playerItem.getItem() == ModItems.dollSoldier ) {
-            teNexus.setInventorySlotContents(0, player.getCurrentEquippedItem());
+        if( !world.isRemote ) {
+            ItemStack playerItem = player.getCurrentEquippedItem();
+            if( playerItem != null && playerItem.getItem() == ModItems.dollSoldier ) {
+                teNexus.setInventorySlotContents(0, player.getCurrentEquippedItem());
+                teNexus.markDirty();
+                world.markBlockForUpdate(x, y, z);
+                return true;
+            }
+
+            teNexus.isActive = !teNexus.isActive;
             teNexus.markDirty();
             world.markBlockForUpdate(x, y, z);
-            return true;
         }
-
-        teNexus.isActive = !teNexus.isActive;
         return true;
     }
 }

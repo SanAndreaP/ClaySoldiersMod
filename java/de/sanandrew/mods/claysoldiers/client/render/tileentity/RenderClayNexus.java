@@ -31,16 +31,6 @@ public class RenderClayNexus
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partTicks) {
         TileEntityClayNexus nexus = (TileEntityClayNexus) tileEntity;
-        float[] colors = new float[] {1.0F, 1.0F, 1.0F};
-
-        if( nexus.getStackInSlot(0) != null ) {
-            RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(nexus.getStackInSlot(0)).getIconColor());
-            colors[0] = rgba.getRed() / 255.0F;
-            colors[1] = rgba.getGreen() / 255.0F;
-            colors[2] = rgba.getBlue() / 255.0F;
-        }
-
-        float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
@@ -48,6 +38,21 @@ public class RenderClayNexus
 
         this.bindTexture(Textures.NEXUS_TEXTURE);
         nexusModel.renderTileEntity(0.0625F);
+
+        this.renderGlowmap(nexus);
+        this.renderItem(nexus, partTicks);
+
+        GL11.glPopMatrix();
+    }
+
+    private void renderGlowmap(TileEntityClayNexus nexus) {
+        float[] colors = new float[] {1.0F, 1.0F, 1.0F};
+        if( nexus.getStackInSlot(0) != null ) {
+            RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(nexus.getStackInSlot(0)).getIconColor());
+            colors[0] = rgba.getRed() / 255.0F;
+            colors[1] = rgba.getGreen() / 255.0F;
+            colors[2] = rgba.getBlue() / 255.0F;
+        }
 
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
@@ -58,16 +63,26 @@ public class RenderClayNexus
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j / 1.0F, (float) k / 1.0F);
         this.bindTexture(Textures.NEXUS_GLOWING);
         GL11.glColor3f(colors[0], colors[1], colors[2]);
-        nexusModel.renderTileEntityGlowmap(0.0625F);
+        this.nexusModel.renderTileEntityGlowmap(0.0625F);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);
+    }
 
-        GL11.glPopMatrix();
+    private void renderItem(TileEntityClayNexus nexus, float partTicks) {
+        float[] colors = new float[] {1.0F, 1.0F, 1.0F};
+        if( nexus.getStackInSlot(0) != null ) {
+            RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(nexus.getStackInSlot(0)).getIconColor());
+            colors[0] = rgba.getRed() / 255.0F;
+            colors[1] = rgba.getGreen() / 255.0F;
+            colors[2] = rgba.getBlue() / 255.0F;
+        }
+
+        float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
 
         if( nexus.getStackInSlot(0) != null ) {
             GL11.glPushMatrix();
-            GL11.glTranslatef((float) x + 0.5F, (float) y + 0.275F, (float) z + 0.5F);
+            GL11.glTranslatef(0.0F, -1.225F, 0.0F);
             GL11.glScalef(0.25F, 0.25F, 0.25F);
             GL11.glRotatef(itmAngle, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
@@ -76,5 +91,9 @@ public class RenderClayNexus
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
             GL11.glPopMatrix();
         }
+    }
+
+    private void renderHealth(TileEntityClayNexus nexus) {
+
     }
 }

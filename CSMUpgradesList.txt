@@ -7,7 +7,6 @@ MAIN HAND
 |x|BlazeRod, 20 use, increases melee damage by 1-2 points, causes burn time on target
 | |Bone, 30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
-/^\Durability was crashing the game on my version, need to fix that.
 | |GoldMelon, 25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 /^\all weapons should have increased reach while riding mounts, bone's reach bonus should be slightly greater than mounted reach bonus
 ------------------

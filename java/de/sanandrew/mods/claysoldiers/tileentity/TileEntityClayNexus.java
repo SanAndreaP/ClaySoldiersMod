@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.item.IMountDoll;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import de.sanandrew.mods.claysoldiers.util.BugfixHelper;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
@@ -31,6 +32,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class TileEntityClayNexus
@@ -51,28 +53,66 @@ public class TileEntityClayNexus
 
     protected String customName;
 
-    private ItemStack[] nexusContents = new ItemStack[36];
-    private ItemStack soldierSlot;
-    private ItemStack throwableSlot;
-    private ItemStack mountSlot;
+    private ItemStack[] nexusContents_ = new ItemStack[36];
+    private ItemStack soldierSlot_;
+    private ItemStack throwableSlot_;
+    private ItemStack mountSlot_;
+    private int spawningSoldierCounter_ = 0;
+    private float health_ = 20.0F;
+
+    private ClaymanTeam tempClayTeam_ = ClaymanTeam.getTeamFromName(ClaymanTeam.DEFAULT_TEAM);
+    private AxisAlignedBB searchArea_;
+    private AxisAlignedBB damageArea_;
 
     public TileEntityClayNexus() { }
 
     @Override
     public void updateEntity() {
+        if( this.searchArea_ == null || this.damageArea_ == null ) {
+            this.searchArea_ = AxisAlignedBB.getBoundingBox(this.xCoord - 63.0D, this.yCoord - 63.0D, this.zCoord - 63.0D,
+                                                            this.xCoord + 64.0D, this.yCoord + 64.0D, this.zCoord + 64.0D
+            );
+            this.damageArea_ = AxisAlignedBB.getBoundingBox(this.xCoord + 0.1D, this.yCoord + 0.1D, this.zCoord + 0.1D,
+                                                            this.xCoord + 0.9D, this.yCoord + 0.9D, this.zCoord + 0.9D
+            );
+        }
+
         super.updateEntity();
 
-        if( this.isActive && this.soldierSlot != null ) {
+        if( this.isActive && this.soldierSlot_ != null ) {
             this.ticksActive++;
 
             if( !this.worldObj.isRemote ) {
-                if( this.ticksActive % this.spawnSoldierInterval == 0 ) {
-                    String team = ItemClayManDoll.getTeam(this.soldierSlot).getTeamName();
-                    int maxAllowed = Math.min(this.soldierSpawnCount, this.maxSoldierCount - this.countTeammates(team));
-                    for( int i = 0; i < maxAllowed; i++ ) {
-                        ItemClayManDoll.spawnClayMan(this.worldObj, team, this.xCoord + 0.5F, this.yCoord + 0.2D,
+                if( this.ticksActive % this.spawnSoldierInterval == 0 && this.spawningSoldierCounter_ <= 0 ) {
+                    this.spawningSoldierCounter_ = Math.min(this.soldierSpawnCount, this.maxSoldierCount - this.countTeammates());
+                }
+
+                if( this.ticksActive % 5 == 0 && this.spawningSoldierCounter_ > 0 ) {
+                    this.spawningSoldierCounter_ = this.maxSoldierCount - this.countTeammates();
+                    if( this.spawningSoldierCounter_ > 0 ) {
+                        ItemClayManDoll.spawnClayMan(this.worldObj, this.tempClayTeam_.getTeamName(), this.xCoord + 0.5F, this.yCoord + 0.2D,
                                                      this.zCoord + 0.5F
                         );
+                    }
+                }
+
+                List<EntityClayMan> enemies = this.getEnemies();
+                for( EntityClayMan dalek : enemies ) {
+                    dalek.setPathToEntity(BugfixHelper.getEntityPathToXYZ(this.worldObj, dalek, this.xCoord, this.yCoord, this.zCoord, 10.0F,
+                                                                          true, false, false, true)
+                    );
+                }
+
+                if( this.ticksActive % 20 == 0 ) {
+                    int dmgEnemies = this.countDamagingEnemies();
+                    if( dmgEnemies > 0 ) {
+                        float healthDamage = 0.5F;
+                        if( dmgEnemies > 1 ) {
+                            healthDamage = 0.125F * dmgEnemies;
+                        }
+                        this.health_ -= healthDamage;
+                        this.markDirty();
+                        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     }
                 }
             }
@@ -82,7 +122,7 @@ public class TileEntityClayNexus
             this.prevSpinAngle = this.spinAngle;
             if( this.isActive ) {
                 this.spinAngle += 4;
-                ClaymanTeam team = ItemClayManDoll.getTeam(this.soldierSlot);
+                ClaymanTeam team = ItemClayManDoll.getTeam(this.soldierSlot_);
                 RGBAValues rgba = SAPUtils.getRgbaFromColorInt(team.getTeamColor());
                 CSM_Main.proxy.spawnParticles(PacketParticleFX.FX_NEXUS, Sextet.with((double)this.xCoord, (double)this.yCoord, (double)this.zCoord,
                                                                                      rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F));
@@ -111,13 +151,13 @@ public class TileEntityClayNexus
     public ItemStack getStackInSlot(int slot) {
         switch( slot ) {
             case 0:
-                return soldierSlot;
+                return soldierSlot_;
             case 1:
-                return throwableSlot;
+                return throwableSlot_;
             case 2:
-                return mountSlot;
+                return mountSlot_;
             default:
-                return this.nexusContents[slot - 3];
+                return this.nexusContents_[slot - 3];
         }
     }
 
@@ -213,7 +253,7 @@ public class TileEntityClayNexus
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 
-        this.nexusContents = new ItemStack[36];
+        this.nexusContents_ = new ItemStack[36];
 
         NBTTagList nbttaglist = nbt.getTagList("items", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < nbttaglist.tagCount(); i++ ) {
@@ -225,7 +265,17 @@ public class TileEntityClayNexus
             }
         }
 
-        this.readTileNBT(nbt);
+        this.isActive = nbt.getBoolean("active");
+        this.health_ = nbt.getFloat("health");
+        this.spawnSoldierInterval = nbt.getInteger("spawnSldInterval");
+        this.spawnThrowableInterval = nbt.getInteger("spawnThrwInterval");
+        this.soldierSpawnCount = nbt.getInteger("spawnSldCount");
+        this.mountSpawnCount = nbt.getInteger("spawnMntCount");
+        this.maxSoldierCount = nbt.getInteger("maxSldCount");
+
+        if( nbt.hasKey("customName") ) {
+            customName = nbt.getString("customName");
+        }
     }
 
     @Override
@@ -244,7 +294,17 @@ public class TileEntityClayNexus
         }
         nbt.setTag("items", nbttaglist);
 
-        this.writeTileNBT(nbt);
+        nbt.setBoolean("active", this.isActive);
+        nbt.setFloat("health", this.health_);
+        nbt.setInteger("spawnSldInterval", this.spawnSoldierInterval);
+        nbt.setInteger("spawnThrwInterval", this.spawnThrowableInterval);
+        nbt.setInteger("spawnSldCount", this.soldierSpawnCount);
+        nbt.setInteger("spawnMntCount", this.mountSpawnCount);
+        nbt.setInteger("maxSldCount", this.maxSoldierCount);
+
+        if( this.hasCustomInventoryName() ) {
+            nbt.setString("customName", this.customName);
+        }
     }
 
     @Override
@@ -259,40 +319,37 @@ public class TileEntityClayNexus
         this.readFromNBT(pkt.func_148857_g());
     }
 
-    private void readTileNBT(NBTTagCompound nbt) {
-        this.isActive = nbt.getBoolean("active");
-        this.spawnSoldierInterval = nbt.getInteger("spawnSldInterval");
-        this.spawnThrowableInterval = nbt.getInteger("spawnThrwInterval");
-        this.soldierSpawnCount = nbt.getInteger("spawnSldCount");
-        this.mountSpawnCount = nbt.getInteger("spawnMntCount");
-        this.maxSoldierCount = nbt.getInteger("maxSldCount");
-
-        if( nbt.hasKey("customName") ) {
-            customName = nbt.getString("customName");
-        }
-    }
-
-    private void writeTileNBT(NBTTagCompound nbt) {
-        nbt.setInteger("spawnSldInterval", this.spawnSoldierInterval);
-        nbt.setInteger("spawnThrwInterval", this.spawnThrowableInterval);
-        nbt.setInteger("spawnSldCount", this.soldierSpawnCount);
-        nbt.setInteger("spawnMntCount", this.mountSpawnCount);
-        nbt.setInteger("maxSldCount", this.maxSoldierCount);
-
-        if( this.hasCustomInventoryName() ) {
-            nbt.setString("customName", this.customName);
-        }
-    }
-
-    private int countTeammates(String team) {
+    private int countTeammates() {
         @SuppressWarnings("unchecked")
-        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class,
-                                                                           AxisAlignedBB.getBoundingBox(this.xCoord - 63.0D, this.yCoord - 63.0D, this.zCoord - 63.0D,
-                                                                                                        this.xCoord + 64.0D, this.yCoord + 64.0D, this.zCoord + 64.0D)
-        );
+        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.searchArea_);
         int cnt = 0;
         for( EntityClayMan dodger : soldiers ) {
-            if( dodger.getClayTeam().equals(team) ) {
+            if( dodger.getClayTeam().equals(this.tempClayTeam_.getTeamName()) ) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    private List<EntityClayMan> getEnemies() {
+        @SuppressWarnings("unchecked")
+        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.searchArea_);
+        int cnt = 0;
+        Iterator<EntityClayMan> iterator = soldiers.iterator();
+        while( iterator.hasNext() ) {
+            if( iterator.next().getClayTeam().equals(this.tempClayTeam_.getTeamName()) ) {
+                iterator.remove();
+            }
+        }
+        return soldiers;
+    }
+
+    private int countDamagingEnemies() {
+        @SuppressWarnings("unchecked")
+        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.damageArea_);
+        int cnt = 0;
+        for( EntityClayMan dodger : soldiers ) {
+            if( dodger.getEntityToAttack() == null && !dodger.getClayTeam().equals(this.tempClayTeam_.getTeamName()) ) {
                 cnt++;
             }
         }
@@ -302,16 +359,17 @@ public class TileEntityClayNexus
     private void setStackInSlot(int slot, ItemStack stack) {
         switch( slot ) {
             case 0:
-                soldierSlot = stack;
+                this.soldierSlot_ = stack;
+                this.tempClayTeam_ = ItemClayManDoll.getTeam(stack);
                 break;
             case 1:
-                throwableSlot = stack;
+                this.throwableSlot_ = stack;
                 break;
             case 2:
-                mountSlot = stack;
+                this.mountSlot_ = stack;
                 break;
             default:
-                this.nexusContents[slot - 3] = stack;
+                this.nexusContents_[slot - 3] = stack;
         }
     }
 }
