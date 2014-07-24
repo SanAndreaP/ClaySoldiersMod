@@ -14,7 +14,10 @@ import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -41,6 +44,11 @@ public class RenderClayNexus
 
         this.renderGlowmap(nexus);
         this.renderItem(nexus, partTicks);
+
+        ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
+        if( heldItem != null && heldItem.getItem() == ModItems.statDisplay ) {
+            this.renderHealth(nexus);
+        }
 
         GL11.glPopMatrix();
     }
@@ -82,7 +90,8 @@ public class RenderClayNexus
 
         if( nexus.getStackInSlot(0) != null ) {
             GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, -1.225F, 0.0F);
+            GL11.glTranslatef(0.0F, 1.225F, 0.0F);
+            GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
             GL11.glScalef(0.25F, 0.25F, 0.25F);
             GL11.glRotatef(itmAngle, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
@@ -94,6 +103,35 @@ public class RenderClayNexus
     }
 
     private void renderHealth(TileEntityClayNexus nexus) {
+        Tessellator tessellator = Tessellator.instance;
 
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.5F, 0.0F);
+        GL11.glRotatef(RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+
+        float healthPerc = Math.min(1.0F, 1.0F - nexus.getHealth() / nexus.getMaxHealth());
+
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
+        tessellator.addVertex(-0.5D, -0.05D, 0.0D);
+        tessellator.addVertex(-0.5D + healthPerc, -0.05D, 0.0D);
+        tessellator.addVertex(-0.5D + healthPerc, 0.05D, 0.0D);
+        tessellator.addVertex(-0.5D, 0.05D, 0.0D);
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA_F(1.0F, 0.0F, 0.0F, 1.0F);
+        tessellator.addVertex(-0.5D + healthPerc, -0.05D, 0.0D);
+        tessellator.addVertex(0.5D, -0.05D, 0.0D);
+        tessellator.addVertex(0.5D, 0.05D, 0.0D);
+        tessellator.addVertex(-0.5D + healthPerc, 0.05D, 0.0D);
+        tessellator.draw();
+
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
     }
 }

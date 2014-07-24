@@ -231,6 +231,8 @@ public class EntityClayMan
         //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
         if( !this.hasAttacked && this.entityToAttack != null ) {
             this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.entityToAttack, 16.0F, true, false, false, true));
+        } else if( !this.hasAttacked && this.targetFollow_ != null ) {
+            this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 16.0F, true, false, false, true));
         } else if( !this.hasAttacked && (!this.hasPath() && this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0)
                 && this.entityAge < 100 )
         {

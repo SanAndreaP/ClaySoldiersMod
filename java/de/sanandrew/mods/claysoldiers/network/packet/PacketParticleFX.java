@@ -47,7 +47,7 @@ public class PacketParticleFX
                 break;
             case FX_SPELL:
                 CSM_Main.proxy.spawnParticles(FX_SPELL, Sextet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(),
-                                                                      stream.readDouble(), stream.readDouble(), stream.readDouble())
+                                                                    stream.readDouble(), stream.readDouble(), stream.readDouble())
                 );
                 break;
             case FX_NEXUS:

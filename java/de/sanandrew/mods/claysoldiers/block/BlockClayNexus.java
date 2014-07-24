@@ -78,6 +78,13 @@ public class BlockClayNexus
                 return true;
             }
 
+            if( player.isSneaking() ) {
+                teNexus.heal(teNexus.getMaxHealth());
+                teNexus.markDirty();
+                world.markBlockForUpdate(x, y, z);
+                return true;
+            }
+
             teNexus.isActive = !teNexus.isActive;
             teNexus.markDirty();
             world.markBlockForUpdate(x, y, z);

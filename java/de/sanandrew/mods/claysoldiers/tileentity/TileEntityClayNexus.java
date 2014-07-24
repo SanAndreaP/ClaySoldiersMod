@@ -79,7 +79,7 @@ public class TileEntityClayNexus
 
         super.updateEntity();
 
-        if( this.isActive && this.soldierSlot_ != null ) {
+        if( this.isActive && this.soldierSlot_ != null && this.getHealth() > 0.0F ) {
             this.ticksActive++;
 
             if( !this.worldObj.isRemote ) {
@@ -111,6 +111,9 @@ public class TileEntityClayNexus
                             healthDamage = 0.125F * dmgEnemies;
                         }
                         this.health_ -= healthDamage;
+                        if( this.health_ < 0.0F ) {
+                            this.health_ = 0.0F;
+                        }
                         this.markDirty();
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     }
@@ -120,7 +123,7 @@ public class TileEntityClayNexus
 
         if( this.worldObj.isRemote ) {
             this.prevSpinAngle = this.spinAngle;
-            if( this.isActive ) {
+            if( this.isActive && this.getHealth() > 0.0F ) {
                 this.spinAngle += 4;
                 ClaymanTeam team = ItemClayManDoll.getTeam(this.soldierSlot_);
                 RGBAValues rgba = SAPUtils.getRgbaFromColorInt(team.getTeamColor());
@@ -140,6 +143,21 @@ public class TileEntityClayNexus
     @Override
     public boolean canUpdate() {
         return true;
+    }
+
+    public float getHealth() {
+        return this.health_;
+    }
+
+    public float getMaxHealth() {
+        return 20.0F;
+    }
+
+    public void heal(float amount) {
+        this.health_ += amount;
+        if( this.health_ > this.getMaxHealth() ) {
+            this.health_ = this.getMaxHealth();
+        }
     }
 
     @Override
@@ -219,7 +237,7 @@ public class TileEntityClayNexus
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return 1;
     }
 
     @Override
@@ -349,7 +367,7 @@ public class TileEntityClayNexus
         List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.damageArea_);
         int cnt = 0;
         for( EntityClayMan dodger : soldiers ) {
-            if( dodger.getEntityToAttack() == null && !dodger.getClayTeam().equals(this.tempClayTeam_.getTeamName()) ) {
+            if( !dodger.getClayTeam().equals(this.tempClayTeam_.getTeamName()) ) {
                 cnt++;
             }
         }
