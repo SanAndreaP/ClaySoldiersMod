@@ -14,7 +14,6 @@ import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 
 /**
@@ -22,7 +21,8 @@ import net.minecraftforge.common.config.Configuration;
  * @version 1.0
  */
 
-@Mod(modid = CSM_Main.MOD_ID, version = CSM_Main.VERSION, name = "Clay Soldiers Mod", guiFactory = CSM_Main.MOD_GUI_FACTORY, dependencies = "required-after:sapmanpack@[2.0.0,)")
+@Mod(modid = CSM_Main.MOD_ID, version = CSM_Main.VERSION, name = "Clay Soldiers Mod", guiFactory = CSM_Main.MOD_GUI_FACTORY,
+     dependencies = "required-after:sapmanpack@[2.0.0,)")
 public final class CSM_Main
 {
     public static final String MOD_ID = "claysoldiers";
@@ -42,12 +42,7 @@ public final class CSM_Main
 
     public static final EventBus EVENT_BUS = new EventBus();
 
-    public static CreativeTabs clayTab = new CreativeTabs(CSM_Main.MOD_ID + ":clay_tab") {
-        @Override
-        public Item getTabIconItem() {
-            return ModItems.dollSoldier;
-        }
-    };
+    public static CreativeTabs clayTab = new CreativeTabClaySoldiers();
 
     @Mod.EventHandler
     public void modPreInit(FMLPreInitializationEvent event) {
@@ -60,7 +55,7 @@ public final class CSM_Main
 
     @Mod.EventHandler
     public void modInit(FMLInitializationEvent event) {
-        FMLCommonHandler.instance().bus().register(this.instance);
+        FMLCommonHandler.instance().bus().register(this);
 
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CSM_Main.MOD_CHANNEL);
 

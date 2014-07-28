@@ -251,7 +251,7 @@ public class EntityClayMan
     @SuppressWarnings("unchecked")
     protected void updateEntityActionState() {
         //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
-        if( this.entityToAttack != null ) {
+        if( !this.hasPath() && this.entityToAttack != null ) {
             this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.entityToAttack, 16.0F, true, false, false, true));
         } else if( !this.hasPath() && this.targetFollow_ != null ) {
             this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 16.0F, true, false, false, true));
@@ -260,6 +260,7 @@ public class EntityClayMan
         }
 
         super.updateEntityActionState();
+
 
         if( !this.worldObj.isRemote ) {
             if( this.entityToAttack == null ) {

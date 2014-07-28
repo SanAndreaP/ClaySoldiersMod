@@ -1,23 +1,43 @@
+tile.claysoldiers:nexus.name=Clay Nexus
+
 item.claysoldiers:disruptor.name=Clay Disruptor
 item.claysoldiers:disruptor_cooked.name=Hardened Clay Disruptor
 
 item.claysoldiers:clayman_doll.clay.name=Clay Soldier
+item.claysoldiers:clayman_doll.clay.color=Clay
 item.claysoldiers:clayman_doll.red.name=Red Soldier
+item.claysoldiers:clayman_doll.red.color=Red
 item.claysoldiers:clayman_doll.orange.name=Orange Soldier
+item.claysoldiers:clayman_doll.orange.color=Orange
 item.claysoldiers:clayman_doll.yellow.name=Yellow Soldier
+item.claysoldiers:clayman_doll.yellow.color=Yellow
 item.claysoldiers:clayman_doll.lime.name=Lime Soldier
+item.claysoldiers:clayman_doll.lime.color=Lime
 item.claysoldiers:clayman_doll.green.name=Green Soldier
+item.claysoldiers:clayman_doll.green.color=Green
 item.claysoldiers:clayman_doll.cyan.name=Cyan Soldier
+item.claysoldiers:clayman_doll.cyan.color=Cyan
 item.claysoldiers:clayman_doll.lightblue.name=Lightblue Soldier
+item.claysoldiers:clayman_doll.lightblue.color=Lightblue
 item.claysoldiers:clayman_doll.blue.name=Blue Soldier
+item.claysoldiers:clayman_doll.blue.color=Blue
 item.claysoldiers:clayman_doll.purple.name=Purple Soldier
+item.claysoldiers:clayman_doll.purple.color=Purple
 item.claysoldiers:clayman_doll.magenta.name=Magenta Soldier
+item.claysoldiers:clayman_doll.magenta.color=Magenta
 item.claysoldiers:clayman_doll.pink.name=Pink Soldier
+item.claysoldiers:clayman_doll.pink.color=Pink
 item.claysoldiers:clayman_doll.brown.name=Brown Soldier
+item.claysoldiers:clayman_doll.brown.color=Brown
 item.claysoldiers:clayman_doll.black.name=Black Soldier
+item.claysoldiers:clayman_doll.black.color=Black
 item.claysoldiers:clayman_doll.gray.name=Gray Soldier
+item.claysoldiers:clayman_doll.gray.color=Gray
 item.claysoldiers:clayman_doll.white.name=White Soldier
+item.claysoldiers:clayman_doll.white.color=White
 item.claysoldiers:clayman_doll.melon.name=Melon Soldier
+item.claysoldiers:clayman_doll.melon.color=Melon
+
 item.claysoldiers:horsemount_doll.dirt.name=Dirt Horse
 item.claysoldiers:horsemount_doll.sand.name=Sand Horse
 item.claysoldiers:horsemount_doll.gravel.name=Gravel Horse
@@ -30,6 +50,9 @@ item.claysoldiers:horsemount_doll.soulsand.name=Soulsand Horse
 item.claysoldiers:horsemount_doll.cake.name=Cake Horse
 
 item.claysoldiers:shear_blade.name=Shear Blade
-item.claysoldiers:stat_display.name=Clay Statistics Display
 
-itemGroup.claysoldiers:clay_tab=Clay Soldiers
+item.claysoldiers:stat_display.name=Clay Statistics Display
+item.claysoldiers:stat_display.title.soldiers=Soldiers
+item.claysoldiers:stat_display.title.mounts=Mounts
+
+itemGroup.claysoldiers:csm_tab=Clay Soldiers

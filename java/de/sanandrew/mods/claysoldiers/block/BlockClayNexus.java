@@ -6,10 +6,13 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -103,4 +106,8 @@ public class BlockClayNexus
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
         return side >= 0;
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_) { }
 }

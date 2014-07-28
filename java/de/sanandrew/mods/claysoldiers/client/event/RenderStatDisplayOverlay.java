@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class RenderHudOverlayEvent
+public class RenderStatDisplayOverlay
     extends Gui
 {
     private FontRenderer titleRenderer = null;
@@ -77,13 +77,15 @@ public class RenderHudOverlayEvent
                 teamCounts.put(team, 1);
             }
         }
+
         for( Entry<String, Integer> team : teamCounts.entrySet() ) {
             ClaymanTeam teamInst = ClaymanTeam.getTeamFromName(team.getKey());
             ItemStack renderedItem = new ItemStack(ModItems.dollSoldier);
             ItemClayManDoll.setTeamForItem(team.getKey(), renderedItem);
-            teams.add(Quartet.with(teamInst.getTeamColor(), team.getKey(), team.getValue(), renderedItem));
+            teams.add(Quartet.with(teamInst.getTeamColor(), renderedItem.getUnlocalizedName() + ".color", team.getValue(), renderedItem));
         }
-        renderStats(mc, "Soldiers", teams, 5, 5);
+
+        this.renderStats(mc, SAPUtils.getTranslated(ModItems.statDisplay.getUnlocalizedName() + ".title.soldiers"), teams, 5, 5);
     }
 
     private void renderMounts(Minecraft mc) {
@@ -100,11 +102,13 @@ public class RenderHudOverlayEvent
                 teamCounts.put(team, 1);
             }
         }
+
         for( Entry<String, Integer> team : teamCounts.entrySet() ) {
             EnumHorseType teamInst = EnumHorseType.valueOf(team.getKey());
             teams.add(Quartet.with(teamInst.typeColor, team.getKey(), team.getValue(), (ItemStack) null));
         }
-        renderStats(mc, "Mounts", teams, 110, 5);
+
+        this.renderStats(mc, SAPUtils.getTranslated(ModItems.statDisplay.getUnlocalizedName() + ".title.mounts"), teams, 110, 5);
     }
 
     private void renderStats(Minecraft mc, String title, List<Quartet<Integer, String, Integer, ItemStack>> teams, int xPos, int yPos) {
@@ -121,7 +125,7 @@ public class RenderHudOverlayEvent
 
         int pos = 0;
         for( Quartet<Integer, String, Integer, ItemStack> team : teams ) {
-            String text = team.getValue1() + ": " + team.getValue2().toString();
+            String text = SAPUtils.getTranslated(team.getValue1()) + ": " + team.getValue2().toString();
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 24 + pos * 11, 0x80FFFFFF);
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 23 + pos * 11, 0xC0000000 | team.getValue0());
             this.statRenderer.drawString(text, xPos + 50 - this.statRenderer.getStringWidth(text) / 2, yPos + 14 + pos * 11,

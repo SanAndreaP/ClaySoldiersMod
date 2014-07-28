@@ -1,0 +1,58 @@
+tile.claysoldiers:nexus.name=Lehm-Nexus
+
+item.claysoldiers:disruptor.name=Lehm-Disruptor
+item.claysoldiers:disruptor_cooked.name=Gehärteter Lehm-Disruptor
+
+item.claysoldiers:clayman_doll.clay.name=Lehmsoldat
+item.claysoldiers:clayman_doll.clay.color=Lehm
+item.claysoldiers:clayman_doll.red.name=Roter Soldat
+item.claysoldiers:clayman_doll.red.color=Rot
+item.claysoldiers:clayman_doll.orange.name=Oranger Soldat
+item.claysoldiers:clayman_doll.orange.color=Orange
+item.claysoldiers:clayman_doll.yellow.name=Gelber Soldat
+item.claysoldiers:clayman_doll.yellow.color=Gelb
+item.claysoldiers:clayman_doll.lime.name=Hellgrüner Soldat
+item.claysoldiers:clayman_doll.lime.color=Hellgrün
+item.claysoldiers:clayman_doll.green.name=Grüner Soldat
+item.claysoldiers:clayman_doll.green.color=Grün
+item.claysoldiers:clayman_doll.cyan.name=Türkiser Soldat
+item.claysoldiers:clayman_doll.cyan.color=Türkis
+item.claysoldiers:clayman_doll.lightblue.name=Hellblauer Soldat
+item.claysoldiers:clayman_doll.lightblue.color=Hellblau
+item.claysoldiers:clayman_doll.blue.name=Blauer Soldat
+item.claysoldiers:clayman_doll.blue.color=Blau
+item.claysoldiers:clayman_doll.purple.name=Violetter Soldier
+item.claysoldiers:clayman_doll.purple.color=Violett
+item.claysoldiers:clayman_doll.magenta.name=Magenta Soldat
+item.claysoldiers:clayman_doll.magenta.color=Magenta
+item.claysoldiers:clayman_doll.pink.name=Rosa Soldat
+item.claysoldiers:clayman_doll.pink.color=Rosa
+item.claysoldiers:clayman_doll.brown.name=Brauner Soldat
+item.claysoldiers:clayman_doll.brown.color=Braun
+item.claysoldiers:clayman_doll.black.name=Schwarzer Soldat
+item.claysoldiers:clayman_doll.black.color=Schwarz
+item.claysoldiers:clayman_doll.gray.name=Grauer Soldat
+item.claysoldiers:clayman_doll.gray.color=Grau
+item.claysoldiers:clayman_doll.white.name=Weißer Soldat
+item.claysoldiers:clayman_doll.white.color=Weiß
+item.claysoldiers:clayman_doll.melon.name=Melonensoldat
+item.claysoldiers:clayman_doll.melon.color=Melone
+
+item.claysoldiers:horsemount_doll.dirt.name=Erdpferd
+item.claysoldiers:horsemount_doll.sand.name=Sandpferd
+item.claysoldiers:horsemount_doll.gravel.name=Kiespferd
+item.claysoldiers:horsemount_doll.snow.name=Schneepferd
+item.claysoldiers:horsemount_doll.grass.name=Graspferd
+item.claysoldiers:horsemount_doll.lapis.name=Lapis Lazuli Pferd
+item.claysoldiers:horsemount_doll.clay.name=Lehmpferd
+item.claysoldiers:horsemount_doll.carrot.name=Karottenpferd
+item.claysoldiers:horsemount_doll.soulsand.name=Seelensandpferd
+item.claysoldiers:horsemount_doll.cake.name=Kuchenpferd
+
+item.claysoldiers:shear_blade.name=Scherenklinge
+
+item.claysoldiers:stat_display.name=Lehm-Statistikmonitor
+item.claysoldiers:stat_display.title.soldiers=Soldaten
+item.claysoldiers:stat_display.title.mounts=Reittiere
+
+itemGroup.claysoldiers:csm_tab=Lehmsoldaten

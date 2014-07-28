@@ -48,7 +48,7 @@ public class ClientProxy extends CommonProxy
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.clayNexus), new ItemRendererClayNexus());
 
-        MinecraftForge.EVENT_BUS.register(new RenderHudOverlayEvent());
+        MinecraftForge.EVENT_BUS.register(new RenderStatDisplayOverlay());
         MinecraftForge.EVENT_BUS.register(new RenderWorldOnLastEvent());
     }
 

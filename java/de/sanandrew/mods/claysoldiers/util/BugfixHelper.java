@@ -71,14 +71,14 @@ public class BugfixHelper
 
         public FixedPathFinder(IBlockAccess blockAccess, boolean allowWoodDoor, boolean blockMovement, boolean pathInWater, boolean canEntityDrown) {
             super(blockAccess, allowWoodDoor, blockMovement, pathInWater, canEntityDrown);
+            this.isWoddenDoorAllowed = allowWoodDoor;
+            this.isMovementBlockAllowed = blockMovement;
         }
 
         @Override
         public int getVerticalOffset(Entity entity, int x, int y, int z, PathPoint pathPoint) {
             try {
-                this.isWoddenDoorAllowed = SAPReflectionHelper.getCachedField(PathFinder.class, "isWoddenDoorAllowed", "isWoddenDoorAllowed").getBoolean(this);
-                this.isMovementBlockAllowed = SAPReflectionHelper.getCachedField(PathFinder.class, "isWoddenDoorAllowed", "isMovementBlockAllowed").getBoolean(this);
-                this.isPathingInWater = SAPReflectionHelper.getCachedField(PathFinder.class, "isWoddenDoorAllowed", "isPathingInWater").getBoolean(this);
+                this.isPathingInWater = SAPReflectionHelper.getCachedField(PathFinder.class, "isPathingInWater", "field_75863_g").getBoolean(this);
                 return getPathApplicable(entity, x, y, z, pathPoint, this.isPathingInWater, this.isMovementBlockAllowed,
                                          this.isWoddenDoorAllowed
                 );

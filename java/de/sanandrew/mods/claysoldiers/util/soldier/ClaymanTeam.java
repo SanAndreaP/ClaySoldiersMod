@@ -32,19 +32,20 @@ public final class ClaymanTeam
         TEAMS_.put(NULL_TEAM.getTeamName(), NULL_TEAM);
 
         registerTeam("clay", 0xA6A6A6,
-                     new String[]{CSM_Main.MOD_ID + ":textures/entity/soldiers/lightgray.png"},
-                     new String[]{CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightgray.png"},
-                     new String[]{CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/lightgray.png"}
+                     new String[]{ CSM_Main.MOD_ID + ":textures/entity/soldiers/lightgray.png" },
+                     new String[]{ CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightgray.png" },
+                     null
         ).useTeamColorAsItemColor();
         registerTeam("white", 0xFFFFFF,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/white.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/white.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white.png" }
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white2.png"}
         ).useTeamColorAsItemColor();
         registerTeam("gray", 0x5F5F5F,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/gray.png" },
                      null,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/gray.png" }
+                     null
         ).useTeamColorAsItemColor();
         registerTeam("black", 0x1A1A1A,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/black.png" },
@@ -53,8 +54,10 @@ public final class ClaymanTeam
         ).useTeamColorAsItemColor();
         registerTeam("brown", 0x703710,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/brown.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/brown.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/brown.png" }
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/brown.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/brown2.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/brown.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/brown2.png" }
         ).useTeamColorAsItemColor();
         registerTeam("red", 0xE02121,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/red.png" },
@@ -64,32 +67,35 @@ public final class ClaymanTeam
         registerTeam("orange", 0xEC6C14,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/orange.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/orange.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/orange.png" }
+                     null
         ).useTeamColorAsItemColor();
         registerTeam("yellow", 0xFFFF00,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/yellow.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/yellow.png" }
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow2.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow3.png" },
+                     null
         ).useTeamColorAsItemColor();
         registerTeam("lime", 0x94ff00,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/lime.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lime.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/lime.png" }
+                     null
         ).useTeamColorAsItemColor();
         registerTeam("green", 0x24902D,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/green.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/green.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/green.png" }
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/green.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/green2.png" }
         ).useTeamColorAsItemColor();
         registerTeam("cyan", 0x14ECEC,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/cyan.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/cyan.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/cyan.png" }
+                     null
         ).useTeamColorAsItemColor();
         registerTeam("lightblue", 0x75AED7,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/lightblue.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightblue.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/lightblue.png" }
+                     null
         ).useTeamColorAsItemColor();
         registerTeam("blue", 0x4343d7,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/blue.png" },
@@ -98,8 +104,10 @@ public final class ClaymanTeam
         ).useTeamColorAsItemColor();
         registerTeam("purple", 0x8E00FF,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/purple.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/purple.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/purple.png" }
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/purple.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/purple2.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/purple.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/purple2.png" }
         ).useTeamColorAsItemColor();
         registerTeam("magenta", 0xEC14DD,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/magenta.png" },
@@ -109,12 +117,12 @@ public final class ClaymanTeam
         registerTeam("pink", 0xE69BD2,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/pink.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/pink.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/pink.png" }
+                     null
         ).useTeamColorAsItemColor();
-        registerTeam("melon", 0xFFFFFF, CSM_Main.MOD_ID + ":doll_melon",
+        registerTeam("melon", 0x91D400, CSM_Main.MOD_ID + ":doll_melon",
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/melon.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/melon.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/melon.png" }
+                     null
         );
     }
 
@@ -183,7 +191,7 @@ public final class ClaymanTeam
                 this.texturesUnique_[i] = new ResourceLocation(uniqueTextures[i]);
             }
         } else {
-            this.texturesRare_ = new ResourceLocation[0];
+            this.texturesUnique_ = new ResourceLocation[0];
         }
     }
 
@@ -232,12 +240,12 @@ public final class ClaymanTeam
     public static ClaymanTeam registerTeam(String teamName, int teamColor, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures) {
         try {
             ClaymanTeam inst = new ClaymanTeam(teamName, teamColor, iconTexture, defTextures, rareTextures, uniqueTextures);
-            TEAMS_.put(teamName, inst);
             if( TEAMS_.containsKey(teamName) ) {
                 FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "A mod has overridden the soldier team \"%s\"!", teamName);
             } else {
                 TEAM_NAMES_FOR_DOLLS_.add(teamName);
             }
+            TEAMS_.put(teamName, inst);
             return inst;
         } catch( ClaymanTeamRegistrationException ex ) {
             FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "There was an error while trying to register the soldier team %s:", teamName);
