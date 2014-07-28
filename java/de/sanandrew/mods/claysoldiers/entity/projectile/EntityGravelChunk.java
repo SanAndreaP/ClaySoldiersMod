@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class EntityGravelChunk
@@ -23,6 +24,7 @@ public class EntityGravelChunk
 {
     protected static final int DW_CLAYMANTEAM = 5;
     protected static final int DW_HOMING = 6;
+    protected static final int DW_DEAD = 7;         // bugfix for client-sided death
 
     protected EntityLivingBase target;
 
@@ -35,6 +37,13 @@ public class EntityGravelChunk
 
     public EntityGravelChunk(World world, EntityLivingBase thrower) {
         super(world, thrower);
+
+        this.setSize(0.1F, 0.1F);
+        this.renderDistanceWeight = 5D;
+    }
+
+    public EntityGravelChunk(World world, double x, double y, double z) {
+        super(world, x, y, z);
 
         this.setSize(0.1F, 0.1F);
         this.renderDistanceWeight = 5D;
@@ -56,13 +65,19 @@ public class EntityGravelChunk
     protected void entityInit() {
         super.entityInit();
 
-        this.dataWatcher.addObject(DW_CLAYMANTEAM, ClaymanTeam.DEFAULT_TEAM);
+        this.dataWatcher.addObject(DW_CLAYMANTEAM, ClaymanTeam.NULL_TEAM.getTeamName());
         this.dataWatcher.addObject(DW_HOMING, (byte) 0);
+        this.dataWatcher.addObject(DW_DEAD, (byte) 0);
     }
 
     @Override
     public void onUpdate() {
-        if( this.isHoming() ) {
+        if( this.dataWatcher.getWatchableObjectByte(DW_DEAD) == 1 ) {
+            this.setDead();
+            return;
+        }
+
+        if( this.isHoming() && !this.worldObj.isRemote ) {
             double d = this.target.posX - posX;
             double d1 = this.target.posZ - posZ;
             double d2 = (this.target.posY + this.target.getEyeHeight()) - 0.10000000298023224D - this.posY;
@@ -99,9 +114,18 @@ public class EntityGravelChunk
     @Override
     protected void onImpact(MovingObjectPosition movObjPos) {
         if( movObjPos.entityHit != null  ) {
-            float attackDmg = 2 + this.rand.nextInt(2);
+            float attackDmg = 2.0F + this.rand.nextFloat() * 2.0F;
+            boolean isEnemy = movObjPos.entityHit instanceof EntityClayMan && this.target instanceof EntityClayMan
+                              && ((EntityClayMan)movObjPos.entityHit).getClayTeam().equals(((EntityClayMan)this.target).getClayTeam());
 
-            if( movObjPos.entityHit == this.target && !movObjPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), attackDmg) ) {
+            DamageSource dmgSrc = DamageSource.causeThrownDamage(this, this.getThrower());
+            if( this.getThrower() == null ) {
+                dmgSrc = DamageSource.causeThrownDamage(this, this);
+            }
+
+            if( (movObjPos.entityHit == this.target || isEnemy)
+                && movObjPos.entityHit.attackEntityFrom(dmgSrc, attackDmg) )
+            {
                 if( this.getThrower() instanceof EntityClayMan ) {
                     ((EntityClayMan) this.getThrower()).onProjectileHit(this, movObjPos);
                 }
@@ -111,8 +135,15 @@ public class EntityGravelChunk
         }
 
         if( !this.worldObj.isRemote ) {
-            ParticlePacketSender.sendDiggingFx(this.posX, this.posY, this.posZ, this.dimension, Blocks.gravel);
-            this.setDead();
+            if( movObjPos.typeOfHit != MovingObjectType.BLOCK
+                || this.worldObj.getBlock(movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ)
+                                .getCollisionBoundingBoxFromPool(this.worldObj, movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ) != null )
+            {
+                ParticlePacketSender.sendDiggingFx(this.posX, this.posY, this.posZ, this.dimension, Blocks.gravel);
+                this.setDead();
+            }
+
+            this.dataWatcher.updateObject(DW_DEAD, (byte)(this.isDead ? 1 : 0));
         }
     }
 

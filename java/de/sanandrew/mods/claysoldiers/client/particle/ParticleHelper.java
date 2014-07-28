@@ -66,17 +66,17 @@ public final class ParticleHelper
         Block block = (Block) Block.blockRegistry.getObject(data.getValue3());
 
         for (int i = 0; i < 8; i++) {
-            EntityDiggingFX fx = new EntityDiggingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), SAPUtils.RANDOM.nextGaussian() * 0.15D,
-                                                     SAPUtils.RANDOM.nextDouble() * 0.2D, SAPUtils.RANDOM.nextGaussian() * 0.15D, block, 0);
+            EntityDiggingFX fx = new EntityDiggingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), SAPUtils.RNG.nextGaussian() * 0.15D,
+                                                     SAPUtils.RNG.nextDouble() * 0.2D, SAPUtils.RNG.nextGaussian() * 0.15D, block, 0);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
     public static void spawnCritFx(Triplet<Double, Double, Double> data, Minecraft mc) {
         for (int i = 0; i < 10; i++) {
-            double motX = SAPUtils.RANDOM.nextDouble() - 0.5D;
-            double motY = SAPUtils.RANDOM.nextDouble() * 0.5D;
-            double motZ = SAPUtils.RANDOM.nextDouble() - 0.5D;
+            double motX = SAPUtils.RNG.nextDouble() - 0.5D;
+            double motY = SAPUtils.RNG.nextDouble() * 0.5D;
+            double motZ = SAPUtils.RNG.nextDouble() - 0.5D;
             EntityCritFX fx = new EntityCritFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), motX, motY, motZ);
             mc.effectRenderer.addEffect(fx);
         }
@@ -102,7 +102,7 @@ public final class ParticleHelper
 
     public static void spawnSpellFx(Sextet<Double, Double, Double, Double, Double, Double> data, Minecraft mc) {
         for (int i = 0; i < 4; i++) {
-            EntitySpellParticleFX fx = new EntitySpellParticleFX(mc.theWorld, data.getValue0(), data.getValue1() - SAPUtils.RANDOM.nextDouble() * 0.2D,
+            EntitySpellParticleFX fx = new EntitySpellParticleFX(mc.theWorld, data.getValue0(), data.getValue1() - SAPUtils.RNG.nextDouble() * 0.2D,
                                                                  data.getValue2(), data.getValue3(), data.getValue4(), data.getValue5());
             mc.effectRenderer.addEffect(fx);
         }
@@ -110,10 +110,10 @@ public final class ParticleHelper
 
     public static void spawnNexusFx(Sextet<Double, Double, Double, Float, Float, Float> data, Minecraft mc) {
         EntityNexusFX fx = new EntityNexusFX(mc.theWorld,
-                                             data.getValue0() + 0.2F + SAPUtils.RANDOM.nextDouble() * 0.6F,
+                                             data.getValue0() + 0.2F + SAPUtils.RNG.nextDouble() * 0.6F,
                                              data.getValue1(),
-                                             data.getValue2() + 0.2F + SAPUtils.RANDOM.nextDouble() * 0.6F,
-                                             0.1F + SAPUtils.RANDOM.nextFloat() * 0.2F,
+                                             data.getValue2() + 0.2F + SAPUtils.RNG.nextDouble() * 0.6F,
+                                             0.1F + SAPUtils.RNG.nextFloat() * 0.2F,
                                              data.getValue3(),
                                              data.getValue4(),
                                              data.getValue5(),

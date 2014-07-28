@@ -4,6 +4,7 @@ import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.IPacket;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.network.INetHandler;
@@ -18,7 +19,7 @@ public class PacketSoldierRender
     implements IPacket
 {
     @Override
-    public void process(ByteBufInputStream stream, INetHandler handler) throws IOException {
+    public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
         CSM_Main.proxy.applySoldierRenderFlags(stream.readInt(), stream.readLong(), stream.readLong(), stream.readLong(), stream.readLong());
     }
 

@@ -21,7 +21,7 @@ public class UpgradeSlimeball
 {
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        if( target.applyEffect(SoldierEffects.getEffectFromName(SoldierEffects.EFF_SLIMEFEET)) != null ) {
+        if( target.applyEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) != null ) {
             target.playSound("mob.slime.attack", 1.0F, 1.0F);
         }
     }
@@ -41,7 +41,7 @@ public class UpgradeSlimeball
                                 ISoldierProjectile<? extends EntityThrowable> projectile) {
         if( target.entityHit instanceof EntityClayMan ) {
             EntityClayMan caddicarus = (EntityClayMan) target.entityHit;
-            if( caddicarus.applyEffect(SoldierEffects.getEffectFromName(SoldierEffects.EFF_SLIMEFEET)) != null ) {
+            if( caddicarus.applyEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) != null ) {
                 caddicarus.playSound("mob.slime.attack", 1.0F, 1.0F);
             }
         }

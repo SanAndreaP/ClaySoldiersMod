@@ -20,7 +20,7 @@ public class UpgradeNetherwart
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( !clayMan.worldObj.isRemote && clayMan.ticksExisted % 20 == 0 && SAPUtils.RANDOM.nextInt(10) == 0 ) {
+        if( !clayMan.worldObj.isRemote && clayMan.ticksExisted % 20 == 0 && SAPUtils.RNG.nextInt(10) == 0 ) {
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
                                             Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
                                                          Item.itemRegistry.getNameForObject(Items.nether_wart)

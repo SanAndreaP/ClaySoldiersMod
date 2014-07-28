@@ -15,6 +15,7 @@ import de.sanandrew.mods.claysoldiers.client.render.entity.RenderHorseMount;
 import de.sanandrew.mods.claysoldiers.client.render.entity.projectile.RenderBlockProjectile;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityEmeraldChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityFirechargeChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityGravelChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntitySnowChunk;
@@ -40,5 +41,6 @@ public class ModEntities
         EntityRegistry.registerModEntity(EntityGravelChunk.class, CSM_Main.MOD_ID + ":gravelchunk", entityId++, mod, 64, 1, true);
         EntityRegistry.registerModEntity(EntitySnowChunk.class, CSM_Main.MOD_ID + ":snowchunk", entityId++, mod, 64, 1, true);
         EntityRegistry.registerModEntity(EntityFirechargeChunk.class, CSM_Main.MOD_ID + ":firechunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityEmeraldChunk.class, CSM_Main.MOD_ID + ":emeraldchunk", entityId++, mod, 64, 1, true);
     }
 }

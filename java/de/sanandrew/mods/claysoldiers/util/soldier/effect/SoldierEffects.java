@@ -43,15 +43,15 @@ public class SoldierEffects
         }
     }
 
-    public static ASoldierEffect getEffectFromName(String name) {
+    public static ASoldierEffect getEffect(String name) {
         return NAME_TO_EFFECT_MAP_.get(name);
     }
 
-    public static String getNameFromEffect(ASoldierEffect effect) {
+    public static String getEffectName(ASoldierEffect effect) {
         return EFFECT_TO_NAME_MAP_.get(effect);
     }
 
-    public static byte getRenderIdFromEffect(ASoldierEffect upgrade) {
+    public static byte getRenderId(ASoldierEffect upgrade) {
         if( EFFECT_TO_RENDER_ID_MAP_.containsKey(upgrade) ) {
             return EFFECT_TO_RENDER_ID_MAP_.get(upgrade);
         } else {
@@ -59,7 +59,7 @@ public class SoldierEffects
         }
     }
 
-    public static ASoldierEffect getEffectFromRenderId(int renderId) {
+    public static ASoldierEffect getEffect(int renderId) {
         return RENDER_ID_TO_EFFECT_MAP_.get((byte) renderId);
     }
 
@@ -76,10 +76,12 @@ public class SoldierEffects
 
     public static final String EFF_SLIMEFEET = "slimefeet";
     public static final String EFF_SLOWMOTION = "slowmotion";
+    public static final String EFF_THUNDER = "thunder";
 
     static {
         registerEffect(EFF_SLIMEFEET, new EffectSlimeFeet(), getNewRenderId());
         registerEffect(EFF_SLOWMOTION, new EffectSlowMotion());
+        registerEffect(EFF_THUNDER, new EffectThunder(), getNewRenderId());
     }
 
     public static class RenderIdException extends RuntimeException {

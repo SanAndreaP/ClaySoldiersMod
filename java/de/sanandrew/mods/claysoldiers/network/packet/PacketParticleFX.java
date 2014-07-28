@@ -6,6 +6,7 @@ import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.IPacket;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.network.INetHandler;
@@ -28,7 +29,7 @@ public class PacketParticleFX
     public static final byte FX_NEXUS = 6;
 
     @Override
-    public void process(ByteBufInputStream stream, INetHandler handler) throws IOException {
+    public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
         switch( stream.readByte() ) {
             case FX_BREAK:
                 CSM_Main.proxy.spawnParticles(FX_BREAK, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));

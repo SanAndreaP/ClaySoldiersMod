@@ -12,10 +12,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeNethe
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.UpgradeBrick;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.UpgradeIronIngot;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeFirecharge;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeGravel;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeShearBladeLeft;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.UpgradeSnow;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.*;
 import net.minecraft.init.Blocks;
@@ -73,7 +70,7 @@ public final class SoldierUpgrades
         }
     }
 
-    public static ASoldierUpgrade getUpgradeFromName(String name) {
+    public static ASoldierUpgrade getUpgrade(String name) {
         return NAME_TO_UPGRADE_MAP_.get(name);
     }
 
@@ -142,6 +139,7 @@ public final class SoldierUpgrades
     public static final String UPG_GRAVEL = "gravel";
     public static final String UPG_SNOW = "snow";
     public static final String UPG_FIRECHARGE = "firecharge";
+    public static final String UPG_EMERALD = "emerald";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -180,6 +178,10 @@ public final class SoldierUpgrades
                                 new ItemStack(Items.snowball)
                         }, new UpgradeSnow(), getNewRenderId());
         registerUpgrade(UPG_FIRECHARGE, new ItemStack(Items.fire_charge), new UpgradeFirecharge(), getNewRenderId());
+        registerUpgrade(UPG_EMERALD, new ItemStack[] {
+                                new ItemStack(Blocks.emerald_block),
+                                new ItemStack(Items.emerald)
+                        }, new UpgradeEmerald(), getNewRenderId());
     }
 
     public static class RenderIdException extends RuntimeException {

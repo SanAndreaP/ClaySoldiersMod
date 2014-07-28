@@ -2,6 +2,7 @@ package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.ServerPacketHandler;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author SanAndreasP
@@ -16,4 +17,6 @@ public class CommonProxy
     public void spawnParticles(byte particleId, Tuple data) { }
 
     public void applySoldierRenderFlags(int entityId, long upgFlags1, long upgFlags2, long effFlags1, long effFlags2) { }
+
+    public void applyEffectNbt(int entityId, byte effectRenderId, NBTTagCompound nbt) { }
 }

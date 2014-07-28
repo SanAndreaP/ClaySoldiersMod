@@ -22,17 +22,19 @@ import java.util.Map;
 
 public final class ClaymanTeam
 {
-    public static final String DEFAULT_TEAM = "clay";
+    public static final ClaymanTeam NULL_TEAM = new ClaymanTeam("nullTeam");
 
     private static final Map<String, ClaymanTeam> TEAMS_ = Maps.newHashMap();
-    private static final List<String> TEAM_NAMES_ = new ArrayList<>();
+    private static final List<String> TEAM_NAMES_FOR_DOLLS_ = new ArrayList<>();
 
     // NOTE: use http://www.colorpicker.com/ to pick a fitting color
     static {
-        registerTeam(DEFAULT_TEAM, 0xA6A6A6,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/lightgray.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightgray.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/lightgray.png" }
+        TEAMS_.put(NULL_TEAM.getTeamName(), NULL_TEAM);
+
+        registerTeam("clay", 0xA6A6A6,
+                     new String[]{CSM_Main.MOD_ID + ":textures/entity/soldiers/lightgray.png"},
+                     new String[]{CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightgray.png"},
+                     new String[]{CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/lightgray.png"}
         ).useTeamColorAsItemColor();
         registerTeam("white", 0xFFFFFF,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/white.png" },
@@ -41,7 +43,7 @@ public final class ClaymanTeam
         ).useTeamColorAsItemColor();
         registerTeam("gray", 0x5F5F5F,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/gray.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/gray.png" },
+                     null,
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/gray.png" }
         ).useTeamColorAsItemColor();
         registerTeam("black", 0x1A1A1A,
@@ -127,29 +129,61 @@ public final class ClaymanTeam
     @SideOnly(Side.CLIENT)
     private IIcon iconInstance_;
 
-    private ClaymanTeam(String teamName, int teamColor, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures) {
+    /** DO NOT USE THIS! THIS IS ONlY FOR THE DUMMY "NULL-Team"! */
+    private ClaymanTeam(String teamName) {
+        this.name_ = teamName;
+        this.teamColor_ = 0xFFFFFF;
+        this.iconColor_ = 0xFFFFFF;
+    }
+
+    private ClaymanTeam(String teamName, int teamColor, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures)
+            throws ClaymanTeamRegistrationException
+    {
+        if( teamName == null ) {
+            throw new ClaymanTeamRegistrationException("teamName cannot be null!");
+        } else if( teamName.isEmpty() ) {
+            throw new ClaymanTeamRegistrationException("teamName cannot be empty!");
+        }
+        if( iconTexture == null ) {
+            throw new ClaymanTeamRegistrationException("iconTexture cannot be null!");
+        } else if( iconTexture.isEmpty() ) {
+            throw new ClaymanTeamRegistrationException("iconTexture cannot be empty!");
+        }
+
         this.name_ = teamName;
         this.icon_ = iconTexture;
         this.teamColor_ = teamColor;
         this.iconColor_ = 0xFFFFFF;
 
-        this.texturesDefault_ = new ResourceLocation[defTextures.length];
-        for( int i = 0; i < defTextures.length; i++ ) {
-            this.texturesDefault_[i] = new ResourceLocation(defTextures[i]);
+        if( defTextures != null ) {
+            if( defTextures.length == 0 ) {
+                throw new ClaymanTeamRegistrationException("defTextures cannot be empty!");
+            }
+
+            this.texturesDefault_ = new ResourceLocation[defTextures.length];
+            for( int i = 0; i < defTextures.length; i++ ) {
+                this.texturesDefault_[i] = new ResourceLocation(defTextures[i]);
+            }
+        } else {
+            throw new ClaymanTeamRegistrationException("defTextures cannot be null!");
         }
 
-        if( rareTextures != null ) {
+        if( rareTextures != null && rareTextures.length > 0 ) {
             this.texturesRare_ = new ResourceLocation[rareTextures.length];
             for( int i = 0; i < rareTextures.length; i++ ) {
                 this.texturesRare_[i] = new ResourceLocation(rareTextures[i]);
             }
+        } else {
+            this.texturesRare_ = new ResourceLocation[0];
         }
 
-        if( uniqueTextures != null ) {
+        if( uniqueTextures != null && uniqueTextures.length > 0 ) {
             this.texturesUnique_ = new ResourceLocation[uniqueTextures.length];
             for( int i = 0; i < uniqueTextures.length; i++ ) {
                 this.texturesUnique_[i] = new ResourceLocation(uniqueTextures[i]);
             }
+        } else {
+            this.texturesRare_ = new ResourceLocation[0];
         }
     }
 
@@ -196,34 +230,49 @@ public final class ClaymanTeam
     }
 
     public static ClaymanTeam registerTeam(String teamName, int teamColor, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures) {
-        if( TEAMS_.containsKey(teamName) ) {
-            FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "A mod has overridden the soldier team \"%s\"!", teamName);
-        } else {
-            TEAM_NAMES_.add(teamName);
+        try {
+            ClaymanTeam inst = new ClaymanTeam(teamName, teamColor, iconTexture, defTextures, rareTextures, uniqueTextures);
+            TEAMS_.put(teamName, inst);
+            if( TEAMS_.containsKey(teamName) ) {
+                FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "A mod has overridden the soldier team \"%s\"!", teamName);
+            } else {
+                TEAM_NAMES_FOR_DOLLS_.add(teamName);
+            }
+            return inst;
+        } catch( ClaymanTeamRegistrationException ex ) {
+            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "There was an error while trying to register the soldier team %s:", teamName);
+            ex.printStackTrace();
+            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "This team will not be registered!");
+            return null;
         }
-        ClaymanTeam inst = new ClaymanTeam(teamName, teamColor, iconTexture, defTextures, rareTextures, uniqueTextures);
-        TEAMS_.put(teamName, inst);
-        return inst;
     }
 
     public static ClaymanTeam getTeamFromName(String name) {
         return TEAMS_.get(name);
     }
 
-    public static List<String> getTeamNames() {
-        return new ArrayList<>(TEAM_NAMES_);
+    public static List<String> getTeamNamesForDolls() {
+        return new ArrayList<>(TEAM_NAMES_FOR_DOLLS_);
     }
 
     @SideOnly(Side.CLIENT)
     public static void registerIcons(IIconRegister iconRegister) {
         Map<String, IIcon> registeredIcons = Maps.newHashMap();
         for( ClaymanTeam team : TEAMS_.values() ) {
-            if( registeredIcons.containsKey(team.getIconTexture()) ) {
-                team.iconInstance_ = registeredIcons.get(team.getIconTexture());
-            } else {
-                team.iconInstance_ = iconRegister.registerIcon(team.getIconTexture());
-                registeredIcons.put(team.getIconTexture(), team.iconInstance_);
+            if( TEAM_NAMES_FOR_DOLLS_.contains(team.getTeamName()) ) {
+                if( registeredIcons.containsKey(team.getIconTexture()) ) {
+                    team.iconInstance_ = registeredIcons.get(team.getIconTexture());
+                } else {
+                    team.iconInstance_ = iconRegister.registerIcon(team.getIconTexture());
+                    registeredIcons.put(team.getIconTexture(), team.iconInstance_);
+                }
             }
+        }
+    }
+
+    private class ClaymanTeamRegistrationException extends Exception {
+        public ClaymanTeamRegistrationException(String message) {
+            super(message);
         }
     }
 }

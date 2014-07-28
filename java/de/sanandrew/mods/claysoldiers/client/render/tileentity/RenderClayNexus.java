@@ -14,6 +14,9 @@ import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -27,7 +30,6 @@ public class RenderClayNexus
     extends TileEntitySpecialRenderer
 {
     public ModelClayNexus nexusModel = new ModelClayNexus();
-    public ItemStack dollItem = new ItemStack(ModItems.dollSoldier);
 
     public RenderClayNexus() { }
 
@@ -43,7 +45,14 @@ public class RenderClayNexus
         nexusModel.renderTileEntity(0.0625F);
 
         this.renderGlowmap(nexus);
-        this.renderItem(nexus, partTicks);
+
+        if( nexus.getStackInSlot(TileEntityClayNexus.SOLDIER_SLOT) != null ) {
+            this.renderSoldierItem(nexus, nexus.getStackInSlot(TileEntityClayNexus.SOLDIER_SLOT), partTicks);
+        }
+
+        if( nexus.getStackInSlot(TileEntityClayNexus.THROWABLE_SLOT) != null ) {
+            this.renderThrowableItem(nexus, nexus.getStackInSlot(TileEntityClayNexus.THROWABLE_SLOT), partTicks);
+        }
 
         ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
         if( heldItem != null && heldItem.getItem() == ModItems.statDisplay ) {
@@ -65,41 +74,62 @@ public class RenderClayNexus
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        int bright = 0xF0;
-        int j = bright % 65536;
-        int k = bright / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j / 1.0F, (float) k / 1.0F);
+        float prevBrightX = OpenGlHelper.lastBrightnessX;
+        float prevBrightY = OpenGlHelper.lastBrightnessY;
+        if( nexus.isActive ) {
+            int brightness = 0xF0;
+            int brightX = brightness % 65536;
+            int brightY = brightness / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
+        }
         this.bindTexture(Textures.NEXUS_GLOWING);
         GL11.glColor3f(colors[0], colors[1], colors[2]);
         this.nexusModel.renderTileEntityGlowmap(0.0625F);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevBrightX, prevBrightY);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private void renderItem(TileEntityClayNexus nexus, float partTicks) {
+    private void renderSoldierItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
         float[] colors = new float[] {1.0F, 1.0F, 1.0F};
-        if( nexus.getStackInSlot(0) != null ) {
-            RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(nexus.getStackInSlot(0)).getIconColor());
-            colors[0] = rgba.getRed() / 255.0F;
-            colors[1] = rgba.getGreen() / 255.0F;
-            colors[2] = rgba.getBlue() / 255.0F;
-        }
-
         float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
 
-        if( nexus.getStackInSlot(0) != null ) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 1.225F, 0.0F);
-            GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
-            GL11.glScalef(0.25F, 0.25F, 0.25F);
-            GL11.glRotatef(itmAngle, 0.0F, 1.0F, 0.0F);
-            GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
-            GL11.glColor3f(colors[0], colors[1], colors[2]);
-            ItemRenderHelper.renderItemIn3D(nexus.getStackInSlot(0), 0);
-            GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            GL11.glPopMatrix();
+        RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(stack).getIconColor());
+        colors[0] = rgba.getRed() / 255.0F;
+        colors[1] = rgba.getGreen() / 255.0F;
+        colors[2] = rgba.getBlue() / 255.0F;
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 1.225F, 0.0F);
+        GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
+        GL11.glScalef(0.25F, 0.25F, 0.25F);
+        GL11.glRotatef(itmAngle, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
+        GL11.glColor3f(colors[0], colors[1], colors[2]);
+        ItemRenderHelper.renderItemIn3D(stack);
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glPopMatrix();
+    }
+
+    private void renderThrowableItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
+        float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
+        ASoldierUpgrade upg = SoldierUpgrades.getUpgradeFromItem(stack);
+        IThrowableUpgrade throwableUpg = upg instanceof IThrowableUpgrade ? (IThrowableUpgrade) upg : null;
+        if( throwableUpg == null ) {
+            return;
         }
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.875F, 0.0F);
+        GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
+        GL11.glScalef(0.25F, 0.25F, 0.25F);
+        GL11.glRotatef(-itmAngle, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        throwableUpg.renderNexusThrowable(nexus, partTicks);
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glPopMatrix();
     }
 
     private void renderHealth(TileEntityClayNexus nexus) {
@@ -113,6 +143,13 @@ public class RenderClayNexus
         GL11.glDisable(GL11.GL_LIGHTING);
 
         float healthPerc = Math.min(1.0F, 1.0F - nexus.getHealth() / nexus.getMaxHealth());
+
+        float prevBrightX = OpenGlHelper.lastBrightnessX;
+        float prevBrightY = OpenGlHelper.lastBrightnessY;
+        int brightness = 0xF0;
+        int brightX = brightness % 65536;
+        int brightY = brightness / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
 
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
@@ -129,6 +166,8 @@ public class RenderClayNexus
         tessellator.addVertex(0.5D, 0.05D, 0.0D);
         tessellator.addVertex(-0.5D + healthPerc, 0.05D, 0.0D);
         tessellator.draw();
+
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevBrightX, prevBrightY);
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);

@@ -28,20 +28,20 @@ public class UpgradeHelperShearBlade
 
         if( stack.getItem() == ModItems.shearBlade ) {
             if( !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) ) {
-                upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARLEFT);
+                upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT);
                 savedItem = stack;
             } else if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
-                upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARRIGHT);
+                upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT);
                 savedItem = stack;
             }
         } else {
             if( !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) ) {
                 clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
-                upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARLEFT);
+                upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT);
                 savedItem = new ItemStack(ModItems.shearBlade, 1);
             } else if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
                 clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
-                upgrade = SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARRIGHT);
+                upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT);
                 savedItem = new ItemStack(ModItems.shearBlade, 1);
             }
         }

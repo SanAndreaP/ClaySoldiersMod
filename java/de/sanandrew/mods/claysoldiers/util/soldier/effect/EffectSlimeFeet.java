@@ -32,7 +32,7 @@ public class EffectSlimeFeet
 
 
     @Override
-    public void onClientUpdate(EntityClayMan clayMan) {
+    public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         clayMan.canMove = false;
     }
 }

@@ -32,7 +32,11 @@ public abstract class ASoldierEffect
 
     }
 
-    public void onClientUpdate(EntityClayMan clayMan) {
+    public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
 
+    }
+
+    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierEffectInst effectInst) {
+        return false;
     }
 }

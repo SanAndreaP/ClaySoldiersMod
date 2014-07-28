@@ -19,18 +19,21 @@ public class RenderSoldierLeftHandEvent
     private final ItemStack blockGravel_ = new ItemStack(Blocks.gravel);
     private final ItemStack blockSnow_ = new ItemStack(Blocks.snow);
     private final ItemStack blockObsidian_ = new ItemStack(Blocks.obsidian); //TODO: substitude until proper texture arrives
+    private final ItemStack blockEmerald_ = new ItemStack(Blocks.emerald_block);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
         if( event.stage == SoldierRenderEvent.RenderStage.EQUIPPED ) {
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SHEARLEFT)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT)) ) {
                 this.renderLeftHandItem(event.clayMan, event.clayManRender, this.itemShearBlade_);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_GRAVEL)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GRAVEL)) ) {
                 this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockGravel_);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_SNOW)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SNOW)) ) {
                 this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockSnow_);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_FIRECHARGE)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FIRECHARGE)) ) {
                 this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockObsidian_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_EMERALD)) ) {
+                this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockEmerald_);
             }
         }
     }

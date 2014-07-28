@@ -58,14 +58,14 @@ public class RenderSoldierModelEvent
             this.initRenderer(event.clayManRender);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_GUNPOWDER)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GUNPOWDER)) ) {
             event.clayManRender.bindTexture(Textures.CLAYMAN_GUNPOWDER);
             GL11.glPushMatrix();
             event.clayManRender.modelBipedMain.render(event.clayMan, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
             GL11.glPopMatrix();
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_IRONINGOT)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRONINGOT)) ) {
             ModelBiped model = event.clayManRender.modelBipedMain;
 
             this.buffedBody.rotateAngleX = model.bipedBody.rotateAngleX;
@@ -79,7 +79,7 @@ public class RenderSoldierModelEvent
             GL11.glPopMatrix();
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_LEATHER)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER)) ) {
             ModelBiped model = event.clayManRender.modelBipedMain;
 
             this.armorBody.rotateAngleX = model.bipedBody.rotateAngleX;
@@ -100,7 +100,7 @@ public class RenderSoldierModelEvent
             this.armorRightArm.render(event.partTicks);
             GL11.glPopMatrix();
 
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_WOOL)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOOL)) ) {
                 float[] color = this.getSplittedColor(event.clayMan.getMiscColor());
 
                 event.clayManRender.bindTexture(Textures.CLAYMAN_PADDING);
@@ -114,7 +114,7 @@ public class RenderSoldierModelEvent
             }
         }
 
-        if( event.clayMan.hasEffect(SoldierEffects.getEffectFromName(SoldierEffects.EFF_SLIMEFEET)) ) {
+        if( event.clayMan.hasEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) ) {
             ModelBiped model = event.clayManRender.modelBipedMain;
 
             this.slimeLeftLeg.rotateAngleX = model.bipedLeftLeg.rotateAngleX;

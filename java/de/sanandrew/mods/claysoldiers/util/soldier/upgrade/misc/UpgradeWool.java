@@ -17,7 +17,7 @@ public class UpgradeWool
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_LEATHER)) ) {
+        if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER)) ) {
             return true;
         }
         return false;
@@ -25,6 +25,10 @@ public class UpgradeWool
 
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
+        if( source.isUnblockable() ) {
+            return true;
+        }
+
         if( damage.floatValue() >= 1.0F ) {
             damage.subtract(1.0F);
         } else {
@@ -42,6 +46,6 @@ public class UpgradeWool
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.hasUpgrade(SoldierUpgrades.getUpgradeFromName(SoldierUpgrades.UPG_LEATHER));
+        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER));
     }
 }

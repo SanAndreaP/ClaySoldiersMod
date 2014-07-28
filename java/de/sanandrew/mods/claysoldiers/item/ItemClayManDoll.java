@@ -116,17 +116,17 @@ public class ItemClayManDoll extends Item
             if( itemNbt != null && itemNbt.hasKey("team") ) {
                 return ClaymanTeam.getTeamFromName(itemNbt.getString("team"));
             } else {
-                return ClaymanTeam.getTeamFromName(ClaymanTeam.DEFAULT_TEAM);
+                return ClaymanTeam.NULL_TEAM;
             }
         } else {
-            return ClaymanTeam.getTeamFromName(ClaymanTeam.DEFAULT_TEAM);
+            return ClaymanTeam.NULL_TEAM;
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void getSubItems(Item itemInst, CreativeTabs creativeTab, List stacks) {
-        for( String team : ClaymanTeam.getTeamNames() ) {
+        for( String team : ClaymanTeam.getTeamNamesForDolls() ) {
             ItemStack stack = new ItemStack(this, 1);
             setTeamForItem(team, stack);
             stacks.add(stack);

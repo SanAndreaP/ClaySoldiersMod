@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.block;
 
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -17,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockClayNexus
@@ -71,15 +71,22 @@ public class BlockClayNexus
         TileEntityClayNexus teNexus = (TileEntityClayNexus) world.getTileEntity(x, y, z);
         if( !world.isRemote ) {
             ItemStack playerItem = player.getCurrentEquippedItem();
-            if( playerItem != null && playerItem.getItem() == ModItems.dollSoldier ) {
-                teNexus.setInventorySlotContents(0, player.getCurrentEquippedItem());
-                teNexus.markDirty();
-                world.markBlockForUpdate(x, y, z);
-                return true;
+            if( playerItem != null ) {
+                if( teNexus.isItemValidForSlot(TileEntityClayNexus.SOLDIER_SLOT, playerItem) ) {
+                    teNexus.setInventorySlotContents(TileEntityClayNexus.SOLDIER_SLOT, playerItem);
+                    teNexus.markDirty();
+                    world.markBlockForUpdate(x, y, z);
+                    return true;
+                } else if( teNexus.isItemValidForSlot(TileEntityClayNexus.THROWABLE_SLOT, playerItem) ) {
+                    teNexus.setInventorySlotContents(TileEntityClayNexus.THROWABLE_SLOT, playerItem);
+                    teNexus.markDirty();
+                    world.markBlockForUpdate(x, y, z);
+                    return true;
+                }
             }
 
             if( player.isSneaking() ) {
-                teNexus.heal(teNexus.getMaxHealth());
+                teNexus.repair();
                 teNexus.markDirty();
                 world.markBlockForUpdate(x, y, z);
                 return true;
@@ -90,5 +97,10 @@ public class BlockClayNexus
             world.markBlockForUpdate(x, y, z);
         }
         return true;
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
+        return side >= 0;
     }
 }

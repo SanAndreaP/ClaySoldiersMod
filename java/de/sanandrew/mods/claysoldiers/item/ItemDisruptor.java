@@ -58,7 +58,7 @@ public class ItemDisruptor extends Item
                     stack.damageItem(1, player);
                 }
             } else {
-                if( stack.attemptDamageItem(1, SAPUtils.RANDOM) ) {
+                if( stack.attemptDamageItem(1, SAPUtils.RNG) ) {
                     stack.stackSize--;
                 }
             }

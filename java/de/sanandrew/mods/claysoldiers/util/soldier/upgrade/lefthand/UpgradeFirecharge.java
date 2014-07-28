@@ -6,12 +6,19 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityFirechargeChunk;
+import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
+import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
@@ -51,5 +58,16 @@ public class UpgradeFirecharge
             clayMan.attackTime = 30;
             upgradeInst.getNbtTag().setShort("uses", (short) (upgradeInst.getNbtTag().getShort("uses") - 1));
         }
+    }
+
+    @Override
+    public Class<? extends ISoldierProjectile<? extends EntityThrowable>> getThrowableClass() {
+        return EntityFirechargeChunk.class;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
+        ItemRenderHelper.renderIconIn3D(Blocks.lava.getIcon(0, 0), true, false, 0xFFFFFF);
     }
 }

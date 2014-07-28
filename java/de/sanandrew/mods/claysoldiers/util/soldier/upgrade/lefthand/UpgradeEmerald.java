@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntitySnowChunk;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityEmeraldChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
@@ -19,20 +19,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public class UpgradeSnow
+public class UpgradeEmerald
     extends AUpgradeLeftHanded
     implements IThrowableUpgrade
 {
-    private ItemStack nexusItem_ = new ItemStack(Blocks.snow);
+    private ItemStack nexusItem_ = new ItemStack(Blocks.emerald_block);
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort("uses", (short) 20);
+        upgradeInst.getNbtTag().setShort("uses", (short) 5);
     }
 
     @Override
@@ -41,10 +40,8 @@ public class UpgradeSnow
     }
 
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        if( stack.getItem() == Items.snowball ) {
-            upgInst.getNbtTag().setShort("uses", (short) 5);
-        } else if( stack.getItem() == Item.getItemFromBlock(Blocks.snow_layer) ) {
-            upgInst.getNbtTag().setShort("uses", (short) 10);
+        if( stack.getItem() == Item.getItemFromBlock(Blocks.emerald_block) ) {
+            upgInst.getNbtTag().setShort("uses", (short) 45);
         }
 
         this.consumeItem(stack, upgInst);
@@ -64,7 +61,7 @@ public class UpgradeSnow
     public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
         attackRange.setValue(-1.0F);
         if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 ) {
-            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntitySnowChunk.class, true);
+            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityEmeraldChunk.class, true);
             clayMan.attackTime = 30;
             upgradeInst.getNbtTag().setShort("uses", (short) (upgradeInst.getNbtTag().getShort("uses") - 1));
         }
@@ -72,7 +69,7 @@ public class UpgradeSnow
 
     @Override
     public Class<? extends ISoldierProjectile<? extends EntityThrowable>> getThrowableClass() {
-        return EntitySnowChunk.class;
+        return EntityEmeraldChunk.class;
     }
 
     @Override

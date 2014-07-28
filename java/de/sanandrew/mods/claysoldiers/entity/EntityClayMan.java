@@ -10,6 +10,7 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.NbtTypes;
+import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.mounts.IMount;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
@@ -44,6 +45,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +57,8 @@ public class EntityClayMan
 {
     private static final int DW_TEAM = 20;
     private static final int DW_MISC_COLOR = 21;
-    private static final int DW_IS_RARE = 22;
+    private static final int DW_IS_TEXTURE_RARE_OR_UNIQUE = 22;
+    private static final int DW_TEXTURE_INDEX = 23;
 
     public ItemStack dollItem = null;
     public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
@@ -77,11 +80,14 @@ public class EntityClayMan
         this.setSize(0.17F, 0.4F);
 
         this.yOffset = 0.01F;
+        this.ignoreFrustumCheck = true;
     }
 
     public EntityClayMan(World world, String team) {
         this(world);
         this.dataWatcher.updateObject(DW_TEAM, team);
+
+        this.setupTexture(this.rand.nextInt(2) == 0, this.rand.nextInt(2) == 0);
     }
 
     @Override
@@ -95,9 +101,10 @@ public class EntityClayMan
     protected void entityInit() {
         super.entityInit();
 
-        this.dataWatcher.addObject(DW_TEAM, ClaymanTeam.DEFAULT_TEAM);
+        this.dataWatcher.addObject(DW_TEAM, ClaymanTeam.NULL_TEAM.getTeamName());
         this.dataWatcher.addObject(DW_MISC_COLOR, (byte) 15);
-        this.dataWatcher.addObject(DW_IS_RARE, (byte) (rand.nextInt(8192)==0 ? 1 : 0));
+        this.dataWatcher.addObject(DW_IS_TEXTURE_RARE_OR_UNIQUE, (byte) 0);
+        this.dataWatcher.addObject(DW_TEXTURE_INDEX, 0);
     }
 
     @Override
@@ -125,6 +132,20 @@ public class EntityClayMan
             super.moveEntity(motionX, motionY, motionZ);
         } else {
             super.moveEntity(0.0D, motionY > 0.0D ? motionY / 2.0D : motionY, 0.0D);
+        }
+    }
+
+    public void setupTexture(boolean isRare, boolean isUnique) {
+        ClaymanTeam team = ClaymanTeam.getTeamFromName(this.getClayTeam());
+        if( isUnique && team.getUniqueTextures().length > 0 ) {
+            this.dataWatcher.updateObject(DW_IS_TEXTURE_RARE_OR_UNIQUE, (byte) 2);
+            this.dataWatcher.updateObject(DW_TEXTURE_INDEX, this.rand.nextInt(team.getUniqueTextures().length));
+        } else if( isRare && team.getRareTextures().length > 0 ) {
+            this.dataWatcher.updateObject(DW_IS_TEXTURE_RARE_OR_UNIQUE, (byte) 1);
+            this.dataWatcher.updateObject(DW_TEXTURE_INDEX, this.rand.nextInt(team.getRareTextures().length));
+        } else {
+            this.dataWatcher.updateObject(DW_IS_TEXTURE_RARE_OR_UNIQUE, (byte) 0);
+            this.dataWatcher.updateObject(DW_TEXTURE_INDEX, this.rand.nextInt(team.getDefaultTextures().length));
         }
     }
 
@@ -205,7 +226,8 @@ public class EntityClayMan
                     iterEffects.remove();
                 }
             } else {
-                iterEffects.next().getKey().onClientUpdate(this);
+                SoldierEffectInst upg = iterEffects.next().getValue();
+                upg.getEffect().onClientUpdate(this, upg);
             }
         }
 
@@ -229,13 +251,11 @@ public class EntityClayMan
     @SuppressWarnings("unchecked")
     protected void updateEntityActionState() {
         //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
-        if( !this.hasAttacked && this.entityToAttack != null ) {
+        if( this.entityToAttack != null ) {
             this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.entityToAttack, 16.0F, true, false, false, true));
-        } else if( !this.hasAttacked && this.targetFollow_ != null ) {
+        } else if( !this.hasPath() && this.targetFollow_ != null ) {
             this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 16.0F, true, false, false, true));
-        } else if( !this.hasAttacked && (!this.hasPath() && this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0)
-                && this.entityAge < 100 )
-        {
+        } else if( !this.hasPath() && (this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100 ) {
             this.updateWanderPath();
         }
 
@@ -305,8 +325,6 @@ public class EntityClayMan
                             this.targetFollow_ = null;
                         } else if( !this.canEntityBeSeen(this.targetFollow_) ) {
                             this.targetFollow_ = null;
-                        } else if( !hasPath() || rand.nextInt(10) == 0 ) {
-                            setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 8.0F, false, false, false, false));
                         }
 
                         if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
@@ -335,7 +353,7 @@ public class EntityClayMan
                         List<IMount> items = (List<IMount>)this.worldObj.getEntitiesWithinAABB(IMount.class, this.getTargetArea());
                         for( IMount mount : items ) {
                             EntityLivingBase slyfox = (EntityLivingBase)mount;
-                            if( this.rand.nextInt(4) != 0 || !slyfox.canEntityBeSeen(this) || slyfox.riddenByEntity != null ) {
+                            if( this.rand.nextInt(4) != 0 || !this.canEntityBeSeen(slyfox) || slyfox.riddenByEntity != null ) {
                                 continue;
                             }
 
@@ -461,8 +479,11 @@ public class EntityClayMan
         super.readEntityFromNBT(nbt);
 
         this.dataWatcher.updateObject(DW_TEAM, nbt.getString("team"));
-        this.dataWatcher.updateObject(DW_IS_RARE, nbt.getByte("isRare"));
-        this.canMove=nbt.getBoolean("canMove");
+
+        this.dataWatcher.updateObject(DW_IS_TEXTURE_RARE_OR_UNIQUE, nbt.getByte("isRareOrUnique"));
+        this.dataWatcher.updateObject(DW_TEXTURE_INDEX, nbt.getInteger("textureIndex"));
+
+        this.canMove = nbt.getBoolean("canMove");
 
         if( nbt.hasKey("dollItem") ) {
             this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
@@ -471,7 +492,7 @@ public class EntityClayMan
         NBTTagList upgNbtList = nbt.getTagList("upgrade", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
             NBTTagCompound savedUpg = upgNbtList.getCompoundTagAt(i);
-            SoldierUpgradeInst upgInst = new SoldierUpgradeInst(SoldierUpgrades.getUpgradeFromName(savedUpg.getString("name")));
+            SoldierUpgradeInst upgInst = new SoldierUpgradeInst(SoldierUpgrades.getUpgrade(savedUpg.getString("name")));
             upgInst.setNbtTag(savedUpg.getCompoundTag("data"));
             if( savedUpg.hasKey("item") ) {
                 upgInst.readStoredItemFromNBT(savedUpg.getCompoundTag("item"));
@@ -481,7 +502,7 @@ public class EntityClayMan
         NBTTagList effNbtList = nbt.getTagList("effect", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < effNbtList.tagCount(); i++ ) {
             NBTTagCompound savedEff = effNbtList.getCompoundTagAt(i);
-            SoldierEffectInst effInst = new SoldierEffectInst(SoldierEffects.getEffectFromName(savedEff.getString("name")));
+            SoldierEffectInst effInst = new SoldierEffectInst(SoldierEffects.getEffect(savedEff.getString("name")));
             effInst.setNbtTag(savedEff.getCompoundTag("data"));
             this.effects_.put(effInst.getEffect(), effInst);
         }
@@ -491,9 +512,8 @@ public class EntityClayMan
     @Override
     public boolean canEntityBeSeen(Entity target) {
         return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ),
-                                           Vec3.createVectorHelper(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ), false,
-                                           true, false
-        ) == null;
+                                           Vec3.createVectorHelper(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ),
+                                           false, true, false) == null;
     }
 
     @Override
@@ -501,7 +521,8 @@ public class EntityClayMan
         super.writeEntityToNBT(nbt);
 
         nbt.setString("team", this.getClayTeam());
-        nbt.setByte("isRare", this.dataWatcher.getWatchableObjectByte(DW_IS_RARE));
+        nbt.setByte("isRareOrUnique", this.dataWatcher.getWatchableObjectByte(DW_IS_TEXTURE_RARE_OR_UNIQUE));
+        nbt.setInteger("textureIndex", this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX));
         nbt.setBoolean("canMove", canMove);
 
         if( this.dollItem != null ) {
@@ -526,7 +547,7 @@ public class EntityClayMan
         NBTTagList effNbtList = new NBTTagList();
         for( SoldierEffectInst eff : this.effects_.values() ) {
             NBTTagCompound savedEff = new NBTTagCompound();
-            savedEff.setString("name", SoldierEffects.getNameFromEffect(eff.getEffect()));
+            savedEff.setString("name", SoldierEffects.getEffectName(eff.getEffect()));
             savedEff.setTag("data", eff.getNbtTag());
             effNbtList.appendTag(savedEff);
         }
@@ -550,10 +571,15 @@ public class EntityClayMan
 
     @SideOnly(Side.CLIENT)
     public ResourceLocation getTexture() {
-    	if( this.dataWatcher.getWatchableObjectByte(DW_IS_RARE) == 1 ) {
-            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getRareTextures()[0];
+    	if( this.dataWatcher.getWatchableObjectByte(DW_IS_TEXTURE_RARE_OR_UNIQUE) == 2 ) {
+            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM))
+                              .getUniqueTextures()[this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX)];
+        } else if( this.dataWatcher.getWatchableObjectByte(DW_IS_TEXTURE_RARE_OR_UNIQUE) == 1 ) {
+            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM))
+                              .getRareTextures()[this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX)];
         } else {
-            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM)).getDefaultTextures()[0];
+            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM))
+                              .getDefaultTextures()[this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX)];
         }
     }
 
@@ -564,19 +590,24 @@ public class EntityClayMan
         }
     }
 
-    private void updateUpgradeEffectRenders() {
+    public void updateUpgradeEffectRenders() {
         if( this.worldObj.isRemote ) {
-            this.upgrades_.clear();
-            this.effects_.clear();
+//            this.upgrades_.clear();
+//            this.effects_.clear();
 
             for( byte renderId : SoldierUpgrades.getRegisteredRenderIds() ) {
                 long renderFlag = 1 << (renderId % 64);
                 int renderStorageDw = (renderId / 64);
                 long dwValue = this.upgradeRenderFlags_[renderStorageDw];
 
+                ASoldierUpgrade upgrade = SoldierUpgrades.getUpgradeFromRenderId(renderId);
+
                 if( (dwValue & renderFlag) == renderFlag ) {
-                    ASoldierUpgrade upgrade = SoldierUpgrades.getUpgradeFromRenderId(renderId);
-                    this.upgrades_.put(upgrade, new SoldierUpgradeInst(upgrade));
+                    if( !this.upgrades_.containsKey(upgrade) ) {
+                        this.upgrades_.put(upgrade, new SoldierUpgradeInst(upgrade));
+                    }
+                } else {
+                    this.upgrades_.remove(upgrade);
                 }
             }
 
@@ -585,9 +616,16 @@ public class EntityClayMan
                 int renderStorageDw = (renderId / 64);
                 long dwValue = this.effectRenderFlags_[renderStorageDw];
 
+                ASoldierEffect effect = SoldierEffects.getEffect(renderId);
+
                 if( (dwValue & renderFlag) == renderFlag ) {
-                    ASoldierEffect effect = SoldierEffects.getEffectFromRenderId(renderId);
-                    this.effects_.put(effect, new SoldierEffectInst(effect));
+                    if( !this.effects_.containsKey(effect) ) {
+                        SoldierEffectInst effectInst =  new SoldierEffectInst(effect);
+                        this.effects_.put(effect,effectInst);
+                        effect.onConstruct(this, effectInst);
+                    }
+                } else {
+                    this.effects_.remove(effect);
                 }
             }
         } else {
@@ -597,7 +635,7 @@ public class EntityClayMan
             this.effectRenderFlags_[1] = 0;
 
             for( SoldierUpgradeInst upgInst : this.upgrades_.values() ) {
-                int renderId = SoldierUpgrades.getRenderIdFromUpgrade(upgInst.getUpgrade());
+                byte renderId = SoldierUpgrades.getRenderIdFromUpgrade(upgInst.getUpgrade());
                 if( renderId >= 0 ) {
                     long renderFlag = 1 << (renderId % 64);
                     int renderStorageDw = renderId / 64;
@@ -607,20 +645,30 @@ public class EntityClayMan
                 }
             }
 
+            List<Pair<Byte, NBTTagCompound>> effectNbtToClt = new ArrayList<>();
             for( SoldierEffectInst effInst : this.effects_.values() ) {
-                int renderId = SoldierEffects.getRenderIdFromEffect(effInst.getEffect());
+                byte renderId = SoldierEffects.getRenderId(effInst.getEffect());
                 if( renderId >= 0 ) {
                     long renderFlag = 1 << (renderId % 64);
                     int renderStorageDw = renderId / 64;
-                    long prevDwValue = effectRenderFlags_[renderStorageDw];
+                    long prevDwValue = this.effectRenderFlags_[renderStorageDw];
 
-                    effectRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
+                    this.effectRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
+                    if( effInst.getEffect().sendNbtToClient(this, effInst) ) {
+                        effectNbtToClt.add(Pair.with(renderId, effInst.getNbtTag()));
+                    }
                 }
             }
 
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64D,
                                             Triplet.with(this.getEntityId(), this.upgradeRenderFlags_, this.effectRenderFlags_)
             );
+
+            for( Pair<Byte, NBTTagCompound> effNbt : effectNbtToClt ) {
+                PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_EFFECT_NBT, this.dimension, this.posX, this.posY, this.posZ, 64D,
+                                                Triplet.with(this.getEntityId(), effNbt.getValue0(), effNbt.getValue1())
+                );
+            }
         }
     }
 
@@ -723,6 +771,14 @@ public class EntityClayMan
             this.effects_.put(effect, effectInst);
             effect.onConstruct(this, effectInst);
             return effectInst;
+        } else {
+            return null;
+        }
+    }
+
+    public SoldierEffectInst getEffectInst(ASoldierEffect effect) {
+        if( this.hasEffect(effect) ) {
+            return this.effects_.get(effect);
         } else {
             return null;
         }
