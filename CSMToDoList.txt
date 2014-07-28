@@ -1,0 +1,30 @@
+[-] Clay Nexus
+  [x] soldiers spawning at given intervals
+  [x] particle effects
+  [ ] fix texture on one arm (glowmap)
+  [x] throwing projectiles
+  [ ] spawning mounts
+  [ ] giving soldiers upgrades
+    [ ] priority list
+    [ ] randomizing each upgrade
+  [ ] add forcefield
+  [ ] add config GUI
+  [ ] drop remaining items when broken
+
+[-] Clay Soldier
+  [ ] Add remaining teams
+    [ ] coal
+    [ ] punpkin
+    [ ] redstone
+  [ ] Add remaining upgrades (see CSMUpgradesList.txt)
+  [ ] Add building capabillities (low priority)
+
+[-] Mounts
+  [ ] Add remaining mounts
+    [ ] bunnies
+    [ ] geckos
+    [ ] turtles
+  [ ] Add horse upgrades
+
+[ ] Companions
+  ???

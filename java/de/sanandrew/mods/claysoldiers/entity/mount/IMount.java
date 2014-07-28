@@ -5,7 +5,7 @@
  *            (http://creativecommons.org/licenses/by-nc-sa/3.0/)
  *******************************************************************************************************************/
 
-package de.sanandrew.mods.claysoldiers.entity.mounts;
+package de.sanandrew.mods.claysoldiers.entity.mount;
 
 import net.minecraft.entity.EntityLivingBase;
 

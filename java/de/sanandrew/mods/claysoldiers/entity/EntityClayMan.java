@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.mods.claysoldiers.entity.mounts.IMount;
+import de.sanandrew.mods.claysoldiers.entity.mount.IMount;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
@@ -251,16 +251,17 @@ public class EntityClayMan
     @SuppressWarnings("unchecked")
     protected void updateEntityActionState() {
         //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
-        if( !this.hasPath() && this.entityToAttack != null ) {
-            this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.entityToAttack, 16.0F, true, false, false, true));
-        } else if( !this.hasPath() && this.targetFollow_ != null ) {
-            this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 16.0F, true, false, false, true));
-        } else if( !this.hasPath() && (this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100 ) {
-            this.updateWanderPath();
+        if( !this.hasPath() ) {
+            if( this.entityToAttack != null ) {
+                this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.entityToAttack, 16.0F, true, false, false, true));
+            } else if( this.targetFollow_ != null ) {
+                this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 16.0F, true, false, false, true));
+            } else if( (this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100 ) {
+                this.updateWanderPath();
+            }
         }
 
         super.updateEntityActionState();
-
 
         if( !this.worldObj.isRemote ) {
             if( this.entityToAttack == null ) {

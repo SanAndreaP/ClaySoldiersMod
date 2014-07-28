@@ -14,7 +14,7 @@ import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderHorseMount;
 import de.sanandrew.mods.claysoldiers.client.render.entity.projectile.RenderBlockProjectile;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityEmeraldChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityFirechargeChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityGravelChunk;

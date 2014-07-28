@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.render.entity;
 
 import de.sanandrew.mods.claysoldiers.client.models.ModelHorseMount;
-import de.sanandrew.mods.claysoldiers.entity.mounts.EntityHorseMount;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

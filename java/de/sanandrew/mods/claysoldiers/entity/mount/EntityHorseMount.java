@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
  *            (http://creativecommons.org/licenses/by-nc-sa/3.0/)
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.entity.mounts;
+package de.sanandrew.mods.claysoldiers.entity.mount;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
