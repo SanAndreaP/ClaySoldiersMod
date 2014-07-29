@@ -16,27 +16,38 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderSoldierRightHandEvent
 {
-    private final ItemStack itemStick_ = new ItemStack(Items.stick);
-    private final ItemStack itemBlazeRod_ = new ItemStack(Items.blaze_rod);
-    private final ItemStack itemWoodButton_ = new ItemStack(Blocks.wooden_button);
-    private final ItemStack itemStoneButton_ = new ItemStack(Blocks.stone_button);
-    private final ItemStack itemShearBlade_ = new ItemStack(ModItems.shearBlade);
+    private final ItemStack upgStick_ = new ItemStack(Items.stick);
+    private final ItemStack upgBlazeRod_ = new ItemStack(Items.blaze_rod);
+    private final ItemStack upgWoodButton_ = new ItemStack(Blocks.planks);
+    private final ItemStack upgStoneButton_ = new ItemStack(Blocks.stone);
+    private final ItemStack upgShearBlade_ = new ItemStack(ModItems.shearBlade);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
         if( event.stage == SoldierRenderEvent.RenderStage.EQUIPPED ) {
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK)) ) {
-                renderRightHandItem(event.clayMan, event.clayManRender, this.itemStick_);
+                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgStick_);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD)) ) {
-                renderRightHandItem(event.clayMan, event.clayManRender, this.itemBlazeRod_);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOODBUTTON)) ) {
-                renderRightHandItem(event.clayMan, event.clayManRender, this.itemWoodButton_);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STONEBUTTON)) ) {
-                renderRightHandItem(event.clayMan, event.clayManRender, this.itemStoneButton_);
+                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgBlazeRod_);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT)) ) {
-                renderRightHandItem(event.clayMan, event.clayManRender, this.itemShearBlade_);
+                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgShearBlade_);
+            }
+
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOODBUTTON)) ) {
+                this.renderKnuckle(event.clayMan, event.clayManRender, this.upgWoodButton_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STONEBUTTON)) ) {
+                this.renderKnuckle(event.clayMan, event.clayManRender, this.upgStoneButton_);
             }
         }
+    }
+
+    private void renderKnuckle(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
+        GL11.glTranslatef(-0.05F, 0.55F, 0.0F);
+        GL11.glScalef(0.3F, 0.3F, 0.3F);
+        renderer.getItemRenderer().renderItem(clayMan, stack, 0);
+        GL11.glPopMatrix();
     }
 
     private void renderRightHandItem(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
