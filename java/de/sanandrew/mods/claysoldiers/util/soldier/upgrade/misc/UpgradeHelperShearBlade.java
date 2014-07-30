@@ -27,19 +27,19 @@ public class UpgradeHelperShearBlade
         ItemStack savedItem = null;
 
         if( stack.getItem() == ModItems.shearBlade ) {
-            if( !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) ) {
+            if( !clayMan.hasUpgrade(AUpgradeLeftHanded.class) ) {
                 upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT);
                 savedItem = stack;
-            } else if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
+            } else if( !clayMan.hasUpgrade(AUpgradeRightHanded.class) ) {
                 upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT);
                 savedItem = stack;
             }
         } else {
-            if( !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) ) {
+            if( !clayMan.hasUpgrade(AUpgradeLeftHanded.class) ) {
                 clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
                 upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT);
                 savedItem = new ItemStack(ModItems.shearBlade, 1);
-            } else if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
+            } else if( !clayMan.hasUpgrade(AUpgradeRightHanded.class) ) {
                 clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
                 upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT);
                 savedItem = new ItemStack(ModItems.shearBlade, 1);
@@ -60,6 +60,6 @@ public class UpgradeHelperShearBlade
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return !clayMan.hasUpgradeInst(AUpgradeLeftHanded.class) || !clayMan.hasUpgradeInst(AUpgradeRightHanded.class);
+        return !clayMan.hasUpgrade(AUpgradeLeftHanded.class) || !clayMan.hasUpgrade(AUpgradeRightHanded.class);
     }
 }

@@ -2,6 +2,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IMeeleeUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
  */
 public class UpgradeBlazeRod
         extends AUpgradeRightHanded
+    implements IMeeleeUpgrade
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {

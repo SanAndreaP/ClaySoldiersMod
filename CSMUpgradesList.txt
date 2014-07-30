@@ -1,6 +1,6 @@
 ITEMS LIST
 ------------------
-MAIN HAND
+RIGHT HAND
 ------------------
 |x|Stick, 20 use, increases melee damage by 2-3 points
 | |Arrow, 20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
@@ -10,12 +10,12 @@ MAIN HAND
 | |GoldMelon, 25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 /^\all weapons should have increased reach while riding mounts, bone's reach bonus should be slightly greater than mounted reach bonus
 ------------------
-SECOND HAND
+LEFT HAND
 ------------------
 |x|Gravel, 15 use, thrown for 2-3 points damage
 |x|Snowball, 20 use, thrown for 0 damage, slows target on hit
 |x|FireCharge, 15 use, thrown for 1-2 damage, causes burn time on hit
-| |Bowl, 20 use, reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
+|x|Bowl, 20 use, reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
 /^\no longer should entirely block ranged attacks, only reduce damage from them
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 |x|Emerald, 5 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
@@ -25,9 +25,9 @@ Core
 ------------------
 |x|IronIngot, makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
 |x|Brick, makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
-| |String, makes soldier resist all damage from one explosion
-| |Cactus, 75% chance to negate burn time, halves total burn time otherwise
-| |NetherBrick, gives burn time to any soldier that attacks nether brick user with unarmed attacks
+|x|String, makes soldier resist all damage from one explosion
+|x|Cactus, 75% chance to negate burn time, halves total burn time otherwise
+|x|NetherBrick, gives burn time to any soldier that attacks nether brick user with unarmed attacks
 ------------------
 Behavior
 ------------------

@@ -15,7 +15,7 @@ public class UpgradeStoneButton
 {
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        if( !clayMan.hasUpgradeInst(AUpgradeRightHanded.class) ) {
+        if( !clayMan.hasUpgrade(AUpgradeRightHanded.class) ) {
             damage.add(2.0F + clayMan.getRNG().nextFloat());
         }
     }

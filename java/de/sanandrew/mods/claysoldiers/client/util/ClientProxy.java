@@ -50,6 +50,7 @@ public class ClientProxy extends CommonProxy
 
         MinecraftForge.EVENT_BUS.register(new RenderStatDisplayOverlay());
         MinecraftForge.EVENT_BUS.register(new RenderWorldOnLastEvent());
+        MinecraftForge.EVENT_BUS.register(new Textures());
     }
 
     @Override

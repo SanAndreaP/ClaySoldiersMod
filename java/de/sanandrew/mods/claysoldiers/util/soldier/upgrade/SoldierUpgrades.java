@@ -2,7 +2,6 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Bytes;
-
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
@@ -10,17 +9,17 @@ import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeFermSpiderEye;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeNetherwart;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.UpgradeBrick;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.UpgradeIronIngot;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.*;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeBlazeRod;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeShearBladeRight;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeStick;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.logging.log4j.Level;
 
 import java.util.Map;
@@ -140,6 +139,10 @@ public final class SoldierUpgrades
     public static final String UPG_SNOW = "snow";
     public static final String UPG_FIRECHARGE = "firecharge";
     public static final String UPG_EMERALD = "emerald";
+    public static final String UPG_BOWL = "bowl";
+    public static final String UPG_STRING = "string";
+    public static final String UPG_CACTUS = "string";
+    public static final String UPG_NETHER_BRICK = "nether_brick";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -182,6 +185,17 @@ public final class SoldierUpgrades
                                 new ItemStack(Blocks.emerald_block),
                                 new ItemStack(Items.emerald)
                         }, new UpgradeEmerald(), getNewRenderId());
+        registerUpgrade(UPG_BOWL, new ItemStack(Items.bowl), new UpgradeBowl(), getNewRenderId());
+        registerUpgrade(UPG_STRING, new ItemStack(Items.string), new UpgradeString());
+        registerUpgrade(UPG_CACTUS, new ItemStack(Blocks.cactus), new UpgradeCactus());
+        registerUpgrade(UPG_NETHER_BRICK, new ItemStack [] {
+                                new ItemStack(Blocks.nether_brick),
+                                new ItemStack(Items.netherbrick)
+                        }, new UpgradeNetherBrick());
+
+        FMLLog.log(CSM_Main.MOD_LOG, Level.DEBUG, "There are %d upgrades registered by default! %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
+                   currRenderId + 1
+        );
     }
 
     public static class RenderIdException extends RuntimeException {

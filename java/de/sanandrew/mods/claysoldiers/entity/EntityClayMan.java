@@ -728,7 +728,7 @@ public class EntityClayMan
         return this.upgrades_.containsKey(upgrade);
     }
 
-    public boolean hasUpgradeInst(Class<? extends ASoldierUpgrade> upgradeClass) {
+    public boolean hasUpgrade(Class upgradeClass) {
         for( ASoldierUpgrade upgrade : this.upgrades_.keySet() ) {
             if( upgradeClass.isInstance(upgrade) ) {
                 return true;
