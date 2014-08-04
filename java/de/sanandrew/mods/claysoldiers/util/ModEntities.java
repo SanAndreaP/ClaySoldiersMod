@@ -21,7 +21,7 @@ import de.sanandrew.mods.claysoldiers.entity.projectile.EntityGravelChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntitySnowChunk;
 import net.minecraft.init.Blocks;
 
-public class ModEntities
+public final class ModEntities
 {
     @SideOnly(Side.CLIENT)
     public static void registerRenderers() {

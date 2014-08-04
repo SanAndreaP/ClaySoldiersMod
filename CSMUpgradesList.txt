@@ -7,7 +7,7 @@ RIGHT HAND
 |x|BlazeRod, 20 use, increases melee damage by 1-2 points, causes burn time on target
 | |Bone, 30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
-| |GoldMelon, 25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
+|x|GoldMelon, 25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 /^\all weapons should have increased reach while riding mounts, bone's reach bonus should be slightly greater than mounted reach bonus
 ------------------
 LEFT HAND
@@ -46,12 +46,12 @@ Misc
 | |Food, 4 use, heals soldier for 10 hp when below 25%
 /^\small idea, make number of uses be the number of hunger points restored, and make mushroom stew drop bowl?
 ~SanAndreasP: How about healed XP is (10 / hungerPoints * 25%)? And uses are still 4
-| |GoldNugget, gives soldier a crown, all of team follows the king
+|x|GoldNugget, gives soldier a crown, all of team follows the king
 |x|Glowstone, makes soldier glow, block gives to infinite soldiers
 |x|Gunpowder, soldier explodes on death, incompatible with magmacream/firework star
 | |MagmaCream, places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit, incompatible with gunpowder/fireworkstar
 |x|Sugar, makes soldier move faster, incompatible with diamond
-| |Clay, 4 use, revives fallen soldiers of own color
+|x|Clay, 4 use, revives fallen soldiers of own color
 | |GhastTear, 2 use, revives brick dolls to own color
 |x|RedstoneDust, causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
 ~SanAndreasP: how often can a soldier apply this? Redstone Block as infinite redstone?
@@ -66,7 +66,7 @@ Misc
 | |BlazePowder, 1 use, instantly kills target with fire, turning it into brick doll
 | |RedMushroom, 1 use, applies poison to target
 | |BrownMushroom 2 use, heals soldier for 10 hp when below 25%
-| |LillyPad, soldier has pants and will float on water, no effect when used with iron ingot
+|x|LillyPad, soldier has pants and will float on water, no effect when used with iron ingot
 |x|Egg, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
 | |WheatSeed, soldier can NOT be infected by any zombification
 |x|WoodButton, increases melee damage by 1 when no weapon is equipped, incompatible with stone button

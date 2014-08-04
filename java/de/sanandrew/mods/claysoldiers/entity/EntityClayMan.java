@@ -6,6 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -45,10 +48,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityClayMan
@@ -71,6 +71,8 @@ public class EntityClayMan
 
     private Entity targetFollow_ = null;
 
+    private Collection<Entity> entitiesInRange;
+
     public EntityClayMan(World world) {
         super(world);
 
@@ -81,6 +83,8 @@ public class EntityClayMan
 
         this.yOffset = 0.01F;
         this.ignoreFrustumCheck = true;
+
+        this.jumpMovementFactor = 0.2F;
     }
 
     public EntityClayMan(World world, String team) {
@@ -248,7 +252,6 @@ public class EntityClayMan
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void updateEntityActionState() {
         //BUGFIX: fixes movement in blocks w/o collision box (snow layer, torches, tall grass, possibly cobweb?, etc.)
         if( !this.hasPath() ) {
@@ -264,11 +267,13 @@ public class EntityClayMan
         super.updateEntityActionState();
 
         if( !this.worldObj.isRemote ) {
+            this.entitiesInRange = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getTargetArea());
+
             if( this.entityToAttack == null ) {
                 if( rand.nextInt(4) != 0 && targetFollow_ == null ) {
-                    List<EntityClayMan> claymen = (List<EntityClayMan>) this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.getTargetArea());
+                    Collection<EntityClayMan> claymen = this.getSoldiersInRange();
                     targetLoop: for( EntityClayMan uberhaxornova : claymen ) {
-                        if( uberhaxornova == this || uberhaxornova.isDead || rand.nextInt(4) != 0 ) {
+                        if( uberhaxornova.isDead || rand.nextInt(4) != 0 ) {
                             continue;
                         }
 
@@ -297,7 +302,7 @@ public class EntityClayMan
                     }
                 } else {
                     if( this.targetFollow_ == null ) {
-                        List<EntityItem> items = (List<EntityItem>)this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.getTargetArea());
+                        Collection<EntityItem> items = this.getItemsInRange();
                         items: for( EntityItem seamus : items ) {
                             if( !this.canEntityBeSeen(seamus) ) {
                                 continue;
@@ -352,7 +357,7 @@ public class EntityClayMan
                         }
                     }
                     if( this.targetFollow_ == null && this.ridingEntity == null ) {
-                        List<IMount> items = (List<IMount>)this.worldObj.getEntitiesWithinAABB(IMount.class, this.getTargetArea());
+                        Collection<IMount> items = this.getMountsInRange();
                         for( IMount mount : items ) {
                             EntityLivingBase slyfox = (EntityLivingBase)mount;
                             if( this.rand.nextInt(4) != 0 || !this.canEntityBeSeen(slyfox) || slyfox.riddenByEntity != null ) {
@@ -567,6 +572,24 @@ public class EntityClayMan
                 this.posZ + radius);
     }
 
+    public Collection<EntityClayMan> getSoldiersInRange() {
+        return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(EntityClayMan.class)),
+                                      new Function<Entity, EntityClayMan>() { @Override public EntityClayMan apply(Entity input) {return (EntityClayMan) input;} }
+        );
+    }
+
+    public Collection<EntityItem> getItemsInRange() {
+        return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(EntityItem.class)),
+                                      new Function<Entity, EntityItem>() { @Override public EntityItem apply(Entity input) {return (EntityItem) input;} }
+        );
+    }
+
+    public Collection<IMount> getMountsInRange() {
+        return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(IMount.class)),
+                                      new Function<Entity, IMount>() { @Override public IMount apply(Entity input) {return (IMount) input;} }
+        );
+    }
+
     public String getClayTeam() {
         return this.dataWatcher.getWatchableObjectString(DW_TEAM);
     }
@@ -749,6 +772,14 @@ public class EntityClayMan
         if( this.hasUpgrade(upgrade) ) {
             this.upgrades_.remove(upgrade);
         }
+    }
+
+    public Entity getTargetFollowing() {
+        return this.targetFollow_;
+    }
+
+    public void setTargetFollowing(Entity entity) {
+        this.targetFollow_ = entity;
     }
 
     public SoldierUpgradeInst addNewUpgrade(ASoldierUpgrade upgrade) {

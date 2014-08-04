@@ -23,6 +23,10 @@ public class RenderSoldierModelEvent
     public ModelRenderer armorLeftArm;
     public ModelRenderer slimeRightLeg;
     public ModelRenderer slimeLeftLeg;
+    public ModelRenderer crown;
+    public ModelRenderer lilypantsRightLeg;
+    public ModelRenderer lilypantsLeftLeg;
+    public ModelRenderer lilypantsBody;
 
     public boolean isInitialized = false;
 
@@ -49,6 +53,28 @@ public class RenderSoldierModelEvent
         this.slimeLeftLeg.mirror = true;
         this.slimeLeftLeg.addBox(-2.0F, 8.0F, -2.0F, 4, 4, 4, 0.0F);
         this.slimeLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
+
+        this.crown = new ModelRenderer(renderClayMan.modelBipedMain, 0, 0);
+        this.crown.addBox(-4.0F, -9.5F, -4.0F, 8, 8, 8, 0.5F);
+        this.crown.setRotationPoint(0.0F, 0.0F, 0.0F);
+
+        this.lilypantsBody = new ModelRenderer(renderClayMan.modelBipedMain, 16, 16);
+        this.lilypantsBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.25F);
+        this.lilypantsBody.setRotationPoint(0.0F, -0.4F, 0.0F);
+        this.lilypantsRightLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 16);
+        this.lilypantsRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.25F);
+        this.lilypantsRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
+        this.lilypantsLeftLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 16);
+        this.lilypantsLeftLeg.mirror = true;
+        this.lilypantsLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.25F);
+        this.lilypantsLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
+//        this.lilypantsRightLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 24);
+//        this.lilypantsRightLeg.addBox(-2.0F, 8.0F, -2.0F, 4, 4, 4, 0.25F);
+//        this.lilypantsRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
+//        this.lilypantsLeftLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 24);
+//        this.lilypantsLeftLeg.mirror = true;
+//        this.lilypantsLeftLeg.addBox(-2.0F, 8.0F, -2.0F, 4, 4, 4, 0.25F);
+//        this.lilypantsLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
     }
 
     @SubscribeEvent
@@ -65,7 +91,20 @@ public class RenderSoldierModelEvent
             GL11.glPopMatrix();
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRONINGOT)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET)) ) {
+            ModelBiped model = event.clayManRender.modelBipedMain;
+
+            this.crown.rotateAngleX = model.bipedHead.rotateAngleX;
+            this.crown.rotateAngleY = model.bipedHead.rotateAngleY;
+            this.crown.rotateAngleZ = model.bipedHead.rotateAngleZ;
+
+            event.clayManRender.bindTexture(Textures.CLAYMAN_CROWN);
+            GL11.glColor3f(1.0F, 0.9F, 0.0F);
+            this.crown.render(event.partTicks);
+            GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        }
+
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
             ModelBiped model = event.clayManRender.modelBipedMain;
 
             this.buffedBody.rotateAngleX = model.bipedBody.rotateAngleX;
@@ -77,6 +116,25 @@ public class RenderSoldierModelEvent
             GL11.glScalef(1.5F, 1.5F, 1.5F);
             this.buffedBody.render(event.partTicks);
             GL11.glPopMatrix();
+        }
+
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LILYPADS)) ) {
+            ModelBiped model = event.clayManRender.modelBipedMain;
+
+            this.lilypantsBody.rotateAngleX = model.bipedBody.rotateAngleX;
+            this.lilypantsBody.rotateAngleY = model.bipedBody.rotateAngleY;
+            this.lilypantsBody.rotateAngleZ = model.bipedBody.rotateAngleZ;
+            this.lilypantsLeftLeg.rotateAngleX = model.bipedLeftLeg.rotateAngleX;
+            this.lilypantsLeftLeg.rotateAngleY = model.bipedLeftLeg.rotateAngleY;
+            this.lilypantsLeftLeg.rotateAngleZ = model.bipedLeftLeg.rotateAngleZ;
+            this.lilypantsRightLeg.rotateAngleX = model.bipedRightLeg.rotateAngleX;
+            this.lilypantsRightLeg.rotateAngleY = model.bipedRightLeg.rotateAngleY;
+            this.lilypantsRightLeg.rotateAngleZ = model.bipedRightLeg.rotateAngleZ;
+
+            event.clayManRender.bindTexture(Textures.CLAYMAN_LILYPANTS);
+            this.lilypantsBody.render(event.partTicks);
+            this.lilypantsLeftLeg.render(event.partTicks);
+            this.lilypantsRightLeg.render(event.partTicks);
         }
 
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER)) ) {

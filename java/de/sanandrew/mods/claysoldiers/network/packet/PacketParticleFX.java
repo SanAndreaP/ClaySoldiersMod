@@ -20,12 +20,20 @@ import java.io.IOException;
 public class PacketParticleFX
     implements IPacket
 {
+    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;item name (String) */
     public static final byte FX_BREAK = 0;
+    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double) */
     public static final byte FX_CRIT = 1;
+    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;team name (String) */
     public static final byte FX_SOLDIER_DEATH = 2;
+    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;horse type (Byte) */
     public static final byte FX_HORSE_DEATH = 3;
+    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;block name (String) */
     public static final byte FX_DIGGING = 4;
+    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)
+     *             <br>&nbsp;&nbsp;red (Double)<br>&nbsp;&nbsp;green (Double)<br>&nbsp;&nbsp;blue (Double) */
     public static final byte FX_SPELL = 5;
+    /** DataTuple: <i>n/a</i> */
     public static final byte FX_NEXUS = 6;
 
     @Override

@@ -25,6 +25,7 @@ public class RenderSoldierRightHandEvent
     private final ItemStack upgWoodButton_ = new ItemStack(Blocks.planks);
     private final ItemStack upgStoneButton_ = new ItemStack(Blocks.stone);
     private final ItemStack upgShearBlade_ = new ItemStack(ModItems.shearBlade);
+    private final ItemStack upgGoldMelon_ = new ItemStack(Items.speckled_melon);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
@@ -37,6 +38,8 @@ public class RenderSoldierRightHandEvent
                 this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgShearBlade_);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL)) ) {
                 this.renderShield(event.clayMan, event.clayManRender);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLDMELON)) ) {
+                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgGoldMelon_);
             }
 
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOODBUTTON)) ) {

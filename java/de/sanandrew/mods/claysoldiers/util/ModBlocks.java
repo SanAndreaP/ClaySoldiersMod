@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.block.BlockClayNexus;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import net.minecraft.block.Block;
 
-public class ModBlocks
+public final class ModBlocks
 {
     public static Block clayNexus = new BlockClayNexus();
 

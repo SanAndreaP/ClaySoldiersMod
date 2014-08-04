@@ -41,7 +41,7 @@ public class RenderSoldierBodyEvent
 
     @SubscribeEvent
     public void onSoldierLivingRender(SoldierRenderEvent.RenderLivingEvent event) {
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRONINGOT)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
             GL11.glScalef(1.19F, 1.19F, 1.19F);
         }
     }

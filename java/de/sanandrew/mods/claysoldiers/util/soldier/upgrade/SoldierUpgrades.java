@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeBlazeRod;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeGoldMelon;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeShearBladeRight;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeStick;
 import net.minecraft.init.Blocks;
@@ -130,7 +131,7 @@ public final class SoldierUpgrades
     public static final String UPG_NETHERWART = "netherwart";
     public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
     public static final String UPG_SUGAR = "sugar";
-    public static final String UPG_IRONINGOT = "ironingot";
+    public static final String UPG_IRON_INGOT = "iron_ingot";
     public static final String UPG_GLOWSTONE = "glowstone";
     public static final String UPG_GUNPOWDER = "gunpowder";
     public static final String UPG_BRICK = "brick";
@@ -143,6 +144,10 @@ public final class SoldierUpgrades
     public static final String UPG_STRING = "string";
     public static final String UPG_CACTUS = "string";
     public static final String UPG_NETHER_BRICK = "nether_brick";
+    public static final String UPG_CLAY = "clay";
+    public static final String UPG_GOLD_NUGGET = "gold_nugget";
+    public static final String UPG_LILYPADS = "lilypads";
+    public static final String UPG_GOLDMELON = "goldmelon";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -163,7 +168,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
         registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
         registerUpgrade(UPG_SUGAR, new ItemStack(Items.sugar), new UpgradeSugar());
-        registerUpgrade(UPG_IRONINGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), getNewRenderId());
+        registerUpgrade(UPG_IRON_INGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), getNewRenderId());
         registerUpgrade(UPG_GLOWSTONE, new ItemStack[] {
                                 new ItemStack(Items.glowstone_dust),
                                 new ItemStack(Blocks.glowstone)
@@ -192,6 +197,10 @@ public final class SoldierUpgrades
                                 new ItemStack(Blocks.nether_brick),
                                 new ItemStack(Items.netherbrick)
                         }, new UpgradeNetherBrick());
+        registerUpgrade(UPG_CLAY, new ItemStack(Items.clay_ball), new UpgradeClay());
+        registerUpgrade(UPG_GOLD_NUGGET, new ItemStack(Items.gold_nugget), new UpgradeGoldNugget(), getNewRenderId());
+        registerUpgrade(UPG_LILYPADS, new ItemStack(Blocks.waterlily), new UpgradeLilyPads(), getNewRenderId());
+        registerUpgrade(UPG_GOLDMELON, new ItemStack(Items.speckled_melon), new UpgradeGoldMelon(), getNewRenderId());
 
         FMLLog.log(CSM_Main.MOD_LOG, Level.DEBUG, "There are %d upgrades registered by default! %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
                    currRenderId + 1
