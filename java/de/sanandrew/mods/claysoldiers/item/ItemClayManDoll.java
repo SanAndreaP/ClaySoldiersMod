@@ -62,9 +62,9 @@ public class ItemClayManDoll extends Item
                         dan.setCustomNameTag(stack.getDisplayName());
                     }
 
-                    if( !player.capabilities.isCreativeMode ) {
+//                    if( !player.capabilities.isCreativeMode ) {
                         dan.dollItem = stack.splitStack(1);
-                    }
+//                    }
                 }
             }
 

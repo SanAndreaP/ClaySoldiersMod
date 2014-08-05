@@ -5,6 +5,8 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -12,6 +14,7 @@ import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
@@ -68,6 +71,16 @@ public final class CSM_Main
         BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.dollSoldier, new BehaviorSoldierDispenseItem());
         BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.disruptor, new BehaviorDisruptorDispenseItem());
         BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.disruptorHardened, new BehaviorDisruptorDispenseItem());
+    }
+
+    @Mod.EventHandler
+    public void modIMC(IMCEvent event) {
+        //TODO here comes the code for registering stuff recieved from external mods
+    }
+
+    @Mod.EventHandler
+    public void modPostInit(FMLPostInitializationEvent event) {
+        SoldierUpgrades.logUpgradeCount();
     }
 
     @SubscribeEvent

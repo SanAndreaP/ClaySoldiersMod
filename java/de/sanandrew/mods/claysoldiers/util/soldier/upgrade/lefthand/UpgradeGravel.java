@@ -15,6 +15,7 @@ import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -56,7 +57,9 @@ public class UpgradeGravel
     public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
         attackRange.setValue(-1.0F);
         if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 ) {
-            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityGravelChunk.class, true);
+            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityGravelChunk.class,
+                                          clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
+            );
             clayMan.attackTime = 30;
             upgradeInst.getNbtTag().setShort("uses", (short) (upgradeInst.getNbtTag().getShort("uses") - 1));
         }

@@ -54,10 +54,11 @@ Misc
 |x|Clay, 4 use, revives fallen soldiers of own color
 | |GhastTear, 2 use, revives brick dolls to own color
 |x|RedstoneDust, causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
-~SanAndreasP: how often can a soldier apply this? Redstone Block as infinite redstone?
+  |x|Redstone Block as infinite redstone
 |x|Slimeball, causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
-~SanAndreasP: how often can a soldier apply this? Slimeblock (1.8) as infinite slimeballs?
-| |Feather, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing, no effect with iron ingot or while mounted
+  | |Slimeblock (1.8) as infinite slimeballs
+|x|Feather, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing, no effect with iron ingot or while mounted
+  | |Rendering needs to be finished
 | |GlassBottle/Pane/Block, doubles vision range, soldier can see stealthed enemies, bottles and panes are single soldier, block is infinite soldiers
 | |Paper/Book, gives a plain cape, dyed paper and books give colored capes, book gives to infinite soldiers
 | |Diamond, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10, incom. with diamondblock
@@ -79,10 +80,10 @@ Misc
 Upgrades
 ------------------
 ~SanAndreasP: any kind of durabillity / uses? For now they wear out when the upgraded upgrade wears out
-| |Flint, boosts stick melee damage by 2 points (total bonus 4-5, same as arrow), REQUIRES: STICK
+|x|Flint, boosts stick melee damage by 2 points (total bonus 4-5, same as arrow), REQUIRES: STICK
 | |Prismarine Shard, boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
 |x|Wool, reduces incoming physical damage by 1, REQUIRES: LEATHER/RABBIT HIDE
-| |Sugarcane, boosts thrown weapon range, projectiles hone in on target, boosts emerald range and damage, REQUIRES: GRAVEL/SNOWBALL/FIRECHARGE/EMERALD
+|x|Sugarcane, boosts thrown weapon range, projectiles hone in on target, boosts emerald range and damage, REQUIRES: GRAVEL/SNOWBALL/FIRECHARGE/EMERALD
 | |IronBlock, reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/redmushroom/magmacream effects, REQUIRES: BOWL
 |x|Coal/Charcoal, doubles length of burn time on all fire effects, adds additional use to blaze powder, REQUIRES: BLAZEROD/BLAZEPOWDER/FIRECHARGE
 | |GoldIngot, doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1, REQUIRES: GOLDNUGGET

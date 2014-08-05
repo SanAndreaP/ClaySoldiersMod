@@ -12,6 +12,10 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeCoal;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeFlint;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeSugarCane;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeWool;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeBlazeRod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeGoldMelon;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeShearBladeRight;
@@ -117,37 +121,40 @@ public final class SoldierUpgrades
         return currRenderId++;
     }
 
-    public static final String UPG_STICK = "stick";
-    public static final String UPG_BLAZEROD = "blazerod";
-    public static final String UPG_LEATHER = "leather";
-    public static final String UPG_WOOL = "wool";
-    public static final String UPG_COAL = "coal";
     public static final String UPG_EGG = "egg";
-    public static final String UPG_WOODBUTTON = "woodbutton";
-    public static final String UPG_STONEBUTTON = "stonebutton";
-    public static final String UPG_SHEARLEFT = "shear_l";
-    public static final String UPG_SHEARRIGHT = "shear_r";
-    public static final String UPG_WHEAT = "wheat";
-    public static final String UPG_NETHERWART = "netherwart";
-    public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
-    public static final String UPG_SUGAR = "sugar";
-    public static final String UPG_IRON_INGOT = "iron_ingot";
-    public static final String UPG_GLOWSTONE = "glowstone";
-    public static final String UPG_GUNPOWDER = "gunpowder";
-    public static final String UPG_BRICK = "brick";
-    public static final String UPG_SLIMEBALLS = "slimeball";
-    public static final String UPG_GRAVEL = "gravel";
-    public static final String UPG_SNOW = "snow";
-    public static final String UPG_FIRECHARGE = "firecharge";
-    public static final String UPG_EMERALD = "emerald";
     public static final String UPG_BOWL = "bowl";
-    public static final String UPG_STRING = "string";
-    public static final String UPG_CACTUS = "string";
-    public static final String UPG_NETHER_BRICK = "nether_brick";
     public static final String UPG_CLAY = "clay";
-    public static final String UPG_GOLD_NUGGET = "gold_nugget";
+    public static final String UPG_COAL = "coal";
+    public static final String UPG_SNOW = "snow";
+    public static final String UPG_WOOL = "wool";
+    public static final String UPG_BRICK = "brick";
+    public static final String UPG_FLINT = "flint";
+    public static final String UPG_STICK = "stick";
+    public static final String UPG_SUGAR = "sugar";
+    public static final String UPG_WHEAT = "wheat";
+    public static final String UPG_CACTUS = "string";
+    public static final String UPG_GRAVEL = "gravel";
+    public static final String UPG_STRING = "string";
+    public static final String UPG_EMERALD = "emerald";
+    public static final String UPG_FEATHER = "sugarcane";
+    public static final String UPG_LEATHER = "leather";
+    public static final String UPG_BLAZEROD = "blazerod";
     public static final String UPG_LILYPADS = "lilypads";
+    public static final String UPG_GLOWSTONE = "glowstone";
     public static final String UPG_GOLDMELON = "goldmelon";
+    public static final String UPG_GUNPOWDER = "gunpowder";
+    public static final String UPG_SHEARLEFT = "shear_l";
+    public static final String UPG_SUGARCANE = "sugarcane";
+    public static final String UPG_IRON_INGOT = "iron_ingot";
+    public static final String UPG_FIRECHARGE = "firecharge";
+    public static final String UPG_NETHERWART = "netherwart";
+    public static final String UPG_WOODBUTTON = "woodbutton";
+    public static final String UPG_SHEARRIGHT = "shear_r";
+    public static final String UPG_SLIMEBALLS = "slimeball";
+    public static final String UPG_GOLD_NUGGET = "gold_nugget";
+    public static final String UPG_STONEBUTTON = "stonebutton";
+    public static final String UPG_NETHER_BRICK = "nether_brick";
+    public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
 
     static {
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
@@ -201,8 +208,13 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_GOLD_NUGGET, new ItemStack(Items.gold_nugget), new UpgradeGoldNugget(), getNewRenderId());
         registerUpgrade(UPG_LILYPADS, new ItemStack(Blocks.waterlily), new UpgradeLilyPads(), getNewRenderId());
         registerUpgrade(UPG_GOLDMELON, new ItemStack(Items.speckled_melon), new UpgradeGoldMelon(), getNewRenderId());
+        registerUpgrade(UPG_FLINT, new ItemStack(Items.flint), new UpgradeFlint(), getNewRenderId());
+        registerUpgrade(UPG_SUGARCANE, new ItemStack(Items.reeds), new UpgradeSugarCane());
+        registerUpgrade(UPG_FEATHER, new ItemStack(Items.feather), new UpgradeFeather(), getNewRenderId());
+    }
 
-        FMLLog.log(CSM_Main.MOD_LOG, Level.DEBUG, "There are %d upgrades registered by default! %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
+    public static void logUpgradeCount() {
+        FMLLog.log(CSM_Main.MOD_LOG, Level.DEBUG, "There are %d soldier upgrades registered. %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
                    currRenderId + 1
         );
     }

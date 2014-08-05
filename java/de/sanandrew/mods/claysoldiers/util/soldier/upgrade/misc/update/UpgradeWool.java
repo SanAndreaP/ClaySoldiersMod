@@ -1,9 +1,10 @@
-package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
+package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.AUpgradeMisc;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;

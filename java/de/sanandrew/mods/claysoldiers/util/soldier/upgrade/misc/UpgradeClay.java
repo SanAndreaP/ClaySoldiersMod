@@ -30,32 +30,41 @@ public class UpgradeClay
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         short uses = upgradeInst.getNbtTag().getShort("uses");
 
-        Collection<EntityItem> items = clayMan.getItemsInRange();
-        for( EntityItem item : items ) {
-            if( !clayMan.hasPath() ) {
+        if( !clayMan.hasPath() ) {
+            Collection<EntityItem> items = clayMan.getItemsInRange();
+            for( EntityItem item : items ) {
                 if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollSoldier
                     && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam()) )
                 {
                     clayMan.setTargetFollowing(item);
                     break;
                 }
-            } else if( clayMan.getTargetFollowing() != null ) {
-                if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollSoldier
-                    && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam())
-                    && item.getDistanceSqToEntity(clayMan) < 1.0D )
-                {
-                    EntityClayMan awakened = ItemClayManDoll.spawnClayMan(clayMan.worldObj, clayMan.getClayTeam(), item.posX, item.posY, item.posZ);
-                    awakened.playSound("dig.gravel", 1.0F, 1.0F);
-                    PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, awakened.dimension, awakened.posX, awakened.posY, awakened.posZ, 64.0D,
-                                                    Quintet.with(PacketParticleFX.FX_SOLDIER_DEATH, awakened.posX, awakened.posY, awakened.posZ,
-                                                                 awakened.getClayTeam())
-                    );
-                    item.setDead();
-                    upgradeInst.getNbtTag().setShort("uses", --uses);
+            }
+        } else if( clayMan.getTargetFollowing() instanceof EntityItem ) {
+            EntityItem item = (EntityItem) clayMan.getTargetFollowing();
 
-                    if( uses == 0 ) {
-                        return true;
-                    }
+            if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollSoldier
+                && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam()) && item.getDistanceSqToEntity(clayMan) < 1.0D
+                && item.getEntityItem().stackSize > 0 )
+            {
+                EntityClayMan awakened = ItemClayManDoll.spawnClayMan(clayMan.worldObj, clayMan.getClayTeam(), item.posX, item.posY, item.posZ);
+
+                awakened.playSound("dig.gravel", 1.0F, 1.0F);
+                PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, awakened.dimension, awakened.posX, awakened.posY, awakened.posZ, 64.0D,
+                                                Quintet.with(PacketParticleFX.FX_SOLDIER_DEATH, awakened.posX, awakened.posY, awakened.posZ,
+                                                             awakened.getClayTeam()
+                                                )
+                );
+                item.getEntityItem().splitStack(1);
+
+                if( item.getEntityItem().stackSize == 0 ) {
+                    item.setDead();
+                }
+
+                upgradeInst.getNbtTag().setShort("uses", --uses);
+
+                if( uses == 0 ) {
+                    return true;
                 }
             }
         }

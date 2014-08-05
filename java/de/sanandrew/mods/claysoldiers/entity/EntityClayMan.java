@@ -61,17 +61,21 @@ public class EntityClayMan
     private static final int DW_TEXTURE_INDEX = 23;
 
     public ItemStack dollItem = null;
+
     public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
+
     public boolean canMove = true;
+    public boolean nexusSpawn = false;
 
     private final Map<ASoldierUpgrade, SoldierUpgradeInst> upgrades_ = new ConcurrentHashMap<>();
     private final Map<ASoldierEffect, SoldierEffectInst> effects_ = new ConcurrentHashMap<>();
+
     private final long[] upgradeRenderFlags_ = new long[2];
     private final long[] effectRenderFlags_ = new long[2];
 
     private Entity targetFollow_ = null;
 
-    private Collection<Entity> entitiesInRange;
+    private Collection entitiesInRange;
 
     public EntityClayMan(World world) {
         super(world);
@@ -379,6 +383,11 @@ public class EntityClayMan
                     MutableFloat atkRng = new MutableFloat(0.5F);
 
                     for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+                        if( !upg.getUpgrade().isTargetStillValid(this, upg, this.entityToAttack) ) {
+                            this.entityToAttack = null;
+                            return;
+                        }
+
                         upg.getUpgrade().getAttackRange(this, upg, this.entityToAttack, atkRng);
                     }
 
@@ -420,11 +429,18 @@ public class EntityClayMan
         this.deathTime = 20;
         this.setDead();
         ParticlePacketSender.sendSoldierDeathFx(this.posX, this.posY, this.posZ, this.dimension, this.getClayTeam());
+
     }
 
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
+
+        if( !this.nexusSpawn ) {
+            if( this.dollItem != null ) {
+                this.entityDropItem(this.dollItem.copy(), 0.0F);
+            }
+        }
 
         if( !worldObj.isRemote ) {
             for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
@@ -491,6 +507,7 @@ public class EntityClayMan
         this.dataWatcher.updateObject(DW_TEXTURE_INDEX, nbt.getInteger("textureIndex"));
 
         this.canMove = nbt.getBoolean("canMove");
+        this.nexusSpawn = nbt.getBoolean("nexusSpawned");
 
         if( nbt.hasKey("dollItem") ) {
             this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
@@ -530,7 +547,8 @@ public class EntityClayMan
         nbt.setString("team", this.getClayTeam());
         nbt.setByte("isRareOrUnique", this.dataWatcher.getWatchableObjectByte(DW_IS_TEXTURE_RARE_OR_UNIQUE));
         nbt.setInteger("textureIndex", this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX));
-        nbt.setBoolean("canMove", canMove);
+        nbt.setBoolean("canMove", this.canMove);
+        nbt.setBoolean("nexusSpawned", this.nexusSpawn);
 
         if( this.dollItem != null ) {
             NBTTagCompound stackNbt = new NBTTagCompound();
@@ -572,21 +590,24 @@ public class EntityClayMan
                 this.posZ + radius);
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<EntityClayMan> getSoldiersInRange() {
         return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(EntityClayMan.class)),
-                                      new Function<Entity, EntityClayMan>() { @Override public EntityClayMan apply(Entity input) {return (EntityClayMan) input;} }
+                                      new Function<Object, EntityClayMan>() { @Override public EntityClayMan apply(Object input) {return (EntityClayMan) input;} }
         );
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<EntityItem> getItemsInRange() {
         return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(EntityItem.class)),
-                                      new Function<Entity, EntityItem>() { @Override public EntityItem apply(Entity input) {return (EntityItem) input;} }
+                                      new Function<Object, EntityItem>() { @Override public EntityItem apply(Object input) {return (EntityItem) input;} }
         );
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<IMount> getMountsInRange() {
         return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(IMount.class)),
-                                      new Function<Entity, IMount>() { @Override public IMount apply(Entity input) {return (IMount) input;} }
+                                      new Function<Object, IMount>() { @Override public IMount apply(Object input) {return (IMount) input;} }
         );
     }
 
@@ -768,11 +789,11 @@ public class EntityClayMan
         }
     }
 
-    public void removeUpgrade(ASoldierUpgrade upgrade) {
-        if( this.hasUpgrade(upgrade) ) {
-            this.upgrades_.remove(upgrade);
-        }
-    }
+//    public void removeUpgrade(ASoldierUpgrade upgrade) {
+//        if( this.hasUpgrade(upgrade) ) {
+//            this.upgrades_.remove(upgrade);
+//        }
+//    }
 
     public Entity getTargetFollowing() {
         return this.targetFollow_;
@@ -844,7 +865,6 @@ public class EntityClayMan
             throwable.setThrowableHeading(d, d2 + f1, d1, 0.6F, 12F);
             this.attackTime = 30;
             this.hasAttacked = true;
-
         } catch( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
             FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", projClass.getName());
             e.printStackTrace();

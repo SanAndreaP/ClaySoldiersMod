@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderSoldierRightHandEvent
 {
     private final ItemStack upgStick_ = new ItemStack(Items.stick);
+    private final ItemStack upgStickArrow_ = new ItemStack(Items.arrow);
     private final ItemStack upgBlazeRod_ = new ItemStack(Items.blaze_rod);
     private final ItemStack upgWoodButton_ = new ItemStack(Blocks.planks);
     private final ItemStack upgStoneButton_ = new ItemStack(Blocks.stone);
@@ -31,7 +32,11 @@ public class RenderSoldierRightHandEvent
     public void onSoldierRender(SoldierRenderEvent event) {
         if( event.stage == SoldierRenderEvent.RenderStage.EQUIPPED ) {
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK)) ) {
-                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgStick_);
+                if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FLINT)) ) {
+                    this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgStickArrow_);
+                } else {
+                    this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgStick_);
+                }
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD)) ) {
                 this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgBlazeRod_);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT)) ) {

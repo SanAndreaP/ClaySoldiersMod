@@ -186,7 +186,7 @@ public class TileEntityClayNexus
                             if( this.spawningSoldierCounter_ > 0 ) {
                                 ItemClayManDoll.spawnClayMan(this.worldObj, this.tempClayTeam_.getTeamName(), this.xCoord + 0.5F, this.yCoord + 0.2D,
                                                              this.zCoord + 0.5F
-                                );
+                                ).nexusSpawn = true;
                             }
                         }
                     }

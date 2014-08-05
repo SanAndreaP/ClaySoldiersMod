@@ -130,4 +130,8 @@ public abstract class ASoldierUpgrade
     protected void consumeItem(ItemStack stack, SoldierUpgradeInst upgInst) {
         upgInst.setStoredItem(stack.splitStack(1));
     }
+
+    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target) {
+        return true;
+    }
 }
