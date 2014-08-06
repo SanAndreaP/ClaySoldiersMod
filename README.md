@@ -3,14 +3,15 @@
 A Minecraft Mod which adds tiny clay soldiers and additional content for those.
 
 ###For Players:
-If you experience any bug, issue, crash whilst using this mod or you have any feature request, feel free to open a new issue over here -&gt; [SanAndreasP/ClaySoldiersMod/issues](https://github.com/SanAndreasP/ClaySoldiersMod/issues)!<br>
-Please label the issue ![bug](http://puu.sh/aqsEw/5ec9192629.png) if you have a bug/crash/any other issue.<br>
-Use the label ![enhancement](http://puu.sh/aqsHf/d98b8e4de0.png) if you have a feature request.
+If you experience any bug, issue, crash whilst using this mod or you have any feature request, feel free to open a new issue over here &gt; [SanAndreasP/ClaySoldiersMod/issues](https://github.com/SanAndreasP/ClaySoldiersMod/issues)!<br>
+Please label the issue <b style="background-color:#FF0000;color:#FFF;padding: 3px 4px;border-radius:3px;box-shadow:0 -1px 0 rgba(0, 0, 0, 0.12) inset;font-size:11px">bug</b> if you have a bug/crash/any other issue.<br>
+Use the label <b style="background-color:#84b6eb;color:#000;padding: 3px 4px;border-radius:3px;box-shadow:0 -1px 0 rgba(0, 0, 0, 0.12) inset;font-size:11px">enchantment</b> if you have a feature request.<br>
+The label <b style="background-color:#A000A0;color:#FFF;padding: 3px 4px;border-radius:3px;box-shadow:0 -1px 0 rgba(0, 0, 0, 0.12) inset;font-size:11px">question</b> should be used for questions.
 
 ###For Modders:
 If you want to add a new feature / possible bugfix to the mod, feel free to fork this repo, make your changes and make a Pull Request.<br>
 If you want to develop a new addon for this mod, download the compiled jar file and add it as a library in your workspace (IDE required).<br>
-For both, you'll also need to get the Manager Pack Coremod from here -&gt; [SanAndreasP/SAPManagerPack](https://github.com/SanAndreasP/SAPManagerPack). Instructions on how to use that are in the README there.
+For both, you'll also need to get the Manager Pack Coremod from here &gt; [SanAndreasP/SAPManagerPack](https://github.com/SanAndreasP/SAPManagerPack). Instructions on how to use that are in the README there.
 
 ###For Developers
 I recommend you use the [ForgeGradleWrapper](https://github.com/SanAndreasP/ForgeGradleWrapper) to setup/build the mod. Use following steps:
