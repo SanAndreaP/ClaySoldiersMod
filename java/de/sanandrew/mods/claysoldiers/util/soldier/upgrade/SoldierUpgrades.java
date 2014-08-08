@@ -12,10 +12,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeCoal;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeFlint;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeSugarCane;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeWool;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeBlazeRod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeGoldMelon;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeShearBladeRight;
@@ -136,7 +133,7 @@ public final class SoldierUpgrades
     public static final String UPG_GRAVEL = "gravel";
     public static final String UPG_STRING = "string";
     public static final String UPG_EMERALD = "emerald";
-    public static final String UPG_FEATHER = "sugarcane";
+    public static final String UPG_FEATHER = "feather";
     public static final String UPG_LEATHER = "leather";
     public static final String UPG_BLAZEROD = "blazerod";
     public static final String UPG_LILYPADS = "lilypads";
@@ -145,6 +142,7 @@ public final class SoldierUpgrades
     public static final String UPG_GUNPOWDER = "gunpowder";
     public static final String UPG_SHEARLEFT = "shear_l";
     public static final String UPG_SUGARCANE = "sugarcane";
+    public static final String UPG_IRON_BLOCK = "iron_block";
     public static final String UPG_IRON_INGOT = "iron_ingot";
     public static final String UPG_FIRECHARGE = "firecharge";
     public static final String UPG_NETHERWART = "netherwart";
@@ -211,6 +209,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_FLINT, new ItemStack(Items.flint), new UpgradeFlint(), getNewRenderId());
         registerUpgrade(UPG_SUGARCANE, new ItemStack(Items.reeds), new UpgradeSugarCane());
         registerUpgrade(UPG_FEATHER, new ItemStack(Items.feather), new UpgradeFeather(), getNewRenderId());
+        registerUpgrade(UPG_IRON_BLOCK, new ItemStack(Blocks.iron_block), new UpgradeIronBlock(), getNewRenderId());
     }
 
     public static void logUpgradeCount() {

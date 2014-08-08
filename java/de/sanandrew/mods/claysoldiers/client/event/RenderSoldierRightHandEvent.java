@@ -16,6 +16,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 public class RenderSoldierRightHandEvent
@@ -56,11 +57,13 @@ public class RenderSoldierRightHandEvent
     }
 
     private void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
+        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.shieldStudIcon : Textures.shieldIcon;
+
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
         GL11.glTranslatef(-0.4F, 0.15F, -0.2F);
         GL11.glScalef(0.75F, 0.75F, 0.75F);
-        ItemRenderHelper.renderIconIn3D(Textures.shieldIcon, false, false, 0xFFFFFF);
+        ItemRenderHelper.renderIconIn3D(icon, false, false, 0xFFFFFF);
         GL11.glPopMatrix();
     }
 

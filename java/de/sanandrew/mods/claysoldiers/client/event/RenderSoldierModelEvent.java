@@ -7,6 +7,8 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.RenderModelEvent;
+import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.SetRotationAnglesEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
@@ -68,17 +70,20 @@ public class RenderSoldierModelEvent
         this.lilypantsLeftLeg.mirror = true;
         this.lilypantsLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, 0.25F);
         this.lilypantsLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
-//        this.lilypantsRightLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 24);
-//        this.lilypantsRightLeg.addBox(-2.0F, 8.0F, -2.0F, 4, 4, 4, 0.25F);
-//        this.lilypantsRightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
-//        this.lilypantsLeftLeg = new ModelRenderer(renderClayMan.modelBipedMain, 0, 24);
-//        this.lilypantsLeftLeg.mirror = true;
-//        this.lilypantsLeftLeg.addBox(-2.0F, 8.0F, -2.0F, 4, 4, 4, 0.25F);
-//        this.lilypantsLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
     }
 
     @SubscribeEvent
-    public void onSoldierRenderArmor(SoldierRenderEvent.RenderModelEvent event) {
+    public void onSoldierRotationAngles(SetRotationAnglesEvent event) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FEATHER)) && !event.clayMan.onGround && event.clayMan.motionY < -0.1D
+            && event.clayMan.fallDistance >= 1.3F )
+        {
+            event.model.bipedLeftArm.rotateAngleX = (float) Math.PI;
+            event.model.bipedRightArm.rotateAngleX = (float) Math.PI;
+        }
+    }
+
+    @SubscribeEvent
+    public void onSoldierRenderModel(RenderModelEvent event) {
         if( !this.isInitialized ) {
             this.isInitialized = true;
             this.initRenderer(event.clayManRender);

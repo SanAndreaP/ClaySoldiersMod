@@ -5,7 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
+import de.sanandrew.mods.claysoldiers.util.ModItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,10 +47,22 @@ public class ItemDisruptor extends Item
     @SuppressWarnings("unchecked")
     public static void disrupt(ItemStack stack, World world, double x, double y, double z, EntityPlayer player) {
         if( !world.isRemote ) {
-            List<IDisruptable> disruptables = world.getEntitiesWithinAABB(IDisruptable.class, AxisAlignedBB.getBoundingBox(
-                                                                                  x - 16D, y - 16D, z - 16D,
-                                                                                  x + 16D, y + 16D, z + 16D
-                                                                          ));
+            if( player != null && player.capabilities.isCreativeMode && player.isSneaking() ) {
+                List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x - 32.0D, y - 32.0D, z - 32.0D,
+                                                                                                                    x + 32.0D, y + 32.0D, z + 32.0D)
+                );
+
+                for( EntityItem item : items ) {
+                    if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollSoldier ) {
+                        item.setDead();
+                    }
+                }
+            }
+
+            List<IDisruptable> disruptables = world.getEntitiesWithinAABB(IDisruptable.class, AxisAlignedBB.getBoundingBox(x - 32.0D, y - 32.0D, z - 32.0D,
+                                                                                                                           x + 32.0D, y + 32.0D, z + 32.0D)
+            );
+
             for( IDisruptable disruptable : disruptables ) {
                 disruptable.disrupt();
             }

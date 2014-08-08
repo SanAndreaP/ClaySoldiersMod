@@ -194,11 +194,6 @@ public class EntityClayMan
         return this.canMove;
     }
 
-    @Override
-    protected boolean isMovementBlocked() {
-        return !this.canMove || super.isMovementBlocked();
-    }
-
     public boolean isJumping() {
         return this.isJumping;
     }
@@ -789,11 +784,11 @@ public class EntityClayMan
         }
     }
 
-//    public void removeUpgrade(ASoldierUpgrade upgrade) {
-//        if( this.hasUpgrade(upgrade) ) {
-//            this.upgrades_.remove(upgrade);
-//        }
-//    }
+    public void removeEffect(ASoldierEffect effect) {
+        if( this.hasEffect(effect) ) {
+            this.effects_.remove(effect);
+        }
+    }
 
     public Entity getTargetFollowing() {
         return this.targetFollow_;

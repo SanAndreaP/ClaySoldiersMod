@@ -60,8 +60,8 @@ public class UpgradeEmerald
 
     @Override
     public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
-        attackRange.setValue(-1.0F);
-        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 ) {
+        boolean isInRange = target.getDistanceSqToEntity(clayMan) <= (clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE)) ? 64.0D : 16.0D);
+        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 && isInRange ) {
             clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityEmeraldChunk.class,
                                           clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
             );
