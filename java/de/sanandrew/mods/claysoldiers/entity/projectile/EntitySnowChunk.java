@@ -54,7 +54,7 @@ public class EntitySnowChunk
                 }
 
                 if( movObjPos.entityHit instanceof EntityClayMan ) {
-                    if( ((EntityClayMan) movObjPos.entityHit).applyEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLOWMOTION)) != null ) {
+                    if( ((EntityClayMan) movObjPos.entityHit).addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLOWMOTION)) != null ) {
                         movObjPos.entityHit.playSound("step.snow", 1.0F, 1.0F);
                     }
                 }

@@ -19,4 +19,6 @@ public class CommonProxy
     public void applySoldierRenderFlags(int entityId, long upgFlags1, long upgFlags2, long effFlags1, long effFlags2) { }
 
     public void applyEffectNbt(int entityId, byte effectRenderId, NBTTagCompound nbt) { }
+
+    public void applyUpgradeNbt(int entityId, byte upgradeRenderId, NBTTagCompound nbt) { }
 }

@@ -69,8 +69,9 @@ Misc
                                      todo: determine uses and implement them
 |x|Feather,                inf use, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing,
                                      todo: no effect with iron ingot or while mounted
-| |GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
+|x|GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
                                      todo: info: bottles and panes give 1, block as infinite supply
+                                     todo: stained glass gives colored goggles
 | |Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
                                      todo: book as infinite supply
 | |Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,

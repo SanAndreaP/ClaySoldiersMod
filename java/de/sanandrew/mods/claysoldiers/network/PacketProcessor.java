@@ -10,6 +10,7 @@ import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSendEffectNBT;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSendUpgradeNBT;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSoldierRender;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import io.netty.buffer.ByteBuf;
@@ -32,6 +33,7 @@ public final class PacketProcessor
     public static final short PKG_SOLDIER_RENDERS = 0;
     public static final short PKG_PARTICLES = 1;
     public static final short PKG_SOLDIER_EFFECT_NBT = 2;
+    public static final short PKG_SOLDIER_UPGRADE_NBT = 3;
 
     private static final Map<Short, Class<? extends IPacket>> ID_TO_PACKET_MAP_ = Maps.newHashMap();
 
@@ -120,5 +122,6 @@ public final class PacketProcessor
         ID_TO_PACKET_MAP_.put(PKG_PARTICLES, PacketParticleFX.class);
         ID_TO_PACKET_MAP_.put(PKG_SOLDIER_RENDERS, PacketSoldierRender.class);
         ID_TO_PACKET_MAP_.put(PKG_SOLDIER_EFFECT_NBT, PacketSendEffectNBT.class);
+        ID_TO_PACKET_MAP_.put(PKG_SOLDIER_UPGRADE_NBT, PacketSendUpgradeNBT.class);
     }
 }

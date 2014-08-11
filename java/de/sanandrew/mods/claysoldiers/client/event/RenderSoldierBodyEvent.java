@@ -9,6 +9,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,6 +28,8 @@ public class RenderSoldierBodyEvent
     private Random thunderboldRNG_ = new Random();
 
     private ItemStack feather_ = new ItemStack(Items.feather);
+    private ItemStack glass_ = new ItemStack(Blocks.glass);
+    private ItemStack glassStained_ = new ItemStack(Blocks.stained_glass);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
@@ -50,7 +53,37 @@ public class RenderSoldierBodyEvent
             {
                 this.renderFeather(event.clayMan, event.clayManRender);
             }
+
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)) ) {
+                this.renderGlass(event.clayMan, event.clayManRender);
+            }
         }
+    }
+    private void renderGlass(EntityClayMan clayMan, RenderClayMan renderer) {
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedHead.postRender(0.0625F);
+        GL11.glTranslatef(0.0F, -0.6F, 0.0F);
+
+        float itemScale = 0.18F;
+
+        GL11.glScalef(itemScale, itemScale, itemScale);
+        GL11.glTranslatef(0.84F, 1.5F, -1.1F);
+        short color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("leftColor");
+        if( color < 0 ) {
+            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
+        } else {
+            this.glassStained_.setItemDamage(color);
+            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
+        }
+        GL11.glTranslatef(-1.68F, 0.0F, 0.0F);
+        color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("rightColor");
+        if( color < 0 ) {
+            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
+        } else {
+            this.glassStained_.setItemDamage(color);
+            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
+        }
+        GL11.glPopMatrix();
     }
 
     private void renderFeather(EntityClayMan clayMan, RenderClayMan renderer) {
@@ -96,7 +129,7 @@ public class RenderSoldierBodyEvent
     }
 
     private void renderThunderbolt(EntityClayMan clayMan, RenderClayMan clayManRender, double targetX, double targetY, double targetZ) {
-        NBTTagCompound effectNbt = clayMan.getEffectInst(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER)).getNbtTag();
+        NBTTagCompound effectNbt = clayMan.getEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER)).getNbtTag();
         if( effectNbt.getShort("ticksRemaining") < 17 ) {
             return;
         }

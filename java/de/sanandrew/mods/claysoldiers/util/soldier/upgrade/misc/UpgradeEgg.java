@@ -3,6 +3,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -14,7 +15,7 @@ public class UpgradeEgg
 {
     @Override
     public MethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
-        return MethodState.DENY;
+        return attacker.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)) ? MethodState.SKIP : MethodState.DENY;
     }
 
     @Override

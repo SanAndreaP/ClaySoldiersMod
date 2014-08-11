@@ -316,11 +316,11 @@ public class TileEntityClayNexus
             case SOLDIER_SLOT:
                 return stack == null || stack.getItem() == ModItems.dollSoldier;
             case THROWABLE_SLOT:
-                return stack == null || SoldierUpgrades.getUpgradeFromItem(stack) instanceof IThrowableUpgrade;
+                return stack == null || SoldierUpgrades.getUpgrade(stack) instanceof IThrowableUpgrade;
             case MOUNT_SLOT:
                 return stack == null || stack.getItem() instanceof IMountDoll;
             default:
-                return stack == null || SoldierUpgrades.getUpgradeFromItem(stack) != null;
+                return stack == null || SoldierUpgrades.getUpgrade(stack) != null;
         }
     }
 
@@ -460,7 +460,7 @@ public class TileEntityClayNexus
                 this.tempClayTeam_ = ItemClayManDoll.getTeam(stack);
                 break;
             case THROWABLE_SLOT:
-                ASoldierUpgrade upg = SoldierUpgrades.getUpgradeFromItem(stack);
+                ASoldierUpgrade upg = SoldierUpgrades.getUpgrade(stack);
                 this.tempThrowableCls_ = stack != null && upg instanceof IThrowableUpgrade ? ((IThrowableUpgrade) upg).getThrowableClass() : null;
                 this.throwableSlot_ = stack;
                 break;
