@@ -1,6 +1,7 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ServerPacketHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -21,4 +22,6 @@ public class CommonProxy
     public void applyEffectNbt(int entityId, byte effectRenderId, NBTTagCompound nbt) { }
 
     public void applyUpgradeNbt(int entityId, byte upgradeRenderId, NBTTagCompound nbt) { }
+
+    public void switchClayCam(boolean enable, EntityClayMan clayMan) { }
 }
