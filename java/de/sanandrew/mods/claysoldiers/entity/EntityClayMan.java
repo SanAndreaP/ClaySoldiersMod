@@ -419,7 +419,9 @@ public class EntityClayMan
 
     @Override
     protected boolean interact(EntityPlayer p_70085_1_) {
-        p_70085_1_.mountEntity(this);
+//        p_70085_1_.mountEntity(this);
+
+        CSM_Main.proxy.switchClayCam(true, this);
 
         return super.interact(p_70085_1_);
     }

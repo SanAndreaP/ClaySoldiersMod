@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.util;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.event.*;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
@@ -51,6 +52,18 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(new RenderStatDisplayOverlay());
         MinecraftForge.EVENT_BUS.register(new RenderWorldOnLastEvent());
         MinecraftForge.EVENT_BUS.register(new Textures());
+        FMLCommonHandler.instance().bus().register(new RenderPlayerEventInst());
+    }
+
+    @Override
+    public void switchClayCam(boolean enable, EntityClayMan clayMan) {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if( enable ) {
+            mc.renderViewEntity = clayMan;
+        } else {
+            mc.renderViewEntity = mc.thePlayer;
+        }
     }
 
     @Override
