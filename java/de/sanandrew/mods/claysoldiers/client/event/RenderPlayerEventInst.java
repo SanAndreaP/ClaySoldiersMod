@@ -22,7 +22,7 @@ public class RenderPlayerEventInst
 //            if (event.phase == TickEvent.Phase.START) {
 //                ((EntityClayMan) Minecraft.getMinecraft().renderViewEntity).yOffset = 5.5F;
 //            } else {
-                ((EntityClayMan) Minecraft.getMinecraft().renderViewEntity).yOffset = 0.001F;
+//                ((EntityClayMan) Minecraft.getMinecraft().renderViewEntity).yOffset = 0.001F;
 //            }
 //        }
     }

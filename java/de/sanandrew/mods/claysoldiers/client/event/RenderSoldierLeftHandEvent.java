@@ -1,12 +1,15 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
+import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -34,8 +37,21 @@ public class RenderSoldierLeftHandEvent
                 this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockObsidian_);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_EMERALD)) ) {
                 this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockEmerald_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL)) ) {
+                this.renderShield(event.clayMan, event.clayManRender);
             }
         }
+    }
+
+    private void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
+        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.shieldStudIcon : Textures.shieldIcon;
+
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
+        GL11.glTranslatef(-0.4F, 0.15F, -0.2F);
+        GL11.glScalef(0.75F, 0.75F, 0.75F);
+        ItemRenderHelper.renderIconIn3D(icon, false, false, 0xFFFFFF);
+        GL11.glPopMatrix();
     }
 
     private void renderThrowableBlock(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {

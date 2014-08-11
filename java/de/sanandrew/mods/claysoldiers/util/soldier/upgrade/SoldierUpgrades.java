@@ -13,10 +13,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.*;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeBlazeRod;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeGoldMelon;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeShearBladeRight;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeStick;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -126,6 +123,7 @@ public final class SoldierUpgrades
     public static final String UPG_COAL = "coal";
     public static final String UPG_SNOW = "snow";
     public static final String UPG_WOOL = "wool";
+    public static final String UPG_ARROW = "arrow";
     public static final String UPG_BRICK = "brick";
     public static final String UPG_FLINT = "flint";
     public static final String UPG_GLASS = "glass";
@@ -221,6 +219,7 @@ public final class SoldierUpgrades
                                 new ItemStack(Items.glass_bottle)
                         }, new UpgradeHelperGlass());
         registerUpgrade(UPG_GLASS, (ItemStack) null, new UpgradeGlass(), getNewRenderId());
+        registerUpgrade(UPG_ARROW, new ItemStack(Items.arrow), new UpgradeArrow());
     }
 
     public static void logUpgradeCount() {

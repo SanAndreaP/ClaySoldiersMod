@@ -42,8 +42,6 @@ public class RenderSoldierRightHandEvent
                 this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgBlazeRod_);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT)) ) {
                 this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgShearBlade_);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL)) ) {
-                this.renderShield(event.clayMan, event.clayManRender);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLDMELON)) ) {
                 this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgGoldMelon_);
             }
@@ -54,17 +52,6 @@ public class RenderSoldierRightHandEvent
                 this.renderKnuckle(event.clayMan, event.clayManRender, this.upgStoneButton_);
             }
         }
-    }
-
-    private void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
-        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.shieldStudIcon : Textures.shieldIcon;
-
-        GL11.glPushMatrix();
-        renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
-        GL11.glTranslatef(-0.4F, 0.15F, -0.2F);
-        GL11.glScalef(0.75F, 0.75F, 0.75F);
-        ItemRenderHelper.renderIconIn3D(icon, false, false, 0xFFFFFF);
-        GL11.glPopMatrix();
     }
 
     private void renderKnuckle(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
