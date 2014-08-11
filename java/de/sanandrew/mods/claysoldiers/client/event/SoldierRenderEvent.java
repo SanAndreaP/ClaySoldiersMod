@@ -1,8 +1,10 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
+import de.sanandrew.mods.claysoldiers.client.models.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.event.SoldierEvent;
+import net.minecraft.client.model.ModelBiped;
 
 /**
  * @author SanAndreas
@@ -36,12 +38,33 @@ public class SoldierRenderEvent
         public final float rotFloat;
         public final float pitch;
 
-        public RenderModelEvent(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch, float partTicks) {
+        public RenderModelEvent(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw,
+                                float rotPitch, float partTicks)
+        {
             super(clayMan, RenderStage.MODEL, clayManRender, clayMan.posX, clayMan.posY, clayMan.posZ, rotYaw, partTicks);
             this.limbSwing = limbSwing;
             this.limbSwingAmount = limbSwingAmount;
             this.rotFloat = rotFloat;
             this.pitch = rotPitch;
+        }
+    }
+
+    public static class SetRotationAnglesEvent extends SoldierRenderEvent {
+        public final ModelBiped model;
+        public final float limbSwing;
+        public final float limbSwingAmount;
+        public final float rotFloat;
+        public final float pitch;
+
+        public SetRotationAnglesEvent(EntityClayMan clayMan, ModelClayMan clayManModel, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw,
+                                      float rotPitch, float partTicks)
+        {
+            super(clayMan, RenderStage.MODEL_ROTATIONS, null, clayMan.posX, clayMan.posY, clayMan.posZ, rotYaw, partTicks);
+            this.limbSwing = limbSwing;
+            this.limbSwingAmount = limbSwingAmount;
+            this.rotFloat = rotFloat;
+            this.pitch = rotPitch;
+            this.model = clayManModel;
         }
     }
 
@@ -57,5 +80,5 @@ public class SoldierRenderEvent
      * <code>POST</code> - Stage after the rendering happened.<br>
      * <code>EQUIPPED</code> - Stage during rendering of the equipped items.
      */
-    public static enum RenderStage { PRE, POST, EQUIPPED, MODEL, LIVING }
+    public static enum RenderStage { PRE, POST, EQUIPPED, MODEL, MODEL_ROTATIONS, LIVING }
 }

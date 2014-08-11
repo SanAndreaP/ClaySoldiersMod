@@ -18,7 +18,7 @@ public class UpgradeHelperShearBlade
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return true;
+        return !clayMan.hasUpgrade(AUpgradeLeftHanded.class) || !clayMan.hasUpgrade(AUpgradeRightHanded.class);
     }
 
     @Override
@@ -51,9 +51,8 @@ public class UpgradeHelperShearBlade
                 stack.stackSize--;
             }
 
-            SoldierUpgradeInst upgradeInst = clayMan.addNewUpgrade(upgrade);
+            SoldierUpgradeInst upgradeInst = clayMan.addUpgrade(upgrade);
             this.consumeItem(savedItem, upgradeInst);
-            upgrade.onConstruct(clayMan, upgradeInst);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         }
     }

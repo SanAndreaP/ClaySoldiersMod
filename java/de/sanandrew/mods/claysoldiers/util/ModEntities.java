@@ -36,11 +36,11 @@ public final class ModEntities
     public static void registerEntities(Object mod) {
         int entityId = 0;
 
-        EntityRegistry.registerModEntity(EntityClayMan.class, CSM_Main.MOD_ID + ":clayman", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityHorseMount.class, CSM_Main.MOD_ID + ":horsemount", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityGravelChunk.class, CSM_Main.MOD_ID + ":gravelchunk", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntitySnowChunk.class, CSM_Main.MOD_ID + ":snowchunk", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityFirechargeChunk.class, CSM_Main.MOD_ID + ":firechunk", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityEmeraldChunk.class, CSM_Main.MOD_ID + ":emeraldchunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityClayMan.class, "clayman", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityHorseMount.class, "horsemount", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityGravelChunk.class, "gravelchunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntitySnowChunk.class, "snowchunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityFirechargeChunk.class, "firechunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityEmeraldChunk.class, "emeraldchunk", entityId++, mod, 64, 1, true);
     }
 }

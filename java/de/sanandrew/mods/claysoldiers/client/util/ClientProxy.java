@@ -22,6 +22,8 @@ import de.sanandrew.mods.claysoldiers.util.ModBlocks;
 import de.sanandrew.mods.claysoldiers.util.ModEntities;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ASoldierEffect;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -90,9 +92,23 @@ public class ClientProxy extends CommonProxy
             EntityClayMan pahimar = (EntityClayMan) entity;
             ASoldierEffect effect = SoldierEffects.getEffect(effectRenderId);
             if( pahimar.hasEffect(effect) ) {
-                pahimar.getEffectInst(effect).setNbtTag(nbt);
+                pahimar.getEffect(effect).setNbtTag(nbt);
             } else {
-                pahimar.applyEffect(effect).setNbtTag(nbt);
+                pahimar.addEffect(effect).setNbtTag(nbt);
+            }
+        }
+    }
+
+    @Override
+    public void applyUpgradeNbt(int entityId, byte upgradeRenderId, NBTTagCompound nbt) {
+        Entity entity = Minecraft.getMinecraft().theWorld.getEntityByID(entityId);
+        if( entity instanceof EntityClayMan ) {
+            EntityClayMan pahimar = (EntityClayMan) entity;
+            ASoldierUpgrade upgrade = SoldierUpgrades.getUpgrade(upgradeRenderId);
+            if( pahimar.hasUpgrade(upgrade) ) {
+                pahimar.getUpgrade(upgrade).setNbtTag(nbt);
+            } else {
+                pahimar.addUpgrade(upgrade).setNbtTag(nbt);
             }
         }
     }

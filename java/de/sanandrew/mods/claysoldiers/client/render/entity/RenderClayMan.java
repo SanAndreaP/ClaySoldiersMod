@@ -7,9 +7,9 @@
 package de.sanandrew.mods.claysoldiers.client.render.entity;
 
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
+import de.sanandrew.mods.claysoldiers.client.models.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.EntityLiving;
@@ -21,7 +21,7 @@ public class RenderClayMan
     extends RenderBiped
 {
     public RenderClayMan() {
-        super(new ModelBiped(0.0F, 0.0F, 64, 64), 0.1F);
+        super(new ModelClayMan(), 0.1F);
     }
 
     @Override

@@ -114,7 +114,7 @@ public class RenderClayNexus
 
     private void renderThrowableItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
         float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
-        ASoldierUpgrade upg = SoldierUpgrades.getUpgradeFromItem(stack);
+        ASoldierUpgrade upg = SoldierUpgrades.getUpgrade(stack);
         IThrowableUpgrade throwableUpg = upg instanceof IThrowableUpgrade ? (IThrowableUpgrade) upg : null;
         if( throwableUpg == null ) {
             return;

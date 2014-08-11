@@ -12,10 +12,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeCoal;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeFlint;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeSugarCane;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.UpgradeWool;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeBlazeRod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeGoldMelon;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.UpgradeShearBladeRight;
@@ -59,7 +56,9 @@ public final class SoldierUpgrades
         NAME_TO_UPGRADE_MAP_.put(name, instance);
         UPGRADE_TO_NAME_MAP_.put(instance, name);
         for( ItemStack upgradeItem : items ) {
-            ITEM_TO_UPGRADE_MAP_.put(Pair.with(upgradeItem.getItem(), upgradeItem.getItemDamage()), instance);
+            if( upgradeItem != null ) {
+                ITEM_TO_UPGRADE_MAP_.put(Pair.with(upgradeItem.getItem(), upgradeItem.getItemDamage()), instance);
+            }
         }
 
         if( clientRenderId >= 0 ) {
@@ -78,11 +77,11 @@ public final class SoldierUpgrades
         return NAME_TO_UPGRADE_MAP_.get(name);
     }
 
-    public static String getNameFromUpgrade(ASoldierUpgrade upgrade) {
+    public static String getName(ASoldierUpgrade upgrade) {
         return UPGRADE_TO_NAME_MAP_.get(upgrade);
     }
 
-    public static ASoldierUpgrade getUpgradeFromItem(ItemStack item) {
+    public static ASoldierUpgrade getUpgrade(ItemStack item) {
         if( item != null ) {
             Pair<Item, Integer> itemData = Pair.with(item.getItem(), OreDictionary.WILDCARD_VALUE);
             if( ITEM_TO_UPGRADE_MAP_.containsKey(itemData) ) {
@@ -98,7 +97,7 @@ public final class SoldierUpgrades
         return null;
     }
 
-    public static byte getRenderIdFromUpgrade(ASoldierUpgrade upgrade) {
+    public static byte getRenderId(ASoldierUpgrade upgrade) {
         if( UPGRADE_TO_RENDER_ID_MAP_.containsKey(upgrade) ) {
             return UPGRADE_TO_RENDER_ID_MAP_.get(upgrade);
         } else {
@@ -106,7 +105,7 @@ public final class SoldierUpgrades
         }
     }
 
-    public static ASoldierUpgrade getUpgradeFromRenderId(int renderId) {
+    public static ASoldierUpgrade getUpgrade(int renderId) {
         return RENDER_ID_TO_UPGRADE_MAP_.get((byte) renderId);
     }
 
@@ -129,6 +128,7 @@ public final class SoldierUpgrades
     public static final String UPG_WOOL = "wool";
     public static final String UPG_BRICK = "brick";
     public static final String UPG_FLINT = "flint";
+    public static final String UPG_GLASS = "glass";
     public static final String UPG_STICK = "stick";
     public static final String UPG_SUGAR = "sugar";
     public static final String UPG_WHEAT = "wheat";
@@ -136,7 +136,7 @@ public final class SoldierUpgrades
     public static final String UPG_GRAVEL = "gravel";
     public static final String UPG_STRING = "string";
     public static final String UPG_EMERALD = "emerald";
-    public static final String UPG_FEATHER = "sugarcane";
+    public static final String UPG_FEATHER = "feather";
     public static final String UPG_LEATHER = "leather";
     public static final String UPG_BLAZEROD = "blazerod";
     public static final String UPG_LILYPADS = "lilypads";
@@ -145,6 +145,7 @@ public final class SoldierUpgrades
     public static final String UPG_GUNPOWDER = "gunpowder";
     public static final String UPG_SHEARLEFT = "shear_l";
     public static final String UPG_SUGARCANE = "sugarcane";
+    public static final String UPG_IRON_BLOCK = "iron_block";
     public static final String UPG_IRON_INGOT = "iron_ingot";
     public static final String UPG_FIRECHARGE = "firecharge";
     public static final String UPG_NETHERWART = "netherwart";
@@ -169,8 +170,8 @@ public final class SoldierUpgrades
                                 new ItemStack(ModItems.shearBlade),
                                 new ItemStack(Items.shears)
                         }, new UpgradeHelperShearBlade());
-        registerUpgrade(UPG_SHEARLEFT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeLeft(), getNewRenderId());
-        registerUpgrade(UPG_SHEARRIGHT, new ItemStack(ModItems.shearBlade, 1, 1), new UpgradeShearBladeRight(), getNewRenderId());
+        registerUpgrade(UPG_SHEARLEFT, (ItemStack) null, new UpgradeShearBladeLeft(), getNewRenderId());
+        registerUpgrade(UPG_SHEARRIGHT, (ItemStack) null, new UpgradeShearBladeRight(), getNewRenderId());
         registerUpgrade(UPG_WHEAT, new ItemStack(Items.wheat), new UpgradeWheat());
         registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
         registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
@@ -211,6 +212,15 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_FLINT, new ItemStack(Items.flint), new UpgradeFlint(), getNewRenderId());
         registerUpgrade(UPG_SUGARCANE, new ItemStack(Items.reeds), new UpgradeSugarCane());
         registerUpgrade(UPG_FEATHER, new ItemStack(Items.feather), new UpgradeFeather(), getNewRenderId());
+        registerUpgrade(UPG_IRON_BLOCK, new ItemStack(Blocks.iron_block), new UpgradeIronBlock(), getNewRenderId());
+        registerUpgrade("glass_helper", new ItemStack[] {
+                                new ItemStack(Blocks.glass),
+                                new ItemStack(Blocks.glass_pane),
+                                new ItemStack(Blocks.stained_glass, 1, OreDictionary.WILDCARD_VALUE),
+                                new ItemStack(Blocks.stained_glass_pane, 1, OreDictionary.WILDCARD_VALUE),
+                                new ItemStack(Items.glass_bottle)
+                        }, new UpgradeHelperGlass());
+        registerUpgrade(UPG_GLASS, (ItemStack) null, new UpgradeGlass(), getNewRenderId());
     }
 
     public static void logUpgradeCount() {

@@ -63,8 +63,8 @@ public class UpgradeSnow
 
     @Override
     public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
-        attackRange.setValue(-1.0F);
-        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 ) {
+        boolean isInRange = target.getDistanceSqToEntity(clayMan) <= 64.0D;
+        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 && isInRange ) {
             clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntitySnowChunk.class,
                                           clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
             );

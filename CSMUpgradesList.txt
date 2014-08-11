@@ -2,95 +2,129 @@ ITEMS LIST
 ------------------
 RIGHT HAND
 ------------------
-|x|Stick, 20 use, increases melee damage by 2-3 points
-| |Arrow, 20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
-|x|BlazeRod, 20 use, increases melee damage by 1-2 points, causes burn time on target
-| |Bone, 30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
+|x|Stick,      20 use, increases melee damage by 2-3 points
+| |Arrow,      20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
+|x|BlazeRod,   20 use, increases melee damage by 1-2 points, causes burn time on target
+| |Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
-|x|GoldMelon, 25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
-/^\all weapons should have increased reach while riding mounts, bone's reach bonus should be slightly greater than mounted reach bonus
+|x|GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
+
+todo: info: all weapons should have increased reach while riding mounts, bone's reach bonus should be slightly greater than mounted reach bonus
 ------------------
 LEFT HAND
 ------------------
-|x|Gravel, 15 use, thrown for 2-3 points damage
-|x|Snowball, 20 use, thrown for 0 damage, slows target on hit
-|x|FireCharge, 15 use, thrown for 1-2 damage, causes burn time on hit
-|x|Bowl, 20 use, reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
-/^\no longer should entirely block ranged attacks, only reduce damage from them
-|x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
-|x|Emerald, 5 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
-| |NetherQuartz, 4 use, deals heavy knockback to all targets nearby if soldier takes too many hits
+|x|Gravel,       15 use,   thrown for 2-3 points damage
+|x|Snowball,     5-20 use, thrown for 0 damage, slows target on hit
+                            info: uses depend on the item given! snowball gives 5; snow layer gives 10; snow block gives 20
+|x|FireCharge,   15 use,   thrown for 1-2 damage, causes burn time on hit
+|x|Bowl,         20 use,   reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
+                            info: no longer entirely blocks ranged attacks, only reduces damage from them
+|x|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
+|x|Emerald,      5-45 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
+                            info: uses depend on the item given! emerald item gives 5 uses; emerald block gives 45 uses
+| |NetherQuartz, 4 use,    deals heavy knockback to all targets nearby if soldier takes too many hits
 ------------------
 Core
 ------------------
-|x|IronIngot, makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
-|x|Brick, makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
-|x|String, makes soldier resist all damage from one explosion
-|x|Cactus, 75% chance to negate burn time, halves total burn time otherwise
+|x|IronIngot,   makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
+|x|Brick,       makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
+|x|String,      makes soldier resist all damage from one explosion
+|x|Cactus,      75% chance to negate burn time, halves total burn time otherwise
 |x|NetherBrick, gives burn time to any soldier that attacks nether brick user with unarmed attacks
 ------------------
 Behavior
 ------------------
-|x|Wheat, makes soldier never attack, even if hit first
-|x|NetherWart, makes soldier attack its allies
+|x|Wheat,              makes soldier never attack, even if hit first
+|x|NetherWart,         makes soldier attack its allies
 |x|FermentedSpiderEye, makes soldier not attack, unless attacked first
-~SanAndreasP: they now have idle particle effects
-| |-----, makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
-| |-----, makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own team
+| |n/a,                makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
+| |n/a,                makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own
+                        team
+
+info: they now have idle particle effects
 ------------------
 Misc
 ------------------
-|x|Leather, 20 use, reduces incoming physical damage by half (when used with bowl, only receives 25% of original damage)
-| |Rabbit Hide, 20 use, reduces incoming physical damage by 12.5%, grants half the speed boost of sugar
-/^\Leather and Rabbit Hide should be incompatible and have similar visuals.
-| |Food, 4 use, heals soldier for 10 hp when below 25%
-/^\small idea, make number of uses be the number of hunger points restored, and make mushroom stew drop bowl?
-~SanAndreasP: How about healed XP is (10 / hungerPoints * 25%)? And uses are still 4
-|x|GoldNugget, gives soldier a crown, all of team follows the king
-|x|Glowstone, makes soldier glow, block gives to infinite soldiers
-|x|Gunpowder, soldier explodes on death, incompatible with magmacream/firework star
-| |MagmaCream, places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit, incompatible with gunpowder/fireworkstar
-|x|Sugar, makes soldier move faster, incompatible with diamond
-|x|Clay, 4 use, revives fallen soldiers of own color
-| |GhastTear, 2 use, revives brick dolls to own color
-|x|RedstoneDust, causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
-  |x|Redstone Block as infinite redstone
-|x|Slimeball, causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
-  | |Slimeblock (1.8) as infinite slimeballs
-|x|Feather, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing, no effect with iron ingot or while mounted
-  | |Rendering needs to be finished
-| |GlassBottle/Pane/Block, doubles vision range, soldier can see stealthed enemies, bottles and panes are single soldier, block is infinite soldiers
-| |Paper/Book, gives a plain cape, dyed paper and books give colored capes, book gives to infinite soldiers
-| |Diamond, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10, incom. with diamondblock
-| |DiamondBlock, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80, incompatible with diamond
-| |EnderPearl, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies, dies after 10 minutes of no fighting
-| |BlazePowder, 1 use, instantly kills target with fire, turning it into brick doll
-| |RedMushroom, 1 use, applies poison to target
-| |BrownMushroom 2 use, heals soldier for 10 hp when below 25%
-|x|LillyPad, soldier has pants and will float on water, no effect when used with iron ingot
-|x|Egg, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
-| |WheatSeed, soldier can NOT be infected by any zombification
-|x|WoodButton, increases melee damage by 1 when no weapon is equipped, incompatible with stone button
-|x|StoneButton, increases melee damage by 2 when no weapon is equipped, incompatible with wood button
-| |MobHead, gives the soldier a mask to wear
-| |FireworkStar, soldier explodes on death in a firework effect, incompatible with gunpowder/magmacream
-| |Rabbit Foot, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
-| |Prismarine Crystals, makes soldiers glitter, that's all.
+|x|Leather,                20 use,  reduces incoming physical damage by half (when used with bowl, only receives 25% of original damage)
+                                     todo: incompatible with Rabbit Hide
+| |Rabbit Hide,            20 use,  reduces incoming physical damage by 12.5%, grants half the speed boost of sugar
+                                     todo: incompatible with Leather
+                                     todo: MC 1.8
+| |Food,                   4 use,   heals soldier for 10 hp when below 25%
+                                     todo: make food in a bowl (rabbit stew and mushroom stew, possibly even modded stews) drop bowl
+                                     todo: healed XP is hungerPoints * 0.5
+|x|GoldNugget,             inf use, gives soldier a crown, all of team follows the king
+|x|Glowstone,              inf use, makes soldier glow, block gives to infinite soldiers
+|x|Gunpowder,              1 use,   soldier explodes on death
+                                     todo: incompatible with magmacream/firework star
+| |MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
+                                     todo: incompatible with gunpowder/fireworkstar
+|x|Sugar,                  inf use, makes soldier move faster, incompatible with diamond
+|x|Clay,                   4 use,   revives fallen soldiers of own color
+| |GhastTear,              2 use,   revives brick dolls to own color
+| |RedstoneDust,           4 use?,  causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
+                                     todo: info: Redstone Block as infinite redstone supply
+|x|Slimeball,              5 use?,  causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
+                                     todo: (MC 1.8) info: Slimeblock as infinite slimeballs
+                                     todo: determine uses and implement them
+|x|Feather,                inf use, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing,
+                                     todo: no effect with iron ingot or while mounted
+|x|GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
+                                     todo: info: bottles and panes give 1, block as infinite supply
+                                     todo: stained glass gives colored goggles
+| |Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
+                                     todo: book as infinite supply
+| |Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
+                                     todo: incompatible with diamondblock
+| |DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
+                                     todo: incompatible with diamond
+| |EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
+                                     dies after 10 minutes of no fighting
+| |BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
+| |RedMushroom,            1 use,   applies poison to target
+| |BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
+|x|LillyPad,               inf use, soldier has pants and will float on water
+                                     todo: no effect when used with iron ingot
+|x|Egg,                    inf use, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
+                                     todo: add detection when wearing glasses
+| |WheatSeed,              inf use, soldier can NOT be infected by any zombification
+|x|WoodButton,             inf use, increases melee damage by 1 when no weapon is equipped
+                                     incompatible with stone button
+|x|StoneButton,            inf use, increases melee damage by 2 when no weapon is equipped
+                                     incompatible with wood button
+| |MobHead,                inf use, gives the soldier a mask to wear
+| |FireworkStar,             1 use, soldier explodes on death in a firework effect
+                                     todo: incompatible with gunpowder/magmacream
+| |Rabbit Foot,            inf use, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
+                                     todo: MC 1.8
+| |Prismarine Crystals,    inf use, makes soldiers glitter, that's all.
+                                     todo: MC 1.8
 ------------------
 Upgrades
 ------------------
-~SanAndreasP: any kind of durabillity / uses? For now they wear out when the upgraded upgrade wears out
-|x|Flint, boosts stick melee damage by 2 points (total bonus 4-5, same as arrow), REQUIRES: STICK
-| |Prismarine Shard, boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
-|x|Wool, reduces incoming physical damage by 1, REQUIRES: LEATHER/RABBIT HIDE
-|x|Sugarcane, boosts thrown weapon range, projectiles hone in on target, boosts emerald range and damage, REQUIRES: GRAVEL/SNOWBALL/FIRECHARGE/EMERALD
-| |IronBlock, reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/redmushroom/magmacream effects, REQUIRES: BOWL
-|x|Coal/Charcoal, doubles length of burn time on all fire effects, adds additional use to blaze powder, REQUIRES: BLAZEROD/BLAZEPOWDER/FIRECHARGE
-| |GoldIngot, doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1, REQUIRES: GOLDNUGGET
+|x|Flint,            req: stick,          boosts stick melee damage by 2 points (total bonus 4-5, same as arrow),
+| |Prismarine Shard, req: shear blade(s), boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
+                                           todo: MC 1.8
+|x|Wool,             req: leather         reduces incoming physical damage by 1
+                          rabbit hide todo: MC 1.8
+|x|Sugarcane,        req: gravel          boosts thrown weapon range, projectiles hone in on target, boosts emerald range,
+                          snowball
+                          firecharge
+                          emerald
+|x|IronBlock,        req: bowl            reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/
+                                           redmushroom/magmacream effects
+                                           todo: blazepowder block
+                                           todo: redmushroom
+                                           todo: magmacream
+|x|Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
+                          blaze powder
+                          firecharge
+| |GoldIngot,        req: gold nugget     doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1
 ------------------
+
 ------------------
 Mount Items
 ------------------
-| |Rose, boosts hp
+| |Rose,         boosts hp
 | |YellowFlower, boosts speed
-| |Obsidian, grants rare form instantly when available
+| |Obsidian,     grants rare form instantly when available

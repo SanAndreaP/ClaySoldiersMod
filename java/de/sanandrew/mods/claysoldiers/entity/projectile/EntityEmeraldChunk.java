@@ -83,7 +83,7 @@ public class EntityEmeraldChunk
                     if( movObjPos.entityHit instanceof EntityClayMan ) {
                         EntityClayMan iChun = (EntityClayMan) movObjPos.entityHit;
                         movObjPos.entityHit.playSound("ambient.weather.thunder", 1.0F, 8.0F);
-                        SoldierEffectInst effect = iChun.applyEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER));
+                        SoldierEffectInst effect = iChun.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER));
                         if( effect != null && this.origin != null ) {
                             effect.getNbtTag().setDouble("originX", this.origin.getValue0());
                             effect.getNbtTag().setDouble("originY", this.origin.getValue1());
