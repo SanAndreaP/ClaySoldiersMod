@@ -20,7 +20,7 @@ public class UpgradeGoldMelon
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort("uses", (short) 25);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 25);
     }
 
     @Override

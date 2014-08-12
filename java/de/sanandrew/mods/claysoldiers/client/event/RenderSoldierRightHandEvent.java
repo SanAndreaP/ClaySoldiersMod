@@ -7,16 +7,13 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
-import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 public class RenderSoldierRightHandEvent
@@ -28,6 +25,7 @@ public class RenderSoldierRightHandEvent
     private final ItemStack upgStoneButton_ = new ItemStack(Blocks.stone);
     private final ItemStack upgShearBlade_ = new ItemStack(ModItems.shearBlade);
     private final ItemStack upgGoldMelon_ = new ItemStack(Items.speckled_melon);
+    private final ItemStack upgBone_ = new ItemStack(Items.bone);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
@@ -44,6 +42,8 @@ public class RenderSoldierRightHandEvent
                 this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgShearBlade_);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLDMELON)) ) {
                 this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgGoldMelon_);
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BONE)) ) {
+                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgBone_);
             }
 
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOODBUTTON)) ) {

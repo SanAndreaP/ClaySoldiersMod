@@ -77,11 +77,13 @@ public class SoldierEffects
     public static final String EFF_SLIMEFEET = "slimefeet";
     public static final String EFF_SLOWMOTION = "slowmotion";
     public static final String EFF_THUNDER = "thunder";
+    public static final String EFF_REDSTONE = "redstone";
 
     static {
         registerEffect(EFF_SLIMEFEET, new EffectSlimeFeet(), getNewRenderId());
         registerEffect(EFF_SLOWMOTION, new EffectSlowMotion());
         registerEffect(EFF_THUNDER, new EffectThunder(), getNewRenderId());
+        registerEffect(EFF_REDSTONE, new EffectBlindingRedstone(), getNewRenderId());
     }
 
     public static class RenderIdException extends RuntimeException {

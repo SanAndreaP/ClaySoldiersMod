@@ -16,7 +16,7 @@ public abstract class ATestUpgrade
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         NBTTagCompound nbt = upgradeInst.getNbtTag();
-        nbt.setInteger("uses", 5);
+        nbt.setInteger(NBT_USES, 5);
     }
 
     @Override
@@ -31,7 +31,7 @@ public abstract class ATestUpgrade
 
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        upgradeInst.getNbtTag().setInteger("uses", upgradeInst.getNbtTag().getInteger("uses")-1);
+        upgradeInst.getNbtTag().setInteger(NBT_USES, upgradeInst.getNbtTag().getInteger(NBT_USES)-1);
         target.targetSoldier(clayMan);
         damage.setValue(10.0F);
     }
@@ -43,7 +43,7 @@ public abstract class ATestUpgrade
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( upgradeInst.getNbtTag().getInteger("uses") <= 0 ) {
+        if( upgradeInst.getNbtTag().getInteger(NBT_USES) <= 0 ) {
             clayMan.playSound("random.break", 1.0F, 1.0F);
             return true;
         }

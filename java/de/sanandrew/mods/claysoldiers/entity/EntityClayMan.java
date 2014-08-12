@@ -272,31 +272,16 @@ public class EntityClayMan
             if( this.entityToAttack == null ) {
                 if( rand.nextInt(4) != 0 && targetFollow_ == null ) {
                     Collection<EntityClayMan> claymen = this.getSoldiersInRange();
-                    targetLoop: for( EntityClayMan uberhaxornova : claymen ) {
+                    for( EntityClayMan uberhaxornova : claymen ) {
                         if( uberhaxornova.isDead || rand.nextInt(4) != 0 ) {
                             continue;
                         }
 
-                        boolean shouldTargetCheck = false;
-                        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-                            MethodState result = upg.getUpgrade().onTargeting(this, upg, uberhaxornova);
-                            if( result == MethodState.DENY ) {
-                                continue targetLoop;
-                            } else if( result == MethodState.ALLOW ) {
-                                shouldTargetCheck = true;
-                                break;
-                            }
-                        }
-                        if( !shouldTargetCheck && (uberhaxornova.getClayTeam().equals(this.getClayTeam()) || !this.canEntityBeSeen(uberhaxornova)) ) {
+                        if( this.checkTarget(uberhaxornova) == MethodState.DENY ) {
                             continue;
                         }
 
-                        MethodState targetResult = uberhaxornova.onBeingTargeted(this);
-                        if( targetResult != MethodState.DENY ) {
-                            this.entityToAttack = uberhaxornova;
-                        } else {
-                            continue;
-                        }
+                        this.entityToAttack = uberhaxornova;
 
                         break;
                     }
@@ -376,16 +361,23 @@ public class EntityClayMan
                 } else if( this.attackTime == 0 ) {
                     this.attackTime = 5;
 
-                    MutableFloat atkRng = new MutableFloat(0.5F);
+                    MutableFloat atkRng = new MutableFloat(this.riddenByEntity != null ? 0.55F : 0.5F);
 
                     for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-                        if( !upg.getUpgrade().isTargetStillValid(this, upg, this.entityToAttack) ) {
-                            this.entityToAttack = null;
-                            return;
-                        }
+//                        if( !upg.getUpgrade().isTargetStillValid(this, upg, this.entityToAttack) ) {
+//                            this.entityToAttack = null;
+//                            return;
+//                        }
 
                         upg.getUpgrade().getAttackRange(this, upg, this.entityToAttack, atkRng);
                     }
+
+//                    for( SoldierEffectInst eff : this.effects_.values() ) {
+//                        if( !eff.getEffect().isTargetStillValid(this, eff, this.entityToAttack) ) {
+//                            this.entityToAttack = null;
+//                            return;
+//                        }
+//                    }
 
                     if( this.getDistanceToEntity(this.entityToAttack) < atkRng.floatValue() && this.entityToAttack instanceof EntityLivingBase
                             && !this.entityToAttack.isEntityInvulnerable() )
@@ -411,6 +403,35 @@ public class EntityClayMan
                 }
             }
         }
+    }
+
+    private MethodState checkTarget(EntityClayMan target) {
+        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+            MethodState result = upg.getUpgrade().onTargeting(this, upg, target);
+            if( result == MethodState.DENY ) {
+                return MethodState.DENY;
+            } else if( result == MethodState.ALLOW ) {
+                return MethodState.ALLOW;
+            } else if( target.getClayTeam().equals(this.getClayTeam()) || !this.canEntityBeSeen(target) ) {
+                result = upg.getUpgrade().onBeingTargeted(target, upg, this);
+                if( result == MethodState.DENY ) {
+                    return MethodState.DENY;
+                } else if( result == MethodState.ALLOW ) {
+                    return MethodState.ALLOW;
+                }
+            }
+        }
+
+        for( SoldierEffectInst eff : this.effects_.values() ) {
+            MethodState result = eff.getEffect().onTargeting(this, eff, target);
+            if( result == MethodState.DENY ) {
+                return MethodState.DENY;
+            } else if( result == MethodState.ALLOW ) {
+                return MethodState.ALLOW;
+            }
+        }
+
+        return MethodState.SKIP;
     }
 
     @Override
@@ -775,14 +796,8 @@ public class EntityClayMan
     public boolean targetSoldier(EntityClayMan target, boolean withUpgradeCheck) {
         if( this.entityToAttack == null || this.entityToAttack.isDead ) {
             if( withUpgradeCheck ) {
-                for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-                    MethodState result = upg.getUpgrade().onTargeting(this, upg, target);
-                    if( result == MethodState.DENY ) {
-                        return false;
-                    } else if( result == MethodState.ALLOW ) {
-                        this.entityToAttack = target;
-                        return true;
-                    }
+                if( this.checkTarget(target) == MethodState.DENY ) {
+                    return false;
                 }
             }
             this.entityToAttack = target;

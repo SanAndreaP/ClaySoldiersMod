@@ -18,6 +18,13 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 public abstract class ASoldierUpgrade
 {
     /**
+     * A field which should be used as the key for the upgrade NBT when having a usage (like sticks, gravel, etc.).
+     * This is meant for the diamond / gold block upgrade, which increase the uses of the upgrades.
+     * This NBT Tag MUST be a short!
+     */
+    public static final String NBT_USES = "uses";
+
+    /**
      * Fired when an instance for this upgrade is created. Use this to initiate all needed values in the NBT provided by the instance
      * @param clayMan the soldier calling the method
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
@@ -103,7 +110,7 @@ public abstract class ASoldierUpgrade
 
     protected void consumeItem(ItemStack stack, SoldierUpgradeInst upgradeInst) { upgradeInst.setStoredItem(stack.splitStack(1)); }
 
-    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target) { return true; }
+//    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target) { return true; }
 
     public void getLookRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableDouble radius) { }
 

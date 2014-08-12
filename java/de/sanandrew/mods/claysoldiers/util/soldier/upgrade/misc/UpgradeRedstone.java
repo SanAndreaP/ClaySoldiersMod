@@ -18,29 +18,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-public class UpgradeSlimeball
+public class UpgradeRedstone
     extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 5);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 4);
     }
 
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        if( target.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) != null ) {
-            target.playSound("mob.slime.attack", 1.0F, 1.0F);
+        if( target.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_REDSTONE)) != null ) {
+            target.playSound("random.fizz", 1.0F, 1.0F);
             upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) -1));
         }
     }
 
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        if( stack.getItem() == Items.slime_ball ) {
+        if( stack.getItem() == Items.redstone ) {
             this.consumeItem(stack, upgInst);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
-        } else if( stack.getItem() == Item.getItemFromBlock(Blocks.command_block) ) { //TODO: 1.8, here goes slime block!
-            clayMan.playSound("mob.slime.small", 1.0F, 1.0F);
+        } else if( stack.getItem() == Item.getItemFromBlock(Blocks.redstone_block) ) {
+            clayMan.playSound("dig.stone", 1.0F, 1.0F);
         }
     }
 
@@ -54,8 +54,8 @@ public class UpgradeSlimeball
                                 ISoldierProjectile<? extends EntityThrowable> projectile) {
         if( target.entityHit instanceof EntityClayMan ) {
             EntityClayMan caddicarus = (EntityClayMan) target.entityHit;
-            if( caddicarus.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) != null ) {
-                caddicarus.playSound("mob.slime.attack", 1.0F, 1.0F);
+            if( caddicarus.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_REDSTONE)) != null ) {
+                caddicarus.playSound("random.fizz", 1.0F, 1.0F);
                 upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) -1));
             }
         }

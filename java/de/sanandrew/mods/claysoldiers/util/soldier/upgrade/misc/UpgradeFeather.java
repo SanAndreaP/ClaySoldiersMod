@@ -9,7 +9,6 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
@@ -24,6 +23,8 @@ public class UpgradeFeather
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        clayMan.targetSoldier(null, false);
+
         if( clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ) {
             clayMan.motionY *= 0.2D;
             clayMan.fallDistance = 1.5F;
@@ -37,10 +38,10 @@ public class UpgradeFeather
         return !clayMan.onGround && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ? MethodState.DENY : MethodState.SKIP;
     }
 
-    @Override
-    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target) {
-        return clayMan.onGround || (clayMan.motionY >= -0.2D && clayMan.fallDistance < 1.4F);
-    }
+//    @Override
+//    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target) {
+//        return clayMan.onGround || (clayMan.motionY >= -0.2D && clayMan.fallDistance < 1.4F);
+//    }
 
     @Override
     public void getAiMoveSpeed(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableFloat speed) {

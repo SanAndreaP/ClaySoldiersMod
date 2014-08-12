@@ -20,7 +20,7 @@ public class UpgradeStick
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         NBTTagCompound nbt = upgradeInst.getNbtTag();
-        nbt.setInteger("uses", 20);
+        nbt.setShort(NBT_USES, (short) 20);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class UpgradeStick
 
     @Override
     public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        upgradeInst.getNbtTag().setInteger("uses", upgradeInst.getNbtTag().getInteger("uses") - 1);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( upgradeInst.getNbtTag().getInteger("uses") <= 0 ) {
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) <= 0 ) {
             clayMan.playSound("random.break", 1.0F, 1.0F);
             ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, Items.stick);
             return true;

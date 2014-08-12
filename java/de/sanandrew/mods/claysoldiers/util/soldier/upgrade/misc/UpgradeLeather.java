@@ -22,12 +22,12 @@ public class UpgradeLeather
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         NBTTagCompound nbt = upgradeInst.getNbtTag();
-        nbt.setInteger("uses", 20);
+        nbt.setShort(NBT_USES, (short) 20);
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( upgradeInst.getNbtTag().getInteger("uses") <= 0 ) {
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) <= 0 ) {
             clayMan.playSound("random.break", 1.0F, 1.0F);
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
                                             Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
@@ -45,7 +45,7 @@ public class UpgradeLeather
             return true;
         }
 
-        upgradeInst.getNbtTag().setInteger("uses", upgradeInst.getNbtTag().getInteger("uses") - 1);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
         damage.setValue(damage.floatValue() / 2.0F);
         return true;
     }

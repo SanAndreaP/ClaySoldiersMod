@@ -29,12 +29,12 @@ public class UpgradeFirecharge
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort("uses", (short) 15);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 15);
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return upgradeInst.getNbtTag().getShort("uses") == 0;
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
@@ -59,7 +59,7 @@ public class UpgradeFirecharge
                                           clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
             );
             clayMan.attackTime = 30;
-            upgradeInst.getNbtTag().setShort("uses", (short) (upgradeInst.getNbtTag().getShort("uses") - 1));
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
         }
     }
 

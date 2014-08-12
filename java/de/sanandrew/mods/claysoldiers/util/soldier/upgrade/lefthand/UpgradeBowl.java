@@ -17,19 +17,19 @@ public class UpgradeBowl
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort("uses", (short) 20);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 20);
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return upgradeInst.getNbtTag().getShort("uses") == 0;
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         if( !source.isUnblockable() ) {
             damage.setValue(damage.getValue() / 2.0F);
-            upgradeInst.getNbtTag().setShort("uses", upgradeInst.getNbtTag().getShort("uses"));
+            upgradeInst.getNbtTag().setShort(NBT_USES, upgradeInst.getNbtTag().getShort(NBT_USES));
         }
 
         return true;

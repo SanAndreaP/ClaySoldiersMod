@@ -1,6 +1,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
@@ -24,9 +25,13 @@ public abstract class ASoldierEffect
      */
     public boolean onUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) { return false; }
 
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) { return MethodState.SKIP; }
+
     public void getAiMoveSpeed(EntityClayMan clayMan, SoldierEffectInst effectInst, MutableFloat speed) { }
 
     public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) { }
 
     public boolean sendNbtToClient(EntityClayMan clayMan, SoldierEffectInst effectInst) { return false; }
+
+//    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierEffectInst effectInst, Entity target) { return true; }
 }

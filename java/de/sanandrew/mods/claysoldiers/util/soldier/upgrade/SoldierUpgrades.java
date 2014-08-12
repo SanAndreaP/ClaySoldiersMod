@@ -17,10 +17,14 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -118,9 +122,11 @@ public final class SoldierUpgrades
     }
 
     public static final String UPG_EGG = "egg";
+    public static final String UPG_BONE = "bone";
     public static final String UPG_BOWL = "bowl";
     public static final String UPG_CLAY = "clay";
     public static final String UPG_COAL = "coal";
+    public static final String UPG_FOOD = "food";
     public static final String UPG_SNOW = "snow";
     public static final String UPG_WOOL = "wool";
     public static final String UPG_ARROW = "arrow";
@@ -138,6 +144,7 @@ public final class SoldierUpgrades
     public static final String UPG_LEATHER = "leather";
     public static final String UPG_BLAZEROD = "blazerod";
     public static final String UPG_LILYPADS = "lilypads";
+    public static final String UPG_REDSTONE = "redstone";
     public static final String UPG_GLOWSTONE = "glowstone";
     public static final String UPG_GOLDMELON = "goldmelon";
     public static final String UPG_GUNPOWDER = "gunpowder";
@@ -154,27 +161,50 @@ public final class SoldierUpgrades
     public static final String UPG_STONEBUTTON = "stonebutton";
     public static final String UPG_NETHER_BRICK = "nether_brick";
     public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
+    public static final String UPG_NETHER_QUARTZ = "nether_quartz";
 
-    static {
+    public static void initialize() {
+      // upgrades no single items and render ID
+        registerUpgrade(UPG_SHEARLEFT, (ItemStack) null, new UpgradeShearBladeLeft(), getNewRenderId());
+        registerUpgrade(UPG_SHEARRIGHT, (ItemStack) null, new UpgradeShearBladeRight(), getNewRenderId());
+        registerUpgrade(UPG_GLASS, (ItemStack) null, new UpgradeGlass(), getNewRenderId());
+
+      // upgrades with single items and render ID
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
         registerUpgrade(UPG_BLAZEROD, new ItemStack(Items.blaze_rod), new UpgradeBlazeRod(), getNewRenderId());
         registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), getNewRenderId());
         registerUpgrade(UPG_WOOL, new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWool(), getNewRenderId());
-        registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
         registerUpgrade(UPG_EGG, new ItemStack(Items.egg), new UpgradeEgg(), getNewRenderId());
         registerUpgrade(UPG_WOODBUTTON, new ItemStack(Blocks.wooden_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeWoodButton(), getNewRenderId());
         registerUpgrade(UPG_STONEBUTTON, new ItemStack(Blocks.stone_button, 1, OreDictionary.WILDCARD_VALUE), new UpgradeStoneButton(), getNewRenderId());
-        registerUpgrade("shear_helper", new ItemStack[] {
-                                new ItemStack(ModItems.shearBlade),
-                                new ItemStack(Items.shears)
-                        }, new UpgradeHelperShearBlade());
-        registerUpgrade(UPG_SHEARLEFT, (ItemStack) null, new UpgradeShearBladeLeft(), getNewRenderId());
-        registerUpgrade(UPG_SHEARRIGHT, (ItemStack) null, new UpgradeShearBladeRight(), getNewRenderId());
+        registerUpgrade(UPG_IRON_INGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), getNewRenderId());
+        registerUpgrade(UPG_BRICK, new ItemStack(Items.brick), new UpgradeBrick(), getNewRenderId());
+        registerUpgrade(UPG_GRAVEL, new ItemStack(Blocks.gravel), new UpgradeGravel(), getNewRenderId());
+        registerUpgrade(UPG_FIRECHARGE, new ItemStack(Items.fire_charge), new UpgradeFirecharge(), getNewRenderId());
+        registerUpgrade(UPG_BOWL, new ItemStack(Items.bowl), new UpgradeBowl(), getNewRenderId());
+        registerUpgrade(UPG_GOLD_NUGGET, new ItemStack(Items.gold_nugget), new UpgradeGoldNugget(), getNewRenderId());
+        registerUpgrade(UPG_LILYPADS, new ItemStack(Blocks.waterlily), new UpgradeLilyPads(), getNewRenderId());
+        registerUpgrade(UPG_GOLDMELON, new ItemStack(Items.speckled_melon), new UpgradeGoldMelon(), getNewRenderId());
+        registerUpgrade(UPG_FLINT, new ItemStack(Items.flint), new UpgradeFlint(), getNewRenderId());
+        registerUpgrade(UPG_FEATHER, new ItemStack(Items.feather), new UpgradeFeather(), getNewRenderId());
+        registerUpgrade(UPG_IRON_BLOCK, new ItemStack(Blocks.iron_block), new UpgradeIronBlock(), getNewRenderId());
+        registerUpgrade(UPG_BONE, new ItemStack(Items.bone), new UpgradeBone(), getNewRenderId());
+        registerUpgrade(UPG_NETHER_QUARTZ, new ItemStack(Items.quartz), new UpgradeNetherQuartz(), getNewRenderId());
+
+      // upgrades with single items and no render ID
+        registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
         registerUpgrade(UPG_WHEAT, new ItemStack(Items.wheat), new UpgradeWheat());
         registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
         registerUpgrade(UPG_FERMSPIDEREYE, new ItemStack(Items.fermented_spider_eye), new UpgradeFermSpiderEye());
         registerUpgrade(UPG_SUGAR, new ItemStack(Items.sugar), new UpgradeSugar());
-        registerUpgrade(UPG_IRON_INGOT, new ItemStack(Items.iron_ingot), new UpgradeIronIngot(), getNewRenderId());
+        registerUpgrade(UPG_SLIMEBALLS, new ItemStack(Items.slime_ball), new UpgradeSlimeball());
+        registerUpgrade(UPG_STRING, new ItemStack(Items.string), new UpgradeString());
+        registerUpgrade(UPG_CACTUS, new ItemStack(Blocks.cactus), new UpgradeCactus());
+        registerUpgrade(UPG_CLAY, new ItemStack(Items.clay_ball), new UpgradeClay());
+        registerUpgrade(UPG_SUGARCANE, new ItemStack(Items.reeds), new UpgradeSugarCane());
+        registerUpgrade(UPG_ARROW, new ItemStack(Items.arrow), new UpgradeArrow());
+
+      // upgrades with multiple items and render ID
         registerUpgrade(UPG_GLOWSTONE, new ItemStack[] {
                                 new ItemStack(Items.glowstone_dust),
                                 new ItemStack(Blocks.glowstone)
@@ -183,34 +213,25 @@ public final class SoldierUpgrades
                                 new ItemStack(Items.gunpowder),
                                 new ItemStack(Blocks.tnt)
                         }, new UpgradeGunpowder(), getNewRenderId());
-        registerUpgrade(UPG_BRICK, new ItemStack(Items.brick), new UpgradeBrick(), getNewRenderId());
-        registerUpgrade(UPG_SLIMEBALLS, new ItemStack(Items.slime_ball), new UpgradeSlimeball());
-        registerUpgrade(UPG_GRAVEL, new ItemStack(Blocks.gravel), new UpgradeGravel(), getNewRenderId());
         registerUpgrade(UPG_SNOW, new ItemStack[] {
                                 new ItemStack(Blocks.snow),
                                 new ItemStack(Blocks.snow_layer),
                                 new ItemStack(Items.snowball)
                         }, new UpgradeSnow(), getNewRenderId());
-        registerUpgrade(UPG_FIRECHARGE, new ItemStack(Items.fire_charge), new UpgradeFirecharge(), getNewRenderId());
         registerUpgrade(UPG_EMERALD, new ItemStack[] {
                                 new ItemStack(Blocks.emerald_block),
                                 new ItemStack(Items.emerald)
                         }, new UpgradeEmerald(), getNewRenderId());
-        registerUpgrade(UPG_BOWL, new ItemStack(Items.bowl), new UpgradeBowl(), getNewRenderId());
-        registerUpgrade(UPG_STRING, new ItemStack(Items.string), new UpgradeString());
-        registerUpgrade(UPG_CACTUS, new ItemStack(Blocks.cactus), new UpgradeCactus());
+
+      // upgrades with multiple items and no render ID
+        registerUpgrade("shear_helper", new ItemStack[] {
+                                new ItemStack(ModItems.shearBlade),
+                                new ItemStack(Items.shears)
+                        }, new UpgradeHelperShearBlade());
         registerUpgrade(UPG_NETHER_BRICK, new ItemStack [] {
                                 new ItemStack(Blocks.nether_brick),
                                 new ItemStack(Items.netherbrick)
                         }, new UpgradeNetherBrick());
-        registerUpgrade(UPG_CLAY, new ItemStack(Items.clay_ball), new UpgradeClay());
-        registerUpgrade(UPG_GOLD_NUGGET, new ItemStack(Items.gold_nugget), new UpgradeGoldNugget(), getNewRenderId());
-        registerUpgrade(UPG_LILYPADS, new ItemStack(Blocks.waterlily), new UpgradeLilyPads(), getNewRenderId());
-        registerUpgrade(UPG_GOLDMELON, new ItemStack(Items.speckled_melon), new UpgradeGoldMelon(), getNewRenderId());
-        registerUpgrade(UPG_FLINT, new ItemStack(Items.flint), new UpgradeFlint(), getNewRenderId());
-        registerUpgrade(UPG_SUGARCANE, new ItemStack(Items.reeds), new UpgradeSugarCane());
-        registerUpgrade(UPG_FEATHER, new ItemStack(Items.feather), new UpgradeFeather(), getNewRenderId());
-        registerUpgrade(UPG_IRON_BLOCK, new ItemStack(Blocks.iron_block), new UpgradeIronBlock(), getNewRenderId());
         registerUpgrade("glass_helper", new ItemStack[] {
                                 new ItemStack(Blocks.glass),
                                 new ItemStack(Blocks.glass_pane),
@@ -218,14 +239,30 @@ public final class SoldierUpgrades
                                 new ItemStack(Blocks.stained_glass_pane, 1, OreDictionary.WILDCARD_VALUE),
                                 new ItemStack(Items.glass_bottle)
                         }, new UpgradeHelperGlass());
-        registerUpgrade(UPG_GLASS, (ItemStack) null, new UpgradeGlass(), getNewRenderId());
-        registerUpgrade(UPG_ARROW, new ItemStack(Items.arrow), new UpgradeArrow());
+        registerUpgrade(UPG_FOOD, getFoodItems(), new UpgradeFood());
+        registerUpgrade(UPG_REDSTONE, new ItemStack[] {
+                                new ItemStack(Items.redstone),
+                                new ItemStack(Blocks.redstone_block)
+                        }, new UpgradeRedstone());
     }
 
     public static void logUpgradeCount() {
         FMLLog.log(CSM_Main.MOD_LOG, Level.DEBUG, "There are %d soldier upgrades registered. %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
                    currRenderId + 1
         );
+    }
+
+    private static ItemStack[] getFoodItems() {
+        List<ItemStack> stackList = new ArrayList<>();
+
+        Iterator iter = Item.itemRegistry.iterator();
+        for( Object elem = null; iter.hasNext(); elem = iter.next() ) {
+            if( elem instanceof ItemFood && !UpgradeFood.isFoodExcluded((ItemFood) elem) ) {
+                stackList.add(new ItemStack((ItemFood)elem, 1, OreDictionary.WILDCARD_VALUE));
+            }
+        }
+
+        return stackList.toArray(new ItemStack[stackList.size()]);
     }
 
     public static class RenderIdException extends RuntimeException {

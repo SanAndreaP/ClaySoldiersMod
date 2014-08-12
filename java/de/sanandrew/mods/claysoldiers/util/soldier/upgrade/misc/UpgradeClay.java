@@ -23,12 +23,12 @@ public class UpgradeClay
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort("uses", (short) 4);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 4);
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        short uses = upgradeInst.getNbtTag().getShort("uses");
+        short uses = upgradeInst.getNbtTag().getShort(NBT_USES);
 
         if( !clayMan.hasPath() ) {
             Collection<EntityItem> items = clayMan.getItemsInRange();
@@ -61,7 +61,7 @@ public class UpgradeClay
                     item.setDead();
                 }
 
-                upgradeInst.getNbtTag().setShort("uses", --uses);
+                upgradeInst.getNbtTag().setShort(NBT_USES, --uses);
 
                 if( uses == 0 ) {
                     return true;

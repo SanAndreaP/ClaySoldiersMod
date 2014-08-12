@@ -5,7 +5,7 @@ RIGHT HAND
 |x|Stick,      20 use, increases melee damage by 2-3 points
 |x|Arrow,      20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
 |x|BlazeRod,   20 use, increases melee damage by 1-2 points, causes burn time on target
-| |Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
+|x|Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 |x|GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 
@@ -22,7 +22,9 @@ LEFT HAND
 |x|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 |x|Emerald,      5-45 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
                             info: uses depend on the item given! emerald item gives 5 uses; emerald block gives 45 uses
-| |NetherQuartz, 4 use,    deals heavy knockback to all targets nearby if soldier takes too many hits
+|x|NetherQuartz, 4 use,    deals heavy knockback to all targets nearby if soldier takes too many hits
+                            todo: should knockback after 10 hits?
+                            todo: what kind of rendering?
 ------------------
 Core
 ------------------
@@ -37,8 +39,8 @@ Behavior
 |x|Wheat,              makes soldier never attack, even if hit first
 |x|NetherWart,         makes soldier attack its allies
 |x|FermentedSpiderEye, makes soldier not attack, unless attacked first
-| |n/a,                makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
-| |n/a,                makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own
+| |potato?,            makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
+| |carrot?,            makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own
                         team
 
 info: they now have idle particle effects
@@ -50,9 +52,9 @@ Misc
 | |Rabbit Hide,            20 use,  reduces incoming physical damage by 12.5%, grants half the speed boost of sugar
                                      todo: incompatible with Leather
                                      todo: MC 1.8
-| |Food,                   4 use,   heals soldier for 10 hp when below 25%
-                                     todo: make food in a bowl (rabbit stew and mushroom stew, possibly even modded stews) drop bowl
-                                     todo: healed XP is hungerPoints * 0.5
+|x|Food,                   4 use,   heals soldier when below 25%
+                                     info: make food in a bowl (rabbit stew and mushroom stew, even modded soups) drop bowl
+                                     info: healed XP is hungerPoints * 0.5
 |x|GoldNugget,             inf use, gives soldier a crown, all of team follows the king
 |x|Glowstone,              inf use, makes soldier glow, block gives to infinite soldiers
 |x|Gunpowder,              1 use,   soldier explodes on death
@@ -62,11 +64,11 @@ Misc
 |x|Sugar,                  inf use, makes soldier move faster, incompatible with diamond
 |x|Clay,                   4 use,   revives fallen soldiers of own color
 | |GhastTear,              2 use,   revives brick dolls to own color
-| |RedstoneDust,           4 use?,  causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
-                                     todo: info: Redstone Block as infinite redstone supply
-|x|Slimeball,              5 use?,  causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
+| |RedstoneDust,           4 use,   causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
+                                     info: info: Redstone Block as infinite redstone supply
+|x|Slimeball,              5 use,   causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
                                      todo: (MC 1.8) info: Slimeblock as infinite slimeballs
-                                     todo: determine uses and implement them
+                                     info: determine uses and implement them
 |x|Feather,                inf use, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing,
                                      todo: no effect with iron ingot or while mounted
 |x|GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
@@ -106,7 +108,7 @@ Upgrades
 | |Prismarine Shard, req: shear blade(s), boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
                                            todo: MC 1.8
 |x|Wool,             req: leather         reduces incoming physical damage by 1
-                          rabbit hide todo: MC 1.8
+                          rabbit hide
 |x|Sugarcane,        req: gravel          boosts thrown weapon range, projectiles hone in on target, boosts emerald range,
                           snowball
                           firecharge

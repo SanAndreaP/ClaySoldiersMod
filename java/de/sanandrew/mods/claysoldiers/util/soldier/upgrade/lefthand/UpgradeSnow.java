@@ -33,19 +33,19 @@ public class UpgradeSnow
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort("uses", (short) 20);
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 20);
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return upgradeInst.getNbtTag().getShort("uses") == 0;
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         if( stack.getItem() == Items.snowball ) {
-            upgInst.getNbtTag().setShort("uses", (short) 5);
+            upgInst.getNbtTag().setShort(NBT_USES, (short) 5);
         } else if( stack.getItem() == Item.getItemFromBlock(Blocks.snow_layer) ) {
-            upgInst.getNbtTag().setShort("uses", (short) 10);
+            upgInst.getNbtTag().setShort(NBT_USES, (short) 10);
         }
 
         this.consumeItem(stack, upgInst);
@@ -69,7 +69,7 @@ public class UpgradeSnow
                                           clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
             );
             clayMan.attackTime = 30;
-            upgradeInst.getNbtTag().setShort("uses", (short) (upgradeInst.getNbtTag().getShort("uses") - 1));
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
         }
     }
 

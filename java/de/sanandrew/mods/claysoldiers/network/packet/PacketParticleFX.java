@@ -35,6 +35,8 @@ public class PacketParticleFX
     public static final byte FX_SPELL = 5;
     /** DataTuple: <i>n/a</i> */
     public static final byte FX_NEXUS = 6;
+    /** DataTuple: <br>&nbsp;&nbsp;posX (Int)<br>&nbsp;&nbsp;posY (Int)<br>&nbsp;&nbsp;posZ (Int) */
+    public static final byte FX_SHOCKWAVE = 7;
 
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
@@ -59,7 +61,8 @@ public class PacketParticleFX
                                                                     stream.readDouble(), stream.readDouble(), stream.readDouble())
                 );
                 break;
-            case FX_NEXUS:
+            case FX_SHOCKWAVE:
+                CSM_Main.proxy.spawnParticles(FX_SHOCKWAVE, Triplet.with(stream.readInt(), stream.readInt(), stream.readInt()));
                 break;
         }
     }
@@ -105,6 +108,11 @@ public class PacketParticleFX
                 stream.writeDouble((double) dataTuple.getValue(4));
                 stream.writeDouble((double) dataTuple.getValue(5));
                 stream.writeDouble((double) dataTuple.getValue(6));
+                break;
+            case FX_SHOCKWAVE:
+                stream.writeInt((int) dataTuple.getValue(1));
+                stream.writeInt((int) dataTuple.getValue(2));
+                stream.writeInt((int) dataTuple.getValue(3));
                 break;
         }
     }

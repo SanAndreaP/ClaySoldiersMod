@@ -7,8 +7,9 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 
-public class EffectSlimeFeet
+public class EffectBlindingRedstone
     extends ASoldierEffect
 {
     @Override
@@ -18,19 +19,21 @@ public class EffectSlimeFeet
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        clayMan.canMove = false;
+        clayMan.targetSoldier(null, false);
+
         short ticksRemain = (short) (effectInst.getNbtTag().getShort("ticksRemain") - 1);
-
-        if( ticksRemain == 0 ) {
-            return true;
-        }
-
         effectInst.getNbtTag().setShort("ticksRemain", ticksRemain);
-        return false;
+
+        return ticksRemain == 0;
     }
 
     @Override
     public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        clayMan.canMove = false;
+        clayMan.worldObj.spawnParticle("reddust", clayMan.posX, clayMan.posY, clayMan.posZ, 1.0F, 0.0F, 0.0F);
+    }
+
+    @Override
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
+        return MethodState.DENY;
     }
 }

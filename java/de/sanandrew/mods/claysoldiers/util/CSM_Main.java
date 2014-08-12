@@ -15,8 +15,11 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.UpgradeFood;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraftforge.common.config.Configuration;
 
 /**
@@ -56,10 +59,15 @@ public final class CSM_Main
 
         ModItems.register();
         ModBlocks.register();
+
+        UpgradeFood.excludeFood((ItemFood) Items.potato);
+        UpgradeFood.excludeFood((ItemFood) Items.carrot);
     }
 
     @Mod.EventHandler
     public void modInit(FMLInitializationEvent event) {
+        SoldierUpgrades.initialize();
+
         FMLCommonHandler.instance().bus().register(this);
 
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CSM_Main.MOD_CHANNEL);
