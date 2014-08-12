@@ -19,8 +19,6 @@ public class EffectBlindingRedstone
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        clayMan.targetSoldier(null, false);
-
         short ticksRemain = (short) (effectInst.getNbtTag().getShort("ticksRemain") - 1);
         effectInst.getNbtTag().setShort("ticksRemain", ticksRemain);
 
