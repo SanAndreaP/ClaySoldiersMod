@@ -23,8 +23,6 @@ public class UpgradeFeather
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        clayMan.targetSoldier(null, false);
-
         if( clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ) {
             clayMan.motionY *= 0.2D;
             clayMan.fallDistance = 1.5F;
@@ -37,11 +35,6 @@ public class UpgradeFeather
     public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
         return !clayMan.onGround && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ? MethodState.DENY : MethodState.SKIP;
     }
-
-//    @Override
-//    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target) {
-//        return clayMan.onGround || (clayMan.motionY >= -0.2D && clayMan.fallDistance < 1.4F);
-//    }
 
     @Override
     public void getAiMoveSpeed(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableFloat speed) {
