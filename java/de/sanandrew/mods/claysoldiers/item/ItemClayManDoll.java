@@ -24,13 +24,14 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemClayManDoll extends Item
+public class ItemClayManDoll
+    extends Item
 {
     public ItemClayManDoll() {
         super();
-        maxStackSize = 16;
-        setHasSubtypes(true);
-        setMaxDamage(0);
+        this.maxStackSize = 16;
+        this.setHasSubtypes(true);
+        this.setMaxDamage(0);
     }
 
     @Override

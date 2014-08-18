@@ -12,15 +12,24 @@ import net.minecraft.item.Item;
 
 public final class ModItems
 {
-    public static Item dollSoldier = new ItemClayManDoll();
-    public static Item disruptor = new ItemDisruptor(false);
-    public static Item disruptorHardened = new ItemDisruptor(true);
-    public static Item shearBlade = new ItemShearBlade();
-    public static Item statDisplay = new ItemClayMonitor();
+    public static Item dollSoldier;
+    public static Item disruptor;
+    public static Item disruptorHardened;
+    public static Item shearBlade;
+    public static Item statDisplay;
+    public static Item dollBrick;
 
-    public static ItemHorseDoll dollHorseMount = new ItemHorseDoll();
+    public static ItemHorseDoll dollHorseMount;
 
-    public static void register() {
+    public static void initialize() {
+        dollSoldier = new ItemClayManDoll();
+        disruptor = new ItemDisruptor(false);
+        disruptorHardened = new ItemDisruptor(true);
+        shearBlade = new ItemShearBlade();
+        statDisplay = new ItemClayMonitor();
+        dollHorseMount = new ItemHorseDoll();
+        dollBrick = new ItemBrickManDoll();
+
         dollSoldier.setCreativeTab(CSM_Main.clayTab);
         dollSoldier.setUnlocalizedName(CSM_Main.MOD_ID + ":clayman_doll");
 
@@ -39,6 +48,6 @@ public final class ModItems
         dollHorseMount.setCreativeTab(CSM_Main.clayTab);
         dollHorseMount.setUnlocalizedName(CSM_Main.MOD_ID + ":horsemount_doll");
 
-        SAPUtils.registerItems(dollSoldier, disruptor, disruptorHardened, shearBlade, statDisplay, dollHorseMount);
+        SAPUtils.registerItems(dollSoldier, disruptor, disruptorHardened, shearBlade, statDisplay, dollHorseMount, dollBrick);
     }
 }

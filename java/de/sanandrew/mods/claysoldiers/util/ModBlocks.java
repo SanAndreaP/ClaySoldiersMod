@@ -14,10 +14,11 @@ import net.minecraft.block.Block;
 
 public final class ModBlocks
 {
-    public static Block clayNexus = new BlockClayNexus();
+    public static Block clayNexus;
 
+    public static void initialize() {
+        clayNexus = new BlockClayNexus();
 
-    public static void register() {
         clayNexus.setCreativeTab(CSM_Main.clayTab);
         clayNexus.setBlockName(CSM_Main.MOD_ID + ":nexus");
         GameRegistry.registerTileEntity(TileEntityClayNexus.class, CSM_Main.MOD_ID + ":nexus_te");

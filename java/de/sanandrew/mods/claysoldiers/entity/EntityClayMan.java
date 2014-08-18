@@ -19,10 +19,7 @@ import de.sanandrew.mods.claysoldiers.entity.mount.IMount;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
-import de.sanandrew.mods.claysoldiers.util.BugfixHelper;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
-import de.sanandrew.mods.claysoldiers.util.IDisruptable;
-import de.sanandrew.mods.claysoldiers.util.ModConfig;
+import de.sanandrew.mods.claysoldiers.util.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ASoldierEffect;
@@ -353,10 +350,11 @@ public class EntityClayMan
                             break;
                         }
                     }
-
                 }
             } else {
-                if( this.entityToAttack.isDead || !this.canEntityBeSeen(this.entityToAttack) ) {
+                if( this.entityToAttack.isDead || !this.canEntityBeSeen(this.entityToAttack)
+                    || ( this.entityToAttack instanceof EntityClayMan && this.checkTarget((EntityClayMan) this.entityToAttack) == MethodState.DENY) )
+                {
                     this.entityToAttack = null;
                 } else if( this.attackTime == 0 ) {
                     this.attackTime = 5;
@@ -364,20 +362,8 @@ public class EntityClayMan
                     MutableFloat atkRng = new MutableFloat(this.riddenByEntity != null ? 0.55F : 0.5F);
 
                     for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-//                        if( !upg.getUpgrade().isTargetStillValid(this, upg, this.entityToAttack) ) {
-//                            this.entityToAttack = null;
-//                            return;
-//                        }
-
                         upg.getUpgrade().getAttackRange(this, upg, this.entityToAttack, atkRng);
                     }
-
-//                    for( SoldierEffectInst eff : this.effects_.values() ) {
-//                        if( !eff.getEffect().isTargetStillValid(this, eff, this.entityToAttack) ) {
-//                            this.entityToAttack = null;
-//                            return;
-//                        }
-//                    }
 
                     if( this.getDistanceToEntity(this.entityToAttack) < atkRng.floatValue() && this.entityToAttack instanceof EntityLivingBase
                             && !this.entityToAttack.isEntityInvulnerable() )
@@ -406,22 +392,6 @@ public class EntityClayMan
     }
 
     private MethodState checkTarget(EntityClayMan target) {
-        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-            MethodState result = upg.getUpgrade().onTargeting(this, upg, target);
-            if( result == MethodState.DENY ) {
-                return MethodState.DENY;
-            } else if( result == MethodState.ALLOW ) {
-                return MethodState.ALLOW;
-            } else if( target.getClayTeam().equals(this.getClayTeam()) || !this.canEntityBeSeen(target) ) {
-                result = upg.getUpgrade().onBeingTargeted(target, upg, this);
-                if( result == MethodState.DENY ) {
-                    return MethodState.DENY;
-                } else if( result == MethodState.ALLOW ) {
-                    return MethodState.ALLOW;
-                }
-            }
-        }
-
         for( SoldierEffectInst eff : this.effects_.values() ) {
             MethodState result = eff.getEffect().onTargeting(this, eff, target);
             if( result == MethodState.DENY ) {
@@ -431,13 +401,29 @@ public class EntityClayMan
             }
         }
 
-        return MethodState.SKIP;
+        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+            MethodState result = upg.getUpgrade().onTargeting(this, upg, target);
+            if( result == MethodState.DENY ) {
+                return MethodState.DENY;
+            } else if( result == MethodState.ALLOW ) {
+                return MethodState.ALLOW;
+            }
+        }
+
+        for( SoldierUpgradeInst upg : target.upgrades_.values() ) {
+            MethodState result = upg.getUpgrade().onBeingTargeted(target, upg, this);
+            if( result == MethodState.DENY ) {
+                return MethodState.DENY;
+            } else if( result == MethodState.ALLOW ) {
+                return MethodState.ALLOW;
+            }
+        }
+
+        return !target.getClayTeam().equals(this.getClayTeam()) && this.canEntityBeSeen(target) ? MethodState.ALLOW : MethodState.DENY;
     }
 
     @Override
     protected boolean interact(EntityPlayer p_70085_1_) {
-//        p_70085_1_.mountEntity(this);
-
         CSM_Main.proxy.switchClayCam(true, this);
 
         return super.interact(p_70085_1_);
@@ -454,6 +440,12 @@ public class EntityClayMan
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
+
+        if( damageSource.isFireDamage() && this.dollItem != null ) {
+            ItemStack brickItem = new ItemStack(ModItems.dollBrick, this.dollItem.stackSize);
+            brickItem.setTagCompound(this.dollItem.getTagCompound());
+            this.dollItem = brickItem;
+        }
 
         if( !this.nexusSpawn ) {
             if( this.dollItem != null ) {
@@ -598,14 +590,19 @@ public class EntityClayMan
         nbt.setTag("effect", effNbtList);
     }
 
-    private AxisAlignedBB getTargetArea() {
+    public double getLookRangeRad() {
         MutableDouble radiusMT = new MutableDouble(8.0D);
 
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
             upg.getUpgrade().getLookRange(this, upg, radiusMT);
         }
 
-        double radius = radiusMT.getValue();
+        return radiusMT.getValue();
+    }
+
+    private AxisAlignedBB getTargetArea() {
+        double radius = getLookRangeRad();
+
         return AxisAlignedBB.getBoundingBox(
                 this.posX - radius,
                 this.posY - radius,

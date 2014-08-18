@@ -86,6 +86,11 @@ public class RenderSoldierModelEvent
             event.model.bipedLeftArm.rotateAngleX = (float) Math.PI;
             event.model.bipedRightArm.rotateAngleX = (float) Math.PI;
         }
+
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
+            event.model.bipedLeftArm.rotateAngleX = -(float) Math.PI * 0.5F;
+            event.model.bipedRightArm.rotateAngleX = -(float) Math.PI * 0.5F;
+        }
     }
 
     @SubscribeEvent

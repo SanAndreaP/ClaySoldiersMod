@@ -57,8 +57,8 @@ public final class CSM_Main
         ModConfig.config = new Configuration(event.getSuggestedConfigurationFile());
         ModConfig.syncConfig();
 
-        ModItems.register();
-        ModBlocks.register();
+        ModItems.initialize();
+        ModBlocks.initialize();
 
         UpgradeFood.excludeFood((ItemFood) Items.potato);
         UpgradeFood.excludeFood((ItemFood) Items.carrot);

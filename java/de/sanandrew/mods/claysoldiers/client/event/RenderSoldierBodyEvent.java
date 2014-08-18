@@ -59,6 +59,18 @@ public class RenderSoldierBodyEvent
             }
         }
     }
+
+    @SubscribeEvent
+    public void onSoldierLivingRender(SoldierRenderEvent.RenderLivingEvent event) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
+            GL11.glScalef(1.19F, 1.19F, 1.19F);
+        }
+
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
+            GL11.glColor3f(0.5F, 0.5F, 0.5F);
+        }
+    }
+
     private void renderGlass(EntityClayMan clayMan, RenderClayMan renderer) {
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedHead.postRender(0.0625F);
@@ -99,13 +111,6 @@ public class RenderSoldierBodyEvent
 
         renderer.getItemRenderer().renderItem(clayMan, this.feather_, 0);
         GL11.glPopMatrix();
-    }
-
-    @SubscribeEvent
-    public void onSoldierLivingRender(SoldierRenderEvent.RenderLivingEvent event) {
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
-            GL11.glScalef(1.19F, 1.19F, 1.19F);
-        }
     }
 
     private void renderStealthEffect(EntityClayMan clayMan, RenderClayMan clayManRender, RenderStage stage) {

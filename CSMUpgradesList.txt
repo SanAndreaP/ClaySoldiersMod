@@ -40,8 +40,7 @@ Behavior
 |x|NetherWart,         makes soldier attack its allies
 |x|FermentedSpiderEye, makes soldier not attack, unless attacked first
 | |potato?,            makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
-| |carrot?,            makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own
-                        team
+| |carrot?,            makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own team
 
 info: they now have idle particle effects
 ------------------
@@ -63,8 +62,8 @@ Misc
                                      todo: incompatible with gunpowder/fireworkstar
 |x|Sugar,                  inf use, makes soldier move faster, incompatible with diamond
 |x|Clay,                   4 use,   revives fallen soldiers of own color
-| |GhastTear,              2 use,   revives brick dolls to own color
-| |RedstoneDust,           4 use,   causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
+|x|GhastTear,              2 use,   revives brick dolls to own color
+|x|RedstoneDust,           4 use,   causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
                                      info: info: Redstone Block as infinite redstone supply
 |x|Slimeball,              5 use,   causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
                                      todo: (MC 1.8) info: Slimeblock as infinite slimeballs
@@ -72,24 +71,24 @@ Misc
 |x|Feather,                inf use, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing,
                                      todo: no effect with iron ingot or while mounted
 |x|GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
-                                     todo: info: bottles and panes give 1, block as infinite supply
-                                     todo: stained glass gives colored goggles
+                                     info: bottles and panes give 1, block as infinite supply
+                                     info: stained glass gives colored goggles
 | |Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
                                      todo: book as infinite supply
 | |Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
                                      todo: incompatible with diamondblock
 | |DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
                                      todo: incompatible with diamond
-| |EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
+|x|EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
                                      dies after 10 minutes of no fighting
-| |BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
-| |RedMushroom,            1 use,   applies poison to target
-| |BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
+|x|BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
+|x|RedMushroom,            1 use,   applies poison to target
+|x|BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
 |x|LillyPad,               inf use, soldier has pants and will float on water
                                      todo: no effect when used with iron ingot
 |x|Egg,                    inf use, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
                                      todo: add detection when wearing glasses
-| |WheatSeed,              inf use, soldier can NOT be infected by any zombification
+|x|WheatSeed,              inf use, soldier can NOT be infected by any zombification
 |x|WoodButton,             inf use, increases melee damage by 1 when no weapon is equipped
                                      incompatible with stone button
 |x|StoneButton,            inf use, increases melee damage by 2 when no weapon is equipped
@@ -119,7 +118,7 @@ Upgrades
                                            todo: redmushroom
                                            todo: magmacream
 |x|Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
-                          blaze powder
+                          todo: blaze powder
                           firecharge
 | |GoldIngot,        req: gold nugget     doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1
 ------------------

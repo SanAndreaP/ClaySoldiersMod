@@ -150,18 +150,24 @@ public final class SoldierUpgrades
     public static final String UPG_GUNPOWDER = "gunpowder";
     public static final String UPG_SHEARLEFT = "shear_l";
     public static final String UPG_SUGARCANE = "sugarcane";
+    public static final String UPG_ENDERPEARL = "enderpearl";
+    public static final String UPG_FIRECHARGE = "firecharge";
     public static final String UPG_IRON_BLOCK = "iron_block";
     public static final String UPG_IRON_INGOT = "iron_ingot";
-    public static final String UPG_FIRECHARGE = "firecharge";
     public static final String UPG_NETHERWART = "netherwart";
     public static final String UPG_WOODBUTTON = "woodbutton";
     public static final String UPG_SHEARRIGHT = "shear_r";
     public static final String UPG_SLIMEBALLS = "slimeball";
     public static final String UPG_GOLD_NUGGET = "gold_nugget";
     public static final String UPG_STONEBUTTON = "stonebutton";
+    public static final String UPG_WHEAT_SEEDS = "wheat_seeds";
+    public static final String UPG_BLAZE_POWDER = "blaze_powder";
+    public static final String UPG_MUSHROOM_RED = "red_mushroom";
     public static final String UPG_NETHER_BRICK = "nether_brick";
     public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
     public static final String UPG_NETHER_QUARTZ = "nether_quartz";
+    public static final String UPG_MUSHROOM_BROWN = "brown_mushroom";
+
 
     public static void initialize() {
       // upgrades no single items and render ID
@@ -190,6 +196,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_IRON_BLOCK, new ItemStack(Blocks.iron_block), new UpgradeIronBlock(), getNewRenderId());
         registerUpgrade(UPG_BONE, new ItemStack(Items.bone), new UpgradeBone(), getNewRenderId());
         registerUpgrade(UPG_NETHER_QUARTZ, new ItemStack(Items.quartz), new UpgradeNetherQuartz(), getNewRenderId());
+        registerUpgrade(UPG_ENDERPEARL, new ItemStack(Items.ender_pearl), new UpgradeEnderpearl(), getNewRenderId());
 
       // upgrades with single items and no render ID
         registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
@@ -203,6 +210,10 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_CLAY, new ItemStack(Items.clay_ball), new UpgradeClay());
         registerUpgrade(UPG_SUGARCANE, new ItemStack(Items.reeds), new UpgradeSugarCane());
         registerUpgrade(UPG_ARROW, new ItemStack(Items.arrow), new UpgradeArrow());
+        registerUpgrade(UPG_WHEAT_SEEDS, new ItemStack(Items.wheat_seeds), new UpgradeWheatSeeds());
+        registerUpgrade(UPG_MUSHROOM_RED, new ItemStack(Blocks.red_mushroom), new UpgradeRedMushroom());
+        registerUpgrade(UPG_MUSHROOM_BROWN, new ItemStack(Blocks.brown_mushroom), new UpgradeBrownMushroom());
+        registerUpgrade(UPG_BLAZE_POWDER, new ItemStack(Items.blaze_powder), new UpgradeBlazePowder());
 
       // upgrades with multiple items and render ID
         registerUpgrade(UPG_GLOWSTONE, new ItemStack[] {
