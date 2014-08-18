@@ -33,7 +33,9 @@ public class UpgradeEnderpearl
         short ticksAlive = upgradeInst.getNbtTag().getShort("ticksActive");
         upgradeInst.getNbtTag().setShort("ticksActive", ++ticksAlive);
 
-        if( clayMan.getEntityToAttack() instanceof EntityClayMan && ((EntityClayMan)clayMan.getEntityToAttack()).getClayTeam().equals(clayMan.getClayTeam()) ) {
+        if( !(clayMan.getEntityToAttack() instanceof EntityClayMan
+              && ((EntityClayMan)clayMan.getEntityToAttack()).getClayTeam().equals(clayMan.getClayTeam())) )
+        {
             EntityPlayer closestPlayer = clayMan.worldObj.getClosestPlayer(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.getLookRangeRad());
             if( !(clayMan.getEntityToAttack() instanceof EntityPlayer) && closestPlayer != null && !closestPlayer.isDead
                     && !(closestPlayer.isEntityInvulnerable() || closestPlayer.capabilities.isCreativeMode) ) {
