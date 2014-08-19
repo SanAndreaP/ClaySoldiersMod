@@ -104,6 +104,10 @@ public class RenderSoldierModelEvent
             this.renderGunpowder(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
         }
 
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_MAGMACREAM)) ) {
+            this.renderMagmacream(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
+        }
+
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET)) ) {
             this.renderCrown(event.clayManRender, event.partTicks);
         }
@@ -258,6 +262,15 @@ public class RenderSoldierModelEvent
                                  float partTicks)
     {
         clayManRender.bindTexture(Textures.CLAYMAN_GUNPOWDER);
+        GL11.glPushMatrix();
+        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
+        GL11.glPopMatrix();
+    }
+
+    private void renderMagmacream(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw, float pitch,
+                                  float partTicks)
+    {
+        clayManRender.bindTexture(Textures.CLAYMAN_MAGMACREAM);
         GL11.glPushMatrix();
         clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
         GL11.glPopMatrix();

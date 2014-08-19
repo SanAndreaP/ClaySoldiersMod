@@ -174,11 +174,9 @@ public class EntityClayMan
         }
 
         if( !(source.getEntity() instanceof EntityPlayer) ) {
-        	if( this.ridingEntity!=null ) {
-        		if( rand.nextInt(4)==0 ) {
-        			this.ridingEntity.attackEntityFrom(source, damage);
-        			return false;
-        		}
+        	if( this.ridingEntity != null && rand.nextInt(4) == 0 ) {
+                this.ridingEntity.attackEntityFrom(source, damage);
+                return false;
         	}
         } else {
             damage = 999;
@@ -453,9 +451,12 @@ public class EntityClayMan
             }
         }
 
-        if( !worldObj.isRemote ) {
+        if( !this.worldObj.isRemote ) {
             for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
                 upg.getUpgrade().onSoldierDeath(this, upg, damageSource);
+            }
+            for( SoldierEffectInst eff : this.effects_.values() ) {
+                eff.getEffect().onSoldierDeath(this, eff, damageSource);
             }
         }
     }

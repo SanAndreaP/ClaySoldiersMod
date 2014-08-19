@@ -20,6 +20,14 @@ public class UpgradeCoal
     extends AUpgradeMisc
 {
     @Override
+    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER)) ) {
+            SoldierUpgradeInst bpUpgInst = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER));
+            bpUpgInst.getNbtTag().setShort(NBT_USES, (short) (bpUpgInst.getNbtTag().getShort(NBT_USES) + 1));
+        }
+    }
+
+    @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         if( !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD)) ) {
             return true;
@@ -50,6 +58,8 @@ public class UpgradeCoal
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD));
+        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD))
+               || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER))
+               || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FIRECHARGE));
     }
 }

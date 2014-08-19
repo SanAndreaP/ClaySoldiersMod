@@ -2,6 +2,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
@@ -32,6 +33,8 @@ public abstract class ASoldierEffect
     public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) { }
 
     public boolean sendNbtToClient(EntityClayMan clayMan, SoldierEffectInst effectInst) { return false; }
+
+    public void onSoldierDeath(EntityClayMan clayMan, SoldierEffectInst effectInst, DamageSource source) { }
 
 //    public boolean isTargetStillValid(EntityClayMan clayMan, SoldierEffectInst effectInst, Entity target) { return true; }
 }

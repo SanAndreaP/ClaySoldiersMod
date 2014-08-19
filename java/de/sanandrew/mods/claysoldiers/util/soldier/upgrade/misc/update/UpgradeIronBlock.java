@@ -14,7 +14,9 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.AUpgradeMisc;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.UpgradeBlazePowder;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
@@ -23,7 +25,9 @@ public class UpgradeIronBlock
 {
     public ASoldierEffect[] blockableEffects = new ASoldierEffect[] {
             SoldierEffects.getEffect(SoldierEffects.EFF_SLOWMOTION),
-            SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)
+            SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET),
+            SoldierEffects.getEffect(SoldierEffects.EFF_MAGMABOMB),
+            SoldierEffects.getEffect(SoldierEffects.EFF_SLOWMOTION)
     };
 
     @Override
@@ -40,6 +44,14 @@ public class UpgradeIronBlock
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         damage.setValue(Math.max(0.0F, damage.getValue() - 1.0F));
         if( SAPUtils.RNG.nextBoolean() ) {
+            if( source == UpgradeBlazePowder.blazePwdSrc ) {
+                return false;
+            }
+
+            if( clayMan.isPotionActive(Potion.poison) ) {
+                clayMan.removePotionEffect(Potion.poison.getId());
+            }
+
             for( ASoldierEffect effect : this.blockableEffects ) {
                 if( clayMan.hasEffect(effect) ) {
                     clayMan.removeEffect(effect);

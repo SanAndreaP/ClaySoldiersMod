@@ -21,6 +21,7 @@ public final class Textures {
     public static final ResourceLocation CLAYMAN_LEATHER_ARMOR = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/leather.png");
     public static final ResourceLocation CLAYMAN_PADDING = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/padding.png");
     public static final ResourceLocation CLAYMAN_GUNPOWDER = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/gunpowder.png");
+    public static final ResourceLocation CLAYMAN_MAGMACREAM = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/magmacream.png");
     public static final ResourceLocation CLAYMAN_SLIMEFEET = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/slimefeet.png");
     public static final ResourceLocation CLAYMAN_CROWN = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/crown.png");
     public static final ResourceLocation CLAYMAN_LILYPANTS = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/lilypants.png");

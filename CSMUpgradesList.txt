@@ -57,14 +57,14 @@ Misc
 |x|GoldNugget,             inf use, gives soldier a crown, all of team follows the king
 |x|Glowstone,              inf use, makes soldier glow, block gives to infinite soldiers
 |x|Gunpowder,              1 use,   soldier explodes on death
-                                     todo: incompatible with magmacream/firework star
-| |MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
-                                     todo: incompatible with gunpowder/fireworkstar
+                                     info: incompatible with magmacream/todo:firework star
+|x|MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
+                                     info: incompatible with gunpowder/todo:fireworkstar
 |x|Sugar,                  inf use, makes soldier move faster, incompatible with diamond
 |x|Clay,                   4 use,   revives fallen soldiers of own color
 |x|GhastTear,              2 use,   revives brick dolls to own color
 |x|RedstoneDust,           4 use,   causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
-                                     info: info: Redstone Block as infinite redstone supply
+                                     info: Redstone Block as infinite redstone supply
 |x|Slimeball,              5 use,   causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
                                      todo: (MC 1.8) info: Slimeblock as infinite slimeballs
                                      info: determine uses and implement them
@@ -114,11 +114,8 @@ Upgrades
                           emerald
 |x|IronBlock,        req: bowl            reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/
                                            redmushroom/magmacream effects
-                                           todo: blazepowder block
-                                           todo: redmushroom
-                                           todo: magmacream
 |x|Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
-                          todo: blaze powder
+                          blaze powder
                           firecharge
 | |GoldIngot,        req: gold nugget     doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1
 ------------------

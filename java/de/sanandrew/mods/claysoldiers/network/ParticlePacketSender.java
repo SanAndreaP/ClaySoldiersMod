@@ -12,7 +12,6 @@ import de.sanandrew.core.manpack.util.javatuples.Septet;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.MathHelper;
 
 public final class ParticlePacketSender
 {
@@ -48,7 +47,10 @@ public final class ParticlePacketSender
 
     public static void sendShockwaveFx(double x, double y, double z, float yOff, int dimension) {
         PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, dimension, x, y, z, 64.0D,
-                                        Quartet.with(PacketParticleFX.FX_SHOCKWAVE, MathHelper.floor_double(x),
-                                                     MathHelper.floor_double(y - 0.20000000298023224D - yOff), MathHelper.floor_double(z)));
+                                        Quartet.with(PacketParticleFX.FX_SHOCKWAVE, x, y - 0.20000000298023224D - yOff, z));
+    }
+
+    public static void sendMagmafuseFx(double x, double y, double z, int dimension) {
+        PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, dimension, x, y, z, 64.0D, Quartet.with(PacketParticleFX.FX_MAGMAFUSE, x, y, z));
     }
 }
