@@ -69,7 +69,7 @@ Misc
                                      todo: (MC 1.8) info: Slimeblock as infinite slimeballs
                                      info: determine uses and implement them
 |x|Feather,                inf use, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing,
-                                     todo: no effect with iron ingot or while mounted
+                                     info: no effect with iron ingot or while mounted
 |x|GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
                                      info: bottles and panes give 1, block as infinite supply
                                      info: stained glass gives colored goggles
