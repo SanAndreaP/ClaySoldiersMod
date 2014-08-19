@@ -157,10 +157,6 @@ public class EntityClayMan
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if( source == IDisruptable.disruptDamage ) {
-            return super.attackEntityFrom(source, damage);
-        }
-
         Iterator<Map.Entry<ASoldierUpgrade, SoldierUpgradeInst>> iter = upgrades_.entrySet().iterator();
         while( !this.worldObj.isRemote && iter.hasNext() ) {
             SoldierUpgradeInst upg = iter.next().getValue();
@@ -171,6 +167,10 @@ public class EntityClayMan
             } else {
                 damage = newDamage.floatValue();
             }
+        }
+
+        if( source == IDisruptable.disruptDamage ) {
+            return super.attackEntityFrom(source, damage);
         }
 
         if( !(source.getEntity() instanceof EntityPlayer) ) {

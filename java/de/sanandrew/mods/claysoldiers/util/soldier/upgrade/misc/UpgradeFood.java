@@ -9,11 +9,14 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
+import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,7 @@ public class UpgradeFood
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.getHealth() < clayMan.getMaxHealth() * 0.25F ) {
+        if( clayMan.getHealth() < clayMan.getMaxHealth() * 0.25F && !upgradeInst.getNbtTag().getBoolean("disrupted") ) {
             upgradeInst.getNbtTag().setShort(NBT_USES, (short)(upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
             clayMan.heal(upgradeInst.getNbtTag().getFloat("healAmount"));
 
@@ -53,6 +56,15 @@ public class UpgradeFood
         }
 
         return false;
+    }
+
+    @Override
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
+        if( source == IDisruptable.disruptDamage ) {
+            upgradeInst.getNbtTag().setBoolean("disrupted", true);
+        }
+
+        return true;
     }
 
     private static List<ItemFood> excludedFood = new ArrayList<>();
