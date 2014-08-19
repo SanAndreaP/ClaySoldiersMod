@@ -157,29 +157,24 @@ public class EntityClayMan
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
+        if( !(source.getEntity() instanceof EntityPlayer) ) {
+            if( this.ridingEntity != null && rand.nextInt(4) == 0 ) {
+                this.ridingEntity.attackEntityFrom(source, damage);
+                return false;
+            }
+        } else {
+            damage = 10000.0F;
+        }
+
         Iterator<Map.Entry<ASoldierUpgrade, SoldierUpgradeInst>> iter = upgrades_.entrySet().iterator();
         while( !this.worldObj.isRemote && iter.hasNext() ) {
             SoldierUpgradeInst upg = iter.next().getValue();
             MutableFloat newDamage = new MutableFloat(damage);
-            boolean result = upg.getUpgrade().onSoldierHurt(this, upg, source, newDamage);
-            if( !result ) {
+            if( !upg.getUpgrade().onSoldierHurt(this, upg, source, newDamage) ) {
                 return false;
             } else {
                 damage = newDamage.floatValue();
             }
-        }
-
-        if( source == IDisruptable.disruptDamage ) {
-            return super.attackEntityFrom(source, damage);
-        }
-
-        if( !(source.getEntity() instanceof EntityPlayer) ) {
-        	if( this.ridingEntity != null && rand.nextInt(4) == 0 ) {
-                this.ridingEntity.attackEntityFrom(source, damage);
-                return false;
-        	}
-        } else {
-            damage = 999;
         }
 
         return super.attackEntityFrom(source, damage);
@@ -357,7 +352,7 @@ public class EntityClayMan
                 } else if( this.attackTime == 0 ) {
                     this.attackTime = 5;
 
-                    MutableFloat atkRng = new MutableFloat(this.riddenByEntity != null ? 0.55F : 0.5F);
+                    MutableFloat atkRng = new MutableFloat(this.riddenByEntity != null ? 0.6F : 0.7F);
 
                     for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
                         upg.getUpgrade().getAttackRange(this, upg, this.entityToAttack, atkRng);

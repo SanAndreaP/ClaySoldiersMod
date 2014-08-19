@@ -6,18 +6,14 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
-import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeBrownMushroom
-    extends AUpgradeMisc
+    extends UpgradeFood
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -28,27 +24,12 @@ public class UpgradeBrownMushroom
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
+
+        upgradeInst.getNbtTag().setFloat("healAmount", 10.0F);
     }
 
     @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.getHealth() < clayMan.getMaxHealth() * 0.25F && !upgradeInst.getNbtTag().getBoolean("disrupted") ) {
-            upgradeInst.getNbtTag().setShort(NBT_USES, (short)(upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
-            clayMan.heal(10.0F);
-
-            ParticlePacketSender.sendDiggingFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, Blocks.red_mushroom);
-            clayMan.playSound("random.eat", 1.0F, 0.9F + SAPUtils.RNG.nextFloat() * 0.2F);
-        }
-
-        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
-    }
-
-    @Override
-    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( source == IDisruptable.disruptDamage ) {
-            upgradeInst.getNbtTag().setBoolean("disrupted", true);
-        }
-
-        return true;
+    protected void spawnParticles(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        ParticlePacketSender.sendDiggingFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, Blocks.brown_mushroom);
     }
 }

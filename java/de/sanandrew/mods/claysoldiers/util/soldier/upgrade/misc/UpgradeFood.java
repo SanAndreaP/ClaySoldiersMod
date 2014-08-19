@@ -9,7 +9,6 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
-import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
@@ -34,16 +33,15 @@ public class UpgradeFood
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
 
-        upgradeInst.getNbtTag().setFloat("healAmount", ((ItemFood) stack.getItem()).func_150905_g(stack) * 0.5F);
+        upgradeInst.getNbtTag().setFloat("healAmount", ((ItemFood) stack.getItem()).func_150905_g(stack));
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.getHealth() < clayMan.getMaxHealth() * 0.25F && !upgradeInst.getNbtTag().getBoolean("disrupted") ) {
+        if( clayMan.getHealth() < clayMan.getMaxHealth() * 0.25F && !upgradeInst.getNbtTag().getBoolean("killed") ) {
             upgradeInst.getNbtTag().setShort(NBT_USES, (short)(upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
             clayMan.heal(upgradeInst.getNbtTag().getFloat("healAmount"));
-
-            ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, upgradeInst.getStoredItem().getItem());
+            this.spawnParticles(clayMan, upgradeInst);
             clayMan.playSound("random.eat", 1.0F, 0.9F + SAPUtils.RNG.nextFloat() * 0.2F);
         }
 
@@ -58,10 +56,14 @@ public class UpgradeFood
         return false;
     }
 
+    protected void spawnParticles(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, upgradeInst.getStoredItem().getItem());
+    }
+
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( source == IDisruptable.disruptDamage ) {
-            upgradeInst.getNbtTag().setBoolean("disrupted", true);
+        if( clayMan.getHealth() + upgradeInst.getNbtTag().getFloat("healAmount") - damage.getValue() <= 0.0F ) {
+            upgradeInst.getNbtTag().setBoolean("killed", true);
         }
 
         return true;
