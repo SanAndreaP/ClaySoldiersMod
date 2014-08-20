@@ -75,6 +75,8 @@ public class EntityClayMan
 
     private Collection entitiesInRange;
 
+    public final SoldierCloakHelper cloakHelper = new SoldierCloakHelper();
+
     public EntityClayMan(World world) {
         super(world);
 
@@ -193,6 +195,8 @@ public class EntityClayMan
     public void onUpdate() {
         super.onUpdate();
 
+        this.cloakHelper.onUpdate(this.posX, this.posY, this.posZ);
+
         if( !this.canMove ) {
             this.motionX = 0.0F;
             this.motionZ = 0.0F;
@@ -263,11 +267,11 @@ public class EntityClayMan
                 if( rand.nextInt(4) != 0 && targetFollow_ == null ) {
                     Collection<EntityClayMan> claymen = this.getSoldiersInRange();
                     for( EntityClayMan uberhaxornova : claymen ) {
-                        if( uberhaxornova.isDead || rand.nextInt(4) != 0 ) {
+                        if( uberhaxornova.isDead || rand.nextInt(3) != 0 ) {
                             continue;
                         }
 
-                        if( this.checkTarget(uberhaxornova) == MethodState.DENY ) {
+                        if( !this.checkTarget(uberhaxornova) ) {
                             continue;
                         }
 
@@ -346,7 +350,7 @@ public class EntityClayMan
                 }
             } else {
                 if( this.entityToAttack.isDead || !this.canEntityBeSeen(this.entityToAttack)
-                    || ( this.entityToAttack instanceof EntityClayMan && this.checkTarget((EntityClayMan) this.entityToAttack) == MethodState.DENY) )
+                    || (this.entityToAttack instanceof EntityClayMan && !this.checkTarget((EntityClayMan) this.entityToAttack)) )
                 {
                     this.entityToAttack = null;
                 } else if( this.attackTime == 0 ) {
@@ -384,35 +388,35 @@ public class EntityClayMan
         }
     }
 
-    private MethodState checkTarget(EntityClayMan target) {
+    private boolean checkTarget(EntityClayMan target) {
         for( SoldierEffectInst eff : this.effects_.values() ) {
             MethodState result = eff.getEffect().onTargeting(this, eff, target);
             if( result == MethodState.DENY ) {
-                return MethodState.DENY;
+                return false;
             } else if( result == MethodState.ALLOW ) {
-                return MethodState.ALLOW;
+                return true;
             }
         }
 
         for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
             MethodState result = upg.getUpgrade().onTargeting(this, upg, target);
             if( result == MethodState.DENY ) {
-                return MethodState.DENY;
+                return false;
             } else if( result == MethodState.ALLOW ) {
-                return MethodState.ALLOW;
+                return true;
             }
         }
 
         for( SoldierUpgradeInst upg : target.upgrades_.values() ) {
             MethodState result = upg.getUpgrade().onBeingTargeted(target, upg, this);
             if( result == MethodState.DENY ) {
-                return MethodState.DENY;
+                return false;
             } else if( result == MethodState.ALLOW ) {
-                return MethodState.ALLOW;
+                return true;
             }
         }
 
-        return !target.getClayTeam().equals(this.getClayTeam()) && this.canEntityBeSeen(target) ? MethodState.ALLOW : MethodState.DENY;
+        return !target.getClayTeam().equals(this.getClayTeam()) && this.canEntityBeSeen(target);
     }
 
     @Override
@@ -510,6 +514,7 @@ public class EntityClayMan
 
         this.dataWatcher.updateObject(DW_TEAM, nbt.getString("team"));
 
+        this.dataWatcher.updateObject(DW_MISC_COLOR, nbt.getByte("miscColor"));
         this.dataWatcher.updateObject(DW_IS_TEXTURE_RARE_OR_UNIQUE, nbt.getByte("isRareOrUnique"));
         this.dataWatcher.updateObject(DW_TEXTURE_INDEX, nbt.getInteger("textureIndex"));
 
@@ -552,6 +557,7 @@ public class EntityClayMan
         super.writeEntityToNBT(nbt);
 
         nbt.setString("team", this.getClayTeam());
+        nbt.setByte("miscColor", this.dataWatcher.getWatchableObjectByte(DW_MISC_COLOR));
         nbt.setByte("isRareOrUnique", this.dataWatcher.getWatchableObjectByte(DW_IS_TEXTURE_RARE_OR_UNIQUE));
         nbt.setInteger("textureIndex", this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX));
         nbt.setBoolean("canMove", this.canMove);
@@ -612,7 +618,13 @@ public class EntityClayMan
     @SuppressWarnings("unchecked")
     public Collection<EntityClayMan> getSoldiersInRange() {
         return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(EntityClayMan.class)),
-                                      new Function<Object, EntityClayMan>() { @Override public EntityClayMan apply(Object input) {return (EntityClayMan) input;} }
+                                      new Function<Object, EntityClayMan>()
+                                      {
+                                          @Override
+                                          public EntityClayMan apply(Object input) {
+                                              return (EntityClayMan) input;
+                                          }
+                                      }
         );
     }
 
@@ -789,7 +801,7 @@ public class EntityClayMan
     public boolean targetSoldier(EntityClayMan target, boolean withUpgradeCheck) {
         if( this.entityToAttack == null || this.entityToAttack.isDead ) {
             if( withUpgradeCheck ) {
-                if( this.checkTarget(target) == MethodState.DENY ) {
+                if( !this.checkTarget(target) ) {
                     return false;
                 }
             }
@@ -852,10 +864,14 @@ public class EntityClayMan
     }
 
     public int getMiscColor() {
-        return ItemDye.field_150922_c[this.dataWatcher.getWatchableObjectByte(DW_MISC_COLOR)];
+        return ItemDye.field_150922_c[getMiscColorIndex()];
     }
 
-    public void setMiscColor(int colorIndex) {
+    public int getMiscColorIndex() {
+        return this.dataWatcher.getWatchableObjectByte(DW_MISC_COLOR);
+    }
+
+    public void setMiscColorIndex(int colorIndex) {
         if( colorIndex >= 0 && colorIndex < ItemDye.field_150922_c.length ) {
             this.dataWatcher.updateObject(DW_MISC_COLOR, (byte) colorIndex);
         }

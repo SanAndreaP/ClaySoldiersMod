@@ -40,7 +40,7 @@ public class UpgradeBone
 
     @Override
     public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
-        attackRange.setValue(attackRange.getValue() * 1.1F);
+        attackRange.setValue(0.7F);
     }
 
     @Override

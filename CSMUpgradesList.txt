@@ -9,7 +9,7 @@ RIGHT HAND
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 |x|GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 
-todo: info: all weapons should have increased reach while riding mounts, bone's reach bonus should be slightly greater than mounted reach bonus
+info: all weapons have increased reach while riding mounts, bone's reach bonus is slightly greater than mounted reach bonus
 ------------------
 LEFT HAND
 ------------------
@@ -73,8 +73,8 @@ Misc
 |x|GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
                                      info: bottles and panes give 1, block as infinite supply
                                      info: stained glass gives colored goggles
-| |Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
-                                     todo: book as infinite supply
+|x|Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
+                                     info: book as infinite supply
 | |Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
                                      todo: incompatible with diamondblock
 | |DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80

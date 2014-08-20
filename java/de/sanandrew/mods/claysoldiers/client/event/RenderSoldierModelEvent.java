@@ -16,6 +16,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class RenderSoldierModelEvent
@@ -100,6 +101,10 @@ public class RenderSoldierModelEvent
             this.initRenderer(event.clayManRender);
         }
 
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_PAPER)) ) {
+            this.renderCape(event.clayMan, event.clayManRender, event.partTicks, false);
+        }
+
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GUNPOWDER)) ) {
             this.renderGunpowder(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
         }
@@ -131,6 +136,49 @@ public class RenderSoldierModelEvent
         if( event.clayMan.hasEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) ) {
             this.renderSlimefeet(event.clayManRender, event.partTicks);
         }
+    }
+
+    private void renderCape(EntityClayMan clayMan, RenderClayMan clayManRender, float partTicks, boolean isSuper) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.0F, 0.175F);
+
+        double d3 = clayMan.cloakHelper.field_71091_bM + (clayMan.cloakHelper.field_71094_bP - clayMan.cloakHelper.field_71091_bM) * (double)partTicks - (clayMan.prevPosX + (clayMan.posX - clayMan.prevPosX) * (double)partTicks);
+        double d4 = clayMan.cloakHelper.field_71096_bN + (clayMan.cloakHelper.field_71095_bQ - clayMan.cloakHelper.field_71096_bN) * (double)partTicks - (clayMan.prevPosY + (clayMan.posY - clayMan.prevPosY) * (double)partTicks);
+        double d0 = clayMan.cloakHelper.field_71097_bO + (clayMan.cloakHelper.field_71085_bR - clayMan.cloakHelper.field_71097_bO) * (double)partTicks - (clayMan.prevPosZ + (clayMan.posZ - clayMan.prevPosZ) * (double)partTicks);
+        float f4 = clayMan.prevRenderYawOffset + (clayMan.renderYawOffset - clayMan.prevRenderYawOffset) * partTicks;
+        double d1 = (double) MathHelper.sin(f4 * (float) Math.PI / 180.0F);
+        double d2 = (double)(-MathHelper.cos(f4 * (float)Math.PI / 180.0F));
+        float f5 = (float)d4 * 10.0F;
+
+        if (f5 < -6.0F)
+        {
+            f5 = -6.0F;
+        }
+
+        if (f5 > 32.0F)
+        {
+            f5 = 32.0F;
+        }
+
+        float f6 = (float)(d3 * d1 + d0 * d2) * 100.0F;
+        float f7 = (float)(d3 * d2 - d0 * d1) * 100.0F;
+
+        if (f6 < 0.0F)
+        {
+            f6 = 0.0F;
+        }
+
+        GL11.glRotatef(6.0F + f6 / 2.0F + f5, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(f7 / 2.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-f7 / 2.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+
+        float[] color = this.getSplittedColor(clayMan.getMiscColor());
+        GL11.glColor3f(color[0], color[1], color[2]);
+        clayManRender.bindTexture(Textures.CLAYMAN_CAPE_BLANK);
+        clayManRender.modelBipedMain.bipedCloak.render(0.0625F);
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glPopMatrix();
     }
 
     private void renderGoggleStripes(RenderClayMan clayManRender, float partTicks) {

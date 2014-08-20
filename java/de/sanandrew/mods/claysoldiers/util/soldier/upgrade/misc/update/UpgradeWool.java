@@ -1,11 +1,9 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.AUpgradeMisc;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
@@ -37,16 +35,5 @@ public class UpgradeWool
         }
 
         return true;
-    }
-
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        clayMan.setMiscColor(15 - stack.getItemDamage());
-        clayMan.playSound("dig.cloth", 1.0F, 1.0F);
-    }
-
-    @Override
-    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER));
     }
 }

@@ -26,6 +26,7 @@ public final class Textures {
     public static final ResourceLocation CLAYMAN_CROWN = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/crown.png");
     public static final ResourceLocation CLAYMAN_LILYPANTS = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/lilypants.png");
     public static final ResourceLocation CLAYMAN_GOGGLES = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/goggles.png");
+    public static final ResourceLocation CLAYMAN_CAPE_BLANK = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/wearables/cape_blank.png");
 
     public static final ResourceLocation NEXUS_TEXTURE = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/nexus/normal.png");
     public static final ResourceLocation NEXUS_GLOWING = new ResourceLocation(CSM_Main.MOD_ID, "textures/entity/nexus/glow_map.png");
