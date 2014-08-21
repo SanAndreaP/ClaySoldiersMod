@@ -7,37 +7,38 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IExplosiveUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
+import net.minecraft.nbt.NBTTagList;
 
-public class UpgradeMagmacream
+public class UpgradeFireworkStar
     extends AUpgradeMisc
     implements IExplosiveUpgrade
 {
     @Override
-    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        upgradeInst.getNbtTag().setShort(NBT_USES, (short) 1);
-    }
-
-    @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
+
+        if( stack.hasTagCompound() && stack.getTagCompound().hasKey("Explosion") ) {
+            NBTTagList explosionList = new NBTTagList();
+            explosionList.appendTag(stack.getTagCompound().getCompoundTag("Explosion"));
+            upgradeInst.getNbtTag().setTag("Explosions", explosionList);
+        }
     }
 
     @Override
-    public void onSoldierDeath(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source) {
-        if( source instanceof EntityDamageSource && !source.isProjectile() && !source.isExplosion() && source.getEntity() instanceof EntityClayMan ) {
-            EntityClayMan target = (EntityClayMan) source.getEntity();
-            target.playSound("game.tnt.primed", 1.0F, 1.0F);
-            target.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_MAGMABOMB));
-            target.attackEntityFrom(DamageSource.magic, 0.0F);
+    public void onClientUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        if( clayMan.getHealth() <= 0.0F ) {
+            clayMan.worldObj.makeFireworks(clayMan.posX, clayMan.posY + clayMan.getEyeHeight(), clayMan.posZ, 0.0F, 0.0F, 0.0F, upgradeInst.getNbtTag());
         }
+    }
+
+    @Override
+    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return true;
     }
 
     @Override

@@ -145,6 +145,7 @@ public final class SoldierUpgrades
     public static final String UPG_LEATHER = "leather";
     public static final String UPG_BLAZEROD = "blazerod";
     public static final String UPG_LILYPADS = "lilypads";
+    public static final String UPG_MOB_HEAD = "skull";
     public static final String UPG_REDSTONE = "redstone";
     public static final String UPG_GLOWSTONE = "glowstone";
     public static final String UPG_GOLDMELON = "goldmelon";
@@ -167,6 +168,7 @@ public final class SoldierUpgrades
     public static final String UPG_MUSHROOM_RED = "red_mushroom";
     public static final String UPG_NETHER_BRICK = "nether_brick";
     public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
+    public static final String UPG_FIREWORK_STAR = "firework";
     public static final String UPG_NETHER_QUARTZ = "nether_quartz";
     public static final String UPG_MUSHROOM_BROWN = "brown_mushroom";
 
@@ -200,6 +202,8 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_NETHER_QUARTZ, new ItemStack(Items.quartz), new UpgradeNetherQuartz(), getNewRenderId());
         registerUpgrade(UPG_ENDERPEARL, new ItemStack(Items.ender_pearl), new UpgradeEnderpearl(), getNewRenderId());
         registerUpgrade(UPG_MAGMACREAM, new ItemStack(Items.magma_cream), new UpgradeMagmacream(), getNewRenderId());
+        registerUpgrade(UPG_MOB_HEAD, new ItemStack(Items.skull, 1, OreDictionary.WILDCARD_VALUE), new UpgradeMobHead(), getNewRenderId());
+        registerUpgrade(UPG_FIREWORK_STAR, new ItemStack(Items.firework_charge, 1, OreDictionary.WILDCARD_VALUE), new UpgradeFireworkStar(), getNewRenderId());
 
       // upgrades with single items and no render ID
         registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());

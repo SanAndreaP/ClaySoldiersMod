@@ -57,9 +57,9 @@ Misc
 |x|GoldNugget,             inf use, gives soldier a crown, all of team follows the king
 |x|Glowstone,              inf use, makes soldier glow, block gives to infinite soldiers
 |x|Gunpowder,              1 use,   soldier explodes on death
-                                     info: incompatible with magmacream/todo:firework star
+                                     info: incompatible with magmacream/firework star
 |x|MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
-                                     info: incompatible with gunpowder/todo:fireworkstar
+                                     info: incompatible with gunpowder/fireworkstar
 |x|Sugar,                  inf use, makes soldier move faster, incompatible with diamond
 |x|Clay,                   4 use,   revives fallen soldiers of own color
 |x|GhastTear,              2 use,   revives brick dolls to own color
@@ -93,9 +93,9 @@ Misc
                                      incompatible with stone button
 |x|StoneButton,            inf use, increases melee damage by 2 when no weapon is equipped
                                      incompatible with wood button
-| |MobHead,                inf use, gives the soldier a mask to wear
-| |FireworkStar,             1 use, soldier explodes on death in a firework effect
-                                     todo: incompatible with gunpowder/magmacream
+|x|MobHead,                inf use, gives the soldier a mask to wear
+|x|FireworkStar,             1 use, soldier explodes on death in a firework effect
+                                     info: incompatible with gunpowder/magmacream
 | |Rabbit Foot,            inf use, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
                                      todo: MC 1.8
 | |Prismarine Crystals,    inf use, makes soldiers glitter, that's all.

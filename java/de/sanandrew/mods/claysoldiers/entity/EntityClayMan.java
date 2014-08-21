@@ -213,7 +213,8 @@ public class EntityClayMan
                     iterUpgrades.remove();
                 }
             } else {
-                iterUpgrades.next().getKey().onClientUpdate(this);
+                SoldierUpgradeInst upg = iterUpgrades.next().getValue();
+                upg.getUpgrade().onClientUpdate(this, upg);
             }
         }
         Iterator<Map.Entry<ASoldierEffect, SoldierEffectInst>> iterEffects = effects_.entrySet().iterator();

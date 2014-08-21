@@ -38,6 +38,6 @@ public class UpgradeGunpowder
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return super.canBePickedUp(clayMan, stack, upgrade) && !clayMan.hasUpgrade(IExplosiveUpgrade.class);
+        return !clayMan.hasUpgrade(IExplosiveUpgrade.class);
     }
 }

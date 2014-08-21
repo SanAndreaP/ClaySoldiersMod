@@ -86,7 +86,7 @@ public abstract class ASoldierUpgrade
      */
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { return false; }
 
-    public void onClientUpdate(EntityClayMan clayMan) { }
+    public void onClientUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { }
 
     /**
      * Checks if the given upgrade is compatible with this upgrade.

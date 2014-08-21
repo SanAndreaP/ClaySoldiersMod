@@ -30,9 +30,8 @@ public class UpgradeBrick
     }
 
     @Override
-    public void onClientUpdate(EntityClayMan clayMan) {
+    public void onClientUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         clayMan.canMove = false;
-        super.onClientUpdate(clayMan);
     }
 
     @Override
