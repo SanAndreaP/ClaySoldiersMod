@@ -831,6 +831,10 @@ public class EntityClayMan
         return false;
     }
 
+    public ASoldierUpgrade[] getAvailableUpgrades() {
+        return this.upgrades_.keySet().toArray(new ASoldierUpgrade[this.upgrades_.size()]);
+    }
+
     public SoldierUpgradeInst getUpgrade(ASoldierUpgrade upgrade) {
         if( this.hasUpgrade(upgrade) ) {
             return this.upgrades_.get(upgrade);

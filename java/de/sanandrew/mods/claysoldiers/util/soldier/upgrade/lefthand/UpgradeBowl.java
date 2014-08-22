@@ -28,7 +28,7 @@ public class UpgradeBowl
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         if( !source.isUnblockable() ) {
-            damage.setValue(damage.getValue() / 2.0F);
+            damage.setValue(Math.max(0.5F, damage.getValue() / 2.0F));
             upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
         }
 

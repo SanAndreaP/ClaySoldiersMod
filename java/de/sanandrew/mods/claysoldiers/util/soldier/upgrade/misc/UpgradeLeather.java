@@ -41,12 +41,11 @@ public class UpgradeLeather
 
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( source.isUnblockable() ) {
-            return true;
+        if( !source.isUnblockable() ) {
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
+            damage.setValue(Math.max(0.25F, damage.floatValue() / 2.0F));
         }
 
-        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
-        damage.setValue(damage.floatValue() / 2.0F);
         return true;
     }
 

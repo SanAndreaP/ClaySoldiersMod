@@ -101,6 +101,10 @@ public class RenderSoldierModelEvent
             this.initRenderer(event.clayManRender);
         }
 
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_INGOT)) ) {
+            this.renderGoldHoodie(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
+        }
+
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_PAPER)) ) {
             this.renderCape(event.clayMan, event.clayManRender, event.partTicks, false);
         }
@@ -136,6 +140,14 @@ public class RenderSoldierModelEvent
         if( event.clayMan.hasEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) ) {
             this.renderSlimefeet(event.clayManRender, event.partTicks);
         }
+    }
+
+    private void renderGoldHoodie(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw, float pitch,
+                                  float partTicks) {
+        clayManRender.bindTexture(Textures.CLAYMAN_GOLD_HOODIE);
+        GL11.glPushMatrix();
+        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
+        GL11.glPopMatrix();
     }
 
     private void renderCape(EntityClayMan clayMan, RenderClayMan clayManRender, float partTicks, boolean isSuper) {
@@ -307,8 +319,7 @@ public class RenderSoldierModelEvent
     }
 
     private void renderGunpowder(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw, float pitch,
-                                 float partTicks)
-    {
+                                 float partTicks) {
         clayManRender.bindTexture(Textures.CLAYMAN_GUNPOWDER);
         GL11.glPushMatrix();
         clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
@@ -316,8 +327,7 @@ public class RenderSoldierModelEvent
     }
 
     private void renderMagmacream(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw, float pitch,
-                                  float partTicks)
-    {
+                                  float partTicks) {
         clayManRender.bindTexture(Textures.CLAYMAN_MAGMACREAM);
         GL11.glPushMatrix();
         clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);

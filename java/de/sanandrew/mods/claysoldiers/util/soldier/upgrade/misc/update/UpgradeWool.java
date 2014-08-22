@@ -24,14 +24,8 @@ public class UpgradeWool
 
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( source.isUnblockable() ) {
-            return true;
-        }
-
-        if( damage.floatValue() >= 1.0F ) {
-            damage.subtract(1.0F);
-        } else {
-            damage.setValue(0.0F);
+        if( !source.isUnblockable() ) {
+            damage.setValue(Math.max(0.25F, damage.getValue() - 1.0F));
         }
 
         return true;

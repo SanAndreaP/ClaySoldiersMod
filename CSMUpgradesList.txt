@@ -117,7 +117,7 @@ Upgrades
 |x|Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
                           blaze powder
                           firecharge
-| |GoldIngot,        req: gold nugget     doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1
+|x|GoldIngot,        req: gold nugget     doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1
 ------------------
 
 ------------------

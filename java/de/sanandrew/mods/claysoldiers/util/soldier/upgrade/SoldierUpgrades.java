@@ -154,6 +154,7 @@ public final class SoldierUpgrades
     public static final String UPG_SUGARCANE = "sugarcane";
     public static final String UPG_ENDERPEARL = "enderpearl";
     public static final String UPG_FIRECHARGE = "firecharge";
+    public static final String UPG_GOLD_INGOT = "gold_ingot";
     public static final String UPG_IRON_BLOCK = "iron_block";
     public static final String UPG_IRON_INGOT = "iron_ingot";
     public static final String UPG_MAGMACREAM = "magmacream";
@@ -204,6 +205,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_MAGMACREAM, new ItemStack(Items.magma_cream), new UpgradeMagmacream(), getNewRenderId());
         registerUpgrade(UPG_MOB_HEAD, new ItemStack(Items.skull, 1, OreDictionary.WILDCARD_VALUE), new UpgradeMobHead(), getNewRenderId());
         registerUpgrade(UPG_FIREWORK_STAR, new ItemStack(Items.firework_charge, 1, OreDictionary.WILDCARD_VALUE), new UpgradeFireworkStar(), getNewRenderId());
+        registerUpgrade(UPG_GOLD_INGOT, new ItemStack(Items.gold_ingot), new UpgradeGoldIngot(), getNewRenderId());
 
       // upgrades with single items and no render ID
         registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
