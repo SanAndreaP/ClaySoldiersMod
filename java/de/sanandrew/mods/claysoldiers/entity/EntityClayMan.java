@@ -315,16 +315,15 @@ public class EntityClayMan
                         }
 
                         if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
-                            EntityItem item = (EntityItem)this.targetFollow_;
-                            ASoldierUpgrade upgrade = SoldierUpgrades.getUpgrade(item.getEntityItem());
+                            EntityItem itemEntity = (EntityItem)this.targetFollow_;
+                            ASoldierUpgrade upgrade = SoldierUpgrades.getUpgrade(itemEntity.getEntityItem());
                             if( upgrade != null ) {
-                                SoldierUpgradeInst upgradeInst = new SoldierUpgradeInst(upgrade);
-                                this.upgrades_.put(upgrade, upgradeInst);
-                                upgradeInst.getUpgrade().onConstruct(this, upgradeInst);
-                                upgradeInst.getUpgrade().onPickup(this, upgradeInst, item.getEntityItem());
-                                if( item.getEntityItem().stackSize <= 0 ) {
-                                    item.setDead();
+                                this.addUpgrade(upgrade, itemEntity.getEntityItem());
+
+                                if( itemEntity.getEntityItem().stackSize <= 0 ) {
+                                    itemEntity.setDead();
                                 }
+
                                 this.targetFollow_ = null;
                             }
                         }  else if( this.targetFollow_ instanceof IMount ) {
@@ -858,10 +857,25 @@ public class EntityClayMan
     }
 
     public SoldierUpgradeInst addUpgrade(ASoldierUpgrade upgrade) {
+        return this.addUpgrade(upgrade, null);
+    }
+
+    public SoldierUpgradeInst addUpgrade(ASoldierUpgrade upgrade, ItemStack stack) {
         if( !this.hasUpgrade(upgrade) ) {
             SoldierUpgradeInst upgradeInst = new SoldierUpgradeInst(upgrade);
-            this.upgrades_.put(upgrade, upgradeInst);
+
             upgrade.onConstruct(this, upgradeInst);
+
+            if( stack != null ) {
+                upgrade.onPickup(this, upgradeInst, stack);
+            }
+
+            for( SoldierUpgradeInst inst : this.upgrades_.values() ) {
+                inst.getUpgrade().onUpgradeAdded(this, inst, upgradeInst);
+            }
+
+            this.upgrades_.put(upgrade, upgradeInst);
+
             return upgradeInst;
         } else {
             return null;
@@ -885,8 +899,8 @@ public class EntityClayMan
     public SoldierEffectInst addEffect(ASoldierEffect effect) {
         if( !this.hasEffect(effect) ) {
             SoldierEffectInst effectInst = new SoldierEffectInst(effect);
-            this.effects_.put(effect, effectInst);
             effect.onConstruct(this, effectInst);
+            this.effects_.put(effect, effectInst);
             return effectInst;
         } else {
             return null;

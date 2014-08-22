@@ -115,4 +115,6 @@ public abstract class ASoldierUpgrade
     public void getLookRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableDouble radius) { }
 
     public boolean sendNbtToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { return false; }
+
+    public void onUpgradeAdded(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, SoldierUpgradeInst appliedUpgradeInst) { }
 }

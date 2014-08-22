@@ -105,10 +105,6 @@ public class RenderSoldierModelEvent
             this.renderGoldHoodie(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_PAPER)) ) {
-            this.renderCape(event.clayMan, event.clayManRender, event.partTicks, false);
-        }
-
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GUNPOWDER)) ) {
             this.renderGunpowder(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
         }
@@ -117,8 +113,17 @@ public class RenderSoldierModelEvent
             this.renderMagmacream(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET)) ) {
-            this.renderCrown(event.clayManRender, event.partTicks);
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM)) ) {
+            this.renderCape(event.clayMan, event.clayManRender, event.partTicks, true);
+            this.renderCrown(event.clayManRender, event.partTicks, true);
+        } else {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_PAPER)) ) {
+                this.renderCape(event.clayMan, event.clayManRender, event.partTicks, false);
+            }
+
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET)) ) {
+                this.renderCrown(event.clayManRender, event.partTicks, false);
+            }
         }
 
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
@@ -185,9 +190,14 @@ public class RenderSoldierModelEvent
         GL11.glRotatef(-f7 / 2.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 
-        float[] color = this.getSplittedColor(clayMan.getMiscColor());
-        GL11.glColor3f(color[0], color[1], color[2]);
-        clayManRender.bindTexture(Textures.CLAYMAN_CAPE_BLANK);
+        if( isSuper ) {
+            clayManRender.bindTexture(Textures.CLAYMAN_CAPE_DIAMOND);
+        } else {
+            float[] color = this.getSplittedColor(clayMan.getMiscColor());
+            GL11.glColor3f(color[0], color[1], color[2]);
+            clayManRender.bindTexture(Textures.CLAYMAN_CAPE_BLANK);
+        }
+
         clayManRender.modelBipedMain.bipedCloak.render(0.0625F);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         GL11.glPopMatrix();
@@ -305,7 +315,7 @@ public class RenderSoldierModelEvent
         GL11.glPopMatrix();
     }
 
-    private void renderCrown(RenderClayMan clayManRender, float partTicks) {
+    private void renderCrown(RenderClayMan clayManRender, float partTicks, boolean isSuper) {
         ModelBiped model = clayManRender.modelBipedMain;
 
         this.crown.rotateAngleX = model.bipedHead.rotateAngleX;
@@ -313,7 +323,11 @@ public class RenderSoldierModelEvent
         this.crown.rotateAngleZ = model.bipedHead.rotateAngleZ;
 
         clayManRender.bindTexture(Textures.CLAYMAN_CROWN);
-        GL11.glColor3f(1.0F, 0.9F, 0.0F);
+        if( isSuper ) {
+            GL11.glColor3f(0.39F, 0.82F, 0.742F);
+        } else {
+            GL11.glColor3f(1.0F, 0.9F, 0.0F);
+        }
         this.crown.render(partTicks);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
     }

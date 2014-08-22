@@ -75,7 +75,7 @@ Misc
                                      info: stained glass gives colored goggles
 |x|Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
                                      info: book as infinite supply
-| |Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
+|x|Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
                                      todo: incompatible with diamondblock
 | |DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
                                      todo: incompatible with diamond
