@@ -16,20 +16,20 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class UpgradeDiamond
+public class UpgradeDiamondBlock
     extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         IAttributeInstance attrib = clayMan.getEntityAttribute(SharedMonsterAttributes.maxHealth);
-        attrib.setBaseValue(attrib.getBaseValue() * 10.0D);
+        attrib.setBaseValue(attrib.getBaseValue() * 80.0D);
         clayMan.heal(clayMan.getMaxHealth());
 
         ASoldierUpgrade[] upgrades = clayMan.getAvailableUpgrades();
         for( ASoldierUpgrade upgrade : upgrades ) {
             NBTTagCompound upgNbt = clayMan.getUpgrade(upgrade).getNbtTag();
             if( upgNbt.hasKey(NBT_USES, NbtTypes.NBT_SHORT) ) {
-                upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
+                upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 5));
             }
         }
 
@@ -46,6 +46,6 @@ public class UpgradeDiamond
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_BLOCK));
+        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM));
     }
 }

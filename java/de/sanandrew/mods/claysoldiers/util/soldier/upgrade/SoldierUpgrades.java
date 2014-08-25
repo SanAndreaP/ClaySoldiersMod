@@ -173,6 +173,7 @@ public final class SoldierUpgrades
     public static final String UPG_NETHER_QUARTZ = "nether_quartz";
     public static final String UPG_MUSHROOM_BROWN = "brown_mushroom";
     public static final String UPG_DIAMOND_ITEM = "diamond";
+    public static final String UPG_DIAMOND_BLOCK = "diamond_block";
 
 
     public static void initialize() {
@@ -208,6 +209,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_FIREWORK_STAR, new ItemStack(Items.firework_charge, 1, OreDictionary.WILDCARD_VALUE), new UpgradeFireworkStar(), getNewRenderId());
         registerUpgrade(UPG_GOLD_INGOT, new ItemStack(Items.gold_ingot), new UpgradeGoldIngot(), getNewRenderId());
         registerUpgrade(UPG_DIAMOND_ITEM, new ItemStack(Items.diamond), new UpgradeDiamond(), getNewRenderId());
+        registerUpgrade(UPG_DIAMOND_BLOCK, new ItemStack(Blocks.diamond_block), new UpgradeDiamondBlock(), getNewRenderId());
 
       // upgrades with single items and no render ID
         registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());

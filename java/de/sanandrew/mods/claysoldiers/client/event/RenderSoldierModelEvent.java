@@ -113,7 +113,9 @@ public class RenderSoldierModelEvent
             this.renderMagmacream(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM))
+            || event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_BLOCK)) )
+        {
             this.renderCape(event.clayMan, event.clayManRender, event.partTicks, true);
             this.renderCrown(event.clayManRender, event.partTicks, true);
         } else {

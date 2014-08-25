@@ -39,15 +39,15 @@ Behavior
 |x|Wheat,              makes soldier never attack, even if hit first
 |x|NetherWart,         makes soldier attack its allies
 |x|FermentedSpiderEye, makes soldier not attack, unless attacked first
-| |potato?,            makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
-| |carrot?,            makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own team
+| |rotten flesh?,      makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
+| |sponge?,            makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own team
 
 info: they now have idle particle effects
 ------------------
 Misc
 ------------------
 |x|Leather,                20 use,  reduces incoming physical damage by half (when used with bowl, only receives 25% of original damage)
-                                     todo: incompatible with Rabbit Hide
+                                     todo: incompatible with Rabbit Hide (MC 1.8)
 | |Rabbit Hide,            20 use,  reduces incoming physical damage by 12.5%, grants half the speed boost of sugar
                                      todo: incompatible with Leather
                                      todo: MC 1.8
@@ -76,18 +76,18 @@ Misc
 |x|Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
                                      info: book as infinite supply
 |x|Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
-                                     todo: incompatible with diamondblock
-| |DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
-                                     todo: incompatible with diamond
+                                     info: incompatible with diamondblock
+|x|DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
+                                     info: incompatible with diamond
 |x|EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
                                      dies after 10 minutes of no fighting
 |x|BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
 |x|RedMushroom,            1 use,   applies poison to target
 |x|BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
 |x|LillyPad,               inf use, soldier has pants and will float on water
-                                     todo: no effect when used with iron ingot
+                                     info: no effect when used with iron ingot
 |x|Egg,                    inf use, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
-                                     todo: add detection when wearing glasses
+                                     info: will be detected when others wearing glasses
 |x|WheatSeed,              inf use, soldier can NOT be infected by any zombification
 |x|WoodButton,             inf use, increases melee damage by 1 when no weapon is equipped
                                      incompatible with stone button
