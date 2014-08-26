@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update;
+package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.enchantment;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;

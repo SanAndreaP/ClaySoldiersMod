@@ -1,4 +1,4 @@
-package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update;
+package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.enchantment;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityFirechargeChunk;

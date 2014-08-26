@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.*;
-import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.update.*;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.enchantment.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

@@ -101,7 +101,7 @@ Misc
 | |Prismarine Crystals,    inf use, makes soldiers glitter, that's all.
                                      todo: MC 1.8
 ------------------
-Upgrades
+Enchantments
 ------------------
 |x|Flint,            req: stick,          boosts stick melee damage by 2 points (total bonus 4-5, same as arrow),
 | |Prismarine Shard, req: shear blade(s), boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
