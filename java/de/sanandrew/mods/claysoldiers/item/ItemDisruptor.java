@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,7 +53,7 @@ public class ItemDisruptor extends Item
                 );
 
                 for( EntityItem item : items ) {
-                    if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollSoldier ) {
+                    if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollSoldier ) {
                         item.setDead();
                     }
                 }

@@ -5,7 +5,7 @@ import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IMeeleeUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
@@ -50,7 +50,7 @@ public class UpgradeShearBladeLeft
             clayMan.playSound("random.break", 1.0F, 1.0F);
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
                                             Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
-                                                         Item.itemRegistry.getNameForObject(ModItems.shearBlade)
+                                                         Item.itemRegistry.getNameForObject(RegistryItems.shearBlade)
                                             )
             );
             return true;

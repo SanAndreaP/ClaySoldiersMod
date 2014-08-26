@@ -12,6 +12,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Level;
@@ -27,99 +29,108 @@ public final class ClaymanTeam
     private static final Map<String, ClaymanTeam> TEAMS_ = Maps.newHashMap();
     private static final List<String> TEAM_NAMES_FOR_DOLLS_ = new ArrayList<>();
 
+    private static boolean isInitialized = false;
+
     // NOTE: use http://www.colorpicker.com/ to pick a fitting color
-    static {
+    public static void initialize() {
+        if( isInitialized ) {
+            FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "Something tried to re-initialize the clayman teams! This is not allowed and should be checked!");
+            return;
+        } else {
+            isInitialized = true;
+        }
+
         TEAMS_.put(NULL_TEAM.getTeamName(), NULL_TEAM);
 
-        registerTeam("clay", 0xA6A6A6,
+        registerTeam("clay", 0x999999, new ItemStack(Items.dye, 1, 7),
                      new String[]{ CSM_Main.MOD_ID + ":textures/entity/soldiers/lightgray.png" },
                      new String[]{ CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightgray.png" },
                      null
         ).useTeamColorAsItemColor();
-        registerTeam("white", 0xFFFFFF,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/white.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/white.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white.png",
-                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white2.png"}
-        ).useTeamColorAsItemColor();
-        registerTeam("gray", 0x5F5F5F,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/gray.png" },
-                     null,
-                     null
-        ).useTeamColorAsItemColor();
-        registerTeam("black", 0x1A1A1A,
+        registerTeam("black", 0x191919, new ItemStack(Items.dye, 1, 0),
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/black.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/black.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/black.png" }
         ).useTeamColorAsItemColor();
-        registerTeam("brown", 0x703710,
+        registerTeam("red", 0xCC4646, new ItemStack(Items.dye, 1, 1),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/red.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/red.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/red.png" }
+        ).useTeamColorAsItemColor();
+        registerTeam("green", 0x667F33, new ItemStack(Items.dye, 1, 2),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/green.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/green.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/green.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/green2.png" }
+        ).useTeamColorAsItemColor();
+        registerTeam("brown", 0x664C33, new ItemStack(Items.dye, 1, 3),
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/brown.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/brown.png",
                                     CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/brown2.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/brown.png",
                                     CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/brown2.png" }
         ).useTeamColorAsItemColor();
-        registerTeam("red", 0xE02121,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/red.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/red.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/red.png" }
-        ).useTeamColorAsItemColor();
-        registerTeam("orange", 0xEC6C14,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/orange.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/orange.png" },
-                     null
-        ).useTeamColorAsItemColor();
-        registerTeam("yellow", 0xFFFF00,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/yellow.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow.png",
-                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow2.png",
-                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow3.png" },
-                     null
-        ).useTeamColorAsItemColor();
-        registerTeam("lime", 0x94ff00,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/lime.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lime.png" },
-                     null
-        ).useTeamColorAsItemColor();
-        registerTeam("green", 0x24902D,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/green.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/green.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/green.png",
-                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/green2.png" }
-        ).useTeamColorAsItemColor();
-        registerTeam("cyan", 0x14ECEC,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/cyan.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/cyan.png" },
-                     null
-        ).useTeamColorAsItemColor();
-        registerTeam("lightblue", 0x75AED7,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/lightblue.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightblue.png" },
-                     null
-        ).useTeamColorAsItemColor();
-        registerTeam("blue", 0x4343d7,
+        registerTeam("blue", 0x334CB2, new ItemStack(Items.dye, 1, 4),
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/blue.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/blue.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/blue.png" }
         ).useTeamColorAsItemColor();
-        registerTeam("purple", 0x8E00FF,
+        registerTeam("purple", 0x7F3FB2, new ItemStack(Items.dye, 1, 5),
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/purple.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/purple.png",
                                     CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/purple2.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/purple.png",
                                     CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/purple2.png" }
         ).useTeamColorAsItemColor();
-        registerTeam("magenta", 0xEC14DD,
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/magenta.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/magenta.png" },
-                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/magenta.png" }
+        registerTeam("cyan", 0x4C7F99, new ItemStack(Items.dye, 1, 6),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/cyan.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/cyan.png" },
+                     null
         ).useTeamColorAsItemColor();
-        registerTeam("pink", 0xE69BD2,
+        registerTeam("gray", 0x4C4C4C, new ItemStack(Items.dye, 1, 8),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/gray.png" },
+                     null,
+                     null
+        ).useTeamColorAsItemColor();
+        registerTeam("pink", 0xF27FA5, new ItemStack(Items.dye, 1, 9),
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/pink.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/pink.png" },
                      null
         ).useTeamColorAsItemColor();
-        registerTeam("melon", 0x91D400, CSM_Main.MOD_ID + ":doll_melon",
+        registerTeam("lime", 0x7FCC19, new ItemStack(Items.dye, 1, 10),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/lime.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lime.png" },
+                     null
+        ).useTeamColorAsItemColor();
+        registerTeam("yellow", 0xE5E533, new ItemStack(Items.dye, 1, 11),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/yellow.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow2.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/yellow3.png" },
+                     null
+        ).useTeamColorAsItemColor();
+        registerTeam("lightblue", 0x6699D8, new ItemStack(Items.dye, 1, 12),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/lightblue.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightblue.png" },
+                     null
+        ).useTeamColorAsItemColor();
+        registerTeam("magenta", 0xB24CD8, new ItemStack(Items.dye, 1, 13),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/magenta.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/magenta.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/magenta.png" }
+        ).useTeamColorAsItemColor();
+        registerTeam("orange", 0xD87F33, new ItemStack(Items.dye, 1, 14),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/orange.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/orange.png" },
+                     null
+        ).useTeamColorAsItemColor();
+        registerTeam("white", 0xFFFFFF, new ItemStack(Items.dye, 1, 15),
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/white.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/white.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white2.png"}
+        ).useTeamColorAsItemColor();
+        registerTeam("melon", 0x91D400, new ItemStack(Items.melon), CSM_Main.MOD_ID + ":doll_melon",
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/melon.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/melon.png" },
                      null
@@ -133,6 +144,7 @@ public final class ClaymanTeam
     private String icon_;
     private int iconColor_;
     private int teamColor_;
+    private ItemStack teamItem_;
 
     @SideOnly(Side.CLIENT)
     private IIcon iconInstance_;
@@ -144,7 +156,7 @@ public final class ClaymanTeam
         this.iconColor_ = 0xFFFFFF;
     }
 
-    private ClaymanTeam(String teamName, int teamColor, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures)
+    private ClaymanTeam(String teamName, int teamColor, ItemStack teamItem, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures)
             throws ClaymanTeamRegistrationException
     {
         if( teamName == null ) {
@@ -152,6 +164,7 @@ public final class ClaymanTeam
         } else if( teamName.isEmpty() ) {
             throw new ClaymanTeamRegistrationException("teamName cannot be empty!");
         }
+
         if( iconTexture == null ) {
             throw new ClaymanTeamRegistrationException("iconTexture cannot be null!");
         } else if( iconTexture.isEmpty() ) {
@@ -162,6 +175,7 @@ public final class ClaymanTeam
         this.icon_ = iconTexture;
         this.teamColor_ = teamColor;
         this.iconColor_ = 0xFFFFFF;
+        this.teamItem_ = teamItem;
 
         if( defTextures != null ) {
             if( defTextures.length == 0 ) {
@@ -228,18 +242,23 @@ public final class ClaymanTeam
         return this.iconColor_;
     }
 
+    public ItemStack getTeamItem() {
+        return this.teamItem_.copy();
+    }
+
     @SideOnly(Side.CLIENT)
     public IIcon getIconInstance() {
         return this.iconInstance_;
     }
 
-    public static ClaymanTeam registerTeam(String teamName, int teamColor, String[] defTextures, String[] rareTextures, String[] uniqueTextures) {
-        return registerTeam(teamName, teamColor, CSM_Main.MOD_ID + ":doll_clay", defTextures, rareTextures, uniqueTextures);
+    public static ClaymanTeam registerTeam(String teamName, int teamColor, ItemStack teamItem, String[] defTextures, String[] rareTextures, String[] uniqueTextures) {
+        return registerTeam(teamName, teamColor, teamItem, CSM_Main.MOD_ID + ":doll_clay", defTextures, rareTextures, uniqueTextures);
     }
 
-    public static ClaymanTeam registerTeam(String teamName, int teamColor, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures) {
+    public static ClaymanTeam registerTeam(String teamName, int teamColor, ItemStack teamItem, String iconTexture, String[] defTextures, String[] rareTextures,
+                                           String[] uniqueTextures) {
         try {
-            ClaymanTeam inst = new ClaymanTeam(teamName, teamColor, iconTexture, defTextures, rareTextures, uniqueTextures);
+            ClaymanTeam inst = new ClaymanTeam(teamName, teamColor, teamItem, iconTexture, defTextures, rareTextures, uniqueTextures);
             if( TEAMS_.containsKey(teamName) ) {
                 FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "A mod has overridden the soldier team \"%s\"!", teamName);
             } else {

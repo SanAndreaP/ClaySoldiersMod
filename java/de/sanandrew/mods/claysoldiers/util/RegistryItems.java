@@ -10,7 +10,7 @@ import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.item.*;
 import net.minecraft.item.Item;
 
-public final class ModItems
+public final class RegistryItems
 {
     public static Item dollSoldier;
     public static Item disruptor;

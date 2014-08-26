@@ -2,7 +2,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IMeeleeUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
@@ -42,7 +42,7 @@ public class UpgradeShearBladeRight
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         if( upgradeInst.getNbtTag().getShort(NBT_USES) <= 0 ) {
             clayMan.playSound("random.break", 1.0F, 1.0F);
-            ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, ModItems.shearBlade);
+            ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, RegistryItems.shearBlade);
             return true;
         }
         return false;

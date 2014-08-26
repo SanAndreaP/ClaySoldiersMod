@@ -5,7 +5,7 @@ import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderSoldierLeftHandEvent
 {
-    private final ItemStack itemShearBlade_ = new ItemStack(ModItems.shearBlade);
+    private final ItemStack itemShearBlade_ = new ItemStack(RegistryItems.shearBlade);
     private final ItemStack blockGravel_ = new ItemStack(Blocks.gravel);
     private final ItemStack blockSnow_ = new ItemStack(Blocks.snow);
     private final ItemStack blockObsidian_ = new ItemStack(Blocks.obsidian); //TODO: substitude until proper texture arrives

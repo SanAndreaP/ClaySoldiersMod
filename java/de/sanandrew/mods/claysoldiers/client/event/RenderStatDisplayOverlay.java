@@ -16,8 +16,8 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EnumHorseType;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -56,7 +56,7 @@ public class RenderStatDisplayOverlay
         }
 
         if( !mc.gameSettings.showDebugInfo && mc.thePlayer.getCurrentEquippedItem() != null
-                && mc.thePlayer.getCurrentEquippedItem().getItem() == ModItems.statDisplay )
+                && mc.thePlayer.getCurrentEquippedItem().getItem() == RegistryItems.statDisplay )
         {
             this.renderSoldiers(mc);
             this.renderMounts(mc);
@@ -80,12 +80,12 @@ public class RenderStatDisplayOverlay
 
         for( Entry<String, Integer> team : teamCounts.entrySet() ) {
             ClaymanTeam teamInst = ClaymanTeam.getTeamFromName(team.getKey());
-            ItemStack renderedItem = new ItemStack(ModItems.dollSoldier);
+            ItemStack renderedItem = new ItemStack(RegistryItems.dollSoldier);
             ItemClayManDoll.setTeamForItem(team.getKey(), renderedItem);
             teams.add(Quartet.with(teamInst.getTeamColor(), renderedItem.getUnlocalizedName() + ".color", team.getValue(), renderedItem));
         }
 
-        this.renderStats(mc, SAPUtils.getTranslated(ModItems.statDisplay.getUnlocalizedName() + ".title.soldiers"), teams, 5, 5);
+        this.renderStats(mc, SAPUtils.getTranslated(RegistryItems.statDisplay.getUnlocalizedName() + ".title.soldiers"), teams, 5, 5);
     }
 
     private void renderMounts(Minecraft mc) {
@@ -108,7 +108,7 @@ public class RenderStatDisplayOverlay
             teams.add(Quartet.with(teamInst.typeColor, team.getKey(), team.getValue(), (ItemStack) null));
         }
 
-        this.renderStats(mc, SAPUtils.getTranslated(ModItems.statDisplay.getUnlocalizedName() + ".title.mounts"), teams, 110, 5);
+        this.renderStats(mc, SAPUtils.getTranslated(RegistryItems.statDisplay.getUnlocalizedName() + ".title.mounts"), teams, 110, 5);
     }
 
     private void renderStats(Minecraft mc, String title, List<Quartet<Integer, String, Integer, ItemStack>> teams, int xPos, int yPos) {

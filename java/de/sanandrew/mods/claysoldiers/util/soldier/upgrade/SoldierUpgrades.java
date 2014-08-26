@@ -5,7 +5,7 @@ import com.google.common.primitives.Bytes;
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeFermSpiderEye;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeNetherwart;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeWheat;
@@ -254,7 +254,7 @@ public final class SoldierUpgrades
 
       // upgrades with multiple items and no render ID
         registerUpgrade("shear_helper", new ItemStack[] {
-                                new ItemStack(ModItems.shearBlade),
+                                new ItemStack(RegistryItems.shearBlade),
                                 new ItemStack(Items.shears)
                         }, new UpgradeHelperShearBlade());
         registerUpgrade(UPG_NETHER_BRICK, new ItemStack [] {

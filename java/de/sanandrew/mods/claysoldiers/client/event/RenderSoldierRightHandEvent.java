@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -23,7 +23,7 @@ public class RenderSoldierRightHandEvent
     private final ItemStack upgBlazeRod_ = new ItemStack(Items.blaze_rod);
     private final ItemStack upgWoodButton_ = new ItemStack(Blocks.planks);
     private final ItemStack upgStoneButton_ = new ItemStack(Blocks.stone);
-    private final ItemStack upgShearBlade_ = new ItemStack(ModItems.shearBlade);
+    private final ItemStack upgShearBlade_ = new ItemStack(RegistryItems.shearBlade);
     private final ItemStack upgGoldMelon_ = new ItemStack(Items.speckled_melon);
     private final ItemStack upgBone_ = new ItemStack(Items.bone);
 

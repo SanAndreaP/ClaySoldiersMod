@@ -22,7 +22,7 @@ public class CreativeTabClaySoldiers
 
     @Override
     public Item getTabIconItem() {
-        return ModItems.dollSoldier;
+        return RegistryItems.dollSoldier;
     }
 
     @Override

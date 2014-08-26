@@ -18,7 +18,7 @@ import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.BugfixHelper;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
@@ -314,7 +314,7 @@ public class TileEntityClayNexus
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         switch( slot ) {
             case SOLDIER_SLOT:
-                return stack == null || stack.getItem() == ModItems.dollSoldier;
+                return stack == null || stack.getItem() == RegistryItems.dollSoldier;
             case THROWABLE_SLOT:
                 return stack == null || SoldierUpgrades.getUpgrade(stack) instanceof IThrowableUpgrade;
             case MOUNT_SLOT:

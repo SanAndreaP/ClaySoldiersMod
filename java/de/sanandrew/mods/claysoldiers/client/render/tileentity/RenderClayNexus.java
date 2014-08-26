@@ -13,7 +13,7 @@ import de.sanandrew.mods.claysoldiers.client.models.tileentity.ModelClayNexus;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
@@ -55,7 +55,7 @@ public class RenderClayNexus
         }
 
         ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
-        if( heldItem != null && heldItem.getItem() == ModItems.statDisplay ) {
+        if( heldItem != null && heldItem.getItem() == RegistryItems.statDisplay ) {
             this.renderHealth(nexus);
         }
 

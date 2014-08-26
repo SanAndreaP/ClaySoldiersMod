@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,7 @@ public class UpgradeClay
         if( !clayMan.hasPath() ) {
             Collection<EntityItem> items = clayMan.getItemsInRange();
             for( EntityItem item : items ) {
-                if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollSoldier
+                if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollSoldier
                     && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam()) )
                 {
                     clayMan.setTargetFollowing(item);
@@ -41,7 +41,7 @@ public class UpgradeClay
         } else if( clayMan.getTargetFollowing() instanceof EntityItem ) {
             EntityItem item = (EntityItem) clayMan.getTargetFollowing();
 
-            if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollSoldier
+            if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollSoldier
                 && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam()) && item.getDistanceSqToEntity(clayMan) < 1.0D
                 && item.getEntityItem().stackSize > 0 )
             {

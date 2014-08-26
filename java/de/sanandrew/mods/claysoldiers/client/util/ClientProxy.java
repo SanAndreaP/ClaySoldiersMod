@@ -16,10 +16,10 @@ import de.sanandrew.mods.claysoldiers.client.render.tileentity.RenderClayNexus;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
+import de.sanandrew.mods.claysoldiers.util.RegistryBlocks;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
-import de.sanandrew.mods.claysoldiers.util.ModBlocks;
-import de.sanandrew.mods.claysoldiers.util.ModEntities;
+import de.sanandrew.mods.claysoldiers.util.RegistryEntities;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ASoldierEffect;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
@@ -40,7 +40,7 @@ public class ClientProxy extends CommonProxy
 
         CSM_Main.channel.register(new ClientPacketHandler());
 
-        ModEntities.registerRenderers();
+        RegistryEntities.registerRenderers();
 
         CSM_Main.EVENT_BUS.register(new RenderSoldierRightHandEvent());
         CSM_Main.EVENT_BUS.register(new RenderSoldierLeftHandEvent());
@@ -49,7 +49,7 @@ public class ClientProxy extends CommonProxy
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayNexus.class, new RenderClayNexus());
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.clayNexus), new ItemRendererClayNexus());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.clayNexus), new ItemRendererClayNexus());
 
         MinecraftForge.EVENT_BUS.register(new RenderStatDisplayOverlay());
         MinecraftForge.EVENT_BUS.register(new RenderWorldOnLastEvent());

@@ -1,7 +1,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
@@ -26,7 +26,7 @@ public class UpgradeHelperShearBlade
         ASoldierUpgrade upgrade = null;
         ItemStack savedItem = null;
 
-        if( stack.getItem() == ModItems.shearBlade ) {
+        if( stack.getItem() == RegistryItems.shearBlade ) {
             if( !clayMan.hasUpgrade(AUpgradeLeftHanded.class) ) {
                 upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT);
                 savedItem = stack;
@@ -36,13 +36,13 @@ public class UpgradeHelperShearBlade
             }
         } else {
             if( !clayMan.hasUpgrade(AUpgradeLeftHanded.class) ) {
-                clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
+                clayMan.entityDropItem(new ItemStack(RegistryItems.shearBlade, 1), 0.0F);
                 upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT);
-                savedItem = new ItemStack(ModItems.shearBlade, 1);
+                savedItem = new ItemStack(RegistryItems.shearBlade, 1);
             } else if( !clayMan.hasUpgrade(AUpgradeRightHanded.class) ) {
-                clayMan.entityDropItem(new ItemStack(ModItems.shearBlade, 1), 0.0F);
+                clayMan.entityDropItem(new ItemStack(RegistryItems.shearBlade, 1), 0.0F);
                 upgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT);
-                savedItem = new ItemStack(ModItems.shearBlade, 1);
+                savedItem = new ItemStack(RegistryItems.shearBlade, 1);
             }
         }
 

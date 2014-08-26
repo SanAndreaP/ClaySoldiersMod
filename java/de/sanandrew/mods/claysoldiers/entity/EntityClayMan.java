@@ -439,7 +439,7 @@ public class EntityClayMan
         super.onDeath(damageSource);
 
         if( damageSource.isFireDamage() && this.dollItem != null ) {
-            ItemStack brickItem = new ItemStack(ModItems.dollBrick, this.dollItem.stackSize);
+            ItemStack brickItem = new ItemStack(RegistryItems.dollBrick, this.dollItem.stackSize);
             brickItem.setTagCompound(this.dollItem.getTagCompound());
             this.dollItem = brickItem;
         }

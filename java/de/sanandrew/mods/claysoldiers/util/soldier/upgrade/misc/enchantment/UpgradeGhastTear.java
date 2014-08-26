@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.enchantment;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
-import de.sanandrew.mods.claysoldiers.util.ModItems;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.AUpgradeMisc;
 import net.minecraft.entity.item.EntityItem;
@@ -32,7 +32,7 @@ public class UpgradeGhastTear
         if( !clayMan.hasPath() ) {
             Collection<EntityItem> items = clayMan.getItemsInRange();
             for( EntityItem item : items ) {
-                if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollBrick ) {
+                if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollBrick ) {
                     clayMan.setTargetFollowing(item);
                     break;
                 }
@@ -40,14 +40,14 @@ public class UpgradeGhastTear
         } else if( clayMan.getTargetFollowing() instanceof EntityItem ) {
             EntityItem item = (EntityItem) clayMan.getTargetFollowing();
 
-            if( item.getEntityItem() != null && item.getEntityItem().getItem() == ModItems.dollBrick && item.getDistanceSqToEntity(clayMan) < 1.0D
+            if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollBrick && item.getDistanceSqToEntity(clayMan) < 1.0D
                     && item.getEntityItem().stackSize > 0 )
             {
                 EntityClayMan awakened = ItemClayManDoll.spawnClayMan(clayMan.worldObj, clayMan.getClayTeam(), item.posX, item.posY, item.posZ);
 
                 awakened.playSound("dig.gravel", 1.0F, 1.0F);
                 ParticlePacketSender.sendSoldierDeathFx(awakened.posX, awakened.posY, awakened.posZ, awakened.dimension, awakened.getClayTeam());
-                awakened.dollItem = new ItemStack(ModItems.dollSoldier, 1);
+                awakened.dollItem = new ItemStack(RegistryItems.dollSoldier, 1);
                 awakened.dollItem.setTagCompound(item.getEntityItem().getTagCompound());
                 ItemClayManDoll.setTeamForItem(awakened.getClayTeam(), awakened.dollItem);
                 item.getEntityItem().splitStack(1);

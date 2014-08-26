@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
@@ -21,7 +20,7 @@ import de.sanandrew.mods.claysoldiers.entity.projectile.EntityGravelChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntitySnowChunk;
 import net.minecraft.init.Blocks;
 
-public final class ModEntities
+public final class RegistryEntities
 {
     @SideOnly(Side.CLIENT)
     public static void registerRenderers() {
@@ -36,11 +35,11 @@ public final class ModEntities
     public static void registerEntities(Object mod) {
         int entityId = 0;
 
-        EntityRegistry.registerModEntity(EntityClayMan.class, "clayman", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityHorseMount.class, "horsemount", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityGravelChunk.class, "gravelchunk", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntitySnowChunk.class, "snowchunk", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityFirechargeChunk.class, "firechunk", entityId++, mod, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityEmeraldChunk.class, "emeraldchunk", entityId++, mod, 64, 1, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityClayMan.class, "clayman", entityId++, mod, 64, 1, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityHorseMount.class, "horsemount", entityId++, mod, 64, 1, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityGravelChunk.class, "gravelchunk", entityId++, mod, 64, 1, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntitySnowChunk.class, "snowchunk", entityId++, mod, 64, 1, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityFirechargeChunk.class, "firechunk", entityId++, mod, 64, 1, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityEmeraldChunk.class, "emeraldchunk", entityId++, mod, 64, 1, true);
     }
 }

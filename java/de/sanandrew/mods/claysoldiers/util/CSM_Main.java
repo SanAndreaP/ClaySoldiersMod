@@ -14,6 +14,7 @@ import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
+import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.UpgradeFood;
 import net.minecraft.block.BlockDispenser;
@@ -57,8 +58,9 @@ public final class CSM_Main
         ModConfig.config = new Configuration(event.getSuggestedConfigurationFile());
         ModConfig.syncConfig();
 
-        ModItems.initialize();
-        ModBlocks.initialize();
+        RegistryItems.initialize();
+        RegistryBlocks.initialize();
+        ClaymanTeam.initialize();
 
         UpgradeFood.excludeFood((ItemFood) Items.potato);
         UpgradeFood.excludeFood((ItemFood) Items.carrot);
@@ -74,11 +76,11 @@ public final class CSM_Main
 
         proxy.modInit();
 
-        ModEntities.registerEntities(this);
+        RegistryEntities.registerEntities(this);
 
-        BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.dollSoldier, new BehaviorSoldierDispenseItem());
-        BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.disruptor, new BehaviorDisruptorDispenseItem());
-        BlockDispenser.dispenseBehaviorRegistry.putObject(ModItems.disruptorHardened, new BehaviorDisruptorDispenseItem());
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.dollSoldier, new BehaviorSoldierDispenseItem());
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.disruptor, new BehaviorDisruptorDispenseItem());
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.disruptorHardened, new BehaviorDisruptorDispenseItem());
     }
 
     @Mod.EventHandler
