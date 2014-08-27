@@ -132,7 +132,7 @@ public final class ParticleHelper
     }
 
     public static void spawnSoldierDeathFx(Quartet<Double, Double, Double, String> data, Minecraft mc) {
-        ClaymanTeam team = ClaymanTeam.getTeamFromName(data.getValue3());
+        ClaymanTeam team = ClaymanTeam.getTeam(data.getValue3());
 
         for (int i = 0; i < 10; i++) {
             EntitySoldierDeathFX fx = new EntitySoldierDeathFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), team);

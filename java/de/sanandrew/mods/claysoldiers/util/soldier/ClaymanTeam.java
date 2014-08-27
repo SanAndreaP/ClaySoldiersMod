@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
@@ -274,8 +275,24 @@ public final class ClaymanTeam
         }
     }
 
-    public static ClaymanTeam getTeamFromName(String name) {
+    public static ClaymanTeam getTeam(String name) {
         return TEAMS_.get(name);
+    }
+
+    public static ClaymanTeam getTeam(ItemStack stack) {
+        if( stack == null ) {
+            return null;
+        }
+
+        for( ClaymanTeam team : TEAMS_.values() ) {
+            if( stack.getItem() == team.getTeamItem().getItem() ) {
+                if( team.getTeamItem().getItemDamage() == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == team.getTeamItem().getItemDamage() ) {
+                    return team;
+                }
+            }
+        }
+
+        return null;
     }
 
     public static List<String> getTeamNamesForDolls() {

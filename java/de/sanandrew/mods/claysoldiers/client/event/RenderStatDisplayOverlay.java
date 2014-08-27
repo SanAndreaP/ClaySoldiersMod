@@ -79,7 +79,7 @@ public class RenderStatDisplayOverlay
         }
 
         for( Entry<String, Integer> team : teamCounts.entrySet() ) {
-            ClaymanTeam teamInst = ClaymanTeam.getTeamFromName(team.getKey());
+            ClaymanTeam teamInst = ClaymanTeam.getTeam(team.getKey());
             ItemStack renderedItem = new ItemStack(RegistryItems.dollSoldier);
             ItemClayManDoll.setTeamForItem(team.getKey(), renderedItem);
             teams.add(Quartet.with(teamInst.getTeamColor(), renderedItem.getUnlocalizedName() + ".color", team.getValue(), renderedItem));

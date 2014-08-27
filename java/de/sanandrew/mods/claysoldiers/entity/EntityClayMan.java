@@ -144,7 +144,7 @@ public class EntityClayMan
     }
 
     public void setupTexture(boolean isRare, boolean isUnique) {
-        ClaymanTeam team = ClaymanTeam.getTeamFromName(this.getClayTeam());
+        ClaymanTeam team = ClaymanTeam.getTeam(this.getClayTeam());
         if( isUnique && team.getUniqueTextures().length > 0 ) {
             this.dataWatcher.updateObject(DW_IS_TEXTURE_RARE_OR_UNIQUE, (byte) 2);
             this.dataWatcher.updateObject(DW_TEXTURE_INDEX, this.rand.nextInt(team.getUniqueTextures().length));
@@ -655,13 +655,13 @@ public class EntityClayMan
     @SideOnly(Side.CLIENT)
     public ResourceLocation getTexture() {
     	if( this.dataWatcher.getWatchableObjectByte(DW_IS_TEXTURE_RARE_OR_UNIQUE) == 2 ) {
-            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM))
+            return ClaymanTeam.getTeam(this.dataWatcher.getWatchableObjectString(DW_TEAM))
                               .getUniqueTextures()[this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX)];
         } else if( this.dataWatcher.getWatchableObjectByte(DW_IS_TEXTURE_RARE_OR_UNIQUE) == 1 ) {
-            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM))
+            return ClaymanTeam.getTeam(this.dataWatcher.getWatchableObjectString(DW_TEAM))
                               .getRareTextures()[this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX)];
         } else {
-            return ClaymanTeam.getTeamFromName(this.dataWatcher.getWatchableObjectString(DW_TEAM))
+            return ClaymanTeam.getTeam(this.dataWatcher.getWatchableObjectString(DW_TEAM))
                               .getDefaultTextures()[this.dataWatcher.getWatchableObjectInt(DW_TEXTURE_INDEX)];
         }
     }

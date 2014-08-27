@@ -70,6 +70,8 @@ public final class CSM_Main
     public void modInit(FMLInitializationEvent event) {
         SoldierUpgrades.initialize();
 
+        RegistryRecipes.initialize();
+
         FMLCommonHandler.instance().bus().register(this);
 
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CSM_Main.MOD_CHANNEL);

@@ -115,7 +115,7 @@ public class ItemClayManDoll
         if( stack != null ) {
             NBTTagCompound itemNbt = stack.getTagCompound();
             if( itemNbt != null && itemNbt.hasKey("team") ) {
-                return ClaymanTeam.getTeamFromName(itemNbt.getString("team"));
+                return ClaymanTeam.getTeam(itemNbt.getString("team"));
             } else {
                 return ClaymanTeam.NULL_TEAM;
             }
@@ -136,6 +136,11 @@ public class ItemClayManDoll
 
     public static void setTeamForItem(String team, ItemStack stack) {
         NBTTagCompound nbt = new NBTTagCompound();
+
+        if( stack.hasTagCompound() ) {
+            nbt = stack.getTagCompound();
+        }
+
         nbt.setString("team", team);
         stack.setTagCompound(nbt);
     }
