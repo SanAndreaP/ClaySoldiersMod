@@ -48,6 +48,8 @@ public final class RegistryRecipes
                         }
                     } else if( stack.getItem() instanceof ItemClayManDoll ) {
                         hasDoll = true;
+                    } else {
+                        return false;
                     }
                 }
             }

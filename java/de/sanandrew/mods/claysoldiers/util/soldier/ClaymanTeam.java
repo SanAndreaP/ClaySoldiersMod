@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -155,6 +156,7 @@ public final class ClaymanTeam
         this.name_ = teamName;
         this.teamColor_ = 0xFFFFFF;
         this.iconColor_ = 0xFFFFFF;
+        this.teamItem_ = new ItemStack(Blocks.air);
     }
 
     private ClaymanTeam(String teamName, int teamColor, ItemStack teamItem, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures)
@@ -170,6 +172,10 @@ public final class ClaymanTeam
             throw new ClaymanTeamRegistrationException("iconTexture cannot be null!");
         } else if( iconTexture.isEmpty() ) {
             throw new ClaymanTeamRegistrationException("iconTexture cannot be empty!");
+        }
+
+        if( teamItem == null ) {
+            throw new ClaymanTeamRegistrationException("teamItem cannot be null!");
         }
 
         this.name_ = teamName;
