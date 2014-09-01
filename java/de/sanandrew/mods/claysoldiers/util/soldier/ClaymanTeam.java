@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -17,7 +18,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
@@ -132,7 +132,7 @@ public final class ClaymanTeam
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white.png",
                                     CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/white2.png"}
         ).useTeamColorAsItemColor();
-        registerTeam("melon", 0x91D400, new ItemStack(Items.melon), CSM_Main.MOD_ID + ":doll_melon",
+        registerTeam("melon", 0x91D400, new ItemStack(Blocks.melon_block), CSM_Main.MOD_ID + ":doll_melon",
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/melon.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/melon.png" },
                      null
@@ -156,7 +156,7 @@ public final class ClaymanTeam
         this.name_ = teamName;
         this.teamColor_ = 0xFFFFFF;
         this.iconColor_ = 0xFFFFFF;
-        this.teamItem_ = new ItemStack(Blocks.air);
+        this.teamItem_ = new ItemStack(Blocks.command_block);
     }
 
     private ClaymanTeam(String teamName, int teamColor, ItemStack teamItem, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures)
@@ -287,18 +287,16 @@ public final class ClaymanTeam
 
     public static ClaymanTeam getTeam(ItemStack stack) {
         if( stack == null ) {
-            return null;
+            return NULL_TEAM;
         }
 
         for( ClaymanTeam team : TEAMS_.values() ) {
-            if( stack.getItem() == team.getTeamItem().getItem() ) {
-                if( team.getTeamItem().getItemDamage() == OreDictionary.WILDCARD_VALUE || stack.getItemDamage() == team.getTeamItem().getItemDamage() ) {
-                    return team;
-                }
+            if( SAPUtils.areStacksEqualWithWCV(stack, team.getTeamItem()) ) {
+                return team;
             }
         }
 
-        return null;
+        return NULL_TEAM;
     }
 
     public static List<String> getTeamNamesForDolls() {

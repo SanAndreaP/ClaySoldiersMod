@@ -6,43 +6,59 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.mutable.MutableInt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class RegistryRecipes
 {
+    public static RecipeSoldiers recSoldiersInst;
+
     @SuppressWarnings("unchecked")
     public static void initialize() {
-        CraftingManager.getInstance().getRecipeList().add(new RecipeDyeSoldiers(4));
-        CraftingManager.getInstance().getRecipeList().add(new RecipeDyeSoldiers(9));
+        recSoldiersInst = new RecipeSoldiers();
+
+        recSoldiersInst.addDollMaterial(new ItemStack(Items.dye, 1, OreDictionary.WILDCARD_VALUE));
+        recSoldiersInst.addDollMaterial(new ItemStack(Blocks.melon_block, 1, OreDictionary.WILDCARD_VALUE));
+
+        CraftingManager.getInstance().getRecipeList().add(recSoldiersInst);
     }
 
-    private static class RecipeDyeSoldiers implements IRecipe {
-        private final int size_;
+    public static class RecipeSoldiers implements IRecipe {
+        private final List<ItemStack> dollMaterials_;
 
-        public RecipeDyeSoldiers(int size) {
-            this.size_ = size;
+        public RecipeSoldiers() {
+            this.dollMaterials_ = new ArrayList<>();
+        }
+
+        public void addDollMaterial(ItemStack stack) {
+            this.dollMaterials_.add(stack);
         }
 
         @Override
         public boolean matches(InventoryCrafting inventory, World world) {
-            boolean hasDye = false;
+            boolean hasMaterial = false;
             boolean hasDoll = false;
-            for( int i = 0; i < this.size_; i++ ) {
+            for( int i = 0; i < 9; i++ ) {
                 ItemStack stack = inventory.getStackInSlot(i);
                 if( stack != null ) {
-                    if( stack.getItem() instanceof ItemDye ) {
-                        if( !hasDye ) {
-                            hasDye = true;
+                    if( SAPUtils.isItemInStackArray(stack, this.dollMaterials_) ) {
+                        if( !hasMaterial ) {
+                            hasMaterial = true;
                         } else  {
                             return false;
                         }
@@ -54,19 +70,19 @@ public final class RegistryRecipes
                 }
             }
 
-            return hasDoll && hasDye;
+            return hasDoll && hasMaterial;
         }
 
         @Override
         public ItemStack getCraftingResult(InventoryCrafting inventory) {
-            ItemStack dye = null;
+            ItemStack material = null;
             Pair<ItemStack, MutableInt> doll = null;
-            for( int i = 0; i < this.size_; i++ ) {
+            for( int i = 0; i < 9; i++ ) {
                 ItemStack stack = inventory.getStackInSlot(i);
                 if( stack != null ) {
-                    if( stack.getItem() instanceof ItemDye ) {
-                        if( dye == null ) {
-                            dye = stack;
+                    if( SAPUtils.isItemInStackArray(stack, this.dollMaterials_) ) {
+                        if( material == null ) {
+                            material = stack;
                         } else {
                             return null;
                         }
@@ -80,12 +96,12 @@ public final class RegistryRecipes
                 }
             }
 
-            if( doll != null ) {
+            if( doll != null && material != null ) {
                 ItemStack result = new ItemStack(RegistryItems.dollSoldier, doll.getValue1().getValue());
                 if( doll.getValue1().getValue() == 1 && doll.getValue0().hasTagCompound() ) {
                     result.setTagCompound((NBTTagCompound) doll.getValue0().getTagCompound().copy());
                 }
-                ItemClayManDoll.setTeamForItem(ClaymanTeam.getTeam(dye).getTeamName(), result);
+                ItemClayManDoll.setTeamForItem(ClaymanTeam.getTeam(material).getTeamName(), result);
 
                 return result;
             }
@@ -95,7 +111,7 @@ public final class RegistryRecipes
 
         @Override
         public int getRecipeSize() {
-            return this.size_;
+            return 9;
         }
 
         @Override
