@@ -37,6 +37,12 @@ item.claysoldiers:clayman_doll.white.name=White Soldier
 item.claysoldiers:clayman_doll.white.color=White
 item.claysoldiers:clayman_doll.melon.name=Melon Soldier
 item.claysoldiers:clayman_doll.melon.color=Melon
+item.claysoldiers:clayman_doll.pumpkin.name=Pumpkin Soldier
+item.claysoldiers:clayman_doll.pumpkin.color=Pumpkin
+item.claysoldiers:clayman_doll.coal.name=Coal Soldier
+item.claysoldiers:clayman_doll.coal.color=Coal
+item.claysoldiers:clayman_doll.redstone.name=Redstone Soldier
+item.claysoldiers:clayman_doll.redstone.color=Redstone
 
 item.claysoldiers:horsemount_doll.dirt.name=Dirt Horse
 item.claysoldiers:horsemount_doll.sand.name=Sand Horse

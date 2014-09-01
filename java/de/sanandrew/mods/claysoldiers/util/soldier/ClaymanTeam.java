@@ -137,6 +137,26 @@ public final class ClaymanTeam
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/melon.png" },
                      null
         );
+        registerTeam("pumpkin", 0xDE8509, new ItemStack(Blocks.pumpkin), CSM_Main.MOD_ID + ":doll_pumpkin",
+                       new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/pumpkin.png",
+                                      CSM_Main.MOD_ID + ":textures/entity/soldiers/pumpkin2.png" },
+                       new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/pumpkin.png",
+                                      CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/pumpkin2.png" },
+                       new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/pumpkin.png",
+                                      CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/pumpkin2.png" }
+        );
+        registerTeam("coal", 0x252525, new ItemStack(Blocks.torch), CSM_Main.MOD_ID + ":doll_coal",
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/coal.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/coal.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/coal.png" }
+        );
+        registerTeam("redstone", 0xD90707, new ItemStack(Blocks.redstone_torch), CSM_Main.MOD_ID + ":doll_redstone",
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/redstone.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers/redstone2.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/redstone.png" },
+                     new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/redstone.png",
+                                    CSM_Main.MOD_ID + ":textures/entity/soldiers/redstone2.png" }
+        );
     }
 
     private String name_;
