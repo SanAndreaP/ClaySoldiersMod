@@ -116,7 +116,7 @@ public final class ClaymanTeam
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/lightblue.png" },
                      null
         ).useTeamColorAsItemColor();
-        registerTeam("magenta", 0xB24CD8, new ItemStack(Items.dye, 1, 13),
+        registerTeam("magenta", 0xE000FF, new ItemStack(Items.dye, 1, 13),
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers/magenta.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_rare/magenta.png" },
                      new String[] { CSM_Main.MOD_ID + ":textures/entity/soldiers_unique/magenta.png" }
