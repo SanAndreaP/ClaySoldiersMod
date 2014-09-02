@@ -11,9 +11,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderHorseMount;
+import de.sanandrew.mods.claysoldiers.client.render.entity.RenderPegasusMount;
 import de.sanandrew.mods.claysoldiers.client.render.entity.projectile.RenderBlockProjectile;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityEmeraldChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityFirechargeChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityGravelChunk;
@@ -30,6 +32,7 @@ public final class RegistryEntities
         RenderingRegistry.registerEntityRenderingHandler(EntitySnowChunk.class, new RenderBlockProjectile(Blocks.snow));
         RenderingRegistry.registerEntityRenderingHandler(EntityFirechargeChunk.class, new RenderBlockProjectile(Blocks.lava)); //TODO: substitude until proper
                                                                                                                                //TODO: texture arrives
+        RenderingRegistry.registerEntityRenderingHandler(EntityPegasusMount.class, new RenderPegasusMount());
     }
 
     public static void registerEntities(Object mod) {
@@ -41,5 +44,6 @@ public final class RegistryEntities
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntitySnowChunk.class, "snowchunk", entityId++, mod, 64, 1, true);
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityFirechargeChunk.class, "firechunk", entityId++, mod, 64, 1, true);
         cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityEmeraldChunk.class, "emeraldchunk", entityId++, mod, 64, 1, true);
+        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityPegasusMount.class, "pegasusmount", entityId++, mod, 64, 1, true);
     }
 }

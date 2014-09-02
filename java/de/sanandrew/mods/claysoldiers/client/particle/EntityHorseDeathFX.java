@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
-import de.sanandrew.mods.claysoldiers.entity.mount.EnumHorseType;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import net.minecraft.client.particle.EntityBreakingFX;
 import net.minecraft.world.World;

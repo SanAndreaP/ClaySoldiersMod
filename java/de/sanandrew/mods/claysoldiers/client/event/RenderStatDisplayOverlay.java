@@ -14,7 +14,7 @@ import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
-import de.sanandrew.mods.claysoldiers.entity.mount.EnumHorseType;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;

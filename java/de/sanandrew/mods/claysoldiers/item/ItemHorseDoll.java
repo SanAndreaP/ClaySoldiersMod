@@ -10,7 +10,9 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
-import de.sanandrew.mods.claysoldiers.entity.mount.EnumHorseType;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
+import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,12 +32,14 @@ public class ItemHorseDoll extends Item
 {
     @SideOnly(Side.CLIENT)
     private Map<EnumHorseType, IIcon> icons;
+    @SideOnly(Side.CLIENT)
+    private IIcon pegasusWings;
 
     public ItemHorseDoll() {
         super();
-        maxStackSize = 16;
-        setHasSubtypes(true);
-        setMaxDamage(0);
+        this.setMaxStackSize(16);
+        this.setHasSubtypes(true);
+        this.setMaxDamage(0);
     }
 
     @Override
@@ -60,7 +64,9 @@ public class ItemHorseDoll extends Item
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityHorseMount dan = spawnHorse(world, getType(stack), (double) blockX + 0.5D, (double) blockY + entityOffY, (double) blockZ + 0.5D);
+                EntityHorseMount dan = spawnHorse(world, getType(stack), getIsPegasus(stack), (double) blockX + 0.5D, (double) blockY + entityOffY,
+                                                  (double) blockZ + 0.5D
+                );
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -84,8 +90,14 @@ public class ItemHorseDoll extends Item
      * @param world the World the entity will spawn in
      * @param type the type the horse will be
      */
-    public static EntityHorseMount spawnHorse(World world, EnumHorseType type, double x, double y, double z) {
-        EntityHorseMount jordan = new EntityHorseMount(world, type);
+    public static EntityHorseMount spawnHorse(World world, EnumHorseType type, boolean isPegasus, double x, double y, double z) {
+        EntityHorseMount jordan;
+
+        if( isPegasus ) {
+            jordan = new EntityPegasusMount(world, type);
+        } else {
+            jordan = new EntityHorseMount(world, type);
+        }
 
         jordan.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
         jordan.rotationYawHead = jordan.rotationYaw;
@@ -97,20 +109,24 @@ public class ItemHorseDoll extends Item
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack, int pass) {
-        return this.icons.get(getType(stack));
+    public int getRenderPasses(int metadata) {
+        return 2;
+    }
+
+    @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIconIndex(ItemStack stack) {
-        return this.icons.get(getType(stack));
+    public IIcon getIcon(ItemStack stack, int pass) {
+        return pass == 0 || !getIsPegasus(stack) ? this.icons.get(getType(stack)) : this.pegasusWings;
     }
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return getType(stack).itemData.getValue1();
+        return pass == 0 || !getIsPegasus(stack) ? getType(stack).itemData.getValue1() : 0xFFFFFF;
     }
 
     @SideOnly(Side.CLIENT)
@@ -132,6 +148,18 @@ public class ItemHorseDoll extends Item
             }
             this.icons.put(type, names.get(type.itemData.getValue0()));
         }
+        this.pegasusWings = iconRegister.registerIcon(CSM_Main.MOD_ID + ":doll_pegasus_wing");
+    }
+
+    public static void setType(ItemStack stack, EnumHorseType type, boolean isPegasus) {
+        if( type.itemData == null ) {
+            return;
+        }
+
+        NBTTagCompound nbt = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
+        nbt.setString("type", type.toString());
+        nbt.setBoolean("pegasus", isPegasus);
+        stack.setTagCompound(nbt);
     }
 
     public static EnumHorseType getType(ItemStack stack) {
@@ -143,23 +171,35 @@ public class ItemHorseDoll extends Item
         }
     }
 
+    public static boolean getIsPegasus(ItemStack stack) {
+        NBTTagCompound itemNbt = stack.getTagCompound();
+        return itemNbt != null && itemNbt.getBoolean("pegasus");
+    }
+
     @Override
     @SuppressWarnings("unchecked")
-    public void getSubItems(Item itemInst, CreativeTabs creativeTab, List stacks) {
+    public void getSubItems(Item item, CreativeTabs creativeTab, List stacks) {
         for( EnumHorseType type : EnumHorseType.values ) {
             if( type.itemData == null ) {
                 continue;
             }
+
             ItemStack stack = new ItemStack(this, 1);
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setString("type", type.toString());
-            stack.setTagCompound(nbt);
+            setType(stack, type, false);
+            stacks.add(stack.copy());
+            setType(stack, type, true);
             stacks.add(stack);
         }
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName(par1ItemStack) + "." + getType(par1ItemStack).toString().toLowerCase();
+    public String getUnlocalizedName(ItemStack stack) {
+        String name = super.getUnlocalizedName(stack) + "." + getType(stack).toString().toLowerCase();
+
+        if( getIsPegasus(stack) ) {
+            name += ".pegasus";
+        }
+
+        return name;
     }
 }

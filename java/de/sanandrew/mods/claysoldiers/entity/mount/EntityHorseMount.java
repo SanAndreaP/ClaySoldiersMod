@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -109,34 +110,6 @@ public class EntityHorseMount
     }
 
 	@Override
-	public void onUpdate() {
-        super.onUpdate();
-
-//        if( riddenByEntity == null ) {
-//
-//            List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.1D, 0.1D, 0.1D));
-//
-//            for (int i = 0; i < list.size(); i++) {
-//                Entity entity = (Entity)list.get(i);
-//
-//                if (!(entity instanceof EntityClayMan)) {
-//                    continue;
-//                }
-//
-//                EntityLiving entityliving = (EntityLiving)entity;
-//
-//                if (entityliving.ridingEntity != null || entityliving.riddenByEntity == this) {
-//                    continue;
-//                }
-//
-//                entity.mountEntity(this);
-//                break;
-//            }
-//
-//        }
-    }
-
-	@Override
 	public void updateEntityActionState() {
 		if( this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityClayMan) ) {
 			super.updateEntityActionState();
@@ -203,7 +176,7 @@ public class EntityHorseMount
 
 	@Override
 	public void mountEntity(Entity entity) {
-		if (!(entity != null && entity instanceof EntityMinecart)) {
+		if( !(entity != null && entity instanceof EntityMinecart) ) {
 			super.mountEntity(entity);
 		}
 	}

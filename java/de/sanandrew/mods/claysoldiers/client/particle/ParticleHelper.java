@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.*;
-import de.sanandrew.mods.claysoldiers.entity.mount.EnumHorseType;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.block.Block;

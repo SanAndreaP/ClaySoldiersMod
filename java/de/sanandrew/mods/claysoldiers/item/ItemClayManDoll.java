@@ -134,7 +134,7 @@ public class ItemClayManDoll
         }
     }
 
-    public static void setTeamForItem(String team, ItemStack stack) {
+    public static ItemStack setTeamForItem(String team, ItemStack stack) {
         NBTTagCompound nbt = new NBTTagCompound();
 
         if( stack.hasTagCompound() ) {
@@ -143,6 +143,8 @@ public class ItemClayManDoll
 
         nbt.setString("team", team);
         stack.setTagCompound(nbt);
+
+        return stack;
     }
 
     @Override

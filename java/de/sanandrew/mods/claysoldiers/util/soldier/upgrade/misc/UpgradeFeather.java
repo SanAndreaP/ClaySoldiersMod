@@ -24,7 +24,6 @@ public class UpgradeFeather
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-
         if( clayMan.ridingEntity == null && !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT))
             && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F )
         {
