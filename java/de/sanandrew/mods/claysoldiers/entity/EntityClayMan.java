@@ -159,7 +159,7 @@ public class EntityClayMan
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if( !(source.getEntity() instanceof EntityPlayer) ) {
+        if( !(source.getEntity() instanceof EntityPlayer) && source != IDisruptable.disruptDamage ) {
             if( this.ridingEntity != null && rand.nextInt(4) == 0 ) {
                 this.ridingEntity.attackEntityFrom(source, damage);
                 return false;

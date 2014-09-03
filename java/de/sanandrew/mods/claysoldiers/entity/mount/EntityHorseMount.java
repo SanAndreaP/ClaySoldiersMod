@@ -49,7 +49,9 @@ public class EntityHorseMount
         this.moveSpeed = 0.6F;
         this.renderDistanceWeight = 5D;
 
-        this.setSize(0.25F, 0.4F);
+        this.setSize(0.35F, 0.7F);
+
+        this.myEntitySize = EnumEntitySize.SIZE_1;
 	}
 
     public EntityHorseMount(World world, EnumHorseType horseType) {
@@ -109,7 +111,12 @@ public class EntityHorseMount
         this.setHorseSpecs();
     }
 
-	@Override
+    @Override
+    public double getMountedYOffset() {
+        return super.getMountedYOffset() - 0.3D;
+    }
+
+    @Override
 	public void updateEntityActionState() {
 		if( this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityClayMan) ) {
 			super.updateEntityActionState();
@@ -172,6 +179,7 @@ public class EntityHorseMount
 	@Override
 	protected void jump() {
 		this.motionY = 0.4D;
+        this.isAirBorne = true;
     }
 
 	@Override

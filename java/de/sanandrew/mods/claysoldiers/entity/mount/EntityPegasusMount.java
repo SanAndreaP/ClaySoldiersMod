@@ -28,14 +28,6 @@ public class EntityPegasusMount
     }
 
     @Override
-    public void moveEntity(double x, double y, double z) {
-        double origMaxY = this.boundingBox.maxY;
-        this.boundingBox.maxY += 0.28F;
-        super.moveEntity(x, y, z);
-        this.boundingBox.maxY = origMaxY;
-    }
-
-    @Override
     protected void fall(float fallHeight) { }
 
     @Override
@@ -60,7 +52,8 @@ public class EntityPegasusMount
 
             if( dist > 2.25D ) {
                 if( this.onGround ) {
-                    this.jump();
+                    this.motionY = 0.4D;
+                    this.isAirBorne = true;
                 } else {
                     int[] blockPos = new int[] { (int) posX, (int) posY - 1, (int) posZ };
                     Block blockBelow = this.worldObj.getBlock(blockPos[0], blockPos[1], blockPos[2]);
@@ -68,6 +61,7 @@ public class EntityPegasusMount
                         AxisAlignedBB aabb = blockBelow.getCollisionBoundingBoxFromPool(this.worldObj, blockPos[0], blockPos[1], blockPos[2]);
                         if( aabb == null || aabb.maxY > (this.posY - 1.0D) ) {
                             this.motionY = 0.2D;
+                            this.isAirBorne = true;
                         }
                     }
                 }
