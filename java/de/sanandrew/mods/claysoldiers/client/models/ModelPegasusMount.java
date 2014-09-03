@@ -56,7 +56,7 @@ public class ModelPegasusMount
 
         this.wingLeft.rotateAngleY += Math.sin(wingSwingAmount) / 6.0F;
         this.wingRight.rotateAngleY -= Math.sin(wingSwingAmount) / 6.0F;
-        this.wingLeft.rotateAngleZ += Math.cos(wingSwingAmount) / (onGroundB ? 10.0F : 2.0F);
-        this.wingRight.rotateAngleZ -= Math.cos(wingSwingAmount) / (onGroundB ? 10.0F : 2.0F);
+        this.wingLeft.rotateAngleZ -= Math.cos(wingSwingAmount) / (onGroundB ? 10.0F : 1.5F);
+        this.wingRight.rotateAngleZ += Math.cos(wingSwingAmount) / (onGroundB ? 10.0F : 1.5F);
     }
 }

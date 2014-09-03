@@ -34,7 +34,9 @@ public class EntityPegasusMount
 
     @Override
     public void onUpdate() {
-        this.calcWingSwing();
+        if( this.worldObj.isRemote ) {
+            this.calcWingSwing();
+        }
 
         this.jumpMovementFactor = this.getAIMoveSpeed() * (0.16277136F / (0.91F * 0.91F * 0.91F));
 
@@ -80,13 +82,14 @@ public class EntityPegasusMount
         this.wingSwingStep = this.wingSwing;
 
         if( this.onGround ) {
-            this.wingSwing += 0.15F;
+            this.wingSwing += Math.PI / 16.0F;
         } else {
-            this.wingSwing += 0.6F;
+            this.wingSwing += Math.PI / 4.0F;
         }
 
         if( this.wingSwing > Math.PI * 2.0F ) {
-            this.wingSwing -= Math.PI * 2.0F;
+            this.wingSwing = 0;
+            this.prevWingSwing = 0;
         }
     }
 }

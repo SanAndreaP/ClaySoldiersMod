@@ -32,9 +32,47 @@ public final class RegistryRecipes
 
     @SuppressWarnings("unchecked")
     public static void initialize() {
+        // basic soldier dolls
         CraftingManager.getInstance().addShapelessRecipe(ItemClayManDoll.setTeamForItem("clay", new ItemStack(RegistryItems.dollSoldier, 4)),
-                                                         new ItemStack(Blocks.soul_sand, 1), new ItemStack(Blocks.clay)
-        );
+                                                         new ItemStack(Blocks.soul_sand, 1), new ItemStack(Blocks.clay));
+
+        // shear blades
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(RegistryItems.shearBlade, 2),
+                                                         new ItemStack(Items.shears));
+        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Items.shears),
+                                                         new ItemStack(RegistryItems.shearBlade), new ItemStack(RegistryItems.shearBlade));
+
+        // disruptors
+        CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.disruptor),
+                                                "#|#", "#R#",
+                                                '#', new ItemStack(Blocks.clay),
+                                                '|', new ItemStack(Items.stick),
+                                                'R', new ItemStack(Items.redstone));
+        CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.disruptorHardened),
+                                                "#|#", "#R#",
+                                                '#', new ItemStack(Blocks.hardened_clay, 1, OreDictionary.WILDCARD_VALUE),
+                                                '|', new ItemStack(Items.stick),
+                                                'R', new ItemStack(Items.redstone));
+
+        // stat displays
+        CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.statDisplay),
+                                                "#G#", "#R#",
+                                                '#', new ItemStack(Blocks.clay),
+                                                'G', new ItemStack(Blocks.glass),
+                                                'R', new ItemStack(Items.redstone));
+        CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.statDisplay),
+                                                "#G#", "#R#",
+                                                '#', new ItemStack(Blocks.clay),
+                                                'G', new ItemStack(Blocks.stained_glass, 1, OreDictionary.WILDCARD_VALUE),
+                                                'R', new ItemStack(Items.redstone));
+
+        // nexus
+        CraftingManager.getInstance().addRecipe(new ItemStack(RegistryBlocks.clayNexus),
+                                                "CDC", "SOS", "OOO",
+                                                'C', new ItemStack(Items.clay_ball),
+                                                'D', new ItemStack(Items.diamond),
+                                                'S', new ItemStack(Blocks.soul_sand),
+                                                'O', new ItemStack(Blocks.obsidian));
 
         recSoldiersInst = new RecipeSoldiers();
 
