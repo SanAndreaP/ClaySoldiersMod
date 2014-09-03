@@ -15,16 +15,18 @@ import net.minecraft.world.World;
 public class EntityPegasusMount
     extends EntityHorseMount
 {
-    //TODO make animation of wings
     public float wingSwing = 0.0F;
+    public float wingSwingStep = 0.0F;
     public float prevWingSwing = 0.0F;
 
     public EntityPegasusMount(World world) {
         super(world);
+        this.wingSwing = this.rand.nextFloat() * (float) Math.PI;
     }
 
     public EntityPegasusMount(World world, EnumHorseType horseType) {
         super(world, horseType);
+        this.wingSwing = this.rand.nextFloat() * (float) Math.PI;
     }
 
     @Override
@@ -32,6 +34,8 @@ public class EntityPegasusMount
 
     @Override
     public void onUpdate() {
+        this.calcWingSwing();
+
         this.jumpMovementFactor = this.getAIMoveSpeed() * (0.16277136F / (0.91F * 0.91F * 0.91F));
 
         this.fallDistance = 0.0F;
@@ -69,5 +73,20 @@ public class EntityPegasusMount
         }
 
         super.onUpdate();
+    }
+
+    private void calcWingSwing() {
+        this.prevWingSwing = this.wingSwing;
+        this.wingSwingStep = this.wingSwing;
+
+        if( this.onGround ) {
+            this.wingSwing += 0.15F;
+        } else {
+            this.wingSwing += 0.6F;
+        }
+
+        if( this.wingSwing > Math.PI * 2.0F ) {
+            this.wingSwing -= Math.PI * 2.0F;
+        }
     }
 }
