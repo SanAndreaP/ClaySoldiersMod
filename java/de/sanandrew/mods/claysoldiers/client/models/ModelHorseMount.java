@@ -95,10 +95,6 @@ public class ModelHorseMount
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch, float partTicks, Entity entity) {
         head.rotateAngleY = rotYaw / 57.29578F;
         head.rotateAngleX = (rotPitch / 57.29578F) + 0.79F;
-//        leg1.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 2.0F * f1 * 0.25F;
-//        leg2.rotateAngleX = MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.25F;
-//        leg3.rotateAngleX = MathHelper.cos(f * 0.6662F) * 0.5F * f1;
-//        leg4.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 0.5F * f1;
 
         leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.25F;
         leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.25F;

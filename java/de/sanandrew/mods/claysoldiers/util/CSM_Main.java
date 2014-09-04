@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -23,17 +29,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraftforge.common.config.Configuration;
 
-/**
- * @author SanAndreasP
- * @version 1.0
- */
-
 @Mod(modid = CSM_Main.MOD_ID, version = CSM_Main.VERSION, name = "Clay Soldiers Mod", guiFactory = CSM_Main.MOD_GUI_FACTORY,
      dependencies = "required-after:sapmanpack@[2.0.0,)")
 public final class CSM_Main
 {
     public static final String MOD_ID = "claysoldiers";
-    public static final String VERSION = "2.0";
+    public static final String VERSION = "2.0.0";
     public static final String MOD_LOG = "ClaySoldiers";
     public static final String MOD_CHANNEL = "ClaySoldiersNWCH";
     public static final String MOD_GUI_FACTORY = "de.sanandrew.mods.claysoldiers.client.gui.ModGuiFactory";
@@ -74,7 +75,7 @@ public final class CSM_Main
 
         FMLCommonHandler.instance().bus().register(this);
 
-        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CSM_Main.MOD_CHANNEL);
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
 
         proxy.modInit();
 

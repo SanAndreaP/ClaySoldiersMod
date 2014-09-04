@@ -34,4 +34,14 @@ public class CreativeTabClaySoldiers
 
         return this.tabIcon;
     }
+
+    @Override
+    public String getBackgroundImageName() {
+        return "claysoldiers.png";
+    }
+
+    @Override
+    public boolean hasSearchBar() {
+        return true;
+    }
 }
