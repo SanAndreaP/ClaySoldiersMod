@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.mount;
 
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import net.minecraft.init.Blocks;
@@ -79,4 +80,22 @@ public enum EnumTurtleType
     }
 
     public static final EnumTurtleType[] values = values();
+
+    public static EnumTurtleType getTypeFromItem(ItemStack stack) {
+        if( stack == null ) {
+            return null;
+        }
+
+        for( EnumTurtleType type : values ) {
+            if( type.item == null ) {
+                return null;
+            }
+
+            if( SAPUtils.areStacksEqualWithWCV(type.item, stack) ) {
+                return type;
+            }
+        }
+
+        return null;
+    }
 }

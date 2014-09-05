@@ -45,15 +45,35 @@ item.claysoldiers:clayman_doll.redstone.name=Redstone-Soldat
 item.claysoldiers:clayman_doll.redstone.color=Redstone
 
 item.claysoldiers:horsemount_doll.dirt.name=Erdpferd
+item.claysoldiers:horsemount_doll.dirt.pegasus.name=Erdpegasus
 item.claysoldiers:horsemount_doll.sand.name=Sandpferd
+item.claysoldiers:horsemount_doll.sand.pegasus.name=Sandpegasus
 item.claysoldiers:horsemount_doll.gravel.name=Kiespferd
+item.claysoldiers:horsemount_doll.gravel.pegasus.name=Kiespegasus
 item.claysoldiers:horsemount_doll.snow.name=Schneepferd
+item.claysoldiers:horsemount_doll.snow.pegasus.name=Schneepegasus
 item.claysoldiers:horsemount_doll.grass.name=Graspferd
-item.claysoldiers:horsemount_doll.lapis.name=Lapis Lazuli Pferd
+item.claysoldiers:horsemount_doll.grass.pegasus.name=Graspegasus
+item.claysoldiers:horsemount_doll.lapis.name=Lapis Lazuli-Pferd
+item.claysoldiers:horsemount_doll.lapis.pegasus.name=Lapis Lazuli-Pegasus
 item.claysoldiers:horsemount_doll.clay.name=Lehmpferd
+item.claysoldiers:horsemount_doll.clay.pegasus.name=Lehmpegasus
 item.claysoldiers:horsemount_doll.carrot.name=Karottenpferd
+item.claysoldiers:horsemount_doll.carrot.pegasus.name=Karottenpegasus
 item.claysoldiers:horsemount_doll.soulsand.name=Seelensandpferd
+item.claysoldiers:horsemount_doll.soulsand.pegasus.name=Seelensandpegasus
 item.claysoldiers:horsemount_doll.cake.name=Kuchenpferd
+item.claysoldiers:horsemount_doll.cake.pegasus.name=Kuchenpegasus
+
+item.claysoldiers:turtlemount_doll.cobble.name=Bruchsteinschildkröte
+item.claysoldiers:turtlemount_doll.mossy.name=Bemooste Bruchsteinschildkröte
+item.claysoldiers:turtlemount_doll.netherrack.name=Netherrack-Schildkröte
+item.claysoldiers:turtlemount_doll.melon.name=Melonenschildkröte
+item.claysoldiers:turtlemount_doll.sandstone.name=Sandsteinschildkröte
+item.claysoldiers:turtlemount_doll.endstone.name=Endsteinschildkröte
+item.claysoldiers:turtlemount_doll.pumpkin.name=Kürbisschildkröte
+item.claysoldiers:turtlemount_doll.lapis.name=Lapis Lazuli-Schildkröte
+item.claysoldiers:turtlemount_doll.cake.name=Kuchenschildkröte
 
 item.claysoldiers:shear_blade.name=Scherenklinge
 
@@ -61,4 +81,4 @@ item.claysoldiers:stat_display.name=Lehm-Statistikmonitor
 item.claysoldiers:stat_display.title.soldiers=Soldaten
 item.claysoldiers:stat_display.title.mounts=Reittiere
 
-itemGroup.claysoldiers:csm_tab=Lehmsoldaten
+itemGroup.claysoldiers:csm_tab=Clay Soldiers

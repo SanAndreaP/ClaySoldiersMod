@@ -45,15 +45,35 @@ item.claysoldiers:clayman_doll.redstone.name=Redstone Soldier
 item.claysoldiers:clayman_doll.redstone.color=Redstone
 
 item.claysoldiers:horsemount_doll.dirt.name=Dirt Horse
+item.claysoldiers:horsemount_doll.dirt.pegasus.name=Dirt Pegasus
 item.claysoldiers:horsemount_doll.sand.name=Sand Horse
+item.claysoldiers:horsemount_doll.sand.pegasus.name=Sand Pegasus
 item.claysoldiers:horsemount_doll.gravel.name=Gravel Horse
+item.claysoldiers:horsemount_doll.gravel.pegasus.name=Gravel Pegasus
 item.claysoldiers:horsemount_doll.snow.name=Snow Horse
+item.claysoldiers:horsemount_doll.snow.pegasus.name=Snow Pegasus
 item.claysoldiers:horsemount_doll.grass.name=Grass Horse
+item.claysoldiers:horsemount_doll.grass.pegasus.name=Grass Pegasus
 item.claysoldiers:horsemount_doll.lapis.name=Lapis Lazuli Horse
+item.claysoldiers:horsemount_doll.lapis.pegasus.name=Lapis Lazuli Pegasus
 item.claysoldiers:horsemount_doll.clay.name=Clay Horse
+item.claysoldiers:horsemount_doll.clay.pegasus.name=Clay Pegasus
 item.claysoldiers:horsemount_doll.carrot.name=Carrot Horse
+item.claysoldiers:horsemount_doll.carrot.pegasus.name=Carrot Pegasus
 item.claysoldiers:horsemount_doll.soulsand.name=Soulsand Horse
+item.claysoldiers:horsemount_doll.soulsand.pegasus.name=Soulsand Pegasus
 item.claysoldiers:horsemount_doll.cake.name=Cake Horse
+item.claysoldiers:horsemount_doll.cake.pegasus.name=Cake Pegasus
+
+item.claysoldiers:turtlemount_doll.cobble.name=Cobblestone Turtle
+item.claysoldiers:turtlemount_doll.mossy.name=Mossy Cobble Turtle
+item.claysoldiers:turtlemount_doll.netherrack.name=Netherrack Turtle
+item.claysoldiers:turtlemount_doll.melon.name=Melon Turtle
+item.claysoldiers:turtlemount_doll.sandstone.name=Sandstone Turtle
+item.claysoldiers:turtlemount_doll.endstone.name=Endstone Turtle
+item.claysoldiers:turtlemount_doll.pumpkin.name=Pumpkin Turtle
+item.claysoldiers:turtlemount_doll.lapis.name=Lapis Lazuli Turtle
+item.claysoldiers:turtlemount_doll.cake.name=Cake Turtle
 
 item.claysoldiers:shear_blade.name=Shear Blade
 
