@@ -28,7 +28,8 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Map;
 
-public class ItemHorseDoll extends Item
+public class ItemHorseDoll
+    extends Item
 {
     @SideOnly(Side.CLIENT)
     private Map<EnumHorseType, IIcon> icons;

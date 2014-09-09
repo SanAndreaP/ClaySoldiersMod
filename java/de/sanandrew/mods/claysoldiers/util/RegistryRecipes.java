@@ -23,6 +23,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.util.ArrayList;
@@ -83,6 +85,10 @@ public final class RegistryRecipes
         recSoldiersInst.addDollMaterial(new ItemStack(Blocks.pumpkin, 1, OreDictionary.WILDCARD_VALUE));
         recSoldiersInst.addDollMaterial(new ItemStack(Blocks.torch, 1, OreDictionary.WILDCARD_VALUE));
         recSoldiersInst.addDollMaterial(new ItemStack(Blocks.redstone_torch, 1, OreDictionary.WILDCARD_VALUE));
+
+        RecipeSorter.register(CSM_Main.MOD_ID + ":recipe_soldiers", RecipeSoldiers.class, Category.SHAPED, "after:minecraft:shaped");
+        RecipeSorter.register(CSM_Main.MOD_ID + ":recipe_horses", RecipeHorses.class, Category.SHAPED, "after:minecraft:shaped");
+        RecipeSorter.register(CSM_Main.MOD_ID + ":recipe_turtles", RecipeTurtles.class, Category.SHAPED, "after:minecraft:shaped");
 
         CraftingManager.getInstance().getRecipeList().add(recSoldiersInst);
         CraftingManager.getInstance().getRecipeList().add(new RecipeHorses());
