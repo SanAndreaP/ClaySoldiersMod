@@ -395,6 +395,7 @@ public class TileEntityClayNexus
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.func_148857_g());
+        this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, blockType);
     }
 
     public float getHealth() {

@@ -96,6 +96,7 @@ public class BlockClayNexus
             }
 
             teNexus.isActive = !teNexus.isActive;
+            world.setBlockMetadataWithNotify(x, y, z, teNexus.isActive ? 1 : 0, 2);
             teNexus.markDirty();
             world.markBlockForUpdate(x, y, z);
         }
@@ -105,6 +106,11 @@ public class BlockClayNexus
     @Override
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
         return side >= 0;
+    }
+
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        return world.getBlockMetadata(x, y, z) == 1 ? 6 : 0;
     }
 
     @Override
