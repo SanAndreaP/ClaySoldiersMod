@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class RenderHorseMount
-    extends RenderLiving
+        extends RenderLiving
 {
     public RenderHorseMount() {
         super(new ModelHorseMount(), 0.2F);
@@ -29,6 +29,6 @@ public class RenderHorseMount
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return ((EntityHorseMount)entity).getHorseTexture();
+        return ((EntityHorseMount) entity).getHorseTexture();
     }
 }

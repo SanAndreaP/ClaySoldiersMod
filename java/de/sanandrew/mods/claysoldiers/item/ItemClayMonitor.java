@@ -1,15 +1,17 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class ItemClayMonitor
-    extends Item
+        extends Item
 {
     public ItemClayMonitor() {
         super();

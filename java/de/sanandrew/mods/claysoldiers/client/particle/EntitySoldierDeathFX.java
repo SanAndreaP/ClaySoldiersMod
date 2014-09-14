@@ -14,7 +14,7 @@ import net.minecraft.client.particle.EntityBreakingFX;
 import net.minecraft.world.World;
 
 public class EntitySoldierDeathFX
-    extends EntityBreakingFX
+        extends EntityBreakingFX
 {
     public EntitySoldierDeathFX(World world, double x, double y, double z, ClaymanTeam team) {
         super(world, x, y, z, RegistryItems.dollSoldier);

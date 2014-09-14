@@ -14,14 +14,8 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
 
 public class UpgradeGoldNugget
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         for( EntityClayMan minion : clayMan.getSoldiersInRange() ) {
@@ -34,11 +28,20 @@ public class UpgradeGoldNugget
     }
 
     @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
+    }
+
+    @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return Collections2.filter(clayMan.getSoldiersInRange(), new Predicate<EntityClayMan>() {
-                                       @Override public boolean apply(EntityClayMan input) {
-                                           return input != null && input.hasUpgrade(UpgradeGoldNugget.class);
-                                       }
-                                   }).isEmpty();
+        Predicate<EntityClayMan> filterBy = new Predicate<EntityClayMan>()
+        {
+            @Override
+            public boolean apply(EntityClayMan input) {
+                return input != null && input.hasUpgrade(UpgradeGoldNugget.class);
+            }
+        };
+        return Collections2.filter(clayMan.getSoldiersInRange(), filterBy).isEmpty();
     }
 }

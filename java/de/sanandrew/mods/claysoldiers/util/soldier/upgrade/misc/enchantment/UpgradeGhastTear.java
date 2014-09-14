@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Collection;
 
 public class UpgradeGhastTear
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -41,8 +41,7 @@ public class UpgradeGhastTear
             EntityItem item = (EntityItem) clayMan.getTargetFollowing();
 
             if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollBrick && item.getDistanceSqToEntity(clayMan) < 1.0D
-                    && item.getEntityItem().stackSize > 0 )
-            {
+                    && item.getEntityItem().stackSize > 0 ) {
                 EntityClayMan awakened = ItemClayManDoll.spawnClayMan(clayMan.worldObj, clayMan.getClayTeam(), item.posX, item.posY, item.posZ);
 
                 awakened.playSound("dig.gravel", 1.0F, 1.0F);

@@ -13,16 +13,11 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeBowl
-    extends AUpgradeLeftHanded
+        extends AUpgradeLeftHanded
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) 20);
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     @Override
@@ -35,6 +30,12 @@ public class UpgradeBowl
         return true;
     }
 
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
+    }
+
+    @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);

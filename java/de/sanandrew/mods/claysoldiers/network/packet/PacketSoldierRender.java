@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network.packet;
 
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
@@ -11,12 +17,8 @@ import net.minecraft.network.INetHandler;
 
 import java.io.IOException;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class PacketSoldierRender
-    implements IPacket
+        implements IPacket
 {
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {

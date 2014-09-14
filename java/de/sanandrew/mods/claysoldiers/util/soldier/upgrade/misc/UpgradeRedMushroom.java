@@ -14,7 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeRedMushroom
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -22,9 +22,9 @@ public class UpgradeRedMushroom
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
+        target.addPotionEffect(new PotionEffect(Potion.poison.getId(), 40));
     }
 
     @Override
@@ -33,8 +33,8 @@ public class UpgradeRedMushroom
     }
 
     @Override
-    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
-        target.addPotionEffect(new PotionEffect(Potion.poison.getId(), 40));
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

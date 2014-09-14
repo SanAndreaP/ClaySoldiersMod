@@ -12,5 +12,6 @@ import net.minecraft.entity.projectile.EntityThrowable;
 public interface ISoldierProjectile<T extends EntityThrowable>
 {
     public void initProjectile(EntityLivingBase target, boolean homing, String clayTeam);
+
     public T getProjectileEntity();
 }

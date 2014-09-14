@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
@@ -9,12 +15,8 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand.AUpgradeLeft
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand.AUpgradeRightHanded;
 import net.minecraft.item.ItemStack;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class UpgradeHelperShearBlade
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {

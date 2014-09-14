@@ -15,7 +15,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 public class ItemRendererClayNexus
-    implements IItemRenderer
+        implements IItemRenderer
 {
     private ModelClayNexus modelClayNexus = new ModelClayNexus();
 
@@ -24,8 +24,29 @@ public class ItemRendererClayNexus
         return true;
     }
 
-    private void renderNexus(float x, float y, float z) {
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        switch( type ) {
+            case ENTITY:
+                this.renderNexus(0.0F, -0.45F, 0.0F);
+                break;
+            case EQUIPPED:
+                this.renderNexus(0.5F, 0.4F, 0.5F);
+                break;
+            case INVENTORY:
+                this.renderNexus(1.0F, 0.26F, 1.0F);
+                break;
+            default:
+                this.renderNexus(0.0F, 0.4F, 0.5F);
+        }
+    }
 
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return true;
+    }
+
+    private void renderNexus(float x, float y, float z) {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y + 1.57F + 0.125F, z);
         GL11.glRotatef(180F, 1F, 0F, 0F);
@@ -41,28 +62,5 @@ public class ItemRendererClayNexus
         GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        switch( type ){
-            case ENTITY :
-                this.renderNexus(0.0F, -0.45F, 0.0F);
-                break;
-            case EQUIPPED :
-                this.renderNexus(0.5F, 0.4F, 0.5F);
-                break;
-            case INVENTORY :
-                this.renderNexus(1.0F, 0.26F, 1.0F);
-                break;
-            default :
-                this.renderNexus(0.0F, 0.4F, 0.5F);
-        }
-
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
     }
 }

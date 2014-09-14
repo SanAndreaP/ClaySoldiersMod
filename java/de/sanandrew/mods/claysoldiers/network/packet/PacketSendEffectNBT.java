@@ -20,7 +20,7 @@ import net.minecraft.network.INetHandler;
 import java.io.IOException;
 
 public class PacketSendEffectNBT
-    implements IPacket
+        implements IPacket
 {
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
@@ -30,7 +30,7 @@ public class PacketSendEffectNBT
     @Override
     public void writeData(ByteBufOutputStream stream, Tuple dataTuple) throws IOException {
         @SuppressWarnings("unchecked")
-        Triplet<Integer, Byte, NBTTagCompound> data = (Triplet)dataTuple;
+        Triplet<Integer, Byte, NBTTagCompound> data = (Triplet) dataTuple;
 
         stream.writeInt(data.getValue0());
         stream.writeByte(data.getValue1());

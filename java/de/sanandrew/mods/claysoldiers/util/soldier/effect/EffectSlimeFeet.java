@@ -9,11 +9,11 @@ package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 
 public class EffectSlimeFeet
-    extends ASoldierEffect
+        extends ASoldierEffect
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        effectInst.getNbtTag().setShort("ticksRemain", (short)60);
+        effectInst.getNbtTag().setShort("ticksRemain", (short) 60);
     }
 
     @Override

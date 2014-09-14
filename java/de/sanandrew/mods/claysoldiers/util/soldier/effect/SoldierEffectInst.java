@@ -1,11 +1,13 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public final class SoldierEffectInst
 {
     private ASoldierEffect effect_;
@@ -19,13 +21,13 @@ public final class SoldierEffectInst
         return this.nbt_;
     }
 
-    public ASoldierEffect getEffect() {
-        return this.effect_;
-    }
-
     public void setNbtTag(NBTTagCompound nbt) {
         if( nbt != null ) {
             this.nbt_ = nbt;
         }
+    }
+
+    public ASoldierEffect getEffect() {
+        return this.effect_;
     }
 }

@@ -54,15 +54,6 @@ public class RenderSoldierRightHandEvent
         }
     }
 
-    private void renderKnuckle(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
-        GL11.glPushMatrix();
-        renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
-        GL11.glTranslatef(-0.05F, 0.55F, 0.0F);
-        GL11.glScalef(0.3F, 0.3F, 0.3F);
-        renderer.getItemRenderer().renderItem(clayMan, stack, 0);
-        GL11.glPopMatrix();
-    }
-
     private void renderRightHandItem(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
@@ -74,6 +65,15 @@ public class RenderSoldierRightHandEvent
         GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
 
+        renderer.getItemRenderer().renderItem(clayMan, stack, 0);
+        GL11.glPopMatrix();
+    }
+
+    private void renderKnuckle(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
+        GL11.glTranslatef(-0.05F, 0.55F, 0.0F);
+        GL11.glScalef(0.3F, 0.3F, 0.3F);
         renderer.getItemRenderer().renderItem(clayMan, stack, 0);
         GL11.glPopMatrix();
     }

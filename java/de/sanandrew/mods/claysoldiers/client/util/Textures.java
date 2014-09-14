@@ -12,7 +12,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
-public final class Textures {
+public final class Textures
+{
     public static IIcon shieldIcon;
     public static IIcon shieldStudIcon;
     public static IIcon starfruitShieldIcon;

@@ -11,7 +11,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import org.apache.commons.lang3.mutable.MutableDouble;
 
 public class UpgradeGlass
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void getLookRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableDouble radius) {

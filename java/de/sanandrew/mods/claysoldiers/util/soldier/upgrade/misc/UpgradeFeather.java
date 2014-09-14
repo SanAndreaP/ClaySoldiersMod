@@ -14,12 +14,15 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeFeather
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+        if( clayMan.ridingEntity != null || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
+            return MethodState.SKIP;
+        }
+
+        return !clayMan.onGround && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ? MethodState.DENY : MethodState.SKIP;
     }
 
     @Override
@@ -35,12 +38,9 @@ public class UpgradeFeather
     }
 
     @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        if( clayMan.ridingEntity != null || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
-            return MethodState.SKIP;
-        }
-
-        return !clayMan.onGround && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ? MethodState.DENY : MethodState.SKIP;
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 
     @Override

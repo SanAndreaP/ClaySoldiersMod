@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand;
 
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
@@ -13,13 +19,9 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class UpgradeShearBladeLeft
-    extends AUpgradeLeftHanded
-    implements IMeeleeUpgrade
+        extends AUpgradeLeftHanded
+        implements IMeeleeUpgrade
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -41,7 +43,7 @@ public class UpgradeShearBladeLeft
 
     @Override
     public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        upgradeInst.getNbtTag().setShort(NBT_USES,  (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
     }
 
     @Override
@@ -50,8 +52,7 @@ public class UpgradeShearBladeLeft
             clayMan.playSound("random.break", 1.0F, 1.0F);
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
                                             Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
-                                                         Item.itemRegistry.getNameForObject(RegistryItems.shearBlade)
-                                            )
+                                                         Item.itemRegistry.getNameForObject(RegistryItems.shearBlade))
             );
             return true;
         }

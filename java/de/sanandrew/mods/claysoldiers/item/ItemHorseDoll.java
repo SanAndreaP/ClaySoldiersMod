@@ -29,11 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemHorseDoll
-    extends Item
+        extends Item
 {
-    @SideOnly(Side.CLIENT)
     private Map<EnumHorseType, IIcon> icons;
-    @SideOnly(Side.CLIENT)
     private IIcon pegasusWings;
 
     public ItemHorseDoll() {
@@ -41,6 +39,55 @@ public class ItemHorseDoll
         this.setMaxStackSize(16);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
+    }
+
+    /**
+     * Spawns the horse specified by the type in the location specified by the last three parameters.
+     *
+     * @param world the World the entity will spawn in
+     * @param type  the type the horse will be
+     */
+    public static EntityHorseMount spawnHorse(World world, EnumHorseType type, boolean isPegasus, double x, double y, double z) {
+        EntityHorseMount jordan;
+
+        if( isPegasus ) {
+            jordan = new EntityPegasusMount(world, type);
+        } else {
+            jordan = new EntityHorseMount(world, type);
+        }
+
+        jordan.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
+        jordan.rotationYawHead = jordan.rotationYaw;
+        jordan.renderYawOffset = jordan.rotationYaw;
+        world.spawnEntityInWorld(jordan);
+        jordan.playSound("step.gravel", 1.0F, 1.0F);
+
+        return jordan;
+    }
+
+    public static void setType(ItemStack stack, EnumHorseType type, boolean isPegasus) {
+        if( type.itemData == null ) {
+            return;
+        }
+
+        NBTTagCompound nbt = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
+        nbt.setString("type", type.toString());
+        nbt.setBoolean("pegasus", isPegasus);
+        stack.setTagCompound(nbt);
+    }
+
+    public static EnumHorseType getType(ItemStack stack) {
+        NBTTagCompound itemNbt = stack.getTagCompound();
+        if( itemNbt != null && itemNbt.hasKey("type") ) {
+            return EnumHorseType.valueOf(itemNbt.getString("type"));
+        } else {
+            return EnumHorseType.DIRT;
+        }
+    }
+
+    public static boolean getIsPegasus(ItemStack stack) {
+        NBTTagCompound itemNbt = stack.getTagCompound();
+        return itemNbt != null && itemNbt.getBoolean("pegasus");
     }
 
     @Override
@@ -86,43 +133,15 @@ public class ItemHorseDoll
         }
     }
 
-    /**
-     * Spawns the horse specified by the type in the location specified by the last three parameters.
-     * @param world the World the entity will spawn in
-     * @param type the type the horse will be
-     */
-    public static EntityHorseMount spawnHorse(World world, EnumHorseType type, boolean isPegasus, double x, double y, double z) {
-        EntityHorseMount jordan;
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        String name = super.getUnlocalizedName(stack) + "." + getType(stack).toString().toLowerCase();
 
-        if( isPegasus ) {
-            jordan = new EntityPegasusMount(world, type);
-        } else {
-            jordan = new EntityHorseMount(world, type);
+        if( getIsPegasus(stack) ) {
+            name += ".pegasus";
         }
 
-        jordan.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
-        jordan.rotationYawHead = jordan.rotationYaw;
-        jordan.renderYawOffset = jordan.rotationYaw;
-        world.spawnEntityInWorld(jordan);
-        jordan.playSound("step.gravel", 1.0F, 1.0F);
-
-        return jordan;
-    }
-
-    @Override
-    public int getRenderPasses(int metadata) {
-        return 2;
-    }
-
-    @Override
-    public boolean requiresMultipleRenderPasses() {
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack, int pass) {
-        return pass == 0 || !getIsPegasus(stack) ? this.icons.get(getType(stack)) : this.pegasusWings;
+        return name;
     }
 
     @Override
@@ -130,51 +149,9 @@ public class ItemHorseDoll
         return pass == 0 || !getIsPegasus(stack) ? getType(stack).itemData.getValue1() : 0xFFFFFF;
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromType(EnumHorseType type) {
-        return this.icons.get(type);
-    }
-
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister) {
-        Map<String, IIcon> names = Maps.newHashMap();
-        this.icons = Maps.newEnumMap(EnumHorseType.class);
-        for( EnumHorseType type : EnumHorseType.values ) {
-            if( type.itemData == null ) {
-                continue;
-            }
-            if( !names.containsKey(type.itemData.getValue0()) ) {
-                names.put(type.itemData.getValue0(), iconRegister.registerIcon(type.itemData.getValue0()));
-            }
-            this.icons.put(type, names.get(type.itemData.getValue0()));
-        }
-        this.pegasusWings = iconRegister.registerIcon(CSM_Main.MOD_ID + ":doll_pegasus_wing");
-    }
-
-    public static void setType(ItemStack stack, EnumHorseType type, boolean isPegasus) {
-        if( type.itemData == null ) {
-            return;
-        }
-
-        NBTTagCompound nbt = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
-        nbt.setString("type", type.toString());
-        nbt.setBoolean("pegasus", isPegasus);
-        stack.setTagCompound(nbt);
-    }
-
-    public static EnumHorseType getType(ItemStack stack) {
-        NBTTagCompound itemNbt = stack.getTagCompound();
-        if( itemNbt != null && itemNbt.hasKey("type")) {
-            return EnumHorseType.valueOf(itemNbt.getString("type"));
-        } else {
-            return EnumHorseType.DIRT;
-        }
-    }
-
-    public static boolean getIsPegasus(ItemStack stack) {
-        NBTTagCompound itemNbt = stack.getTagCompound();
-        return itemNbt != null && itemNbt.getBoolean("pegasus");
+    public boolean requiresMultipleRenderPasses() {
+        return true;
     }
 
     @Override
@@ -194,13 +171,35 @@ public class ItemHorseDoll
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        String name = super.getUnlocalizedName(stack) + "." + getType(stack).toString().toLowerCase();
-
-        if( getIsPegasus(stack) ) {
-            name += ".pegasus";
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
+        Map<String, IIcon> names = Maps.newHashMap();
+        this.icons = Maps.newEnumMap(EnumHorseType.class);
+        for( EnumHorseType type : EnumHorseType.values ) {
+            if( type.itemData == null ) {
+                continue;
+            }
+            if( !names.containsKey(type.itemData.getValue0()) ) {
+                names.put(type.itemData.getValue0(), iconRegister.registerIcon(type.itemData.getValue0()));
+            }
+            this.icons.put(type, names.get(type.itemData.getValue0()));
         }
+        this.pegasusWings = iconRegister.registerIcon(CSM_Main.MOD_ID + ":doll_pegasus_wing");
+    }
 
-        return name;
+    @Override
+    public int getRenderPasses(int metadata) {
+        return 2;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(ItemStack stack, int pass) {
+        return pass == 0 || !getIsPegasus(stack) ? this.icons.get(getType(stack)) : this.pegasusWings;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromType(EnumHorseType type) {
+        return this.icons.get(type);
     }
 }

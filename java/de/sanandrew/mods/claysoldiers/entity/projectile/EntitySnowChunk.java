@@ -18,7 +18,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class EntitySnowChunk
-    extends EntityGravelChunk
+        extends EntityGravelChunk
 {
     @UsedByReflection
     public EntitySnowChunk(World world) {
@@ -37,18 +37,16 @@ public class EntitySnowChunk
 
     @Override
     protected void onImpact(MovingObjectPosition movObjPos) {
-        if( movObjPos.entityHit != null  ) {
+        if( movObjPos.entityHit != null ) {
             boolean isEnemy = movObjPos.entityHit instanceof EntityClayMan && this.target instanceof EntityClayMan
-                              && ((EntityClayMan)movObjPos.entityHit).getClayTeam().equals(((EntityClayMan)this.target).getClayTeam());
+                    && ((EntityClayMan) movObjPos.entityHit).getClayTeam().equals(((EntityClayMan) this.target).getClayTeam());
 
             DamageSource dmgSrc = DamageSource.causeThrownDamage(this, this.getThrower());
             if( this.getThrower() == null ) {
                 dmgSrc = DamageSource.causeThrownDamage(this, this);
             }
 
-            if( (movObjPos.entityHit == this.target || isEnemy)
-                && movObjPos.entityHit.attackEntityFrom(dmgSrc, 0.0F) )
-            {
+            if( (movObjPos.entityHit == this.target || isEnemy) && movObjPos.entityHit.attackEntityFrom(dmgSrc, 0.0F) ) {
                 if( this.getThrower() instanceof EntityClayMan ) {
                     ((EntityClayMan) this.getThrower()).onProjectileHit(this, movObjPos);
                 }
@@ -65,14 +63,13 @@ public class EntitySnowChunk
 
         if( !this.worldObj.isRemote ) {
             if( movObjPos.typeOfHit != MovingObjectType.BLOCK
-                || this.worldObj.getBlock(movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ)
-                                .getCollisionBoundingBoxFromPool(this.worldObj, movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ) != null )
+                || this.getBlockCollisionBox(this.worldObj, movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ) != null )
             {
                 ParticlePacketSender.sendDiggingFx(this.posX, this.posY, this.posZ, this.dimension, Blocks.snow);
                 this.setDead();
             }
 
-            this.dataWatcher.updateObject(DW_DEAD, (byte)(this.isDead ? 1 : 0));
+            this.dataWatcher.updateObject(DW_DEAD, (byte) (this.isDead ? 1 : 0));
         }
     }
 }

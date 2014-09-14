@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Collection;
 
 public class UpgradeClay
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -31,7 +31,8 @@ public class UpgradeClay
         if( !clayMan.hasPath() ) {
             Collection<EntityItem> items = clayMan.getItemsInRange();
             for( EntityItem item : items ) {
-                if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollSoldier
+                if( item.getEntityItem() != null
+                    && item.getEntityItem().getItem() == RegistryItems.dollSoldier
                     && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam()) )
                 {
                     clayMan.setTargetFollowing(item);
@@ -42,7 +43,8 @@ public class UpgradeClay
             EntityItem item = (EntityItem) clayMan.getTargetFollowing();
 
             if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollSoldier
-                && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam()) && item.getDistanceSqToEntity(clayMan) < 1.0D
+                && ItemClayManDoll.getTeam(item.getEntityItem()).getTeamName().equals(clayMan.getClayTeam())
+                && item.getDistanceSqToEntity(clayMan) < 1.0D
                 && item.getEntityItem().stackSize > 0 )
             {
                 EntityClayMan awakened = ItemClayManDoll.spawnClayMan(clayMan.worldObj, clayMan.getClayTeam(), item.posX, item.posY, item.posZ);

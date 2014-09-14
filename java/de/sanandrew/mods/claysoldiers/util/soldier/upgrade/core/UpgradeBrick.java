@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core;
 
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
@@ -7,15 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class UpgradeBrick
-    extends AUpgradeCore
+        extends AUpgradeCore
 {
     @Override
-    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) { }
+    public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+    }
 
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {

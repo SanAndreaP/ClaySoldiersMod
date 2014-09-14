@@ -18,7 +18,7 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeEnderpearl
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -26,28 +26,6 @@ public class UpgradeEnderpearl
         attrib.setBaseValue(attrib.getBaseValue() + 5.0D);
         clayMan.heal(clayMan.getMaxHealth());
         upgradeInst.getNbtTag().setShort("ticksActive", (short) 0);
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        short ticksAlive = upgradeInst.getNbtTag().getShort("ticksActive");
-        upgradeInst.getNbtTag().setShort("ticksActive", ++ticksAlive);
-
-        if( !(clayMan.getEntityToAttack() instanceof EntityClayMan
-              && ((EntityClayMan)clayMan.getEntityToAttack()).getClayTeam().equals(clayMan.getClayTeam())) )
-        {
-            EntityPlayer closestPlayer = clayMan.worldObj.getClosestPlayer(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.getLookRangeRad());
-            if( !(clayMan.getEntityToAttack() instanceof EntityPlayer) && closestPlayer != null && !closestPlayer.isDead
-                    && !(closestPlayer.isEntityInvulnerable() || closestPlayer.capabilities.isCreativeMode) ) {
-                clayMan.setTarget(closestPlayer);
-            }
-        }
-
-        if( ticksAlive == 12000 ) {
-            clayMan.attackEntityFrom(DamageSource.magic, 10000.0F);
-        }
-
-        return false;
     }
 
     @Override
@@ -77,6 +55,27 @@ public class UpgradeEnderpearl
         }
 
         upgradeInst.getNbtTag().setShort("ticksActive", (short) 0);
+    }
+
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        short ticksAlive = upgradeInst.getNbtTag().getShort("ticksActive");
+        upgradeInst.getNbtTag().setShort("ticksActive", ++ticksAlive);
+
+        if( !(clayMan.getEntityToAttack() instanceof EntityClayMan
+                && ((EntityClayMan) clayMan.getEntityToAttack()).getClayTeam().equals(clayMan.getClayTeam())) ) {
+            EntityPlayer closestPlayer = clayMan.worldObj.getClosestPlayer(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.getLookRangeRad());
+            if( !(clayMan.getEntityToAttack() instanceof EntityPlayer) && closestPlayer != null && !closestPlayer.isDead
+                    && !(closestPlayer.isEntityInvulnerable() || closestPlayer.capabilities.isCreativeMode) ) {
+                clayMan.setTarget(closestPlayer);
+            }
+        }
+
+        if( ticksAlive == 12000 ) {
+            clayMan.attackEntityFrom(DamageSource.magic, 10000.0F);
+        }
+
+        return false;
     }
 
     @Override

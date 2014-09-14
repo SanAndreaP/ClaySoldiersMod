@@ -11,7 +11,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelPegasusMount
-    extends ModelHorseMount
+        extends ModelHorseMount
 {
     public float wingSwingAmount;
     public boolean onGroundB;
@@ -33,7 +33,7 @@ public class ModelPegasusMount
 
     @Override
     public void render(Entity entity, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch, float partTicks) {
-        EntityPegasusMount pegasus = (EntityPegasusMount)entity;
+        EntityPegasusMount pegasus = (EntityPegasusMount) entity;
 
         this.onGroundB = pegasus.onGround;
         this.wingSwingAmount = (pegasus.wingSwingStep + (pegasus.wingSwing - pegasus.prevWingSwing) * partTicks);
@@ -54,9 +54,9 @@ public class ModelPegasusMount
         this.wingLeft.rotateAngleZ = -0.125F;
         this.wingRight.rotateAngleZ = 0.125F;
 
-        this.wingLeft.rotateAngleY += Math.sin(wingSwingAmount) / 6.0F;
-        this.wingRight.rotateAngleY -= Math.sin(wingSwingAmount) / 6.0F;
-        this.wingLeft.rotateAngleZ -= Math.cos(wingSwingAmount) / (onGroundB ? 10.0F : 1.5F);
-        this.wingRight.rotateAngleZ += Math.cos(wingSwingAmount) / (onGroundB ? 10.0F : 1.5F);
+        this.wingLeft.rotateAngleY += Math.sin(this.wingSwingAmount) / 6.0F;
+        this.wingRight.rotateAngleY -= Math.sin(this.wingSwingAmount) / 6.0F;
+        this.wingLeft.rotateAngleZ -= Math.cos(this.wingSwingAmount) / (this.onGroundB ? 10.0F : 1.5F);
+        this.wingRight.rotateAngleZ += Math.cos(this.wingSwingAmount) / (this.onGroundB ? 10.0F : 1.5F);
     }
 }

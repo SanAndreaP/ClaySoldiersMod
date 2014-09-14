@@ -6,8 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityEmeraldChunk;
@@ -25,8 +23,8 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeEmerald
-    extends AUpgradeLeftHanded
-    implements IThrowableUpgrade
+        extends AUpgradeLeftHanded
+        implements IThrowableUpgrade
 {
     private ItemStack nexusItem_ = new ItemStack(Blocks.emerald_block);
 
@@ -36,10 +34,23 @@ public class UpgradeEmerald
     }
 
     @Override
+    public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
+        boolean isInRange = target.getDistanceSqToEntity(clayMan) <= (clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE)) ? 64.0D : 16.0D);
+        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 && isInRange ) {
+            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityEmeraldChunk.class,
+                                          clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
+            );
+            clayMan.attackTime = 30;
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
+        }
+    }
+
+    @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
+    @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         if( stack.getItem() == Item.getItemFromBlock(Blocks.emerald_block) ) {
             upgInst.getNbtTag().setShort(NBT_USES, (short) 45);
@@ -59,24 +70,11 @@ public class UpgradeEmerald
     }
 
     @Override
-    public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
-        boolean isInRange = target.getDistanceSqToEntity(clayMan) <= (clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE)) ? 64.0D : 16.0D);
-        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 && isInRange ) {
-            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityEmeraldChunk.class,
-                                          clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
-            );
-            clayMan.attackTime = 30;
-            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
-        }
-    }
-
-    @Override
     public Class<? extends ISoldierProjectile<? extends EntityThrowable>> getThrowableClass() {
         return EntityEmeraldChunk.class;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
         ItemRenderHelper.renderItemIn3D(this.nexusItem_);
     }

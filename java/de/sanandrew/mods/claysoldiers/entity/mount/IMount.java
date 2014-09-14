@@ -1,10 +1,9 @@
 /*******************************************************************************************************************
- * Authors:    SanAndreasP
- * Copyright: SanAndreasP and SilverChiren
- * License:   Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
- *            (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
 import net.minecraft.entity.EntityLivingBase;

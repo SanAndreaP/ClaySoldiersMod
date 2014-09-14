@@ -15,25 +15,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StringUtils;
 
 public class UpgradeMobHead
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-
-        if( stack.hasTagCompound() ) {
-            NBTTagCompound stackTag = stack.getTagCompound();
-            if( stackTag.hasKey("SkullOwner", NbtTypes.NBT_COMPOUND) ) {
-                upgradeInst.getNbtTag().setTag("skullNbtTag", stackTag.getCompoundTag("SkullOwner"));
-            } else if( stackTag.hasKey("SkullOwner", NbtTypes.NBT_STRING) && !StringUtils.isNullOrEmpty(stackTag.getString("SkullOwner")) ) {
-                upgradeInst.getNbtTag().setString("skullNbtTag", stackTag.getString("SkullOwner"));
-            }
-        }
-
-        upgradeInst.getNbtTag().setShort("itemMeta", (short) stack.getItemDamage());
-    }
-
     @Override
     public void onClientUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         ItemStack headEquip = clayMan.getEquipmentInSlot(4);
@@ -55,6 +38,23 @@ public class UpgradeMobHead
 
             clayMan.setCurrentItemOrArmor(4, newSkull);
         }
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
+
+        if( stack.hasTagCompound() ) {
+            NBTTagCompound stackTag = stack.getTagCompound();
+            if( stackTag.hasKey("SkullOwner", NbtTypes.NBT_COMPOUND) ) {
+                upgradeInst.getNbtTag().setTag("skullNbtTag", stackTag.getCompoundTag("SkullOwner"));
+            } else if( stackTag.hasKey("SkullOwner", NbtTypes.NBT_STRING) && !StringUtils.isNullOrEmpty(stackTag.getString("SkullOwner")) ) {
+                upgradeInst.getNbtTag().setString("skullNbtTag", stackTag.getString("SkullOwner"));
+            }
+        }
+
+        upgradeInst.getNbtTag().setShort("itemMeta", (short) stack.getItemDamage());
     }
 
     @Override

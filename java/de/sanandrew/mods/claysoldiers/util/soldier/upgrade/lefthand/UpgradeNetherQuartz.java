@@ -14,23 +14,12 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeNetherQuartz
-    extends AUpgradeLeftHanded
+        extends AUpgradeLeftHanded
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) 4);
         upgradeInst.getNbtTag().setByte("hitCounter", (byte) 0);
-    }
-
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     @Override
@@ -59,5 +48,16 @@ public class UpgradeNetherQuartz
         upgradeInst.getNbtTag().setByte("hitCounter", hits);
 
         return true;
+    }
+
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

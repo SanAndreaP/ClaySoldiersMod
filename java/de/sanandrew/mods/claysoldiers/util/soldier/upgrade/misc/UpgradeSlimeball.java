@@ -19,7 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeSlimeball
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -30,8 +30,13 @@ public class UpgradeSlimeball
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         if( target.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) != null ) {
             target.playSound("mob.slime.attack", 1.0F, 1.0F);
-            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) -1));
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
         }
+    }
+
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     @Override
@@ -45,18 +50,13 @@ public class UpgradeSlimeball
     }
 
     @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
-    }
-
-    @Override
     public void onProjectileHit(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MovingObjectPosition target,
                                 ISoldierProjectile<? extends EntityThrowable> projectile) {
         if( target.entityHit instanceof EntityClayMan ) {
             EntityClayMan caddicarus = (EntityClayMan) target.entityHit;
             if( caddicarus.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET)) != null ) {
                 caddicarus.playSound("mob.slime.attack", 1.0F, 1.0F);
-                upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) -1));
+                upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
             }
         }
     }

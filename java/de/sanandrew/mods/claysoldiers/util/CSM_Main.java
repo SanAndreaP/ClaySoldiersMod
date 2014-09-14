@@ -21,6 +21,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
+import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.UpgradeFood;
 import net.minecraft.block.BlockDispenser;
@@ -38,6 +39,7 @@ public final class CSM_Main
     public static final String MOD_LOG = "ClaySoldiers";
     public static final String MOD_CHANNEL = "ClaySoldiersNWCH";
     public static final String MOD_GUI_FACTORY = "de.sanandrew.mods.claysoldiers.client.gui.ModGuiFactory";
+    public static final EventBus EVENT_BUS = new EventBus();
 
     private static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.claysoldiers.client.util.ClientProxy";
     private static final String MOD_PROXY_COMMON = "de.sanandrew.mods.claysoldiers.util.CommonProxy";
@@ -47,8 +49,6 @@ public final class CSM_Main
     @SidedProxy(modId = CSM_Main.MOD_ID, clientSide = CSM_Main.MOD_PROXY_CLIENT, serverSide = CSM_Main.MOD_PROXY_COMMON)
     public static CommonProxy proxy;
     public static FMLEventChannel channel;
-
-    public static final EventBus EVENT_BUS = new EventBus();
 
     public static CreativeTabs clayTab = new CreativeTabClaySoldiers();
 
@@ -69,8 +69,8 @@ public final class CSM_Main
 
     @Mod.EventHandler
     public void modInit(FMLInitializationEvent event) {
+        SoldierEffects.initialize();
         SoldierUpgrades.initialize();
-
         RegistryRecipes.initialize();
 
         FMLCommonHandler.instance().bus().register(this);

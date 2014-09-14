@@ -47,7 +47,8 @@ public final class ParticlePacketSender
 
     public static void sendShockwaveFx(double x, double y, double z, float yOff, int dimension) {
         PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, dimension, x, y, z, 64.0D,
-                                        Quartet.with(PacketParticleFX.FX_SHOCKWAVE, x, y - 0.20000000298023224D - yOff, z));
+                                        Quartet.with(PacketParticleFX.FX_SHOCKWAVE, x, y - 0.20000000298023224D - yOff, z)
+        );
     }
 
     public static void sendMagmafuseFx(double x, double y, double z, int dimension) {

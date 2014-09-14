@@ -6,8 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntitySnowChunk;
@@ -26,39 +24,14 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeSnow
-    extends AUpgradeLeftHanded
-    implements IThrowableUpgrade
+        extends AUpgradeLeftHanded
+        implements IThrowableUpgrade
 {
     private ItemStack nexusItem_ = new ItemStack(Blocks.snow);
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) 20);
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
-    }
-
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        if( stack.getItem() == Items.snowball ) {
-            upgInst.getNbtTag().setShort(NBT_USES, (short) 5);
-        } else if( stack.getItem() == Item.getItemFromBlock(Blocks.snow_layer) ) {
-            upgInst.getNbtTag().setShort(NBT_USES, (short) 10);
-        }
-
-        this.consumeItem(stack, upgInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
-    @Override
-    public void getAiMoveSpeed(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableFloat speed) {
-        Entity target = clayMan.getEntityToAttack();
-        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 ) {
-            float multiplier = Math.min(1.0F, Math.max(-1.0F, (float) clayMan.getDistanceSqToEntity(target) - 16.0F));
-            speed.setValue(speed.getValue() * multiplier);
-        }
     }
 
     @Override
@@ -74,13 +47,38 @@ public class UpgradeSnow
     }
 
     @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
+    }
+
+    @Override
+    public void getAiMoveSpeed(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableFloat speed) {
+        Entity target = clayMan.getEntityToAttack();
+        if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 ) {
+            float multiplier = Math.min(1.0F, Math.max(-1.0F, (float) clayMan.getDistanceSqToEntity(target) - 16.0F));
+            speed.setValue(speed.getValue() * multiplier);
+        }
+    }
+
+    @Override
     public Class<? extends ISoldierProjectile<? extends EntityThrowable>> getThrowableClass() {
         return EntitySnowChunk.class;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
         ItemRenderHelper.renderItemIn3D(this.nexusItem_);
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        if( stack.getItem() == Items.snowball ) {
+            upgInst.getNbtTag().setShort(NBT_USES, (short) 5);
+        } else if( stack.getItem() == Item.getItemFromBlock(Blocks.snow_layer) ) {
+            upgInst.getNbtTag().setShort(NBT_USES, (short) 10);
+        }
+
+        this.consumeItem(stack, upgInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
@@ -9,13 +15,9 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class UpgradeShearBladeRight
-    extends AUpgradeRightHanded
-    implements IMeeleeUpgrade
+        extends AUpgradeRightHanded
+        implements IMeeleeUpgrade
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -45,6 +47,7 @@ public class UpgradeShearBladeRight
             ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, RegistryItems.shearBlade);
             return true;
         }
+
         return false;
     }
 }

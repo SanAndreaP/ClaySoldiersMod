@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -19,10 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class RenderSoldierBodyEvent
 {
     private Random thunderboldRNG_ = new Random();
@@ -49,7 +51,7 @@ public class RenderSoldierBodyEvent
 
         if( event.stage == RenderStage.EQUIPPED ) {
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FEATHER)) && !event.clayMan.onGround && event.clayMan.motionY < -0.1D
-                && event.clayMan.fallDistance >= 1.3F )
+                    && event.clayMan.fallDistance >= 1.3F )
             {
                 this.renderFeather(event.clayMan, event.clayManRender);
             }
@@ -69,48 +71,6 @@ public class RenderSoldierBodyEvent
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
             GL11.glColor3f(0.5F, 0.5F, 0.5F);
         }
-    }
-
-    private void renderGlass(EntityClayMan clayMan, RenderClayMan renderer) {
-        GL11.glPushMatrix();
-        renderer.modelBipedMain.bipedHead.postRender(0.0625F);
-        GL11.glTranslatef(0.0F, -0.6F, 0.0F);
-
-        float itemScale = 0.18F;
-
-        GL11.glScalef(itemScale, itemScale, itemScale);
-        GL11.glTranslatef(0.84F, 1.5F, -1.1F);
-        short color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("leftColor");
-        if( color < 0 ) {
-            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
-        } else {
-            this.glassStained_.setItemDamage(color);
-            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
-        }
-        GL11.glTranslatef(-1.68F, 0.0F, 0.0F);
-        color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("rightColor");
-        if( color < 0 ) {
-            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
-        } else {
-            this.glassStained_.setItemDamage(color);
-            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
-        }
-        GL11.glPopMatrix();
-    }
-
-    private void renderFeather(EntityClayMan clayMan, RenderClayMan renderer) {
-        GL11.glPushMatrix();
-        renderer.modelBipedMain.bipedBody.postRender(0.0625F);
-        GL11.glTranslatef(0.0F, -0.6F, 0.0F);
-
-        float itemScale = 1.5F;
-        GL11.glScalef(itemScale, itemScale, itemScale);
-        GL11.glTranslatef(0.6F, 0.05F, 0.0F);
-        GL11.glRotatef(22.5F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(90.0F, -1.0F, 0.0F, 1.0F);
-
-        renderer.getItemRenderer().renderItem(clayMan, this.feather_, 0);
-        GL11.glPopMatrix();
     }
 
     private void renderStealthEffect(EntityClayMan clayMan, RenderClayMan clayManRender, RenderStage stage) {
@@ -143,7 +103,7 @@ public class RenderSoldierBodyEvent
         double originY = effectNbt.getDouble("originY") - clayMan.posY + targetY;
         double originZ = effectNbt.getDouble("originZ") - clayMan.posZ + targetZ;
 
-        List<Triplet<Double, Double, Double>> randCoords= new ArrayList<>();
+        List<Triplet<Double, Double, Double>> randCoords = new ArrayList<>();
         randCoords.add(Triplet.with(0.0D, 0.0D, 0.0D));
 
         this.thunderboldRNG_.setSeed(effectNbt.getLong("randomLightning"));
@@ -175,14 +135,14 @@ public class RenderSoldierBodyEvent
             Triplet<Double, Double, Double> origin = randCoords.get(i);
             Triplet<Double, Double, Double> target = randCoords.get(i + 1);
 
-            double oX = originX + ((targetX - originX) / (double)size) * (i) + origin.getValue0();
-            double tX = originX + ((targetX - originX) / (double)size) * (i + 1) + target.getValue0();
+            double oX = originX + ((targetX - originX) / (double) size) * (i) + origin.getValue0();
+            double tX = originX + ((targetX - originX) / (double) size) * (i + 1) + target.getValue0();
 
-            double oY = originY + ((targetY - originY) / (double)size) * (i) + origin.getValue1();
-            double tY = originY + ((targetY - originY) / (double)size) * (i + 1) + target.getValue1();
+            double oY = originY + ((targetY - originY) / (double) size) * (i) + origin.getValue1();
+            double tY = originY + ((targetY - originY) / (double) size) * (i + 1) + target.getValue1();
 
-            double oZ = originZ + ((targetZ - originZ) / (double)size) * (i) + origin.getValue2();
-            double tZ = originZ + ((targetZ - originZ) / (double)size) * (i + 1) + target.getValue2();
+            double oZ = originZ + ((targetZ - originZ) / (double) size) * (i) + origin.getValue2();
+            double tZ = originZ + ((targetZ - originZ) / (double) size) * (i + 1) + target.getValue2();
 
             this.drawThunderboldPart(Tessellator.instance, oX, oY, oZ, tX, tY, tZ);
         }
@@ -194,6 +154,50 @@ public class RenderSoldierBodyEvent
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    private void renderFeather(EntityClayMan clayMan, RenderClayMan renderer) {
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedBody.postRender(0.0625F);
+        GL11.glTranslatef(0.0F, -0.6F, 0.0F);
+
+        float itemScale = 1.5F;
+        GL11.glScalef(itemScale, itemScale, itemScale);
+        GL11.glTranslatef(0.6F, 0.05F, 0.0F);
+        GL11.glRotatef(22.5F, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(90.0F, -1.0F, 0.0F, 1.0F);
+
+        renderer.getItemRenderer().renderItem(clayMan, this.feather_, 0);
+        GL11.glPopMatrix();
+    }
+
+    private void renderGlass(EntityClayMan clayMan, RenderClayMan renderer) {
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedHead.postRender(0.0625F);
+        GL11.glTranslatef(0.0F, -0.6F, 0.0F);
+
+        float itemScale = 0.18F;
+
+        GL11.glScalef(itemScale, itemScale, itemScale);
+        GL11.glTranslatef(0.84F, 1.5F, -1.1F);
+
+        short color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("leftColor");
+        if( color < 0 ) {
+            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
+        } else {
+            this.glassStained_.setItemDamage(color);
+            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
+        }
+        GL11.glTranslatef(-1.68F, 0.0F, 0.0F);
+
+        color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("rightColor");
+        if( color < 0 ) {
+            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
+        } else {
+            this.glassStained_.setItemDamage(color);
+            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
+        }
+        GL11.glPopMatrix();
     }
 
     private void drawThunderboldPart(Tessellator tessellator, double oX, double oY, double oZ, double tX, double tY, double tZ) {

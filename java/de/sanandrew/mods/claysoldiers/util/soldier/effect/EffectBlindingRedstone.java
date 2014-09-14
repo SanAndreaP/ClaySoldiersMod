@@ -10,11 +10,11 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
 
 public class EffectBlindingRedstone
-    extends ASoldierEffect
+        extends ASoldierEffect
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        effectInst.getNbtTag().setShort("ticksRemain", (short)60);
+        effectInst.getNbtTag().setShort("ticksRemain", (short) 60);
     }
 
     @Override
@@ -26,12 +26,12 @@ public class EffectBlindingRedstone
     }
 
     @Override
-    public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        clayMan.worldObj.spawnParticle("reddust", clayMan.posX, clayMan.posY, clayMan.posZ, 1.0F, 0.0F, 0.0F);
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
+        return MethodState.DENY;
     }
 
     @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
-        return MethodState.DENY;
+    public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
+        clayMan.worldObj.spawnParticle("reddust", clayMan.posX, clayMan.posY, clayMan.posZ, 1.0F, 0.0F, 0.0F);
     }
 }

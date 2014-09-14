@@ -12,17 +12,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class CreativeTabClaySoldiers
-    extends CreativeTabs
+        extends CreativeTabs
 {
     private ItemStack tabIcon;
 
     public CreativeTabClaySoldiers() {
         super(CSM_Main.MOD_ID + ":csm_tab");
-    }
-
-    @Override
-    public Item getTabIconItem() {
-        return RegistryItems.dollSoldier;
     }
 
     @Override
@@ -33,6 +28,11 @@ public class CreativeTabClaySoldiers
         }
 
         return this.tabIcon;
+    }
+
+    @Override
+    public Item getTabIconItem() {
+        return RegistryItems.dollSoldier;
     }
 
     @Override

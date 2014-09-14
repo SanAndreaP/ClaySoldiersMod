@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 
 public class ItemBrickManDoll
-    extends Item
+        extends Item
 {
     public ItemBrickManDoll() {
         super();

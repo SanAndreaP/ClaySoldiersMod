@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
@@ -13,25 +19,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class UpgradeFermSpiderEye
-    extends AUpgradeBehavior
+        extends AUpgradeBehavior
 {
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( !clayMan.worldObj.isRemote && clayMan.ticksExisted % 10 == 0 && SAPUtils.RNG.nextInt(5) == 0 ) {
-            PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
-                                            Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
-                                                         Item.itemRegistry.getNameForObject(Items.fermented_spider_eye)
-                                            )
-            );
-        }
-        return super.onUpdate(clayMan, upgradeInst);
-    }
-
     @Override
     public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
         return MethodState.DENY;
@@ -40,9 +30,21 @@ public class UpgradeFermSpiderEye
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         if( source.getEntity() instanceof EntityClayMan ) {
-            clayMan.targetSoldier((EntityClayMan)source.getEntity(), false);
+            clayMan.targetSoldier((EntityClayMan) source.getEntity(), false);
         }
+
         return super.onSoldierHurt(clayMan, upgradeInst, source, damage);
+    }
+
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        if( !clayMan.worldObj.isRemote && clayMan.ticksExisted % 10 == 0 && SAPUtils.RNG.nextInt(5) == 0 ) {
+            PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
+                                            Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
+                                                         Item.itemRegistry.getNameForObject(Items.fermented_spider_eye))
+            );
+        }
+        return super.onUpdate(clayMan, upgradeInst);
     }
 
     @Override

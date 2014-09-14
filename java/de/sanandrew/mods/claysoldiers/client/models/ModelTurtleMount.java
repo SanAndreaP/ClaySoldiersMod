@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
 public class ModelTurtleMount
-    extends ModelBase
+        extends ModelBase
 {
     public ModelRenderer bipedHead;
     public ModelRenderer bipedShellMain;
@@ -70,16 +70,8 @@ public class ModelTurtleMount
         this.bipedShellTop.render(partTicks);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch, float partTicks, Entity entity) {
-//      bipedHead.rotateAngleY = f3 / 57.29578F;
-//      bipedHead.rotateAngleX = (f4 / 57.29578F) + 0.79F;
         this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 0.5F * limbSwingAmount;
         this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 0.5F * limbSwingAmount;
         this.bipedRightArm.rotateAngleY = 0.0F;
@@ -88,5 +80,11 @@ public class ModelTurtleMount
         this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 0.5F * limbSwingAmount;
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
+    }
+
+    private void setRotation(ModelRenderer model, float x, float y, float z) {
+        model.rotateAngleX = x;
+        model.rotateAngleY = y;
+        model.rotateAngleZ = z;
     }
 }

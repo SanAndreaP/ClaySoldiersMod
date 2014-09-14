@@ -23,20 +23,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockClayNexus
-    extends Block
+        extends Block
 {
     public BlockClayNexus() {
         super(Material.rock);
-    }
-
-    @Override
-    public boolean hasTileEntity(int meta) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, int meta) {
-        return new TileEntityClayNexus();
     }
 
     @Override
@@ -45,21 +35,17 @@ public class BlockClayNexus
     }
 
     @Override
-    public int getRenderType() {
-        return -1;
-    }
-
-    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
+    public int getRenderType() {
+        return -1;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         return Blocks.obsidian.getIcon(side, meta);
     }
@@ -67,6 +53,11 @@ public class BlockClayNexus
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return null;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 
     @Override
@@ -104,8 +95,8 @@ public class BlockClayNexus
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
-        return side >= 0;
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
     }
 
     @Override
@@ -114,6 +105,17 @@ public class BlockClayNexus
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) { }
+    public boolean hasTileEntity(int meta) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int meta) {
+        return new TileEntityClayNexus();
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
+        return side >= 0;
+    }
 }

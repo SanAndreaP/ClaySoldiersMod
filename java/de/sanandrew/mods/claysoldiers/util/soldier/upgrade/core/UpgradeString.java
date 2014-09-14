@@ -13,11 +13,21 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeString
-    extends AUpgradeCore
+        extends AUpgradeCore
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         upgradeInst.getNbtTag().setBoolean("destroyed", false);
+    }
+
+    @Override
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
+        if( source.isExplosion() && !upgradeInst.getNbtTag().getBoolean("destroyed") ) {
+            upgradeInst.getNbtTag().setBoolean("destroyed", true);
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -29,15 +39,5 @@ public class UpgradeString
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         this.consumeItem(stack, upgInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
-    @Override
-    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( source.isExplosion() && !upgradeInst.getNbtTag().getBoolean("destroyed") ) {
-            upgradeInst.getNbtTag().setBoolean("destroyed", true);
-            return false;
-        }
-
-        return true;
     }
 }

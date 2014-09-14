@@ -14,10 +14,10 @@ import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
-import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
-import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
+import de.sanandrew.mods.claysoldiers.util.RegistryItems;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class RenderStatDisplayOverlay
-    extends Gui
+        extends Gui
 {
     private FontRenderer titleRenderer = null;
     private FontRenderer statRenderer = null;
@@ -56,8 +56,7 @@ public class RenderStatDisplayOverlay
         }
 
         if( !mc.gameSettings.showDebugInfo && mc.thePlayer.getCurrentEquippedItem() != null
-                && mc.thePlayer.getCurrentEquippedItem().getItem() == RegistryItems.statDisplay )
-        {
+                && mc.thePlayer.getCurrentEquippedItem().getItem() == RegistryItems.statDisplay ) {
             this.renderSoldiers(mc);
             this.renderMounts(mc);
         }
@@ -115,12 +114,12 @@ public class RenderStatDisplayOverlay
         this.drawGradientRect(xPos, yPos, xPos + 100, yPos + 13, 0x00000000, 0x80FFFFFF);
 
         this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2 - 1, yPos + 1, 0x000000);
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2    , yPos + 2, 0x000000);
+        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2, yPos + 2, 0x000000);
         this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2 + 1, yPos + 1, 0x000000);
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2    , yPos    , 0x000000);
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2    , yPos + 1, 0xFFFFFF);
+        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2, yPos, 0x000000);
+        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2, yPos + 1, 0xFFFFFF);
 
-        this.drawGradientRect(xPos - 1  , yPos-1  , xPos      , yPos + 13, 0x00000000, 0xC0000000);
+        this.drawGradientRect(xPos - 1, yPos - 1, xPos, yPos + 13, 0x00000000, 0xC0000000);
         this.drawGradientRect(xPos + 100, yPos - 1, xPos + 101, yPos + 13, 0x00000000, 0xC0000000);
 
         int pos = 0;
@@ -141,22 +140,23 @@ public class RenderStatDisplayOverlay
             pos++;
         }
 
-        drawRect(xPos - 1  , yPos + 13, xPos      , yPos + 13 + pos * 11, 0xC0000000);
+        drawRect(xPos - 1, yPos + 13, xPos, yPos + 13 + pos * 11, 0xC0000000);
         drawRect(xPos + 100, yPos + 13, xPos + 101, yPos + 13 + pos * 11, 0xC0000000);
 
-        this.drawGradientRect(xPos - 1  , yPos + 13 + pos * 11, xPos      , yPos + 19 + pos * 11, 0xC0000000, 0x00000000);
+        this.drawGradientRect(xPos - 1, yPos + 13 + pos * 11, xPos, yPos + 19 + pos * 11, 0xC0000000, 0x00000000);
         this.drawGradientRect(xPos + 100, yPos + 13 + pos * 11, xPos + 101, yPos + 19 + pos * 11, 0xC0000000, 0x00000000);
-        this.drawGradientRect(xPos      , yPos + 13 + pos * 11, xPos + 100, yPos + 18 + pos * 11, 0x80FFFFFF, 0x00000000);
+        this.drawGradientRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 18 + pos * 11, 0x80FFFFFF, 0x00000000);
     }
 
     private AxisAlignedBB getRangeAabbFromPlayer(EntityPlayer player) {
         return AxisAlignedBB.getBoundingBox(player.posX - ModConfig.statItemRange, player.posY - ModConfig.statItemRange, player.posZ - ModConfig.statItemRange,
-                                            player.posX + ModConfig.statItemRange, player.posY + ModConfig.statItemRange, player.posZ + ModConfig.statItemRange);
+                                            player.posX + ModConfig.statItemRange, player.posY + ModConfig.statItemRange, player.posZ + ModConfig.statItemRange
+        );
     }
 
     private int getContrastTextColor(int bkgColor) {
         RGBAValues splitClr = SAPUtils.getRgbaFromColorInt(bkgColor);
-        int yiq = ((splitClr.getRed()*299) + (splitClr.getGreen()*587) + (splitClr.getBlue()*144)) / 1000;
+        int yiq = ((splitClr.getRed() * 299) + (splitClr.getGreen() * 587) + (splitClr.getBlue() * 144)) / 1000;
         return (yiq >= 128) ? 0x000000 : 0xFFFFFF;
     }
 }

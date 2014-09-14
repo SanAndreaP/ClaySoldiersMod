@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network.packet;
 
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
@@ -13,31 +19,45 @@ import net.minecraft.network.INetHandler;
 
 import java.io.IOException;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class PacketParticleFX
-    implements IPacket
+        implements IPacket
 {
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;item name (String) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;item name (String)
+     */
     public static final byte FX_BREAK = 0;
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)
+     */
     public static final byte FX_CRIT = 1;
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;team name (String) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;team name (String)
+     */
     public static final byte FX_SOLDIER_DEATH = 2;
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;horse type (Byte) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;horse type (Byte)
+     */
     public static final byte FX_HORSE_DEATH = 3;
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;block name (String) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)<br>&nbsp;&nbsp;block name (String)
+     */
     public static final byte FX_DIGGING = 4;
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)
-     *             <br>&nbsp;&nbsp;red (Double)<br>&nbsp;&nbsp;green (Double)<br>&nbsp;&nbsp;blue (Double) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Double)<br>&nbsp;&nbsp;posY (Double)<br>&nbsp;&nbsp;posZ (Double)
+     * <br>&nbsp;&nbsp;red (Double)<br>&nbsp;&nbsp;green (Double)<br>&nbsp;&nbsp;blue (Double)
+     */
     public static final byte FX_SPELL = 5;
-    /** DataTuple: <i>n/a</i> */
+    /**
+     * DataTuple: <i>n/a</i>
+     */
     public static final byte FX_NEXUS = 6;
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Int)<br>&nbsp;&nbsp;posY (Int)<br>&nbsp;&nbsp;posZ (Int) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Int)<br>&nbsp;&nbsp;posY (Int)<br>&nbsp;&nbsp;posZ (Int)
+     */
     public static final byte FX_SHOCKWAVE = 7;
-    /** DataTuple: <br>&nbsp;&nbsp;posX (Int)<br>&nbsp;&nbsp;posY (Int)<br>&nbsp;&nbsp;posZ (Int) */
+    /**
+     * DataTuple: <br>&nbsp;&nbsp;posX (Int)<br>&nbsp;&nbsp;posY (Int)<br>&nbsp;&nbsp;posZ (Int)
+     */
     public static final byte FX_MAGMAFUSE = 8;
 
     @Override

@@ -14,11 +14,12 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
 public class GuiConfigScreen
-    extends GuiConfig
+        extends GuiConfig
 {
     @SuppressWarnings("unchecked")
     public GuiConfigScreen(GuiScreen parent) {
         super(parent, new ConfigElement(ModConfig.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
-              CSM_Main.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ModConfig.config.toString()));
+              CSM_Main.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ModConfig.config.toString())
+        );
     }
 }

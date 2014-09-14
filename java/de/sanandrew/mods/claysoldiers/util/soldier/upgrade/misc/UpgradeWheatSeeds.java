@@ -13,14 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 
 public class UpgradeWheatSeeds
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
@@ -28,5 +22,11 @@ public class UpgradeWheatSeeds
         }
 
         return false;
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

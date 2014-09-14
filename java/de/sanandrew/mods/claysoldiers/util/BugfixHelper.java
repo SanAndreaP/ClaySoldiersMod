@@ -22,13 +22,12 @@ import net.minecraft.world.World;
 public class BugfixHelper
 {
     public static PathEntity getEntityPathToXYZ(World world, Entity entity, int x, int y, int z, float range, boolean allowWoodDoor, boolean blockMovement,
-                                                boolean pathInWater, boolean canEntityDrown)
-    {
+                                                boolean pathInWater, boolean canEntityDrown) {
         world.theProfiler.startSection("pathfind");
         int l = MathHelper.floor_double(entity.posX);
         int i1 = MathHelper.floor_double(entity.posY);
         int j1 = MathHelper.floor_double(entity.posZ);
-        int k1 = (int)(range + 8.0F);
+        int k1 = (int) (range + 8.0F);
         int l1 = l - k1;
         int i2 = i1 - k1;
         int j2 = j1 - k1;
@@ -43,13 +42,12 @@ public class BugfixHelper
     }
 
     public static PathEntity getPathEntityToEntity(World world, Entity entity, Entity target, float range, boolean allowWoodDoor, boolean blockMovement,
-                                                   boolean pathInWater, boolean canEntityDrown)
-    {
+                                                   boolean pathInWater, boolean canEntityDrown) {
         world.theProfiler.startSection("pathfind");
         int i = MathHelper.floor_double(entity.posX);
         int j = MathHelper.floor_double(entity.posY + 1.0D);
         int k = MathHelper.floor_double(entity.posZ);
-        int l = (int)(range + 16.0F);
+        int l = (int) (range + 16.0F);
         int i1 = i - l;
         int j1 = j - l;
         int k1 = k - l;
@@ -63,7 +61,8 @@ public class BugfixHelper
         return pathentity;
     }
 
-    private static class FixedPathFinder extends PathFinder
+    private static class FixedPathFinder
+            extends PathFinder
     {
         private boolean isWoddenDoorAllowed;
         private boolean isMovementBlockAllowed;
@@ -75,22 +74,8 @@ public class BugfixHelper
             this.isMovementBlockAllowed = blockMovement;
         }
 
-        @Override
-        public int getVerticalOffset(Entity entity, int x, int y, int z, PathPoint pathPoint) {
-            try {
-                this.isPathingInWater = SAPReflectionHelper.getCachedField(PathFinder.class, "isPathingInWater", "field_75863_g").getBoolean(this);
-                return getPathApplicable(entity, x, y, z, pathPoint, this.isPathingInWater, this.isMovementBlockAllowed,
-                                         this.isWoddenDoorAllowed
-                );
-            } catch( IllegalAccessException e ) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-
         public static int getPathApplicable(Entity entity, int x, int y, int z, PathPoint pathPoint, boolean pathInWater, boolean canMovementBlock,
-                                            boolean allowWoodDoor)
-        {
+                                            boolean allowWoodDoor) {
             boolean isTrapdoorOrWater = false;
 
             for( int i = x; i < x + pathPoint.xCoord; ++i ) {
@@ -121,16 +106,15 @@ public class BugfixHelper
                                 int entityBlockZ = MathHelper.floor_double(entity.posZ);
 
                                 if( entity.worldObj.getBlock(entityBlockX, entityBlockY, entityBlockZ).getRenderType() != 9
-                                        && entity.worldObj.getBlock(entityBlockX, entityBlockY - 1, entityBlockZ).getRenderType() != 9 )
-                                {
+                                        && entity.worldObj.getBlock(entityBlockX, entityBlockY - 1, entityBlockZ).getRenderType() != 9 ) {
                                     return -3;
                                 }
                             } else if( !block.getBlocksMovement(entity.worldObj, i, j, k) && (!canMovementBlock || block != Blocks.wooden_door) ) {
-                                if (blockRenderType == 11 || block == Blocks.fence_gate || blockRenderType == 32) {
+                                if( blockRenderType == 11 || block == Blocks.fence_gate || blockRenderType == 32 ) {
                                     return -3;
                                 }
 
-                                if (block == Blocks.trapdoor) {
+                                if( block == Blocks.trapdoor ) {
                                     return -4;
                                 }
 
@@ -150,6 +134,20 @@ public class BugfixHelper
             }
 
             return isTrapdoorOrWater ? 2 : 1;
+        }
+
+        @Override
+        public int getVerticalOffset(Entity entity, int x, int y, int z, PathPoint pathPoint) {
+            try {
+                this.isPathingInWater = SAPReflectionHelper.getCachedField(PathFinder.class, "isPathingInWater", "field_75863_g").getBoolean(this);
+                return getPathApplicable(entity, x, y, z, pathPoint, this.isPathingInWater, this.isMovementBlockAllowed,
+                                         this.isWoddenDoorAllowed
+                );
+            } catch( IllegalAccessException e ) {
+                e.printStackTrace();
+            }
+
+            return 0;
         }
     }
 }

@@ -8,48 +8,48 @@ package de.sanandrew.mods.claysoldiers.entity;
 
 public final class SoldierCloakHelper
 {
-    public double field_71091_bM;
-    public double field_71096_bN;
-    public double field_71097_bO;
-    public double field_71094_bP;
-    public double field_71095_bQ;
-    public double field_71085_bR;
+    public double prevSwingPosX;
+    public double prevSwingPosY;
+    public double prevSwingPosZ;
+    public double swingPosX;
+    public double swingPosY;
+    public double swingPosZ;
 
     public void onUpdate(double posX, double posY, double posZ) {
-        this.field_71091_bM = this.field_71094_bP;
-        this.field_71096_bN = this.field_71095_bQ;
-        this.field_71097_bO = this.field_71085_bR;
-        double d3 = posX - this.field_71094_bP;
-        double d0 = posY - this.field_71095_bQ;
-        double d1 = posZ - this.field_71085_bR;
-        double d2 = 10.0D;
+        this.prevSwingPosX = this.swingPosX;
+        this.prevSwingPosY = this.swingPosY;
+        this.prevSwingPosZ = this.swingPosZ;
+        double deltaPosX = posX - this.swingPosX;
+        double deltaPosY = posY - this.swingPosY;
+        double deltaPosZ = posZ - this.swingPosZ;
+        double maxSwing = 10.0D;
 
-        if( d3 > d2 ) {
-            this.field_71091_bM = this.field_71094_bP = posX;
+        if( deltaPosX > maxSwing ) {
+            this.prevSwingPosX = this.swingPosX = posX;
         }
 
-        if( d1 > d2 ) {
-            this.field_71097_bO = this.field_71085_bR = posZ;
+        if( deltaPosZ > maxSwing ) {
+            this.prevSwingPosZ = this.swingPosZ = posZ;
         }
 
-        if( d0 > d2 ) {
-            this.field_71096_bN = this.field_71095_bQ = posY;
+        if( deltaPosY > maxSwing ) {
+            this.prevSwingPosY = this.swingPosY = posY;
         }
 
-        if( d3 < -d2 ) {
-            this.field_71091_bM = this.field_71094_bP = posX;
+        if( deltaPosX < -maxSwing ) {
+            this.prevSwingPosX = this.swingPosX = posX;
         }
 
-        if( d1 < -d2 ) {
-            this.field_71097_bO = this.field_71085_bR = posZ;
+        if( deltaPosZ < -maxSwing ) {
+            this.prevSwingPosZ = this.swingPosZ = posZ;
         }
 
-        if( d0 < -d2 ) {
-            this.field_71096_bN = this.field_71095_bQ = posY;
+        if( deltaPosY < -maxSwing ) {
+            this.prevSwingPosY = this.swingPosY = posY;
         }
 
-        this.field_71094_bP += d3 * 0.25D;
-        this.field_71085_bR += d1 * 0.25D;
-        this.field_71095_bQ += d0 * 0.25D;
+        this.swingPosX += deltaPosX * 0.25D;
+        this.swingPosZ += deltaPosZ * 0.25D;
+        this.swingPosY += deltaPosY * 0.25D;
     }
 }

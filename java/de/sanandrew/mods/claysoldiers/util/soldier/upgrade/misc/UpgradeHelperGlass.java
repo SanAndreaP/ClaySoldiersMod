@@ -17,8 +17,19 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableDouble;
 
 public class UpgradeHelperGlass
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        ASoldierUpgrade mainUpgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS);
+        if( clayMan.hasUpgrade(mainUpgrade) ) {
+            SoldierUpgradeInst upgInst = clayMan.getUpgrade(mainUpgrade);
+            return upgInst.getNbtTag().getShort("leftColor") == upgInst.getNbtTag().getShort("rightColor");
+        } else {
+            return true;
+        }
+    }
+
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgasdInst, ItemStack stack) {
         ASoldierUpgrade mainUpgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS);
@@ -54,14 +65,13 @@ public class UpgradeHelperGlass
     }
 
     @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        ASoldierUpgrade mainUpgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS);
-        if( clayMan.hasUpgrade(mainUpgrade) ) {
-            SoldierUpgradeInst upgInst = clayMan.getUpgrade(mainUpgrade);
-            return upgInst.getNbtTag().getShort("leftColor") == upgInst.getNbtTag().getShort("rightColor");
-        } else {
-            return true;
-        }
+    public void getLookRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableDouble radius) {
+        radius.add(radius);
+    }
+
+    @Override
+    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return true;
     }
 
     @Override
@@ -77,15 +87,5 @@ public class UpgradeHelperGlass
         } else {
             return true;
         }
-    }
-
-    @Override
-    public void getLookRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableDouble radius) {
-        radius.add(radius);
-    }
-
-    @Override
-    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return true;
     }
 }

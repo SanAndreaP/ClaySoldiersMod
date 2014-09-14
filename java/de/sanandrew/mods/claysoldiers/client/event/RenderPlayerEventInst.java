@@ -8,9 +8,6 @@ package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class RenderPlayerEventInst
 {

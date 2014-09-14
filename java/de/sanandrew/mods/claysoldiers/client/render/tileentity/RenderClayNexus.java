@@ -27,11 +27,12 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
 public class RenderClayNexus
-    extends TileEntitySpecialRenderer
+        extends TileEntitySpecialRenderer
 {
     public ModelClayNexus nexusModel = new ModelClayNexus();
 
-    public RenderClayNexus() { }
+    public RenderClayNexus() {
+    }
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partTicks) {
@@ -63,7 +64,7 @@ public class RenderClayNexus
     }
 
     private void renderGlowmap(TileEntityClayNexus nexus) {
-        float[] colors = new float[] {1.0F, 1.0F, 1.0F};
+        float[] colors = new float[] { 1.0F, 1.0F, 1.0F };
         if( nexus.getStackInSlot(0) != null ) {
             RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(nexus.getStackInSlot(0)).getIconColor());
             colors[0] = rgba.getRed() / 255.0F;
@@ -82,6 +83,7 @@ public class RenderClayNexus
             int brightY = brightness / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
         }
+
         this.bindTexture(Textures.NEXUS_GLOWING);
         GL11.glColor3f(colors[0], colors[1], colors[2]);
         this.nexusModel.renderTileEntityGlowmap(0.0625F);
@@ -92,7 +94,7 @@ public class RenderClayNexus
     }
 
     private void renderSoldierItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
-        float[] colors = new float[] {1.0F, 1.0F, 1.0F};
+        float[] colors = new float[] { 1.0F, 1.0F, 1.0F };
         float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
 
         RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(stack).getIconColor());

@@ -16,20 +16,11 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeBone
-    extends AUpgradeRightHanded
+        extends AUpgradeRightHanded
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) 30);
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.getTargetFollowing() instanceof IMount ) {
-            clayMan.setTargetFollowing(null);
-        }
-
-        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     @Override
@@ -44,13 +35,22 @@ public class UpgradeBone
     }
 
     @Override
-    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return super.canBePickedUp(clayMan, stack, upgrade) && clayMan.ridingEntity == null;
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        if( clayMan.getTargetFollowing() instanceof IMount ) {
+            clayMan.setTargetFollowing(null);
+        }
+
+        return upgradeInst.getNbtTag().getShort(NBT_USES) == 0;
     }
 
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
+    }
+
+    @Override
+    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
+        return super.canBePickedUp(clayMan, stack, upgrade) && clayMan.ridingEntity == null;
     }
 }

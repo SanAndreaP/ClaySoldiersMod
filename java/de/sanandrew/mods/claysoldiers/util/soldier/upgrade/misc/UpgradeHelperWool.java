@@ -13,8 +13,13 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
 
 public class UpgradeHelperWool
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return true;
+    }
+
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         clayMan.setMiscColorIndex(15 - stack.getItemDamage());
@@ -25,11 +30,6 @@ public class UpgradeHelperWool
         {
             clayMan.addUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOOL));
         }
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return true;
     }
 
     @Override

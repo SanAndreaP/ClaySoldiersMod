@@ -1,11 +1,13 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
 import net.minecraft.util.DamageSource;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public interface IDisruptable
 {
     public static DamageSource disruptDamage = new DamageSource(CSM_Main.MOD_ID + ":disrupt").setDamageBypassesArmor().setMagicDamage();

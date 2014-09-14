@@ -19,14 +19,8 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeGoldIngot
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         ASoldierUpgrade[] upgrades = clayMan.getAvailableUpgrades();
@@ -39,14 +33,6 @@ public class UpgradeGoldIngot
     }
 
     @Override
-    public void onUpgradeAdded(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, SoldierUpgradeInst appliedUpgradeInst) {
-        NBTTagCompound upgNbt = appliedUpgradeInst.getNbtTag();
-        if( upgNbt.hasKey(NBT_USES, NbtTypes.NBT_SHORT) ) {
-            upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
-        }
-    }
-
-    @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         damage.add(SAPUtils.RNG.nextFloat() + 1.0F);
     }
@@ -55,6 +41,20 @@ public class UpgradeGoldIngot
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         damage.setValue(Math.max(0.25F, damage.getValue() - 1.0F));
         return true;
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
+    }
+
+    @Override
+    public void onUpgradeAdded(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, SoldierUpgradeInst appliedUpgradeInst) {
+        NBTTagCompound upgNbt = appliedUpgradeInst.getNbtTag();
+        if( upgNbt.hasKey(NBT_USES, NbtTypes.NBT_SHORT) ) {
+            upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
+        }
     }
 
     @Override

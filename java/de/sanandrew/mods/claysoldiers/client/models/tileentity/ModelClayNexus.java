@@ -12,24 +12,23 @@ import net.minecraft.client.model.ModelRenderer;
 import org.lwjgl.opengl.GL11;
 
 public class ModelClayNexus
-    extends ModelBase
+        extends ModelBase
 {
-    ModelRenderer base1;
-    ModelRenderer base2;
-    ModelRenderer base3;
-    ModelRenderer ball;
-    ModelRenderer armBR1;
-    ModelRenderer armTR1;
-    ModelRenderer armBL1;
-    ModelRenderer armTL1;
-    ModelRenderer armBR2;
-    ModelRenderer armTR2;
-    ModelRenderer armBL2;
-    ModelRenderer armTL2;
-    ModelRenderer armBR3;
-    ModelRenderer armTR3;
-    ModelRenderer armBL3;
-    ModelRenderer armTL3;
+    public ModelRenderer base1;
+    public ModelRenderer base2;
+    public ModelRenderer base3;
+    public ModelRenderer armBR1;
+    public ModelRenderer armTR1;
+    public ModelRenderer armBL1;
+    public ModelRenderer armTL1;
+    public ModelRenderer armBR2;
+    public ModelRenderer armTR2;
+    public ModelRenderer armBL2;
+    public ModelRenderer armTL2;
+    public ModelRenderer armBR3;
+    public ModelRenderer armTR3;
+    public ModelRenderer armBL3;
+    public ModelRenderer armTL3;
 
     public ModelClayNexus() {
         this.textureWidth = 32;
@@ -54,12 +53,6 @@ public class ModelClayNexus
         this.base3.setRotationPoint(0.0F, 22.0F, 0.0F);
         this.base3.setTextureSize(32, 32);
         this.setRotation(this.base3, 0.0F, 0.0F, 0.0F);
-
-        this.ball = new ModelRenderer(this, 4, 21);
-        this.ball.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
-        this.ball.setRotationPoint(0.0F, 17.0F, 0.0F);
-        this.ball.setTextureSize(32, 32);
-        this.setRotation(this.ball, 2.356194F, -0.7853982F, 0.7853982F);
 
         this.armBR1 = new ModelRenderer(this, 0, 14);
         this.armBR1.addBox(-0.5F, -5.0F, -0.5F, 1, 6, 1);
@@ -135,41 +128,39 @@ public class ModelClayNexus
     }
 
     public void renderTileEntity(float scaleFactor) {
-        base1.render(scaleFactor);
-        base2.render(scaleFactor);
-        base3.render(scaleFactor);
-//        ball.render(scaleFactor);
-        armBR1.render(scaleFactor);
-        armTR1.render(scaleFactor);
-        armBL1.render(scaleFactor);
-        armTL1.render(scaleFactor);
-        armBR2.render(scaleFactor);
-        armTR2.render(scaleFactor);
-        armBL2.render(scaleFactor);
-        armTL2.render(scaleFactor);
-        armBR3.render(scaleFactor);
-        armTR3.render(scaleFactor);
-        armBL3.render(scaleFactor);
-        armTL3.render(scaleFactor);
+        this.base1.render(scaleFactor);
+        this.base2.render(scaleFactor);
+        this.base3.render(scaleFactor);
+        this.armBR1.render(scaleFactor);
+        this.armTR1.render(scaleFactor);
+        this.armBL1.render(scaleFactor);
+        this.armTL1.render(scaleFactor);
+        this.armBR2.render(scaleFactor);
+        this.armTR2.render(scaleFactor);
+        this.armBL2.render(scaleFactor);
+        this.armTL2.render(scaleFactor);
+        this.armBR3.render(scaleFactor);
+        this.armTR3.render(scaleFactor);
+        this.armBL3.render(scaleFactor);
+        this.armTL3.render(scaleFactor);
     }
 
     public void renderTileEntityGlowmap(float scaleFactor) {
-        renderScaledBox(base1, scaleFactor);
-        renderScaledBox(base2, scaleFactor);
-        renderScaledBox(base3, scaleFactor);
-//        renderScaledBox(ball, scaleFactor);
-        renderScaledBox(armBR1, scaleFactor);
-        renderScaledBox(armTR1, scaleFactor);
-        renderScaledBox(armBL1, scaleFactor);
-        renderScaledBox(armTL1, scaleFactor);
-        renderScaledBox(armBR2, scaleFactor);
-        renderScaledBox(armTR2, scaleFactor);
-        renderScaledBox(armBL2, scaleFactor);
-        renderScaledBox(armTL2, scaleFactor);
-        renderScaledBox(armBR3, scaleFactor);
-        renderScaledBox(armTR3, scaleFactor);
-        renderScaledBox(armBL3, scaleFactor);
-        renderScaledBox(armTL3, scaleFactor);
+        renderScaledBox(this.base1, scaleFactor);
+        renderScaledBox(this.base2, scaleFactor);
+        renderScaledBox(this.base3, scaleFactor);
+        renderScaledBox(this.armBR1, scaleFactor);
+        renderScaledBox(this.armTR1, scaleFactor);
+        renderScaledBox(this.armBL1, scaleFactor);
+        renderScaledBox(this.armTL1, scaleFactor);
+        renderScaledBox(this.armBR2, scaleFactor);
+        renderScaledBox(this.armTR2, scaleFactor);
+        renderScaledBox(this.armBL2, scaleFactor);
+        renderScaledBox(this.armTL2, scaleFactor);
+        renderScaledBox(this.armBR3, scaleFactor);
+        renderScaledBox(this.armTR3, scaleFactor);
+        renderScaledBox(this.armBL3, scaleFactor);
+        renderScaledBox(this.armTL3, scaleFactor);
     }
 
     private void renderScaledBox(ModelRenderer box, float scaleFactor) {
@@ -182,9 +173,9 @@ public class ModelClayNexus
 
         GL11.glPushMatrix();
         GL11.glTranslatef(point.getValue0() * scaleFactor, point.getValue1() * scaleFactor, point.getValue2() * scaleFactor);
-        GL11.glRotatef(rot.getValue2() * (180F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(rot.getValue1() * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(rot.getValue0() * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(rot.getValue2() * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(rot.getValue1() * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(rot.getValue0() * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
         GL11.glScalef(1.01F, 1.01F, 1.01F);
         GL11.glTranslatef(0.0F, -0.00075F, 0.0F);
         box.render(scaleFactor);

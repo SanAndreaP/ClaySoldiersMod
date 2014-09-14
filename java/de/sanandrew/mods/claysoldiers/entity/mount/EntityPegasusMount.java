@@ -13,7 +13,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 public class EntityPegasusMount
-    extends EntityHorseMount
+        extends EntityHorseMount
 {
     public float wingSwing = 0.0F;
     public float wingSwingStep = 0.0F;
@@ -28,9 +28,6 @@ public class EntityPegasusMount
         super(world, horseType);
         this.wingSwing = this.rand.nextFloat() * (float) Math.PI;
     }
-
-    @Override
-    protected void fall(float fallHeight) { }
 
     @Override
     public void onUpdate() {
@@ -75,6 +72,10 @@ public class EntityPegasusMount
         }
 
         super.onUpdate();
+    }
+
+    @Override
+    protected void fall(float fallHeight) {
     }
 
     private void calcWingSwing() {

@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
 import com.google.common.collect.Maps;
@@ -27,12 +33,62 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public final class SoldierUpgrades
 {
+    public static final String UPG_EGG = "egg";
+    public static final String UPG_BONE = "bone";
+    public static final String UPG_BOWL = "bowl";
+    public static final String UPG_CLAY = "clay";
+    public static final String UPG_COAL = "coal";
+    public static final String UPG_FOOD = "food";
+    public static final String UPG_SNOW = "snow";
+    public static final String UPG_WOOL = "wool";
+    public static final String UPG_ARROW = "arrow";
+    public static final String UPG_BRICK = "brick";
+    public static final String UPG_FLINT = "flint";
+    public static final String UPG_GLASS = "glass";
+    public static final String UPG_PAPER = "paper";
+    public static final String UPG_STICK = "stick";
+    public static final String UPG_SUGAR = "sugar";
+    public static final String UPG_WHEAT = "wheat";
+    public static final String UPG_CACTUS = "string";
+    public static final String UPG_GRAVEL = "gravel";
+    public static final String UPG_STRING = "string";
+    public static final String UPG_EMERALD = "emerald";
+    public static final String UPG_FEATHER = "feather";
+    public static final String UPG_LEATHER = "leather";
+    public static final String UPG_BLAZEROD = "blazerod";
+    public static final String UPG_LILYPADS = "lilypads";
+    public static final String UPG_MOB_HEAD = "skull";
+    public static final String UPG_REDSTONE = "redstone";
+    public static final String UPG_GLOWSTONE = "glowstone";
+    public static final String UPG_GOLDMELON = "goldmelon";
+    public static final String UPG_GUNPOWDER = "gunpowder";
+    public static final String UPG_SHEARLEFT = "shear_l";
+    public static final String UPG_SUGARCANE = "sugarcane";
+    public static final String UPG_ENDERPEARL = "enderpearl";
+    public static final String UPG_FIRECHARGE = "firecharge";
+    public static final String UPG_GOLD_INGOT = "gold_ingot";
+    public static final String UPG_IRON_BLOCK = "iron_block";
+    public static final String UPG_IRON_INGOT = "iron_ingot";
+    public static final String UPG_MAGMACREAM = "magmacream";
+    public static final String UPG_NETHERWART = "netherwart";
+    public static final String UPG_SHEARRIGHT = "shear_r";
+    public static final String UPG_SLIMEBALLS = "slimeball";
+    public static final String UPG_WOODBUTTON = "woodbutton";
+    public static final String UPG_GOLD_NUGGET = "gold_nugget";
+    public static final String UPG_STONEBUTTON = "stonebutton";
+    public static final String UPG_WHEAT_SEEDS = "wheat_seeds";
+    public static final String UPG_BLAZE_POWDER = "blaze_powder";
+    public static final String UPG_MUSHROOM_RED = "red_mushroom";
+    public static final String UPG_NETHER_BRICK = "nether_brick";
+    public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
+    public static final String UPG_FIREWORK_STAR = "firework";
+    public static final String UPG_NETHER_QUARTZ = "nether_quartz";
+    public static final String UPG_MUSHROOM_BROWN = "brown_mushroom";
+    public static final String UPG_DIAMOND_ITEM = "diamond";
+    public static final String UPG_DIAMOND_BLOCK = "diamond_block";
+
     private static final Map<String, ASoldierUpgrade> NAME_TO_UPGRADE_MAP_ = Maps.newHashMap();
     private static final Map<ASoldierUpgrade, String> UPGRADE_TO_NAME_MAP_ = Maps.newHashMap();
     private static final Map<Pair<Item, Integer>, ASoldierUpgrade> ITEM_TO_UPGRADE_MAP_ = Maps.newHashMap();
@@ -46,7 +102,7 @@ public final class SoldierUpgrades
     }
 
     public static void registerUpgrade(String name, ItemStack item, ASoldierUpgrade instance, int clientRenderId) {
-        registerUpgrade(name, new ItemStack[]{item}, instance, clientRenderId);
+        registerUpgrade(name, new ItemStack[] { item }, instance, clientRenderId);
     }
 
     public static void registerUpgrade(String name, ItemStack[] items, ASoldierUpgrade instance) {
@@ -121,69 +177,14 @@ public final class SoldierUpgrades
         return currRenderId++;
     }
 
-    public static final String UPG_EGG = "egg";
-    public static final String UPG_BONE = "bone";
-    public static final String UPG_BOWL = "bowl";
-    public static final String UPG_CLAY = "clay";
-    public static final String UPG_COAL = "coal";
-    public static final String UPG_FOOD = "food";
-    public static final String UPG_SNOW = "snow";
-    public static final String UPG_WOOL = "wool";
-    public static final String UPG_ARROW = "arrow";
-    public static final String UPG_BRICK = "brick";
-    public static final String UPG_FLINT = "flint";
-    public static final String UPG_GLASS = "glass";
-    public static final String UPG_PAPER = "paper";
-    public static final String UPG_STICK = "stick";
-    public static final String UPG_SUGAR = "sugar";
-    public static final String UPG_WHEAT = "wheat";
-    public static final String UPG_CACTUS = "string";
-    public static final String UPG_GRAVEL = "gravel";
-    public static final String UPG_STRING = "string";
-    public static final String UPG_EMERALD = "emerald";
-    public static final String UPG_FEATHER = "feather";
-    public static final String UPG_LEATHER = "leather";
-    public static final String UPG_BLAZEROD = "blazerod";
-    public static final String UPG_LILYPADS = "lilypads";
-    public static final String UPG_MOB_HEAD = "skull";
-    public static final String UPG_REDSTONE = "redstone";
-    public static final String UPG_GLOWSTONE = "glowstone";
-    public static final String UPG_GOLDMELON = "goldmelon";
-    public static final String UPG_GUNPOWDER = "gunpowder";
-    public static final String UPG_SHEARLEFT = "shear_l";
-    public static final String UPG_SUGARCANE = "sugarcane";
-    public static final String UPG_ENDERPEARL = "enderpearl";
-    public static final String UPG_FIRECHARGE = "firecharge";
-    public static final String UPG_GOLD_INGOT = "gold_ingot";
-    public static final String UPG_IRON_BLOCK = "iron_block";
-    public static final String UPG_IRON_INGOT = "iron_ingot";
-    public static final String UPG_MAGMACREAM = "magmacream";
-    public static final String UPG_NETHERWART = "netherwart";
-    public static final String UPG_SHEARRIGHT = "shear_r";
-    public static final String UPG_SLIMEBALLS = "slimeball";
-    public static final String UPG_WOODBUTTON = "woodbutton";
-    public static final String UPG_GOLD_NUGGET = "gold_nugget";
-    public static final String UPG_STONEBUTTON = "stonebutton";
-    public static final String UPG_WHEAT_SEEDS = "wheat_seeds";
-    public static final String UPG_BLAZE_POWDER = "blaze_powder";
-    public static final String UPG_MUSHROOM_RED = "red_mushroom";
-    public static final String UPG_NETHER_BRICK = "nether_brick";
-    public static final String UPG_FERMSPIDEREYE = "spidereye_ferm";
-    public static final String UPG_FIREWORK_STAR = "firework";
-    public static final String UPG_NETHER_QUARTZ = "nether_quartz";
-    public static final String UPG_MUSHROOM_BROWN = "brown_mushroom";
-    public static final String UPG_DIAMOND_ITEM = "diamond";
-    public static final String UPG_DIAMOND_BLOCK = "diamond_block";
-
-
     public static void initialize() {
-      // upgrades no single items and render ID
+        // upgrades no single items and render ID
         registerUpgrade(UPG_SHEARLEFT, (ItemStack) null, new UpgradeShearBladeLeft(), getNewRenderId());
         registerUpgrade(UPG_SHEARRIGHT, (ItemStack) null, new UpgradeShearBladeRight(), getNewRenderId());
         registerUpgrade(UPG_GLASS, (ItemStack) null, new UpgradeGlass(), getNewRenderId());
         registerUpgrade(UPG_WOOL, (ItemStack) null, new UpgradeWool(), getNewRenderId());
 
-      // upgrades with single items and render ID
+        // upgrades with single items and render ID
         registerUpgrade(UPG_STICK, new ItemStack(Items.stick), new UpgradeStick(), getNewRenderId());
         registerUpgrade(UPG_BLAZEROD, new ItemStack(Items.blaze_rod), new UpgradeBlazeRod(), getNewRenderId());
         registerUpgrade(UPG_LEATHER, new ItemStack(Items.leather), new UpgradeLeather(), getNewRenderId());
@@ -211,7 +212,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_DIAMOND_ITEM, new ItemStack(Items.diamond), new UpgradeDiamond(), getNewRenderId());
         registerUpgrade(UPG_DIAMOND_BLOCK, new ItemStack(Blocks.diamond_block), new UpgradeDiamondBlock(), getNewRenderId());
 
-      // upgrades with single items and no render ID
+        // upgrades with single items and no render ID
         registerUpgrade(UPG_COAL, new ItemStack(Items.coal, 1, OreDictionary.WILDCARD_VALUE), new UpgradeCoal());
         registerUpgrade(UPG_WHEAT, new ItemStack(Items.wheat), new UpgradeWheat());
         registerUpgrade(UPG_NETHERWART, new ItemStack(Items.nether_wart), new UpgradeNetherwart());
@@ -229,50 +230,59 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_BLAZE_POWDER, new ItemStack(Items.blaze_powder), new UpgradeBlazePowder());
         registerUpgrade("wool_helper", new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeHelperWool());
 
-      // upgrades with multiple items and render ID
+        // upgrades with multiple items and render ID
         registerUpgrade(UPG_GLOWSTONE, new ItemStack[] {
                                 new ItemStack(Items.glowstone_dust),
                                 new ItemStack(Blocks.glowstone)
-                        }, new UpgradeGlowstone(), getNewRenderId());
+                        }, new UpgradeGlowstone(), getNewRenderId()
+        );
         registerUpgrade(UPG_GUNPOWDER, new ItemStack[] {
                                 new ItemStack(Items.gunpowder),
                                 new ItemStack(Blocks.tnt)
-                        }, new UpgradeGunpowder(), getNewRenderId());
+                        }, new UpgradeGunpowder(), getNewRenderId()
+        );
         registerUpgrade(UPG_SNOW, new ItemStack[] {
                                 new ItemStack(Blocks.snow),
                                 new ItemStack(Blocks.snow_layer),
                                 new ItemStack(Items.snowball)
-                        }, new UpgradeSnow(), getNewRenderId());
+                        }, new UpgradeSnow(), getNewRenderId()
+        );
         registerUpgrade(UPG_EMERALD, new ItemStack[] {
                                 new ItemStack(Blocks.emerald_block),
                                 new ItemStack(Items.emerald)
-                        }, new UpgradeEmerald(), getNewRenderId());
+                        }, new UpgradeEmerald(), getNewRenderId()
+        );
         registerUpgrade(UPG_PAPER, new ItemStack[] {
                                 new ItemStack(Items.paper),
                                 new ItemStack(Items.book)
-                        }, new UpgradePaper(), getNewRenderId());
+                        }, new UpgradePaper(), getNewRenderId()
+        );
 
-      // upgrades with multiple items and no render ID
+        // upgrades with multiple items and no render ID
         registerUpgrade("shear_helper", new ItemStack[] {
                                 new ItemStack(RegistryItems.shearBlade),
                                 new ItemStack(Items.shears)
-                        }, new UpgradeHelperShearBlade());
-        registerUpgrade(UPG_NETHER_BRICK, new ItemStack [] {
+                        }, new UpgradeHelperShearBlade()
+        );
+        registerUpgrade(UPG_NETHER_BRICK, new ItemStack[] {
                                 new ItemStack(Blocks.nether_brick),
                                 new ItemStack(Items.netherbrick)
-                        }, new UpgradeNetherBrick());
+                        }, new UpgradeNetherBrick()
+        );
         registerUpgrade("glass_helper", new ItemStack[] {
                                 new ItemStack(Blocks.glass),
                                 new ItemStack(Blocks.glass_pane),
                                 new ItemStack(Blocks.stained_glass, 1, OreDictionary.WILDCARD_VALUE),
                                 new ItemStack(Blocks.stained_glass_pane, 1, OreDictionary.WILDCARD_VALUE),
                                 new ItemStack(Items.glass_bottle)
-                        }, new UpgradeHelperGlass());
+                        }, new UpgradeHelperGlass()
+        );
         registerUpgrade(UPG_FOOD, getFoodItems(), new UpgradeFood());
         registerUpgrade(UPG_REDSTONE, new ItemStack[] {
                                 new ItemStack(Items.redstone),
                                 new ItemStack(Blocks.redstone_block)
-                        }, new UpgradeRedstone());
+                        }, new UpgradeRedstone()
+        );
     }
 
     public static void logUpgradeCount() {
@@ -287,14 +297,16 @@ public final class SoldierUpgrades
         Iterator iter = Item.itemRegistry.iterator();
         for( Object elem = null; iter.hasNext(); elem = iter.next() ) {
             if( elem instanceof ItemFood && !UpgradeFood.isFoodExcluded((ItemFood) elem) ) {
-                stackList.add(new ItemStack((ItemFood)elem, 1, OreDictionary.WILDCARD_VALUE));
+                stackList.add(new ItemStack((ItemFood) elem, 1, OreDictionary.WILDCARD_VALUE));
             }
         }
 
         return stackList.toArray(new ItemStack[stackList.size()]);
     }
 
-    public static class RenderIdException extends RuntimeException {
+    public static class RenderIdException
+            extends RuntimeException
+    {
         public RenderIdException() {
             super("There are no more render IDs for soldier upgrade available!");
         }

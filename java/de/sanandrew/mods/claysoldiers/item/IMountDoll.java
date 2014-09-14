@@ -6,4 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.item;
 
-public interface IMountDoll { }
+public interface IMountDoll
+{
+}

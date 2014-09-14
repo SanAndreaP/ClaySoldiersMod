@@ -15,8 +15,20 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeNetherBrick
-    extends AUpgradeCore
+        extends AUpgradeCore
 {
+    @Override
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
+        if( source.getEntity() instanceof EntityClayMan ) {
+            EntityClayMan frodo = (EntityClayMan) source.getEntity();
+            if( !frodo.hasUpgrade(IMeeleeUpgrade.class) ) {
+                frodo.setFire(3);
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
         if( stack.getItem() == Items.netherbrick ) {
@@ -24,17 +36,5 @@ public class UpgradeNetherBrick
         }
 
         clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
-    @Override
-    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( source.getEntity() instanceof EntityClayMan ) {
-            EntityClayMan frodo = (EntityClayMan)source.getEntity();
-            if( !frodo.hasUpgrade(IMeeleeUpgrade.class) ) {
-                frodo.setFire(3);
-            }
-        }
-
-        return true;
     }
 }

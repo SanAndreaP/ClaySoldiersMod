@@ -14,9 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 
 public class UpgradeFireworkStar
-    extends AUpgradeMisc
-    implements IExplosiveUpgrade
+        extends AUpgradeMisc
+        implements IExplosiveUpgrade
 {
+    @Override
+    public void onClientUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        if( clayMan.getHealth() <= 0.0F ) {
+            clayMan.worldObj.makeFireworks(clayMan.posX, clayMan.posY + clayMan.getEyeHeight(), clayMan.posZ, 0.0F, 0.0F, 0.0F, upgradeInst.getNbtTag());
+        }
+    }
+
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         this.consumeItem(stack, upgradeInst);
@@ -26,13 +33,6 @@ public class UpgradeFireworkStar
             NBTTagList explosionList = new NBTTagList();
             explosionList.appendTag(stack.getTagCompound().getCompoundTag("Explosion"));
             upgradeInst.getNbtTag().setTag("Explosions", explosionList);
-        }
-    }
-
-    @Override
-    public void onClientUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.getHealth() <= 0.0F ) {
-            clayMan.worldObj.makeFireworks(clayMan.posX, clayMan.posY + clayMan.getEyeHeight(), clayMan.posZ, 0.0F, 0.0F, 0.0F, upgradeInst.getNbtTag());
         }
     }
 

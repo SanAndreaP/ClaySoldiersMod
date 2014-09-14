@@ -14,7 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.Explosion;
 
 public class EffectMagmaBomb
-    extends ASoldierEffect
+        extends ASoldierEffect
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {
@@ -35,6 +35,11 @@ public class EffectMagmaBomb
     }
 
     @Override
+    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
+        return MethodState.DENY;
+    }
+
+    @Override
     public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         ParticlePacketSender.sendMagmafuseFx(clayMan.posX, clayMan.posY + 0.2D, clayMan.posZ, clayMan.dimension);
     }
@@ -44,10 +49,5 @@ public class EffectMagmaBomb
         if( !(source.getEntity() instanceof EntityPlayer) ) {
             clayMan.worldObj.createExplosion(clayMan, clayMan.posX, clayMan.posY, clayMan.posZ, 1.0F, false);
         }
-    }
-
-    @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
-        return MethodState.DENY;
     }
 }

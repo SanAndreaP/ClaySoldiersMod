@@ -13,7 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public class UpgradeBrownMushroom
-    extends UpgradeFood
+        extends UpgradeFood
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {

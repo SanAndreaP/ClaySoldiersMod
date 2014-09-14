@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network;
 
 import com.google.common.collect.Maps;
@@ -24,10 +30,6 @@ import org.apache.logging.log4j.Level;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public final class PacketProcessor
 {
     public static final short PKG_SOLDIER_RENDERS = 0;
@@ -97,7 +99,8 @@ public final class PacketProcessor
                                                                                          (double) dirData.getValue(1),
                                                                                          (double) dirData.getValue(2),
                                                                                          (double) dirData.getValue(3),
-                                                                                         (double) dirData.getValue(4))
+                                                                                         (double) dirData.getValue(4)
+                                                         )
                         );
                         break;
                     case TO_ALL_IN_DIMENSION:
@@ -114,7 +117,8 @@ public final class PacketProcessor
         }
     }
 
-    private static enum PacketDirections {
+    private static enum PacketDirections
+    {
         TO_SERVER, TO_PLAYER, TO_ALL, TO_ALL_IN_RANGE, TO_ALL_IN_DIMENSION
     }
 

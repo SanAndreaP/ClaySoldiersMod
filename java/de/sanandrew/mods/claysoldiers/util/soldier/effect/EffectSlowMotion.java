@@ -11,7 +11,7 @@ import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class EffectSlowMotion
-    extends ASoldierEffect
+        extends ASoldierEffect
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {

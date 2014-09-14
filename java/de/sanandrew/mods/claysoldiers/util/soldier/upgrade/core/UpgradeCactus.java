@@ -18,14 +18,8 @@ import org.apache.logging.log4j.Level;
 import java.lang.reflect.Field;
 
 public class UpgradeCactus
-    extends AUpgradeCore
+        extends AUpgradeCore
 {
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         Field cmFireField = SAPReflectionHelper.getCachedField(Entity.class, "field_70151_c", "fire");
@@ -40,5 +34,11 @@ public class UpgradeCactus
         }
 
         return false;
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

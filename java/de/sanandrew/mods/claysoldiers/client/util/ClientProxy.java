@@ -16,9 +16,9 @@ import de.sanandrew.mods.claysoldiers.client.render.tileentity.RenderClayNexus;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
-import de.sanandrew.mods.claysoldiers.util.RegistryBlocks;
 import de.sanandrew.mods.claysoldiers.util.CSM_Main;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
+import de.sanandrew.mods.claysoldiers.util.RegistryBlocks;
 import de.sanandrew.mods.claysoldiers.util.RegistryEntities;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ASoldierEffect;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
@@ -32,7 +32,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ClientProxy extends CommonProxy
+public class ClientProxy
+        extends CommonProxy
 {
     @Override
     public void modInit() {

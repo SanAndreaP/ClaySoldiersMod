@@ -16,18 +16,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 
 public class UpgradeMagmacream
-    extends AUpgradeMisc
-    implements IExplosiveUpgrade
+        extends AUpgradeMisc
+        implements IExplosiveUpgrade
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) 1);
-    }
-
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 
     @Override
@@ -38,6 +32,12 @@ public class UpgradeMagmacream
             target.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_MAGMABOMB));
             target.attackEntityFrom(DamageSource.magic, 0.0F);
         }
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 
     @Override

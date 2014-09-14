@@ -1,12 +1,14 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public final class SoldierUpgradeInst
 {
     private ASoldierUpgrade upgrade_;
@@ -45,13 +47,13 @@ public final class SoldierUpgradeInst
         return this.nbt_;
     }
 
-    public ASoldierUpgrade getUpgrade() {
-        return this.upgrade_;
-    }
-
     public void setNbtTag(NBTTagCompound nbt) {
         if( nbt != null ) {
             this.nbt_ = nbt;
         }
+    }
+
+    public ASoldierUpgrade getUpgrade() {
+        return this.upgrade_;
     }
 }

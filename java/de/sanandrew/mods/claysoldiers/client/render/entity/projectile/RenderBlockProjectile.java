@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class RenderBlockProjectile
-    extends Render
+        extends Render
 {
     private final RenderBlocks renderBlocks = new RenderBlocks();
     private final Block block_;
@@ -27,18 +27,13 @@ public class RenderBlockProjectile
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return TextureMap.locationBlocksTexture;
-    }
-
-    @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partTicks) {
         int blockX = MathHelper.floor_double(entity.posX);
         int blockY = MathHelper.floor_double(entity.posY);
         int blockZ = MathHelper.floor_double(entity.posZ);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)x, (float)y, (float)z);
+        GL11.glTranslatef((float) x, (float) y, (float) z);
         GL11.glScalef(0.1F, 0.1F, 0.1F);
         this.bindEntityTexture(entity);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -48,5 +43,10 @@ public class RenderBlockProjectile
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity) {
+        return TextureMap.locationBlocksTexture;
     }
 }

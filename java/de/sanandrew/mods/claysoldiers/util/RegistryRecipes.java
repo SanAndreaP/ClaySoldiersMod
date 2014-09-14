@@ -38,37 +38,44 @@ public final class RegistryRecipes
     public static void initialize() {
         // basic soldier dolls
         CraftingManager.getInstance().addShapelessRecipe(ItemClayManDoll.setTeamForItem("clay", new ItemStack(RegistryItems.dollSoldier, 4)),
-                                                         new ItemStack(Blocks.soul_sand, 1), new ItemStack(Blocks.clay));
+                                                         new ItemStack(Blocks.soul_sand, 1), new ItemStack(Blocks.clay)
+        );
 
         // shear blades
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(RegistryItems.shearBlade, 2),
-                                                         new ItemStack(Items.shears));
+                                                         new ItemStack(Items.shears)
+        );
         CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Items.shears),
-                                                         new ItemStack(RegistryItems.shearBlade), new ItemStack(RegistryItems.shearBlade));
+                                                         new ItemStack(RegistryItems.shearBlade), new ItemStack(RegistryItems.shearBlade)
+        );
 
         // disruptors
         CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.disruptor),
                                                 "#|#", "#R#",
                                                 '#', new ItemStack(Blocks.clay),
                                                 '|', new ItemStack(Items.stick),
-                                                'R', new ItemStack(Items.redstone));
+                                                'R', new ItemStack(Items.redstone)
+        );
         CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.disruptorHardened),
                                                 "#|#", "#R#",
                                                 '#', new ItemStack(Blocks.hardened_clay, 1, OreDictionary.WILDCARD_VALUE),
                                                 '|', new ItemStack(Items.stick),
-                                                'R', new ItemStack(Items.redstone));
+                                                'R', new ItemStack(Items.redstone)
+        );
 
         // stat displays
         CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.statDisplay),
                                                 "#G#", "#R#",
                                                 '#', new ItemStack(Blocks.clay),
                                                 'G', new ItemStack(Blocks.glass),
-                                                'R', new ItemStack(Items.redstone));
+                                                'R', new ItemStack(Items.redstone)
+        );
         CraftingManager.getInstance().addRecipe(new ItemStack(RegistryItems.statDisplay),
                                                 "#G#", "#R#",
                                                 '#', new ItemStack(Blocks.clay),
                                                 'G', new ItemStack(Blocks.stained_glass, 1, OreDictionary.WILDCARD_VALUE),
-                                                'R', new ItemStack(Items.redstone));
+                                                'R', new ItemStack(Items.redstone)
+        );
 
         // nexus
         CraftingManager.getInstance().addRecipe(new ItemStack(RegistryBlocks.clayNexus),
@@ -76,7 +83,8 @@ public final class RegistryRecipes
                                                 'C', new ItemStack(Items.clay_ball),
                                                 'D', new ItemStack(Items.diamond),
                                                 'S', new ItemStack(Blocks.soul_sand),
-                                                'O', new ItemStack(Blocks.obsidian));
+                                                'O', new ItemStack(Blocks.obsidian)
+        );
 
         recSoldiersInst = new RecipeSoldiers();
 
@@ -95,7 +103,9 @@ public final class RegistryRecipes
         CraftingManager.getInstance().getRecipeList().add(new RecipeTurtles());
     }
 
-    public static class RecipeSoldiers implements IRecipe {
+    public static class RecipeSoldiers
+            implements IRecipe
+    {
         private final List<ItemStack> dollMaterials_;
 
         public RecipeSoldiers() {
@@ -116,7 +126,7 @@ public final class RegistryRecipes
                     if( SAPUtils.isItemInStackArray(stack, this.dollMaterials_) ) {
                         if( !hasMaterial ) {
                             hasMaterial = true;
-                        } else  {
+                        } else {
                             return false;
                         }
                     } else if( stack.getItem() instanceof ItemClayManDoll ) {
@@ -173,7 +183,9 @@ public final class RegistryRecipes
         }
     }
 
-    private static class RecipeHorses implements IRecipe {
+    private static class RecipeHorses
+            implements IRecipe
+    {
         private final ItemStack feather = new ItemStack(Items.feather);
         private final ItemStack soulSand = new ItemStack(Blocks.soul_sand);
 
@@ -184,9 +196,8 @@ public final class RegistryRecipes
             ItemStack[] pattern;
 
             if( invCrafting.getStackInSlot(0) == null
-                && (invCrafting.getStackInSlot(1) == null || SAPUtils.areStacksEqualWithWCV(this.feather, invCrafting.getStackInSlot(1)))
-                && invCrafting.getStackInSlot(2) == null )
-            {
+                    && (invCrafting.getStackInSlot(1) == null || SAPUtils.areStacksEqualWithWCV(this.feather, invCrafting.getStackInSlot(1)))
+                    && invCrafting.getStackInSlot(2) == null ) {
                 startIndex = 3;
             } else if( invCrafting.getStackInSlot(6) == null && invCrafting.getStackInSlot(7) == null && invCrafting.getStackInSlot(8) == null ) {
                 startIndex = 0;
@@ -200,7 +211,7 @@ public final class RegistryRecipes
 
             pattern = new ItemStack[] {
                     typeItem, this.soulSand, typeItem,
-                    typeItem, null,          typeItem
+                    typeItem, null, typeItem
             };
 
             for( int i = 0, slotIndex = startIndex; i < pattern.length; slotIndex = startIndex + (++i) ) {
@@ -241,7 +252,9 @@ public final class RegistryRecipes
         }
     }
 
-    private static class RecipeTurtles implements IRecipe {
+    private static class RecipeTurtles
+            implements IRecipe
+    {
         private final ItemStack soulSand = new ItemStack(Blocks.soul_sand);
 
         @Override
@@ -263,8 +276,8 @@ public final class RegistryRecipes
             }
 
             pattern = new ItemStack[] {
-                null,          typeItem,      typeItem,
-                this.soulSand, this.soulSand, typeItem
+                    null, typeItem, typeItem,
+                    this.soulSand, this.soulSand, typeItem
             };
 
             for( int i = 0, slotIndex = startIndex; i < pattern.length; slotIndex = startIndex + (++i) ) {

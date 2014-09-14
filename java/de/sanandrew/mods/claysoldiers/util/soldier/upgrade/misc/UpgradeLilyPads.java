@@ -13,28 +13,28 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 
 public class UpgradeLilyPads
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-        if( clayMan.worldObj.getBlock((int)clayMan.posX, (int)clayMan.posY, (int)clayMan.posZ).getMaterial() == Material.water ) {
-            clayMan.setJumping(true);
-        }
-    }
-
-    @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.isInWater() && !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT))) {
+        if( clayMan.isInWater() && !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
             clayMan.setJumping(false);
             if( clayMan.isCollidedHorizontally ) {
                 clayMan.motionY = 0.2D;
             } else {
-                clayMan.motionY = Math.abs(clayMan.motionY*0.1D);
+                clayMan.motionY = Math.abs(clayMan.motionY * 0.1D);
             }
         }
 
         return false;
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        this.consumeItem(stack, upgInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
+        if( clayMan.worldObj.getBlock((int) clayMan.posX, (int) clayMan.posY, (int) clayMan.posZ).getMaterial() == Material.water ) {
+            clayMan.setJumping(true);
+        }
     }
 }

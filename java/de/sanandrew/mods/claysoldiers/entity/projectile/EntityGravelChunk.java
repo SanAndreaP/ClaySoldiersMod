@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -19,8 +20,8 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class EntityGravelChunk
-    extends EntityThrowable
-    implements ISoldierProjectile<EntityGravelChunk>
+        extends EntityThrowable
+        implements ISoldierProjectile<EntityGravelChunk>
 {
     protected static final int DW_CLAYMANTEAM = 5;
     protected static final int DW_HOMING = 6;
@@ -71,6 +72,29 @@ public class EntityGravelChunk
     }
 
     @Override
+    public void setThrowableHeading(double motX, double motY, double motZ, float motMulti, float rndMulti) {
+        super.setThrowableHeading(motX, motY, motZ, motMulti, rndMulti);
+        float f2 = MathHelper.sqrt_double(motX * motX + motY * motY + motZ * motZ);
+        motX /= (double) f2;
+        motY /= (double) f2;
+        motZ /= (double) f2;
+        if( !this.isHoming() ) {
+            motX += this.rand.nextGaussian() * 0.0075D * (double) rndMulti;
+            motY += this.rand.nextGaussian() * 0.0075D * (double) rndMulti;
+            motZ += this.rand.nextGaussian() * 0.0075D * (double) rndMulti;
+        }
+        motX *= (double) motMulti;
+        motY *= (double) motMulti;
+        motZ *= (double) motMulti;
+        this.motionX = motX;
+        this.motionY = motY;
+        this.motionZ = motZ;
+        float f3 = MathHelper.sqrt_double(motX * motX + motZ * motZ);
+        this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(motX, motZ) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motY, (double) f3) * 180.0D / Math.PI);
+    }
+
+    @Override
     public void onUpdate() {
         if( this.dataWatcher.getWatchableObjectByte(DW_DEAD) == 1 ) {
             this.setDead();
@@ -89,43 +113,18 @@ public class EntityGravelChunk
     }
 
     @Override
-    public void setThrowableHeading(double motX, double motY, double motZ, float motMulti, float rndMulti) {
-        super.setThrowableHeading(motX, motY, motZ, motMulti, rndMulti);
-        float f2 = MathHelper.sqrt_double(motX * motX + motY * motY + motZ * motZ);
-        motX /= (double)f2;
-        motY /= (double)f2;
-        motZ /= (double)f2;
-        if( !this.isHoming() ) {
-            motX += this.rand.nextGaussian() * 0.007499999832361937D * (double) rndMulti;
-            motY += this.rand.nextGaussian() * 0.007499999832361937D * (double) rndMulti;
-            motZ += this.rand.nextGaussian() * 0.007499999832361937D * (double) rndMulti;
-        }
-        motX *= (double)motMulti;
-        motY *= (double)motMulti;
-        motZ *= (double)motMulti;
-        this.motionX = motX;
-        this.motionY = motY;
-        this.motionZ = motZ;
-        float f3 = MathHelper.sqrt_double(motX * motX + motZ * motZ);
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(motX, motZ) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(motY, (double)f3) * 180.0D / Math.PI);
-    }
-
-    @Override
     protected void onImpact(MovingObjectPosition movObjPos) {
-        if( movObjPos.entityHit != null  ) {
+        if( movObjPos.entityHit != null ) {
             float attackDmg = 2.0F + this.rand.nextFloat() * 2.0F;
             boolean isEnemy = movObjPos.entityHit instanceof EntityClayMan && this.target instanceof EntityClayMan
-                              && ((EntityClayMan)movObjPos.entityHit).getClayTeam().equals(((EntityClayMan)this.target).getClayTeam());
+                    && ((EntityClayMan) movObjPos.entityHit).getClayTeam().equals(((EntityClayMan) this.target).getClayTeam());
 
             DamageSource dmgSrc = DamageSource.causeThrownDamage(this, this.getThrower());
             if( this.getThrower() == null ) {
                 dmgSrc = DamageSource.causeThrownDamage(this, this);
             }
 
-            if( (movObjPos.entityHit == this.target || isEnemy)
-                && movObjPos.entityHit.attackEntityFrom(dmgSrc, attackDmg) )
-            {
+            if( (movObjPos.entityHit == this.target || isEnemy) && movObjPos.entityHit.attackEntityFrom(dmgSrc, attackDmg) ) {
                 if( this.getThrower() instanceof EntityClayMan ) {
                     ((EntityClayMan) this.getThrower()).onProjectileHit(this, movObjPos);
                 }
@@ -136,15 +135,18 @@ public class EntityGravelChunk
 
         if( !this.worldObj.isRemote ) {
             if( movObjPos.typeOfHit != MovingObjectType.BLOCK
-                || this.worldObj.getBlock(movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ)
-                                .getCollisionBoundingBoxFromPool(this.worldObj, movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ) != null )
+                || this.getBlockCollisionBox(this.worldObj, movObjPos.blockX, movObjPos.blockY, movObjPos.blockZ) != null )
             {
                 ParticlePacketSender.sendDiggingFx(this.posX, this.posY, this.posZ, this.dimension, Blocks.gravel);
                 this.setDead();
             }
 
-            this.dataWatcher.updateObject(DW_DEAD, (byte)(this.isDead ? 1 : 0));
+            this.dataWatcher.updateObject(DW_DEAD, (byte) (this.isDead ? 1 : 0));
         }
+    }
+
+    protected AxisAlignedBB getBlockCollisionBox(World world, int x, int y, int z) {
+        return world.getBlock(x, y, z) != null ? world.getBlock(x, y, z).getCollisionBoundingBoxFromPool(world, x, y, z) : null;
     }
 
     private boolean isHoming() {

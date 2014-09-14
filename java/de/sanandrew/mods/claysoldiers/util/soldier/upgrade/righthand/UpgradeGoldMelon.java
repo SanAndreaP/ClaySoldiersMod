@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeGoldMelon
-    extends AUpgradeRightHanded
+        extends AUpgradeRightHanded
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -33,7 +33,8 @@ public class UpgradeGoldMelon
         damage.setValue(0.0F);
         clayMan.heal(15.0F);
         PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, target.dimension, target.posX, target.posY, target.posZ, 64.0D,
-                                        Septet.with(PacketParticleFX.FX_SPELL, target.posX, target.posY, target.posZ, 1.0D, 0.0D, 0.0D));
+                                        Septet.with(PacketParticleFX.FX_SPELL, target.posX, target.posY, target.posZ, 1.0D, 0.0D, 0.0D)
+        );
     }
 
     @Override

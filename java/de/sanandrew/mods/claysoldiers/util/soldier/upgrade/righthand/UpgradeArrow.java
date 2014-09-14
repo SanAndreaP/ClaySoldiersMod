@@ -13,8 +13,13 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
 
 public class UpgradeArrow
-    extends AUpgradeRightHanded
+        extends AUpgradeRightHanded
 {
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK));
+    }
+
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         clayMan.playSound("random.pop", 1.0F, 1.0F);
@@ -22,11 +27,6 @@ public class UpgradeArrow
         clayMan.addUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FLINT));
         clayMan.addUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FEATHER));
         this.consumeItem(stack, upgradeInst);
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK));
     }
 
     @Override

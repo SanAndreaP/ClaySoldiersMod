@@ -14,7 +14,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.AUpgradeMisc;
 import net.minecraft.item.ItemStack;
 
 public class UpgradeSugarCane
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {

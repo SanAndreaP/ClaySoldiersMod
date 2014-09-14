@@ -16,12 +16,25 @@ import java.util.Map;
 
 public class SoldierEffects
 {
+    public static final String EFF_SLIMEFEET = "slimefeet";
+    public static final String EFF_SLOWMOTION = "slowmotion";
+    public static final String EFF_THUNDER = "thunder";
+    public static final String EFF_REDSTONE = "redstone";
+    public static final String EFF_MAGMABOMB = "magmabomb";
+
     private static final Map<String, ASoldierEffect> NAME_TO_EFFECT_MAP_ = Maps.newHashMap();
     private static final Map<ASoldierEffect, String> EFFECT_TO_NAME_MAP_ = Maps.newHashMap();
     private static final Map<ASoldierEffect, Byte> EFFECT_TO_RENDER_ID_MAP_ = Maps.newHashMap();
     private static final Map<Byte, ASoldierEffect> RENDER_ID_TO_EFFECT_MAP_ = Maps.newHashMap();
-
     private static byte currRenderId = 0;
+
+    public static void initialize() {
+        registerEffect(EFF_SLIMEFEET, new EffectSlimeFeet(), getNewRenderId());
+        registerEffect(EFF_SLOWMOTION, new EffectSlowMotion());
+        registerEffect(EFF_THUNDER, new EffectThunder(), getNewRenderId());
+        registerEffect(EFF_REDSTONE, new EffectBlindingRedstone(), getNewRenderId());
+        registerEffect(EFF_MAGMABOMB, new EffectMagmaBomb(), getNewRenderId());
+    }
 
     public static void registerEffect(String name, ASoldierEffect instance) {
         registerEffect(name, instance, -1);
@@ -71,24 +84,13 @@ public class SoldierEffects
         if( currRenderId == 127 ) {
             throw new RenderIdException();
         }
+
         return currRenderId++;
     }
 
-    public static final String EFF_SLIMEFEET = "slimefeet";
-    public static final String EFF_SLOWMOTION = "slowmotion";
-    public static final String EFF_THUNDER = "thunder";
-    public static final String EFF_REDSTONE = "redstone";
-    public static final String EFF_MAGMABOMB = "magmabomb";
-
-    static {
-        registerEffect(EFF_SLIMEFEET, new EffectSlimeFeet(), getNewRenderId());
-        registerEffect(EFF_SLOWMOTION, new EffectSlowMotion());
-        registerEffect(EFF_THUNDER, new EffectThunder(), getNewRenderId());
-        registerEffect(EFF_REDSTONE, new EffectBlindingRedstone(), getNewRenderId());
-        registerEffect(EFF_MAGMABOMB, new EffectMagmaBomb(), getNewRenderId());
-    }
-
-    public static class RenderIdException extends RuntimeException {
+    public static class RenderIdException
+            extends RuntimeException
+    {
         public RenderIdException() {
             super("There are no more render IDs for the soldier effect available!");
         }

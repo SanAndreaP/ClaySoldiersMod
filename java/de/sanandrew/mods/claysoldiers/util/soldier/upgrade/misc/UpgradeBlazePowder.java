@@ -14,7 +14,7 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeBlazePowder
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     public static final DamageSource blazePwdSrc = new DamageSource(CSM_Main.MOD_ID + ":blaze_powder").setDamageBypassesArmor().setFireDamage();
 
@@ -24,9 +24,9 @@ public class UpgradeBlazePowder
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
+    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
+        target.attackEntityFrom(blazePwdSrc, 10000.0F);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class UpgradeBlazePowder
     }
 
     @Override
-    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
-        target.attackEntityFrom(blazePwdSrc, 10000.0F);
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

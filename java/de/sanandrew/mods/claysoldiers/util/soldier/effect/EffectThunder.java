@@ -10,7 +10,7 @@ import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 
 public class EffectThunder
-    extends ASoldierEffect
+        extends ASoldierEffect
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {
@@ -19,16 +19,16 @@ public class EffectThunder
     }
 
     @Override
-    public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
-        short remaining = (short) (effectInst.getNbtTag().getShort("ticksRemaining") - 1);
-        effectInst.getNbtTag().setShort("ticksRemaining", remaining);
-    }
-
-    @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         short remaining = (short) (effectInst.getNbtTag().getShort("ticksRemaining") - 1);
         effectInst.getNbtTag().setShort("ticksRemaining", remaining);
         return remaining == 0;
+    }
+
+    @Override
+    public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
+        short remaining = (short) (effectInst.getNbtTag().getShort("ticksRemaining") - 1);
+        effectInst.getNbtTag().setShort("ticksRemaining", remaining);
     }
 
     @Override

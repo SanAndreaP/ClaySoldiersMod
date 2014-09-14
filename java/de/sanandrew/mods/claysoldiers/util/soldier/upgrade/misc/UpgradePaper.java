@@ -12,7 +12,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class UpgradePaper
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     @Override
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {

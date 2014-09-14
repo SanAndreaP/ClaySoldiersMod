@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -12,10 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class RenderSoldierLeftHandEvent
 {
     private final ItemStack itemShearBlade_ = new ItemStack(RegistryItems.shearBlade);
@@ -43,26 +45,6 @@ public class RenderSoldierLeftHandEvent
         }
     }
 
-    private void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
-        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.shieldStudIcon : Textures.shieldIcon;
-
-        GL11.glPushMatrix();
-        renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
-        GL11.glTranslatef(-0.4F, 0.15F, -0.2F);
-        GL11.glScalef(0.75F, 0.75F, 0.75F);
-        ItemRenderHelper.renderIconIn3D(icon, false, false, 0xFFFFFF);
-        GL11.glPopMatrix();
-    }
-
-    private void renderThrowableBlock(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
-        GL11.glPushMatrix();
-        renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
-        GL11.glTranslatef(0.05F, 0.55F, 0.0F);
-        GL11.glScalef(0.3F, 0.3F, 0.3F);
-        renderer.getItemRenderer().renderItem(clayMan, stack, 0);
-        GL11.glPopMatrix();
-    }
-
     private void renderLeftHandItem(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
@@ -75,6 +57,26 @@ public class RenderSoldierLeftHandEvent
         GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
 
         renderer.getItemRenderer().renderItem(clayMan, stack, 0);
+        GL11.glPopMatrix();
+    }
+
+    private void renderThrowableBlock(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
+        GL11.glTranslatef(0.05F, 0.55F, 0.0F);
+        GL11.glScalef(0.3F, 0.3F, 0.3F);
+        renderer.getItemRenderer().renderItem(clayMan, stack, 0);
+        GL11.glPopMatrix();
+    }
+
+    private void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
+        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.shieldStudIcon : Textures.shieldIcon;
+
+        GL11.glPushMatrix();
+        renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
+        GL11.glTranslatef(-0.4F, 0.15F, -0.2F);
+        GL11.glScalef(0.75F, 0.75F, 0.75F);
+        ItemRenderHelper.renderIconIn3D(icon, false, false, 0xFFFFFF);
         GL11.glPopMatrix();
     }
 }

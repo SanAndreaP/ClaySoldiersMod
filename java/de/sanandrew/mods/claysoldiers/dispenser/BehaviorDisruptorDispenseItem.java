@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.dispenser;
 
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
@@ -8,13 +14,10 @@ import net.minecraft.dispenser.IPosition;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class BehaviorDisruptorDispenseItem
-    implements IBehaviorDispenseItem
+        implements IBehaviorDispenseItem
 {
+    @Override
     public final ItemStack dispense(IBlockSource blockSource, ItemStack stack) {
         ItemStack dispenseStack = this.dispenseStack(blockSource, stack);
         this.playDispenseSound(blockSource);
@@ -43,10 +46,10 @@ public class BehaviorDisruptorDispenseItem
      * Order clients to display dispense particles from the specified block and facing.
      */
     protected void spawnDispenseParticles(IBlockSource blockSource, EnumFacing facing) {
-        blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), this.func_82488_a(facing));
+        blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), this.getParticleOffset(facing));
     }
 
-    private int func_82488_a(EnumFacing facing) {
+    private int getParticleOffset(EnumFacing facing) {
         return facing.getFrontOffsetX() + 1 + (facing.getFrontOffsetZ() + 1) * 3;
     }
 }

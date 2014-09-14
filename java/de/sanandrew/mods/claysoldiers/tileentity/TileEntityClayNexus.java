@@ -45,7 +45,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TileEntityClayNexus
-    extends TileEntity implements IInventory
+        extends TileEntity
+        implements IInventory
 {
     public static final int SOLDIER_SLOT = 0;
     public static final int THROWABLE_SLOT = 1;
@@ -81,7 +82,8 @@ public class TileEntityClayNexus
     private AxisAlignedBB searchArea_;
     private AxisAlignedBB damageArea_;
 
-    public TileEntityClayNexus() { }
+    public TileEntityClayNexus() {
+    }
 
     @Override
     public void updateEntity() {
@@ -97,10 +99,10 @@ public class TileEntityClayNexus
         super.updateEntity();
 
         boolean isRsPowered = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)
-                              || this.worldObj.getIndirectPowerLevelTo(this.xCoord - 1, this.yCoord, this.zCoord,     1) > 0
-                              || this.worldObj.getIndirectPowerLevelTo(this.xCoord,     this.yCoord, this.zCoord + 1, 1) > 0
-                              || this.worldObj.getIndirectPowerLevelTo(this.xCoord,     this.yCoord, this.zCoord - 1, 1) > 0
-                              || this.worldObj.getIndirectPowerLevelTo(this.xCoord + 1, this.yCoord, this.zCoord,     1) > 0;
+                || this.worldObj.getIndirectPowerLevelTo(this.xCoord - 1, this.yCoord, this.zCoord, 1) > 0
+                || this.worldObj.getIndirectPowerLevelTo(this.xCoord, this.yCoord, this.zCoord + 1, 1) > 0
+                || this.worldObj.getIndirectPowerLevelTo(this.xCoord, this.yCoord, this.zCoord - 1, 1) > 0
+                || this.worldObj.getIndirectPowerLevelTo(this.xCoord + 1, this.yCoord, this.zCoord, 1) > 0;
 
         if( !this.worldObj.isRemote && !this.prevRsPowerState && isRsPowered ) {
             this.isActive = !this.isActive;
@@ -155,10 +157,9 @@ public class TileEntityClayNexus
                         double deltaZ = target.posZ - this.zCoord + 0.5F;
 
                         try {
-                            ISoldierProjectile<? extends EntityThrowable> projectile = this.tempThrowableCls_.getConstructor(World.class, double.class, double.class,
-                                                                                                                             double.class)
-                                                                                                             .newInstance(this.worldObj, this.xCoord + 0.5F,
-                                                                                                                          this.yCoord + 0.875F, this.zCoord + 0.5F);
+                            ISoldierProjectile<? extends EntityThrowable> projectile =
+                                    this.tempThrowableCls_.getConstructor(World.class, double.class, double.class, double.class)
+                                                          .newInstance(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.875F, this.zCoord + 0.5F);
                             projectile.initProjectile(target, true, this.tempClayTeam_.getTeamName());
                             EntityThrowable throwable = projectile.getProjectileEntity();
 
@@ -200,8 +201,10 @@ public class TileEntityClayNexus
                 this.spinAngle += 4;
                 ClaymanTeam team = ItemClayManDoll.getTeam(this.soldierSlot_);
                 RGBAValues rgba = SAPUtils.getRgbaFromColorInt(team.getTeamColor());
-                CSM_Main.proxy.spawnParticles(PacketParticleFX.FX_NEXUS, Sextet.with((double)this.xCoord, (double)this.yCoord, (double)this.zCoord,
-                                                                                     rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F));
+                CSM_Main.proxy.spawnParticles(PacketParticleFX.FX_NEXUS, Sextet.with((double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
+                                                                                     rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F
+                                              )
+                );
             } else if( this.spinAngle % 90 != 0 ) {
                 this.spinAngle += 2;
             }
@@ -301,14 +304,16 @@ public class TileEntityClayNexus
     @Override
     public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this
-                && p_70300_1_.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+                && p_70300_1_.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void openInventory() { }
+    public void openInventory() {
+    }
 
     @Override
-    public void closeInventory() { }
+    public void closeInventory() {
+    }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -417,6 +422,12 @@ public class TileEntityClayNexus
         this.health_ = this.maxHealth_;
     }
 
+    public boolean canEntityBeSeen(Entity target) {
+        return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.9D, this.zCoord + 0.5D),
+                                           Vec3.createVectorHelper(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ),
+                                           false, true, false) == null;
+    }
+
     private int countTeammates() {
         @SuppressWarnings("unchecked")
         List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.searchArea_);
@@ -471,11 +482,5 @@ public class TileEntityClayNexus
             default:
                 this.upgradeItems_[slot - 3] = stack;
         }
-    }
-
-    public boolean canEntityBeSeen(Entity target) {
-        return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.9D, this.zCoord + 0.5D),
-                                           Vec3.createVectorHelper(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ),
-                                           false, true, false) == null;
     }
 }

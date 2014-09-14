@@ -21,7 +21,7 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 public class UpgradeIronBlock
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
     public ASoldierEffect[] blockableEffects = new ASoldierEffect[] {
             SoldierEffects.getEffect(SoldierEffects.EFF_SLOWMOTION),
@@ -29,16 +29,6 @@ public class UpgradeIronBlock
             SoldierEffects.getEffect(SoldierEffects.EFF_MAGMABOMB),
             SoldierEffects.getEffect(SoldierEffects.EFF_SLOWMOTION)
     };
-
-    @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
-    }
-
-    @Override
-    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL));
-    }
 
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
@@ -58,7 +48,18 @@ public class UpgradeIronBlock
                 }
             }
         }
+
         return true;
+    }
+
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL));
+    }
+
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 
     @Override

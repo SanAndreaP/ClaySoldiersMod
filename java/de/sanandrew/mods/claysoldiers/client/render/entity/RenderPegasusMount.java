@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPegasusMount
-    extends RenderLiving
+        extends RenderLiving
 {
     public RenderPegasusMount() {
         super(new ModelPegasusMount(), 0.2F);
@@ -29,6 +29,6 @@ public class RenderPegasusMount
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return ((EntityPegasusMount)entity).getHorseTexture();
+        return ((EntityPegasusMount) entity).getHorseTexture();
     }
 }

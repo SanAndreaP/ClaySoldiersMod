@@ -21,25 +21,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpgradeFood
-    extends AUpgradeMisc
+        extends AUpgradeMisc
 {
+    private static List<ItemFood> excludedFood = new ArrayList<>();
+
+    public static boolean isFoodExcluded(ItemFood food) {
+        return excludedFood.contains(food);
+    }
+
+    public static void excludeFood(ItemFood food) {
+        excludedFood.add(food);
+    }
+
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) 4);
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
-        this.consumeItem(stack, upgradeInst);
-        clayMan.playSound("random.pop", 1.0F, 1.0F);
+    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
+        if( clayMan.getHealth() + upgradeInst.getNbtTag().getFloat("healAmount") - damage.getValue() <= 0.0F ) {
+            upgradeInst.getNbtTag().setBoolean("killed", true);
+        }
 
-        upgradeInst.getNbtTag().setFloat("healAmount", ((ItemFood) stack.getItem()).func_150905_g(stack));
+        return true;
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         if( clayMan.getHealth() < clayMan.getMaxHealth() * 0.25F && !upgradeInst.getNbtTag().getBoolean("killed") ) {
-            upgradeInst.getNbtTag().setShort(NBT_USES, (short)(upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
             clayMan.heal(upgradeInst.getNbtTag().getFloat("healAmount"));
             this.spawnParticles(clayMan, upgradeInst);
             clayMan.playSound("random.eat", 1.0F, 0.9F + SAPUtils.RNG.nextFloat() * 0.2F);
@@ -56,26 +67,15 @@ public class UpgradeFood
         return false;
     }
 
+    @Override
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
+        clayMan.playSound("random.pop", 1.0F, 1.0F);
+
+        upgradeInst.getNbtTag().setFloat("healAmount", ((ItemFood) stack.getItem()).func_150905_g(stack));
+    }
+
     protected void spawnParticles(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, upgradeInst.getStoredItem().getItem());
-    }
-
-    @Override
-    public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( clayMan.getHealth() + upgradeInst.getNbtTag().getFloat("healAmount") - damage.getValue() <= 0.0F ) {
-            upgradeInst.getNbtTag().setBoolean("killed", true);
-        }
-
-        return true;
-    }
-
-    private static List<ItemFood> excludedFood = new ArrayList<>();
-
-    public static boolean isFoodExcluded(ItemFood food) {
-        return excludedFood.contains(food);
-    }
-
-    public static void excludeFood(ItemFood food) {
-        excludedFood.add(food);
     }
 }
