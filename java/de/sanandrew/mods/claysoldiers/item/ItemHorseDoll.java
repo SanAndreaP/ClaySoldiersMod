@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -184,7 +184,7 @@ public class ItemHorseDoll
             }
             this.icons.put(type, names.get(type.itemData.getValue0()));
         }
-        this.pegasusWings = iconRegister.registerIcon(CSM_Main.MOD_ID + ":doll_pegasus_wing");
+        this.pegasusWings = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_pegasus_wing");
     }
 
     @Override

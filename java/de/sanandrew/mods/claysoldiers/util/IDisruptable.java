@@ -10,7 +10,7 @@ import net.minecraft.util.DamageSource;
 
 public interface IDisruptable
 {
-    public static DamageSource disruptDamage = new DamageSource(CSM_Main.MOD_ID + ":disrupt").setDamageBypassesArmor().setMagicDamage();
+    public static DamageSource disruptDamage = new DamageSource(ClaySoldiersMod.MOD_ID + ":disrupt").setDamageBypassesArmor().setMagicDamage();
 
     public void disrupt();
 }

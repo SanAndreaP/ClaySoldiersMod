@@ -75,6 +75,22 @@ item.claysoldiers:turtlemount_doll.pumpkin.name=Pumpkin Turtle
 item.claysoldiers:turtlemount_doll.lapis.name=Lapis Lazuli Turtle
 item.claysoldiers:turtlemount_doll.cake.name=Cake Turtle
 
+item.claysoldiers:bunnymount_doll.red.name=Red Bunny
+item.claysoldiers:bunnymount_doll.orange.name=Orange Bunny
+item.claysoldiers:bunnymount_doll.yellow.name=Yellow Bunny
+item.claysoldiers:bunnymount_doll.lime.name=Lime Bunny
+item.claysoldiers:bunnymount_doll.green.name=Green Bunny
+item.claysoldiers:bunnymount_doll.cyan.name=Cyan Bunny
+item.claysoldiers:bunnymount_doll.lightblue.name=Lightblue Bunny
+item.claysoldiers:bunnymount_doll.blue.name=Blue Bunny
+item.claysoldiers:bunnymount_doll.purple.name=Purple Bunny
+item.claysoldiers:bunnymount_doll.magenta.name=Magenta Bunny
+item.claysoldiers:bunnymount_doll.pink.name=Pink Bunny
+item.claysoldiers:bunnymount_doll.brown.name=Brown Bunny
+item.claysoldiers:bunnymount_doll.black.name=Black Bunny
+item.claysoldiers:bunnymount_doll.gray.name=Gray Bunny
+item.claysoldiers:bunnymount_doll.white.name=White Bunny
+
 item.claysoldiers:shear_blade.name=Shear Blade
 
 item.claysoldiers:stat_display.name=Clay Statistics Display

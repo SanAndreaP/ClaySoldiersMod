@@ -11,7 +11,7 @@ import de.sanandrew.core.manpack.util.javatuples.Sextet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.IPacket;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -64,30 +64,30 @@ public class PacketParticleFX
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
         switch( stream.readByte() ) {
             case FX_BREAK:
-                CSM_Main.proxy.spawnParticles(FX_BREAK, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
+                ClaySoldiersMod.proxy.spawnParticles(FX_BREAK, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
                 break;
             case FX_CRIT:
-                CSM_Main.proxy.spawnParticles(FX_CRIT, Triplet.with(stream.readDouble(), stream.readDouble() + 0.1D, stream.readDouble()));
+                ClaySoldiersMod.proxy.spawnParticles(FX_CRIT, Triplet.with(stream.readDouble(), stream.readDouble() + 0.1D, stream.readDouble()));
                 break;
             case FX_SOLDIER_DEATH:
-                CSM_Main.proxy.spawnParticles(FX_SOLDIER_DEATH, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
+                ClaySoldiersMod.proxy.spawnParticles(FX_SOLDIER_DEATH, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
                 break;
             case FX_HORSE_DEATH:
-                CSM_Main.proxy.spawnParticles(FX_HORSE_DEATH, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readByte()));
+                ClaySoldiersMod.proxy.spawnParticles(FX_HORSE_DEATH, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readByte()));
                 break;
             case FX_DIGGING:
-                CSM_Main.proxy.spawnParticles(FX_DIGGING, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
+                ClaySoldiersMod.proxy.spawnParticles(FX_DIGGING, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
                 break;
             case FX_SPELL:
-                CSM_Main.proxy.spawnParticles(FX_SPELL, Sextet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(),
+                ClaySoldiersMod.proxy.spawnParticles(FX_SPELL, Sextet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(),
                                                                     stream.readDouble(), stream.readDouble(), stream.readDouble())
                 );
                 break;
             case FX_SHOCKWAVE:
-                CSM_Main.proxy.spawnParticles(FX_SHOCKWAVE, Triplet.with(stream.readDouble(), stream.readDouble(), stream.readDouble()));
+                ClaySoldiersMod.proxy.spawnParticles(FX_SHOCKWAVE, Triplet.with(stream.readDouble(), stream.readDouble(), stream.readDouble()));
                 break;
             case FX_MAGMAFUSE:
-                CSM_Main.proxy.spawnParticles(FX_MAGMAFUSE, Triplet.with(stream.readDouble(), stream.readDouble(), stream.readDouble()));
+                ClaySoldiersMod.proxy.spawnParticles(FX_MAGMAFUSE, Triplet.with(stream.readDouble(), stream.readDouble(), stream.readDouble()));
                 break;
         }
     }

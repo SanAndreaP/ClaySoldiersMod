@@ -17,7 +17,7 @@ import de.sanandrew.mods.claysoldiers.item.IMountDoll;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.util.BugfixHelper;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
@@ -168,7 +168,7 @@ public class TileEntityClayNexus
                             this.worldObj.spawnEntityInWorld(throwable);
                             throwable.setThrowableHeading(deltaX, d2 + f1, deltaZ, 0.6F, 12F);
                         } catch( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
-                            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", this.tempThrowableCls_.getName());
+                            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", this.tempThrowableCls_.getName());
                             e.printStackTrace();
                         }
                     }
@@ -201,7 +201,7 @@ public class TileEntityClayNexus
                 this.spinAngle += 4;
                 ClaymanTeam team = ItemClayManDoll.getTeam(this.soldierSlot_);
                 RGBAValues rgba = SAPUtils.getRgbaFromColorInt(team.getTeamColor());
-                CSM_Main.proxy.spawnParticles(PacketParticleFX.FX_NEXUS, Sextet.with((double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
+                ClaySoldiersMod.proxy.spawnParticles(PacketParticleFX.FX_NEXUS, Sextet.with((double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
                                                                                      rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F
                                               )
                 );
@@ -288,7 +288,7 @@ public class TileEntityClayNexus
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : CSM_Main.MOD_ID + ":container.nexus";
+        return this.hasCustomInventoryName() ? this.customName : ClaySoldiersMod.MOD_ID + ":container.nexus";
     }
 
     @Override

@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core;
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -30,7 +30,7 @@ public class UpgradeCactus
                 cmFireField.setInt(clayMan, clayMan.getRNG().nextInt(4) != 0 ? 0 : fire / 2);
             }
         } catch( IllegalAccessException e ) {
-            FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "Couldn't access fire field for cactus upgrade!");
+            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "Couldn't access fire field for cactus upgrade!");
         }
 
         return false;

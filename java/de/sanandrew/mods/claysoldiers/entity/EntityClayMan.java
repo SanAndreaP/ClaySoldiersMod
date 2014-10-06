@@ -370,7 +370,7 @@ public class EntityClayMan
 
     @Override
     protected boolean interact(EntityPlayer p_70085_1_) {
-        CSM_Main.proxy.switchClayCam(true, this);
+        ClaySoldiersMod.proxy.switchClayCam(true, this);
 
         return super.interact(p_70085_1_);
     }
@@ -892,7 +892,7 @@ public class EntityClayMan
             this.attackTime = 30;
             this.hasAttacked = true;
         } catch( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
-            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", projClass.getName());
+            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", projClass.getName());
             e.printStackTrace();
         }
     }

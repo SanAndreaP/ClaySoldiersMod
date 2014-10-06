@@ -37,7 +37,7 @@ public class RenderClayMan extends RenderBiped
 		mc1 = (ModelClayMan)model;
 		setRenderPassModel(model);
     }
-	
+
 	@Override
 	protected void preRenderCallback(EntityLivingBase entityliving, float f) {
         EntityClayMan c1 = (EntityClayMan)entityliving;
@@ -48,7 +48,7 @@ public class RenderClayMan extends RenderBiped
 //		mc1.hasCrown = c1.hasCrown();
 //		if (mc1.isPadded = c1.isPadded())
 //			mc1.colorPadded = EntityClayMan.padColorTable[c1.getPadColor()];
-//		
+//
 //		if (mc1.isCaped = c1.isCaped()) {
 //			mc1.capeSwing = c1.capeSwing();
 //			mc1.capePadded = EntityClayMan.padColorTable[c1.getCapeColor()];
@@ -66,15 +66,15 @@ public class RenderClayMan extends RenderBiped
 //		if (mc1.isSuper) {
 //			mc1.capeSwing = c1.capeSwing();
 //		}
-		
+
 		boolean flag = false;
 		if (c1.isOnLadder()) {
 //			c1.climbTime ++;
 			flag = true;
 		}
-		
+
 		mc1.isClimbing = flag;
-		
+
 		GL11.glScalef(0.6F, 0.6F, 0.6F);
 //		if (c1.isCorrupt() && !c1.isGlowing()) {
 //			int i, j, k;
@@ -88,11 +88,11 @@ public class RenderClayMan extends RenderBiped
 //				GL11.glColor3f(lightness / 35F, lightness / 35F, lightness / 35F);
 //			}
 //		}
-		
+
 //		if (c1.holdFeather()) {
 //			ItemStack itemstack = new ItemStack(Item.feather.itemID, 1, 0);
 //			GL11.glPushMatrix();
-//			
+//
 //                float f5 = 0.625F;
 //
 //				GL11.glTranslatef(0F, -1.0F, 0F);
@@ -101,7 +101,7 @@ public class RenderClayMan extends RenderBiped
 //				GL11.glTranslatef(0.625F, 0.1F, -0.4F);
 //				GL11.glRotatef(90F, 0F, 0F, 1F);
 //				GL11.glRotatef(45F, 0F, 1F, 0F);
-//				
+//
 //            renderManager.itemRenderer.renderItem(entityliving, itemstack, 0);
 //            GL11.glPopMatrix();
 //		}
@@ -111,30 +111,30 @@ public class RenderClayMan extends RenderBiped
 	protected void renderEquippedItems(EntityLivingBase entityliving, float f) {
         renderEquipped((EntityClayMan)entityliving, f);
     }
-	
+
 	protected void renderEquipped(EntityClayMan entitycm, float f) {
     	super.renderEquippedItems(entitycm, f);
-    	
+
 //    	ItemStack rightIS = null;
 //    	ItemStack leftIS = null;
-    	
-    	
-    	
+
+
+
 //        if (entitycm.hasBlazeRod()) {
 //	        rightIS = new ItemStack(Item.blazeRod);
-//        }        
+//        }
 //        if (entitycm.hasLeftShear()) {
 //	        leftIS = new ItemStack(CSMModRegistry.shearBlade);
-//        }        
+//        }
 //        if (entitycm.hasRightShear() && !entitycm.hasBone() && !entitycm.hasBlazeRod() && !entitycm.hasStick()) {
 //	        rightIS = new ItemStack(CSMModRegistry.shearBlade);
-//        }        
+//        }
 //        if (entitycm.hasGlister()) {
 //	        rightIS = new ItemStack(Item.speckledMelon);
-//        }        
+//        }
 //		if (entitycm.hasBone()) {
 //			rightIS = new ItemStack(Item.bone);
-//		}	
+//		}
 //        if (entitycm.hasGoo()) {
 //        	rightIS = new ItemStack(Item.slimeBall);
 //        }
@@ -146,8 +146,8 @@ public class RenderClayMan extends RenderBiped
 //        }
 //        if (entitycm.hasFireballs()) {
 //        	leftIS = new ItemStack(Item.fireballCharge);
-//        }    
-        
+//        }
+
 //    	ItemStack rightIs = null;
     	for( int id : entitycm.getUpgrades() )
     		CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).onRenderEquipped(entitycm, this.renderManager, f, this.mc1);
@@ -155,41 +155,41 @@ public class RenderClayMan extends RenderBiped
 //    			rightIs = upg.getHeldItem();
 //    			break;
 //    		}
-        
+
 //    	if( rightIs != null ) {
 //            GL11.glPushMatrix();
-//            this.mc1.bipedRightArm.postRender(0.0625F);
+//            this.mc1.rightLegFront.postRender(0.0625F);
 //            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
-//        
+//
 //            float f4 = 0.175F;
 //            GL11.glTranslatef(0.05F, -0.15F, -0.08F);
 //            GL11.glScalef(f4+0.2F, f4, f4);
 //            GL11.glRotatef(140F, 0.0F, 0.0F, 1.0F);
 //            GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
 //            GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
-//                
+//
 //            this.renderManager.itemRenderer.renderItem(entitycm, rightIs, 0);
 //            GL11.glPopMatrix();
-//        }        
-        
+//        }
+
 //        if (leftIS != null)
 //        {
 //            GL11.glPushMatrix();
-//            mc1.bipedLeftArm.postRender(0.0625F);
+//            mc1.leftLegFront.postRender(0.0625F);
 //            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
-//            
+//
 //                float f4 = 0.175F;
 //                GL11.glTranslatef(0.05F, -0.15F, -0.08F);
 //                GL11.glScalef(f4+0.2F, f4, f4);
 //                GL11.glRotatef(140F, 0.0F, 0.0F, 1.0F);
 //                GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
 //                GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
-//                
+//
 //            renderManager.itemRenderer.renderItem(entitycm, leftIS, 0);
 //            GL11.glPopMatrix();
 //        }
-        
-        
+
+
 //        if (entitycm.hasTimeBomb()) {
 //        	ItemStack itemstack = new ItemStack(Item.magmaCream);
 //        	if (itemstack != null)
@@ -203,18 +203,18 @@ public class RenderClayMan extends RenderBiped
 //        		GL11.glRotatef(100F, 0.0F, 0.0F, 1.0F);
 //        		GL11.glRotatef(40F, 1.0F, 0.0F, 0.0F);
 //        		GL11.glRotatef(80F, 0.0F, 0.0F, 1.0F);
-//        		
+//
 //        		renderManager.itemRenderer.renderItem(entitycm, itemstack, 0);
 //        		GL11.glPopMatrix();
 //        	}
-//        }        
+//        }
 //        if (entitycm.hasShield()) {
 //	        ItemStack itemstack = new ItemStack(CSMModRegistry.shield, 1, entitycm.hasEESkin() ? 2 : 0);
 //	        if (entitycm.isShieldStud()) { itemstack = new ItemStack(CSMModRegistry.shield, 1, entitycm.hasEESkin() ? 3 : 1); }
 //	        if (itemstack != null)
 //	        {
 //	            GL11.glPushMatrix();
-//	            mc1.bipedLeftArm.postRender(0.0625F);
+//	            mc1.leftLegFront.postRender(0.0625F);
 //	            GL11.glTranslatef(-0.0625F, 0.4375F, -0.0525F);
 //	                float f4 = 0.175F;
 //	                GL11.glTranslatef(0.05F, -0.15F, -0.08F);
@@ -222,13 +222,13 @@ public class RenderClayMan extends RenderBiped
 //	                GL11.glRotatef(100F, 0.0F, 0.0F, 1.0F);
 //	                GL11.glRotatef(40F, 1.0F, 0.0F, 0.0F);
 //	                GL11.glRotatef(80F, 0.0F, 0.0F, 1.0F);
-//	                
+//
 //	            renderManager.itemRenderer.renderItem(entitycm, itemstack, 0);
 //	            GL11.glPopMatrix();
 //	        }
 //        }
     }
-	
+
 	@Override
 	public void doRenderLiving(EntityLiving entityliving, double d, double d1, double d2, float f, float f1) {
 		f1 *= 2F;
@@ -237,14 +237,14 @@ public class RenderClayMan extends RenderBiped
 		GL11.glPushMatrix();
 		for( int id : entitycm.getUpgrades() )
             CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).onPreRender(entitycm, this.renderManager, f, this.mc1);
-        
+
 		super.doRenderLiving(entityliving, d, d1, d2, f, f1);
-		
+
         for( int id : entitycm.getUpgrades() )
             CSMModRegistry.clayUpgRegistry.getUpgradeByID(id).onPostRender(entitycm, this.renderManager, f, this.mc1);
         GL11.glPopMatrix();
     }
-	
+
 	@Override
 	protected ResourceLocation getEntityTexture(Entity par1Entity) {
 	    if( par1Entity instanceof EntityClayMan ) {

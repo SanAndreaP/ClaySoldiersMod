@@ -7,9 +7,9 @@
 package de.sanandrew.mods.claysoldiers.client.render.entity;
 
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
-import de.sanandrew.mods.claysoldiers.client.models.ModelClayMan;
+import de.sanandrew.mods.claysoldiers.client.model.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.EntityLiving;
@@ -42,7 +42,7 @@ public class RenderClayMan
     @Override
     protected void renderEquippedItems(EntityLivingBase entityLivingBase, float partTicks) {
         super.renderEquippedItems(entityLivingBase, partTicks);
-        CSM_Main.EVENT_BUS.post(new SoldierRenderEvent(((EntityClayMan) entityLivingBase), SoldierRenderEvent.RenderStage.EQUIPPED, this, 0.0D, 0.0D, 0.0D, 0.0F,
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(((EntityClayMan) entityLivingBase), SoldierRenderEvent.RenderStage.EQUIPPED, this, 0.0D, 0.0D, 0.0D, 0.0F,
                                                        partTicks)
         );
     }
@@ -52,7 +52,7 @@ public class RenderClayMan
                                float partTicks) {
         GL11.glPushMatrix();
         super.renderModel(entityLivingBase, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch, partTicks);
-        CSM_Main.EVENT_BUS.post(new SoldierRenderEvent.RenderModelEvent((EntityClayMan) entityLivingBase, this, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch,
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent.RenderModelEvent((EntityClayMan) entityLivingBase, this, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch,
                                                                         partTicks)
         );
         GL11.glPopMatrix();
@@ -62,7 +62,7 @@ public class RenderClayMan
     protected void renderLivingAt(EntityLivingBase entityLivingBase, double x, double y, double z) {
         super.renderLivingAt(entityLivingBase, x, y, z);
         GL11.glScalef(0.2F, 0.2F, 0.2F);
-        CSM_Main.EVENT_BUS.post(new SoldierRenderEvent.RenderLivingEvent((EntityClayMan) entityLivingBase, this, x, y, z));
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent.RenderLivingEvent((EntityClayMan) entityLivingBase, this, x, y, z));
     }
 
     public ItemRenderer getItemRenderer() {
@@ -71,9 +71,9 @@ public class RenderClayMan
 
     private void doRenderClayMan(EntityClayMan clayMan, double x, double y, double z, float yaw, float partTicks) {
         GL11.glPushMatrix();
-        CSM_Main.EVENT_BUS.post(new SoldierRenderEvent(clayMan, SoldierRenderEvent.RenderStage.PRE, this, x, y, z, yaw, partTicks));
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, SoldierRenderEvent.RenderStage.PRE, this, x, y, z, yaw, partTicks));
         super.doRender(clayMan, x, y, z, yaw, partTicks);
-        CSM_Main.EVENT_BUS.post(new SoldierRenderEvent(clayMan, SoldierRenderEvent.RenderStage.POST, this, x, y, z, yaw, partTicks));
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, SoldierRenderEvent.RenderStage.POST, this, x, y, z, yaw, partTicks));
         GL11.glPopMatrix();
     }
 

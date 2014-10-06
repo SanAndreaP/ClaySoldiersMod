@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.render.item;
 
-import de.sanandrew.mods.claysoldiers.client.models.tileentity.ModelClayNexus;
+import de.sanandrew.mods.claysoldiers.client.model.tileentity.ModelClayNexus;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;

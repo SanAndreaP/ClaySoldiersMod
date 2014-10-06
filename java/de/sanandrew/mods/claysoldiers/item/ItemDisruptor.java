@@ -1,7 +1,7 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -76,6 +76,6 @@ public class ItemDisruptor
 
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(CSM_Main.MOD_ID + (this.isHard_ ? ":disruptor_cooked" : ":disruptor"));
+        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + (this.isHard_ ? ":disruptor_cooked" : ":disruptor"));
     }
 }

@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -16,7 +16,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 public class UpgradeBlazePowder
         extends AUpgradeMisc
 {
-    public static final DamageSource blazePwdSrc = new DamageSource(CSM_Main.MOD_ID + ":blaze_powder").setDamageBypassesArmor().setFireDamage();
+    public static final DamageSource blazePwdSrc = new DamageSource(ClaySoldiersMod.MOD_ID + ":blaze_powder").setDamageBypassesArmor().setFireDamage();
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {

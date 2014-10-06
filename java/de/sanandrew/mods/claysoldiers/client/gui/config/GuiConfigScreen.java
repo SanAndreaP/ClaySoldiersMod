@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.gui.config;
 
 import cpw.mods.fml.client.config.GuiConfig;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
@@ -19,7 +19,7 @@ public class GuiConfigScreen
     @SuppressWarnings("unchecked")
     public GuiConfigScreen(GuiScreen parent) {
         super(parent, new ConfigElement(ModConfig.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
-              CSM_Main.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ModConfig.config.toString())
+              ClaySoldiersMod.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ModConfig.config.toString())
         );
     }
 }

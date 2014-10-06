@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.network;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.network.NetHandlerPlayServer;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class ServerPacketHandler
     public void onServerPacket(ServerCustomPacketEvent event) throws IOException {
         NetHandlerPlayServer netHandlerPlayServer = (NetHandlerPlayServer) event.handler;
 
-        if( event.packet.channel().equals(CSM_Main.MOD_CHANNEL) ) {
+        if( event.packet.channel().equals(ClaySoldiersMod.MOD_CHANNEL) ) {
             PacketProcessor.processPacket(event.packet.payload(), event.packet.getTarget(), netHandlerPlayServer);
         }
     }

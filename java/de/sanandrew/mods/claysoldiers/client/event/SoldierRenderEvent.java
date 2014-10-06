@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.event;
 
-import de.sanandrew.mods.claysoldiers.client.models.ModelClayMan;
+import de.sanandrew.mods.claysoldiers.client.model.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.event.SoldierEvent;

@@ -38,7 +38,7 @@ public class ModelTurtle extends ModelBiped
         this(f, 0.0F);
     }
 
-  
+
 
     public ModelTurtle(float f, float f1)
     {
@@ -87,7 +87,7 @@ public class ModelTurtle extends ModelBiped
   }
 
 
-  
+
   @Override
 public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
   {
@@ -103,7 +103,7 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   }
 
 
-  
+
   private void setRotation(ModelRenderer model, float x, float y, float z)
 
   {
@@ -113,14 +113,14 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
   }
 
 
-  
+
   @Override
 public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e)
   {
 //    super.setRotationAngles(f, f1, f2, f3, f4, f5);
 
-//    bipedHead.rotateAngleY = f3 / 57.29578F;
-//    bipedHead.rotateAngleX = (f4 / 57.29578F) + 0.79F;
+//    head.rotateAngleY = f3 / 57.29578F;
+//    head.rotateAngleX = (f4 / 57.29578F) + 0.79F;
     bipedRightArm.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 0.5F * f1;
     bipedLeftArm.rotateAngleX = MathHelper.cos(f * 0.6662F) * 0.5F * f1;
     bipedRightArm.rotateAngleY = 0.0F;

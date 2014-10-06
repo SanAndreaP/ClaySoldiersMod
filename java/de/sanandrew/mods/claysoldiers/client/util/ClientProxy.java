@@ -16,7 +16,7 @@ import de.sanandrew.mods.claysoldiers.client.render.tileentity.RenderClayNexus;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.util.RegistryBlocks;
 import de.sanandrew.mods.claysoldiers.util.RegistryEntities;
@@ -39,14 +39,14 @@ public class ClientProxy
     public void modInit() {
         super.modInit();
 
-        CSM_Main.channel.register(new ClientPacketHandler());
+        ClaySoldiersMod.channel.register(new ClientPacketHandler());
 
         RegistryEntities.registerRenderers();
 
-        CSM_Main.EVENT_BUS.register(new RenderSoldierRightHandEvent());
-        CSM_Main.EVENT_BUS.register(new RenderSoldierLeftHandEvent());
-        CSM_Main.EVENT_BUS.register(new RenderSoldierModelEvent());
-        CSM_Main.EVENT_BUS.register(new RenderSoldierBodyEvent());
+        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierRightHandEvent());
+        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierLeftHandEvent());
+        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierModelEvent());
+        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierBodyEvent());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayNexus.class, new RenderClayNexus());
 

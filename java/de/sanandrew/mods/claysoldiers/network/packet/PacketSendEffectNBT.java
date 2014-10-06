@@ -10,7 +10,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.IPacket;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -24,7 +24,7 @@ public class PacketSendEffectNBT
 {
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
-        CSM_Main.proxy.applyEffectNbt(stream.readInt(), stream.readByte(), ByteBufUtils.readTag(rawData));
+        ClaySoldiersMod.proxy.applyEffectNbt(stream.readInt(), stream.readByte(), ByteBufUtils.readTag(rawData));
     }
 
     @Override

@@ -6,32 +6,25 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.item;
 
-import com.google.common.collect.Maps;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtleMount;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityBunnyMount;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
-import de.sanandrew.mods.claysoldiers.util.mount.EnumTurtleType;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Map;
 
-public class ItemTurtleDoll
+public class ItemBunnyDoll
         extends Item
 {
-    private Map<EnumTurtleType, IIcon> icons;
-    private IIcon baseIcon;
-
-    public ItemTurtleDoll() {
+    public ItemBunnyDoll() {
         super();
         this.setMaxStackSize(16);
         this.setHasSubtypes(true);
@@ -39,13 +32,13 @@ public class ItemTurtleDoll
     }
 
     /**
-     * Spawns the horse specified by the type in the location specified by the last three parameters.
+     * Spawns the bunny specified by the type in the location specified by the last three parameters.
      *
      * @param world the World the entity will spawn in
-     * @param type  the type the horse will be
+     * @param type  the type the bunny will be
      */
-    public static EntityTurtleMount spawnTurtle(World world, EnumTurtleType type, double x, double y, double z) {
-        EntityTurtleMount jordan = new EntityTurtleMount(world, type);
+    public static EntityBunnyMount spawnBunny(World world, EnumBunnyType type, double x, double y, double z) {
+        EntityBunnyMount jordan = new EntityBunnyMount(world, type);
 
         jordan.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
         jordan.rotationYawHead = jordan.rotationYaw;
@@ -56,23 +49,12 @@ public class ItemTurtleDoll
         return jordan;
     }
 
-    public static void setType(ItemStack stack, EnumTurtleType type) {
-        if( type.itemData == null ) {
-            return;
-        }
-
-        NBTTagCompound nbt = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
-        nbt.setString("type", type.toString());
-        stack.setTagCompound(nbt);
+    public static void setType(ItemStack stack, EnumBunnyType type) {
+        stack.setItemDamage(type.ordinal());
     }
 
-    public static EnumTurtleType getType(ItemStack stack) {
-        NBTTagCompound itemNbt = stack.getTagCompound();
-        if( itemNbt != null && itemNbt.hasKey("type") ) {
-            return EnumTurtleType.valueOf(itemNbt.getString("type"));
-        } else {
-            return EnumTurtleType.COBBLE;
-        }
+    public static EnumBunnyType getType(ItemStack stack) {
+        return EnumBunnyType.getTypeFromItem(stack);
     }
 
     @Override
@@ -97,7 +79,7 @@ public class ItemTurtleDoll
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityTurtleMount dan = spawnTurtle(world, getType(stack), (double) blockX + 0.5D, (double) blockY + entityOffY, (double) blockZ + 0.5D);
+                EntityBunnyMount dan = spawnBunny(world, getType(stack), (double) blockX + 0.5D, (double) blockY + entityOffY, (double) blockZ + 0.5D);
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -123,22 +105,13 @@ public class ItemTurtleDoll
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return pass == 0 ? getType(stack).itemData.getValue2() : getType(stack).itemData.getValue1();
-    }
-
-    @Override
-    public boolean requiresMultipleRenderPasses() {
-        return true;
+        return getType(stack).typeColor;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs creativeTab, List stacks) {
-        for( EnumTurtleType type : EnumTurtleType.values ) {
-            if( type.itemData == null ) {
-                continue;
-            }
-
+        for( EnumBunnyType type : EnumBunnyType.values ) {
             ItemStack stack = new ItemStack(this, 1);
             setType(stack, type);
             stacks.add(stack);
@@ -147,31 +120,6 @@ public class ItemTurtleDoll
 
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        Map<String, IIcon> names = Maps.newHashMap();
-        this.icons = Maps.newEnumMap(EnumTurtleType.class);
-        for( EnumTurtleType type : EnumTurtleType.values ) {
-            if( type.itemData == null ) {
-                continue;
-            }
-            if( !names.containsKey(type.itemData.getValue0()) ) {
-                names.put(type.itemData.getValue0(), iconRegister.registerIcon(type.itemData.getValue0()));
-            }
-            this.icons.put(type, names.get(type.itemData.getValue0()));
-        }
-        this.baseIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_turtle_base");
-    }
-
-    @Override
-    public int getRenderPasses(int metadata) {
-        return 2;
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int pass) {
-        return pass == 0 ? this.icons.get(getType(stack)) : this.baseIcon;
-    }
-
-    public IIcon getIconFromType(EnumTurtleType type) {
-        return this.icons.get(type);
+        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_bunny");
     }
 }

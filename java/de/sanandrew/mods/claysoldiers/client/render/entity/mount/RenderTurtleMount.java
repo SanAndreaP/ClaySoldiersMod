@@ -5,9 +5,9 @@
  * License:   Attribution-NonCommercial-ShareAlike 3.0 Unported (http://creativecommons.org/licenses/by-nc-sa/3.0/)
  *******************************************************************************************************************/
 
-package de.sanandrew.mods.claysoldiers.client.render.entity;
+package de.sanandrew.mods.claysoldiers.client.render.entity.mount;
 
-import de.sanandrew.mods.claysoldiers.client.models.ModelTurtleMount;
+import de.sanandrew.mods.claysoldiers.client.model.mount.ModelTurtleMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtleMount;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;

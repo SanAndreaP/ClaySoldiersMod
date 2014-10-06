@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.models;
+package de.sanandrew.mods.claysoldiers.client.model.mount;
 
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
 import net.minecraft.client.model.ModelRenderer;

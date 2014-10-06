@@ -21,6 +21,7 @@ public final class RegistryItems
 
     public static ItemHorseDoll dollHorseMount;
     public static ItemTurtleDoll dollTurtleMount;
+    public static ItemBunnyDoll dollBunnyMount;
 
     public static void initialize() {
         dollSoldier = new ItemClayManDoll();
@@ -31,31 +32,35 @@ public final class RegistryItems
         shearBlade = new ItemShearBlade();
         dollHorseMount = new ItemHorseDoll();
         dollTurtleMount = new ItemTurtleDoll();
+        dollBunnyMount = new ItemBunnyDoll();
 
-        dollSoldier.setCreativeTab(CSM_Main.clayTab);
-        dollSoldier.setUnlocalizedName(CSM_Main.MOD_ID + ":clayman_doll");
+        dollSoldier.setCreativeTab(ClaySoldiersMod.clayTab);
+        dollSoldier.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":clayman_doll");
 
-        dollBrick.setCreativeTab(CSM_Main.clayTab);
-        dollBrick.setUnlocalizedName(CSM_Main.MOD_ID + ":clayman_brick_doll");
+        dollBrick.setCreativeTab(ClaySoldiersMod.clayTab);
+        dollBrick.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":clayman_brick_doll");
 
-        disruptor.setCreativeTab(CSM_Main.clayTab);
-        disruptor.setUnlocalizedName(CSM_Main.MOD_ID + ":disruptor");
+        disruptor.setCreativeTab(ClaySoldiersMod.clayTab);
+        disruptor.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":disruptor");
 
-        disruptorHardened.setCreativeTab(CSM_Main.clayTab);
-        disruptorHardened.setUnlocalizedName(CSM_Main.MOD_ID + ":disruptor_cooked");
+        disruptorHardened.setCreativeTab(ClaySoldiersMod.clayTab);
+        disruptorHardened.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":disruptor_cooked");
 
-        statDisplay.setCreativeTab(CSM_Main.clayTab);
-        statDisplay.setUnlocalizedName(CSM_Main.MOD_ID + ":stat_display");
+        statDisplay.setCreativeTab(ClaySoldiersMod.clayTab);
+        statDisplay.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":stat_display");
 
-        shearBlade.setCreativeTab(CSM_Main.clayTab);
-        shearBlade.setUnlocalizedName(CSM_Main.MOD_ID + ":shear_blade");
+        shearBlade.setCreativeTab(ClaySoldiersMod.clayTab);
+        shearBlade.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":shear_blade");
 
-        dollHorseMount.setCreativeTab(CSM_Main.clayTab);
-        dollHorseMount.setUnlocalizedName(CSM_Main.MOD_ID + ":horsemount_doll");
+        dollHorseMount.setCreativeTab(ClaySoldiersMod.clayTab);
+        dollHorseMount.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":horsemount_doll");
 
-        dollTurtleMount.setCreativeTab(CSM_Main.clayTab);
-        dollTurtleMount.setUnlocalizedName(CSM_Main.MOD_ID + ":turtlemount_doll");
+        dollTurtleMount.setCreativeTab(ClaySoldiersMod.clayTab);
+        dollTurtleMount.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":turtlemount_doll");
 
-        SAPUtils.registerItems(dollSoldier, dollBrick, disruptor, disruptorHardened, statDisplay, shearBlade, dollHorseMount, dollTurtleMount);
+        dollBunnyMount.setCreativeTab(ClaySoldiersMod.clayTab);
+        dollBunnyMount.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":bunnymount_doll");
+
+        SAPUtils.registerItems(dollSoldier, dollBrick, disruptor, disruptorHardened, statDisplay, shearBlade, dollHorseMount, dollTurtleMount, dollBunnyMount);
     }
 }

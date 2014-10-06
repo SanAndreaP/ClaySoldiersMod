@@ -4,9 +4,9 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.render.entity;
+package de.sanandrew.mods.claysoldiers.client.render.entity.mount;
 
-import de.sanandrew.mods.claysoldiers.client.models.ModelHorseMount;
+import de.sanandrew.mods.claysoldiers.client.model.mount.ModelHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;

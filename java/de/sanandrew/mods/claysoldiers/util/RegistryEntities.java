@@ -7,12 +7,15 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
-import de.sanandrew.mods.claysoldiers.client.render.entity.RenderHorseMount;
-import de.sanandrew.mods.claysoldiers.client.render.entity.RenderPegasusMount;
-import de.sanandrew.mods.claysoldiers.client.render.entity.RenderTurtleMount;
+import de.sanandrew.mods.claysoldiers.client.render.entity.mount.RenderBunnyMount;
+import de.sanandrew.mods.claysoldiers.client.render.entity.mount.RenderHorseMount;
+import de.sanandrew.mods.claysoldiers.client.render.entity.mount.RenderPegasusMount;
+import de.sanandrew.mods.claysoldiers.client.render.entity.mount.RenderTurtleMount;
 import de.sanandrew.mods.claysoldiers.client.render.entity.projectile.RenderBlockProjectile;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityBunnyMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtleMount;
@@ -33,18 +36,20 @@ public final class RegistryEntities
                                                                                                                                //TODO: texture arrives
         RenderingRegistry.registerEntityRenderingHandler(EntityPegasusMount.class, new RenderPegasusMount());
         RenderingRegistry.registerEntityRenderingHandler(EntityTurtleMount.class, new RenderTurtleMount());
+        RenderingRegistry.registerEntityRenderingHandler(EntityBunnyMount.class, new RenderBunnyMount());
     }
 
     public static void registerEntities(Object mod) {
         int entityId = 0;
 
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityClayMan.class, "clayman", entityId++, mod, 64, 1, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityHorseMount.class, "horsemount", entityId++, mod, 64, 1, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityGravelChunk.class, "gravelchunk", entityId++, mod, 64, 1, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntitySnowChunk.class, "snowchunk", entityId++, mod, 64, 1, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityFirechargeChunk.class, "firechunk", entityId++, mod, 64, 1, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityEmeraldChunk.class, "emeraldchunk", entityId++, mod, 64, 1, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityPegasusMount.class, "pegasusmount", entityId++, mod, 64, 1, true);
-        cpw.mods.fml.common.registry.EntityRegistry.registerModEntity(EntityTurtleMount.class, "turtlemount", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityClayMan.class, "clayman", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityHorseMount.class, "horsemount", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityGravelChunk.class, "gravelchunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntitySnowChunk.class, "snowchunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityFirechargeChunk.class, "firechunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityEmeraldChunk.class, "emeraldchunk", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityPegasusMount.class, "pegasusmount", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityTurtleMount.class, "turtlemount", entityId++, mod, 64, 1, true);
+        EntityRegistry.registerModEntity(EntityBunnyMount.class, "bunnymount", entityId++, mod, 64, 1, true);
     }
 }

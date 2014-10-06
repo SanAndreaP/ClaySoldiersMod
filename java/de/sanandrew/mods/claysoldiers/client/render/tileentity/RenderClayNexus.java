@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.render.tileentity;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
-import de.sanandrew.mods.claysoldiers.client.models.tileentity.ModelClayNexus;
+import de.sanandrew.mods.claysoldiers.client.model.tileentity.ModelClayNexus;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;

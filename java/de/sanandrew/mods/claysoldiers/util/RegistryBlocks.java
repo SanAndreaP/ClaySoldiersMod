@@ -19,9 +19,9 @@ public final class RegistryBlocks
     public static void initialize() {
         clayNexus = new BlockClayNexus();
 
-        clayNexus.setCreativeTab(CSM_Main.clayTab);
-        clayNexus.setBlockName(CSM_Main.MOD_ID + ":nexus");
-        GameRegistry.registerTileEntity(TileEntityClayNexus.class, CSM_Main.MOD_ID + ":nexus_te");
+        clayNexus.setCreativeTab(ClaySoldiersMod.clayTab);
+        clayNexus.setBlockName(ClaySoldiersMod.MOD_ID + ":nexus");
+        GameRegistry.registerTileEntity(TileEntityClayNexus.class, ClaySoldiersMod.MOD_ID + ":nexus_te");
 
         SAPUtils.registerBlocks(clayNexus);
     }

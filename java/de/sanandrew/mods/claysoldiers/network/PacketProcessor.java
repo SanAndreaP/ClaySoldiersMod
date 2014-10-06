@@ -18,7 +18,7 @@ import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSendEffectNBT;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSendUpgradeNBT;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSoldierRender;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -48,10 +48,10 @@ public final class PacketProcessor
                 pktInst.process(bbis, data, handler);
             }
         } catch( IOException ioe ) {
-            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be processed!", packetId);
+            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be processed!", packetId);
             ioe.printStackTrace();
         } catch( IllegalAccessException | InstantiationException rex ) {
-            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be instantiated!", packetId);
+            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be instantiated!", packetId);
             rex.printStackTrace();
         }
     }
@@ -82,19 +82,19 @@ public final class PacketProcessor
                 bbos.writeShort(packetId);
                 IPacket pktInst = ID_TO_PACKET_MAP_.get(packetId).newInstance();
                 pktInst.writeData(bbos, packetData);
-                FMLProxyPacket packet = new FMLProxyPacket(bbos.buffer(), CSM_Main.MOD_CHANNEL);
+                FMLProxyPacket packet = new FMLProxyPacket(bbos.buffer(), ClaySoldiersMod.MOD_CHANNEL);
                 switch( direction ) {
                     case TO_SERVER:
-                        CSM_Main.channel.sendToServer(packet);
+                        ClaySoldiersMod.channel.sendToServer(packet);
                         break;
                     case TO_ALL:
-                        CSM_Main.channel.sendToAll(packet);
+                        ClaySoldiersMod.channel.sendToAll(packet);
                         break;
                     case TO_PLAYER:
-                        CSM_Main.channel.sendTo(packet, (EntityPlayerMP) dirData.getValue(0));
+                        ClaySoldiersMod.channel.sendTo(packet, (EntityPlayerMP) dirData.getValue(0));
                         break;
                     case TO_ALL_IN_RANGE:
-                        CSM_Main.channel.sendToAllAround(packet,
+                        ClaySoldiersMod.channel.sendToAllAround(packet,
                                                          new NetworkRegistry.TargetPoint((int) dirData.getValue(0),
                                                                                          (double) dirData.getValue(1),
                                                                                          (double) dirData.getValue(2),
@@ -104,15 +104,15 @@ public final class PacketProcessor
                         );
                         break;
                     case TO_ALL_IN_DIMENSION:
-                        CSM_Main.channel.sendToDimension(packet, (int) dirData.getValue(0));
+                        ClaySoldiersMod.channel.sendToDimension(packet, (int) dirData.getValue(0));
                         break;
                 }
             }
         } catch( IOException ioe ) {
-            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be processed!", packetId);
+            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be processed!", packetId);
             ioe.printStackTrace();
         } catch( IllegalAccessException | InstantiationException rex ) {
-            FMLLog.log(CSM_Main.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be instantiated!", packetId);
+            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be instantiated!", packetId);
             rex.printStackTrace();
         }
     }

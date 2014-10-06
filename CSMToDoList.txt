@@ -12,18 +12,18 @@
   [ ] drop remaining items when broken
 
 [-] Clay Soldier
-  [ ] Add remaining teams
-    [ ] coal
-    [ ] punpkin
-    [ ] redstone
-  [ ] Add remaining upgrades (see CSMUpgradesList.txt)
+  [x] Add remaining teams
+    [x] coal
+    [x] punpkin
+    [x] redstone
+  [x] Add remaining upgrades (see CSMUpgradesList.txt)
   [ ] Add building capabillities (low priority)
 
 [-] Mounts
   [ ] Add remaining mounts
-    [ ] bunnies
+    [x] bunnies
     [ ] geckos
-    [ ] turtles
+    [x] turtles
   [ ] Add horse upgrades
 
 [ ] Companions

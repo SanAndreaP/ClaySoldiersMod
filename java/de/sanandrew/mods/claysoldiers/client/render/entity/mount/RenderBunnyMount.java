@@ -4,31 +4,23 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.render.entity;
+package de.sanandrew.mods.claysoldiers.client.render.entity.mount;
 
-import de.sanandrew.mods.claysoldiers.client.models.ModelPegasusMount;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
+import de.sanandrew.mods.claysoldiers.client.model.mount.ModelBunnyMount;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityBunnyMount;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-public class RenderPegasusMount
+public class RenderBunnyMount
         extends RenderLiving
 {
-    public RenderPegasusMount() {
-        super(new ModelPegasusMount(), 0.2F);
-    }
-
-    @Override
-    protected void preRenderCallback(EntityLivingBase livingBase, float partTicks) {
-        GL11.glTranslatef(0.0F, 0.36F, 0.0F);
-        GL11.glScalef(0.5F, 0.5F, 0.5F);
+    public RenderBunnyMount() {
+        super(new ModelBunnyMount(), 0.2F);
     }
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return ((EntityPegasusMount) entity).getHorseTexture();
+        return ((EntityBunnyMount) entity).getBunnyTexture();
     }
 }

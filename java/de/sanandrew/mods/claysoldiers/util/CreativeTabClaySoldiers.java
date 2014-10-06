@@ -17,7 +17,7 @@ public class CreativeTabClaySoldiers
     private ItemStack tabIcon;
 
     public CreativeTabClaySoldiers() {
-        super(CSM_Main.MOD_ID + ":csm_tab");
+        super(ClaySoldiersMod.MOD_ID + ":csm_tab");
     }
 
     @Override

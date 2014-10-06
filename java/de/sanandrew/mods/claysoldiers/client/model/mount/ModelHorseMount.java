@@ -5,7 +5,7 @@
  * (http://creativecommons.org/licenses/by-nc-sa/3.0/)
  *******************************************************************************************************************/
 
-package de.sanandrew.mods.claysoldiers.client.models;
+package de.sanandrew.mods.claysoldiers.client.model.mount;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

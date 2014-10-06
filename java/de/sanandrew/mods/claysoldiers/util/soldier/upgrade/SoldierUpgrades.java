@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 import com.google.common.primitives.Bytes;
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeFermSpiderEye;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeNetherwart;
@@ -120,9 +120,9 @@ public final class SoldierUpgrades
 
         if( clientRenderId >= 0 ) {
             if( clientRenderId > 127 ) {
-                FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", name);
+                FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", name);
             } else if( RENDER_ID_TO_UPGRADE_MAP_.containsKey((byte) clientRenderId) ) {
-                FMLLog.log(CSM_Main.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is already registered!", name);
+                FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is already registered!", name);
             } else {
                 UPGRADE_TO_RENDER_ID_MAP_.put(instance, (byte) clientRenderId);
                 RENDER_ID_TO_UPGRADE_MAP_.put((byte) clientRenderId, instance);
@@ -286,7 +286,7 @@ public final class SoldierUpgrades
     }
 
     public static void logUpgradeCount() {
-        FMLLog.log(CSM_Main.MOD_LOG, Level.DEBUG, "There are %d soldier upgrades registered. %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
+        FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.DEBUG, "There are %d soldier upgrades registered. %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
                    currRenderId + 1
         );
     }

@@ -4,11 +4,11 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.models;
+package de.sanandrew.mods.claysoldiers.client.model;
 
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.CSM_Main;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 
@@ -22,7 +22,7 @@ public class ModelClayMan
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch, float partTicks, Entity entity) {
         super.setRotationAngles(limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch, partTicks, entity);
-        CSM_Main.EVENT_BUS.post(new SoldierRenderEvent.SetRotationAnglesEvent((EntityClayMan) entity, this, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch,
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent.SetRotationAnglesEvent((EntityClayMan) entity, this, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch,
                                                                               partTicks)
         );
     }

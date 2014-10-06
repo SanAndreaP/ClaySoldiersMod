@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.models.tileentity;
+package de.sanandrew.mods.claysoldiers.client.model.tileentity;
 
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import net.minecraft.client.model.ModelBase;
