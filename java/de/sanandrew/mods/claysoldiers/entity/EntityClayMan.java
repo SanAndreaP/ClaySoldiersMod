@@ -258,19 +258,19 @@ public class EntityClayMan
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
 
-        if( damageSource.isFireDamage() && this.dollItem != null ) {
-            ItemStack brickItem = new ItemStack(RegistryItems.dollBrick, this.dollItem.stackSize);
-            brickItem.setTagCompound(this.dollItem.getTagCompound());
-            this.dollItem = brickItem;
-        }
-
-        if( !this.nexusSpawn ) {
-            if( this.dollItem != null ) {
-                this.entityDropItem(this.dollItem.copy(), 0.0F);
-            }
-        }
-
         if( !this.worldObj.isRemote ) {
+            if( damageSource.isFireDamage() && this.dollItem != null ) {
+                ItemStack brickItem = new ItemStack(RegistryItems.dollBrick, this.dollItem.stackSize);
+                brickItem.setTagCompound(this.dollItem.getTagCompound());
+                this.dollItem = brickItem;
+            }
+
+            if( !this.nexusSpawn ) {
+                if( this.dollItem != null ) {
+                    this.entityDropItem(this.dollItem.copy(), 0.0F);
+                }
+            }
+
             for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
                 upg.getUpgrade().onSoldierDeath(this, upg, damageSource);
             }
@@ -370,8 +370,11 @@ public class EntityClayMan
 
     @Override
     protected boolean interact(EntityPlayer p_70085_1_) {
-        ClaySoldiersMod.proxy.switchClayCam(true, this);
+        if( this.worldObj.isRemote ) {
+            ClaySoldiersMod.proxy.switchClayCam(true, this);
+        }
 
+//        p_70085_1_.mountEntity(this);
         return super.interact(p_70085_1_);
     }
 

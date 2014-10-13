@@ -19,7 +19,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class RenderSoldierModelEvent
+public class SoldierModelRenderHandler
 {
     public ModelRenderer buffedBody;
     public ModelRenderer armorBody;

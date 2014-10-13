@@ -8,8 +8,10 @@ package de.sanandrew.mods.claysoldiers.client.render.entity;
 
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClayMan;
+import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.EntityLiving;
@@ -31,6 +33,9 @@ public class RenderClayMan
 
     @Override
     public void doRender(EntityLiving entityLiving, double x, double y, double z, float yaw, float partTicks) {
+        if( ClientProxy.clayCamEntity == entityLiving && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 ) {
+            return;
+        }
         this.doRenderClayMan((EntityClayMan) entityLiving, x, y, z, yaw, partTicks);
     }
 

@@ -35,6 +35,8 @@ import net.minecraftforge.common.MinecraftForge;
 public class ClientProxy
         extends CommonProxy
 {
+    public static EntityClayMan clayCamEntity;
+
     @Override
     public void modInit() {
         super.modInit();
@@ -44,9 +46,9 @@ public class ClientProxy
         RegistryEntities.registerRenderers();
 
         ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierRightHandEvent());
-        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierLeftHandEvent());
-        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierModelEvent());
-        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierBodyEvent());
+        ClaySoldiersMod.EVENT_BUS.register(new SoldierLeftHandRenderHandler());
+        ClaySoldiersMod.EVENT_BUS.register(new SoldierModelRenderHandler());
+        ClaySoldiersMod.EVENT_BUS.register(new SoldierBodyRenderHandler());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayNexus.class, new RenderClayNexus());
 
@@ -55,7 +57,9 @@ public class ClientProxy
         MinecraftForge.EVENT_BUS.register(new RenderStatDisplayOverlay());
         MinecraftForge.EVENT_BUS.register(new RenderWorldOnLastEvent());
         MinecraftForge.EVENT_BUS.register(new Textures());
-        FMLCommonHandler.instance().bus().register(new RenderPlayerEventInst());
+        MinecraftForge.EVENT_BUS.register(new RenderTickHandler());
+
+        FMLCommonHandler.instance().bus().register(new RenderTickHandler());
     }
 
     @Override
@@ -63,9 +67,13 @@ public class ClientProxy
         Minecraft mc = Minecraft.getMinecraft();
 
         if( enable ) {
-            mc.renderViewEntity = clayMan;
+//            mc.thePlayer.mountEntity(clayMan);
+            clayCamEntity = clayMan;
+//            mc.renderViewEntity = clayMan;
         } else {
-            mc.renderViewEntity = mc.thePlayer;
+//            mc.thePlayer.mountEntity(null);
+            clayCamEntity = null;
+//            mc.renderViewEntity = mc.thePlayer;
         }
     }
 

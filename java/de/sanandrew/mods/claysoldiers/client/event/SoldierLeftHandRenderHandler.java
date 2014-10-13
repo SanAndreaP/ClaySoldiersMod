@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
-public class RenderSoldierLeftHandEvent
+public class SoldierLeftHandRenderHandler
 {
     private final ItemStack itemShearBlade_ = new ItemStack(RegistryItems.shearBlade);
     private final ItemStack blockGravel_ = new ItemStack(Blocks.gravel);
