@@ -40,7 +40,7 @@ public class UpgradeGoldIngot
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         damage.setValue(Math.max(0.25F, damage.getValue() - 1.0F));
-        return true;
+        return false;
     }
 
     @Override

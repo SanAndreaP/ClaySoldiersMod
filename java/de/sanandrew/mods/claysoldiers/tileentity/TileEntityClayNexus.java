@@ -197,7 +197,7 @@ public class TileEntityClayNexus
 
         if( this.worldObj.isRemote ) {
             this.prevSpinAngle = this.spinAngle;
-            if( this.isActive && this.getHealth() > 0.0F ) {
+            if( this.isActive && this.health_ > 0.0F ) {
                 this.spinAngle += 4;
                 ClaymanTeam team = ItemClayManDoll.getTeam(this.soldierSlot_);
                 RGBAValues rgba = SAPUtils.getRgbaFromColorInt(team.getTeamColor());

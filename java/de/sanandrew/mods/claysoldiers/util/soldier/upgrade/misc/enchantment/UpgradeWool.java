@@ -22,7 +22,7 @@ public class UpgradeWool
             damage.setValue(Math.max(0.25F, damage.getValue() - 1.0F));
         }
 
-        return true;
+        return false;
     }
 
     @Override

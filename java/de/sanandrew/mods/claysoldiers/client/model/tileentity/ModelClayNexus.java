@@ -127,40 +127,40 @@ public class ModelClayNexus
         this.setRotation(this.armTL3, -degree45, -degree45, 0.0F);
     }
 
-    public void renderTileEntity(float scaleFactor) {
-        this.base1.render(scaleFactor);
-        this.base2.render(scaleFactor);
-        this.base3.render(scaleFactor);
-        this.armBR1.render(scaleFactor);
-        this.armTR1.render(scaleFactor);
-        this.armBL1.render(scaleFactor);
-        this.armTL1.render(scaleFactor);
-        this.armBR2.render(scaleFactor);
-        this.armTR2.render(scaleFactor);
-        this.armBL2.render(scaleFactor);
-        this.armTL2.render(scaleFactor);
-        this.armBR3.render(scaleFactor);
-        this.armTR3.render(scaleFactor);
-        this.armBL3.render(scaleFactor);
-        this.armTL3.render(scaleFactor);
+    public void renderTileEntity() {
+        this.base1.render(0.0625F);
+        this.base2.render(0.0625F);
+        this.base3.render(0.0625F);
+        this.armBR1.render(0.0625F);
+        this.armTR1.render(0.0625F);
+        this.armBL1.render(0.0625F);
+        this.armTL1.render(0.0625F);
+        this.armBR2.render(0.0625F);
+        this.armTR2.render(0.0625F);
+        this.armBL2.render(0.0625F);
+        this.armTL2.render(0.0625F);
+        this.armBR3.render(0.0625F);
+        this.armTR3.render(0.0625F);
+        this.armBL3.render(0.0625F);
+        this.armTL3.render(0.0625F);
     }
 
-    public void renderTileEntityGlowmap(float scaleFactor) {
-        renderScaledBox(this.base1, scaleFactor);
-        renderScaledBox(this.base2, scaleFactor);
-        renderScaledBox(this.base3, scaleFactor);
-        renderScaledBox(this.armBR1, scaleFactor);
-        renderScaledBox(this.armTR1, scaleFactor);
-        renderScaledBox(this.armBL1, scaleFactor);
-        renderScaledBox(this.armTL1, scaleFactor);
-        renderScaledBox(this.armBR2, scaleFactor);
-        renderScaledBox(this.armTR2, scaleFactor);
-        renderScaledBox(this.armBL2, scaleFactor);
-        renderScaledBox(this.armTL2, scaleFactor);
-        renderScaledBox(this.armBR3, scaleFactor);
-        renderScaledBox(this.armTR3, scaleFactor);
-        renderScaledBox(this.armBL3, scaleFactor);
-        renderScaledBox(this.armTL3, scaleFactor);
+    public void renderTileEntityGlowmap() {
+        renderScaledBox(this.base1, 0.0625F);
+        renderScaledBox(this.base2, 0.0625F);
+        renderScaledBox(this.base3, 0.0625F);
+        renderScaledBox(this.armBR1, 0.0625F);
+        renderScaledBox(this.armTR1, 0.0625F);
+        renderScaledBox(this.armBL1, 0.0625F);
+        renderScaledBox(this.armTL1, 0.0625F);
+        renderScaledBox(this.armBR2, 0.0625F);
+        renderScaledBox(this.armTR2, 0.0625F);
+        renderScaledBox(this.armBL2, 0.0625F);
+        renderScaledBox(this.armTL2, 0.0625F);
+        renderScaledBox(this.armBR3, 0.0625F);
+        renderScaledBox(this.armTR3, 0.0625F);
+        renderScaledBox(this.armBL3, 0.0625F);
+        renderScaledBox(this.armTL3, 0.0625F);
     }
 
     private void renderScaledBox(ModelRenderer box, float scaleFactor) {

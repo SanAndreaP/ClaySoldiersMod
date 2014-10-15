@@ -43,7 +43,7 @@ public class RenderClayNexus
         GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
 
         this.bindTexture(Textures.NEXUS_TEXTURE);
-        nexusModel.renderTileEntity(0.0625F);
+        nexusModel.renderTileEntity();
 
         this.renderGlowmap(nexus);
 
@@ -86,7 +86,7 @@ public class RenderClayNexus
 
         this.bindTexture(Textures.NEXUS_GLOWING);
         GL11.glColor3f(colors[0], colors[1], colors[2]);
-        this.nexusModel.renderTileEntityGlowmap(0.0625F);
+        this.nexusModel.renderTileEntityGlowmap();
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevBrightX, prevBrightY);
         GL11.glEnable(GL11.GL_ALPHA_TEST);

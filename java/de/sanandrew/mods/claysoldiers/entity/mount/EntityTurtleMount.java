@@ -272,7 +272,7 @@ public class EntityTurtleMount
 
     @Override
     public void onUpdate() {
-        this.jumpMovementFactor = this.getAIMoveSpeed() * (0.16277136F / (0.91F * 0.91F * 0.91F));
+        this.jumpMovementFactor = this.moveSpeed * (0.16277136F / (0.91F * 0.91F * 0.91F));
 
         super.onUpdate();
 

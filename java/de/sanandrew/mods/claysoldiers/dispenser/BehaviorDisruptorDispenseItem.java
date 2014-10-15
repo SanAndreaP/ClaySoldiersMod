@@ -28,8 +28,7 @@ public class BehaviorDisruptorDispenseItem
     /**
      * Dispense the specified stack, play the dispense sound and spawn particles.
      */
-    protected ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
-        EnumFacing facing = BlockDispenser.func_149937_b(blockSource.getBlockMetadata());
+    ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
         IPosition position = BlockDispenser.func_149939_a(blockSource);
         ItemDisruptor.disrupt(stack, blockSource.getWorld(), position.getX(), position.getY(), position.getZ(), null);
         return stack;
@@ -38,18 +37,18 @@ public class BehaviorDisruptorDispenseItem
     /**
      * Play the dispense sound from the specified block.
      */
-    protected void playDispenseSound(IBlockSource blockSource) {
+    void playDispenseSound(IBlockSource blockSource) {
         blockSource.getWorld().playAuxSFX(1000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), 0);
     }
 
     /**
      * Order clients to display dispense particles from the specified block and facing.
      */
-    protected void spawnDispenseParticles(IBlockSource blockSource, EnumFacing facing) {
-        blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), this.getParticleOffset(facing));
+    void spawnDispenseParticles(IBlockSource blockSource, EnumFacing facing) {
+        blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), getParticleOffset(facing));
     }
 
-    private int getParticleOffset(EnumFacing facing) {
+    private static int getParticleOffset(EnumFacing facing) {
         return facing.getFrontOffsetX() + 1 + (facing.getFrontOffsetZ() + 1) * 3;
     }
 }

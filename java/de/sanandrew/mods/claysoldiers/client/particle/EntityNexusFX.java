@@ -36,7 +36,7 @@ public class EntityNexusFX
     float moteParticleScale;
     int moteHalfLife;
 
-    public EntityNexusFX(World world, double x, double y, double z, float size, float red, float green, float blue, boolean distanceLimit, float maxAgeMul) {
+    public EntityNexusFX(World world, double x, double y, double z, float size, float red, float green, float blue) {
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
         this.particleRed = red;
         this.particleGreen = green;
@@ -45,22 +45,20 @@ public class EntityNexusFX
         this.motionX = this.motionY = this.motionZ = 0.0D;
         this.particleScale *= size;
         this.moteParticleScale = this.particleScale;
-        this.particleMaxAge = (int) (28D / (Math.random() * 0.3D + 0.7D) * maxAgeMul);
+        this.particleMaxAge = (int) (28D / (Math.random() * 0.3D + 0.7D) * 1.0F);
 
         this.moteHalfLife = this.particleMaxAge / 2;
         this.noClip = true;
         this.setSize(0.01F, 0.01F);
         EntityLivingBase renderentity = Minecraft.getMinecraft().renderViewEntity;
 
-        if( distanceLimit ) {
-            int visibleDistance = 50;
-            if( !Minecraft.getMinecraft().gameSettings.fancyGraphics ) {
-                visibleDistance = 25;
-            }
+        int visibleDistance = 50;
+        if( !Minecraft.getMinecraft().gameSettings.fancyGraphics ) {
+            visibleDistance = 25;
+        }
 
-            if( renderentity == null || renderentity.getDistance(this.posX, this.posY, this.posZ) > visibleDistance ) {
-                this.particleMaxAge = 0;
-            }
+        if( renderentity == null || renderentity.getDistance(this.posX, this.posY, this.posZ) > visibleDistance ) {
+            this.particleMaxAge = 0;
         }
 
         this.prevPosX = this.posX;

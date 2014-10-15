@@ -54,11 +54,11 @@ public class ItemRendererClayNexus
         GL11.glScalef(1.1875F, 1.1875F, 1.1875F);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(Textures.NEXUS_TEXTURE);
-        this.modelClayNexus.renderTileEntity(0.0625F);
+        this.modelClayNexus.renderTileEntity();
         Minecraft.getMinecraft().getTextureManager().bindTexture(Textures.NEXUS_GLOWING);
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-        this.modelClayNexus.renderTileEntityGlowmap(0.0625F);
+        this.modelClayNexus.renderTileEntityGlowmap();
         GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glPopMatrix();

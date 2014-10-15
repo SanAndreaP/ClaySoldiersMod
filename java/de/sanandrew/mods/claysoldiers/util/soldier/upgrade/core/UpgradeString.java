@@ -24,10 +24,10 @@ public class UpgradeString
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         if( source.isExplosion() && !upgradeInst.getNbtTag().getBoolean("destroyed") ) {
             upgradeInst.getNbtTag().setBoolean("destroyed", true);
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override

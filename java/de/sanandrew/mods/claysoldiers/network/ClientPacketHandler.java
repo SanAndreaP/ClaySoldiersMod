@@ -11,13 +11,11 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.network.NetHandlerPlayClient;
 
-import java.io.IOException;
-
 public class ClientPacketHandler
         extends ServerPacketHandler
 {
     @SubscribeEvent
-    public void onClientPacket(ClientCustomPacketEvent event) throws IOException {
+    public void onClientPacket(ClientCustomPacketEvent event) {
         NetHandlerPlayClient netHandlerPlayClient = (NetHandlerPlayClient) event.handler;
 
         if( event.packet.channel().equals(ClaySoldiersMod.MOD_CHANNEL) ) {

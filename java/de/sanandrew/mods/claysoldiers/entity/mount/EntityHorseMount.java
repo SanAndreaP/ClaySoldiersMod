@@ -115,11 +115,7 @@ public class EntityHorseMount
     @Override
     public boolean canBreatheUnderwater() {
         short horseType = this.dataWatcher.getWatchableObjectShort(DW_TYPE);
-        if( horseType == EnumHorseType.LAPIS.ordinal() || horseType == EnumHorseType.CLAY.ordinal() || horseType == EnumHorseType.CARROT.ordinal() ) {
-            return true;
-        } else {
-            return false;
-        }
+        return horseType == EnumHorseType.LAPIS.ordinal() || horseType == EnumHorseType.CLAY.ordinal() || horseType == EnumHorseType.CARROT.ordinal();
     }
 
     @Override

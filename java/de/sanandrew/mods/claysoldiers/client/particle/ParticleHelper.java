@@ -123,8 +123,7 @@ public final class ParticleHelper
                                              0.1F + SAPUtils.RNG.nextFloat() * 0.2F,
                                              data.getValue3(),
                                              data.getValue4(),
-                                             data.getValue5(),
-                                             true, 1.0F
+                                             data.getValue5()
         );
         fx.motionY = 0.02F;
         mc.effectRenderer.addEffect(fx);

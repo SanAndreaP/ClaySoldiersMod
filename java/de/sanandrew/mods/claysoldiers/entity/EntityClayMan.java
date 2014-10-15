@@ -244,7 +244,7 @@ public class EntityClayMan
         while( !this.worldObj.isRemote && iter.hasNext() ) {
             SoldierUpgradeInst upg = iter.next().getValue();
             MutableFloat newDamage = new MutableFloat(damage);
-            if( !upg.getUpgrade().onSoldierHurt(this, upg, source, newDamage) ) {
+            if( upg.getUpgrade().onSoldierHurt(this, upg, source, newDamage) ) {
                 return false;
             } else {
                 damage = newDamage.floatValue();
@@ -404,7 +404,7 @@ public class EntityClayMan
                             continue;
                         }
 
-                        if( !this.checkTarget(uberhaxornova) ) {
+                        if( !this.checkIfValidTarget(uberhaxornova) ) {
                             continue;
                         }
 
@@ -483,7 +483,7 @@ public class EntityClayMan
                 }
             } else {
                 if( this.entityToAttack.isDead || !this.canEntityBeSeen(this.entityToAttack)
-                        || (this.entityToAttack instanceof EntityClayMan && !this.checkTarget((EntityClayMan) this.entityToAttack)) ) {
+                        || (this.entityToAttack instanceof EntityClayMan && !this.checkIfValidTarget((EntityClayMan) this.entityToAttack)) ) {
                     this.entityToAttack = null;
                 } else if( this.attackTime == 0 ) {
                     this.attackTime = 5;
@@ -759,7 +759,7 @@ public class EntityClayMan
     public boolean targetSoldier(EntityClayMan target, boolean withUpgradeCheck) {
         if( this.entityToAttack == null || this.entityToAttack.isDead ) {
             if( withUpgradeCheck ) {
-                if( !this.checkTarget(target) ) {
+                if( !this.checkIfValidTarget(target) ) {
                     return false;
                 }
             }
@@ -900,7 +900,12 @@ public class EntityClayMan
         }
     }
 
-    private boolean checkTarget(EntityClayMan target) {
+    /**
+     * checks if the soldier is a valid target
+     * @param target the soldier as a target-candidate
+     * @return true, if the soldier is a valid target
+     */
+    private boolean checkIfValidTarget(EntityClayMan target) {
         for( SoldierEffectInst eff : this.effects_.values() ) {
             MethodState result = eff.getEffect().onTargeting(this, eff, target);
             if( result == MethodState.DENY ) {

@@ -60,7 +60,6 @@ public class EntityRendererClayCam
     public void getMouseOver(float partialTick) {
         if( this.mc.thePlayer == null || this.mc.thePlayer.isPlayerSleeping() ){
             super.getMouseOver(partialTick);
-            return;
         }
 
         // no mouse-over (thus no block-destruction) while in ClayCam

@@ -35,7 +35,7 @@ public class UpgradeIronBlock
         damage.setValue(Math.max(0.0F, damage.getValue() - 1.0F));
         if( SAPUtils.RNG.nextBoolean() ) {
             if( source == UpgradeBlazePowder.blazePwdSrc ) {
-                return false;
+                return true;
             }
 
             if( clayMan.isPotionActive(Potion.poison) ) {
@@ -49,7 +49,7 @@ public class UpgradeIronBlock
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override

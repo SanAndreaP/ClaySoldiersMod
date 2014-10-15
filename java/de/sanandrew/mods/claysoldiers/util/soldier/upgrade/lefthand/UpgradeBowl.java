@@ -27,7 +27,7 @@ public class UpgradeBowl
             upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
         }
 
-        return true;
+        return false;
     }
 
     @Override

@@ -24,7 +24,7 @@ import java.util.Map;
 
 public final class ClaymanTeam
 {
-    public static final ClaymanTeam NULL_TEAM = new ClaymanTeam("nullTeam");
+    public static final ClaymanTeam NULL_TEAM = new ClaymanTeam();
 
     private static final Map<String, ClaymanTeam> TEAMS_ = Maps.newHashMap();
     private static final List<String> TEAM_NAMES_FOR_DOLLS_ = new ArrayList<>();
@@ -43,8 +43,8 @@ public final class ClaymanTeam
     /**
      * DO NOT USE THIS! THIS IS ONlY FOR THE DUMMY "NULL-Team"!
      */
-    private ClaymanTeam(String teamName) {
-        this.name_ = teamName;
+    private ClaymanTeam() {
+        this.name_ = "nullTeam";
         this.teamColor_ = 0xFFFFFF;
         this.iconColor_ = 0xFFFFFF;
         this.teamItem_ = new ItemStack(Blocks.command_block);
@@ -115,7 +115,7 @@ public final class ClaymanTeam
             isInitialized = true;
         }
 
-        TEAMS_.put(NULL_TEAM.getTeamName(), NULL_TEAM);
+        TEAMS_.put(NULL_TEAM.name_, NULL_TEAM);
 
         registerTeam("clay", 0x999999, new ItemStack(Items.dye, 1, 7),
                      new String[] { ClaySoldiersMod.MOD_ID + ":textures/entity/soldiers/lightgray.png" },
@@ -294,12 +294,12 @@ public final class ClaymanTeam
     public static void registerIcons(IIconRegister iconRegister) {
         Map<String, IIcon> registeredIcons = Maps.newHashMap();
         for( ClaymanTeam team : TEAMS_.values() ) {
-            if( TEAM_NAMES_FOR_DOLLS_.contains(team.getTeamName()) ) {
-                if( registeredIcons.containsKey(team.getIconTexture()) ) {
-                    team.iconInstance_ = registeredIcons.get(team.getIconTexture());
+            if( TEAM_NAMES_FOR_DOLLS_.contains(team.name_) ) {
+                if( registeredIcons.containsKey(team.icon_) ) {
+                    team.iconInstance_ = registeredIcons.get(team.icon_);
                 } else {
-                    team.iconInstance_ = iconRegister.registerIcon(team.getIconTexture());
-                    registeredIcons.put(team.getIconTexture(), team.iconInstance_);
+                    team.iconInstance_ = iconRegister.registerIcon(team.icon_);
+                    registeredIcons.put(team.icon_, team.iconInstance_);
                 }
             }
         }

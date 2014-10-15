@@ -47,7 +47,7 @@ public class UpgradeNetherQuartz
 
         upgradeInst.getNbtTag().setByte("hitCounter", hits);
 
-        return true;
+        return false;
     }
 
     @Override

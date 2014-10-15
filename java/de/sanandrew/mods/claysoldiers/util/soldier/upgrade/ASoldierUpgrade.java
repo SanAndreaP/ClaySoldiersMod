@@ -70,8 +70,7 @@ public abstract class ASoldierUpgrade
      * @param clayMan     the soldier calling the method
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      * @param target      the soldier which is targeted
-     * @param damage      the initial damage the soldier would've dealt
-     * @return the new damage value. Note that with multiple upgrade modifying the damage value, the highest damage from those upgrade will be applied!
+     * @param damage      the damage value the soldier will do (can be changed)
      */
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
     }
@@ -92,8 +91,17 @@ public abstract class ASoldierUpgrade
     public void onSoldierDeath(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source) {
     }
 
+    /**
+     * Called whenever the soldier gets hurt
+     *
+     * @param clayMan the soldier calling the method
+     * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
+     * @param source the source of damage
+     * @param damage the damage value (can be changed)
+     * @return true, if the soldier shouldn't receive any damage (and thus not playing the hurt animation)
+     */
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        return true;
+        return false;
     }
 
     /**
@@ -116,7 +124,7 @@ public abstract class ASoldierUpgrade
      * @param clayMan the soldier calling the method
      * @param stack   the ItemStack which should be picked up
      * @param upgrade the upgrade to be checked
-     * @return true, if the upgrade can co-exist with this upgrade
+     * @return true, if the upgrade can be picked up / co-exist with this upgrade
      */
     public abstract boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade);
 

@@ -26,7 +26,7 @@ public class UpgradeNetherBrick
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override

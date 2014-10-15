@@ -44,7 +44,7 @@ public class UpgradeFood
             upgradeInst.getNbtTag().setBoolean("killed", true);
         }
 
-        return true;
+        return false;
     }
 
     @Override
