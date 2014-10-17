@@ -8,6 +8,8 @@ package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.render.entity.mount.RenderBunnyMount;
 import de.sanandrew.mods.claysoldiers.client.render.entity.mount.RenderHorseMount;
@@ -27,6 +29,7 @@ import net.minecraft.init.Blocks;
 
 public final class RegistryEntities
 {
+    @SideOnly(Side.CLIENT)
     public static void registerRenderers() {
         RenderingRegistry.registerEntityRenderingHandler(EntityClayMan.class, new RenderClayMan());
         RenderingRegistry.registerEntityRenderingHandler(EntityHorseMount.class, new RenderHorseMount());

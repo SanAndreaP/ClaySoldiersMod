@@ -23,14 +23,14 @@ import java.util.List;
 public class UpgradeFood
         extends AUpgradeMisc
 {
-    private static List<ItemFood> excludedFood = new ArrayList<>();
+    private static List<ItemFood> s_excludedFood = new ArrayList<>();
 
     public static boolean isFoodExcluded(ItemFood food) {
-        return excludedFood.contains(food);
+        return s_excludedFood.contains(food);
     }
 
     public static void excludeFood(ItemFood food) {
-        excludedFood.add(food);
+        s_excludedFood.add(food);
     }
 
     @Override

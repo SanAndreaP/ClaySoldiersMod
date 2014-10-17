@@ -55,7 +55,7 @@ public class BehaviorSoldierDispenseItem
      * Order clients to display dispense particles from the specified block and facing.
      */
     void spawnDispenseParticles(IBlockSource blockSource, EnumFacing facing) {
-        blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), this.getParticleOffset(facing));
+        blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), getParticleOffset(facing));
     }
 
     private static int getParticleOffset(EnumFacing facing) {

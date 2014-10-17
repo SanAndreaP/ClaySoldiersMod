@@ -57,7 +57,7 @@ public enum EnumHorseType
               new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/horses/spec_nightmare2.png")
     );
 
-    public static final EnumHorseType[] values = values();
+    public static final EnumHorseType[] VALUES = values();
 
     public final float health;
     public final float moveSpeed;
@@ -89,7 +89,7 @@ public enum EnumHorseType
             return null;
         }
 
-        for( EnumHorseType type : values ) {
+        for( EnumHorseType type : VALUES ) {
             if( type.item == null ) {
                 return null;
             }

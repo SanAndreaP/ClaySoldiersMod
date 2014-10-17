@@ -6,11 +6,14 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.model.mount;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
+@SideOnly(Side.CLIENT)
 public class ModelBunnyMount
         extends ModelBase
 {
@@ -32,7 +35,7 @@ public class ModelBunnyMount
         this.body = new ModelRenderer(this, 0, 4);
         this.body.addBox(-1.5F, -2.0F, -1.5F, 3, 3, 2);
         this.body.setRotationPoint(0.0F, 21.5F, 1.0F);
-        this.setRotation(this.body, 1.570796F, 0.0F, 0.0F);
+        setRotation(this.body, 1.570796F, 0.0F, 0.0F);
 
         this.leftLegFront = new ModelRenderer(this, 0, 9);
         this.leftLegFront.addBox(-1.0F, 0.0F, 0.0F, 1, 1, 1);
@@ -55,18 +58,18 @@ public class ModelBunnyMount
         this.earRight = new ModelRenderer(this, 8, 0);
         this.earRight.addBox(0.0F, -3.1F, -1.0F, 1, 3, 1);
         this.earRight.setRotationPoint(0.0F, 22.0F, -1.0F);
-        this.setRotation(this.earRight, 0.0F, 0.0F, -0.6981317F);
+        setRotation(this.earRight, 0.0F, 0.0F, -0.6981317F);
 
         this.earLeft = new ModelRenderer(this, 8, 0);
         this.earLeft.addBox(-1.0F, -3.1F, -1.0F, 1, 3, 1);
         this.earLeft.setRotationPoint(0.0F, 22.0F, -1.0F);
         this.earLeft.mirror = true;
-        this.setRotation(this.earLeft, 0.0F, 0.0F, 0.6981317F);
+        setRotation(this.earLeft, 0.0F, 0.0F, 0.6981317F);
 
         this.tail = new ModelRenderer(this, 4, 9);
         this.tail.addBox(-0.5F, 0.0F, -0.5F, 1, 1, 1);
         this.tail.setRotationPoint(0.0F, 21.5F, 2.0F);
-        this.setRotation(this.tail, 1.747395F, 0.0F, 0.0F);
+        setRotation(this.tail, 1.747395F, 0.0F, 0.0F);
     }
 
     @Override
@@ -91,7 +94,7 @@ public class ModelBunnyMount
         this.rightLegBack.rotateAngleY = this.leftLegBack.rotateAngleY = 0.0F;
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
+    private static void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
         model.rotateAngleZ = z;

@@ -25,7 +25,7 @@ public class UpgradeGravel
         extends AUpgradeLeftHanded
         implements IThrowableUpgrade
 {
-    private ItemStack nexusItem_ = new ItemStack(Blocks.gravel);
+    private ItemStack p_nexusItem = new ItemStack(Blocks.gravel);
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -50,8 +50,8 @@ public class UpgradeGravel
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 
@@ -71,6 +71,6 @@ public class UpgradeGravel
 
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
-        ItemRenderHelper.renderItemIn3D(this.nexusItem_);
+        ItemRenderHelper.renderItemIn3D(this.p_nexusItem);
     }
 }

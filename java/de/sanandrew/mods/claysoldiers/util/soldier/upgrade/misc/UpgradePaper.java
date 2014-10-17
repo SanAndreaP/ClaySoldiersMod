@@ -15,9 +15,9 @@ public class UpgradePaper
         extends AUpgradeMisc
 {
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Items.paper ) {
-            this.consumeItem(stack, upgInst);
+            this.consumeItem(stack, upgradeInst);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         } else if( stack.getItem() == Items.book ) {
             clayMan.playSound("random.pop", 1.0F, 1.0F);

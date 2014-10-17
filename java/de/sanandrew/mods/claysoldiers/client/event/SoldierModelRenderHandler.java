@@ -7,6 +7,8 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.RenderModelEvent;
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.SetRotationAnglesEvent;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
@@ -19,6 +21,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class SoldierModelRenderHandler
 {
     public ModelRenderer buffedBody;
@@ -33,7 +36,7 @@ public class SoldierModelRenderHandler
     public ModelRenderer lilypantsBody;
     public ModelRenderer glassStripes;
 
-    public boolean isInitialized = false;
+    private boolean p_isInitialized = false;
 
     @SubscribeEvent
     public void onSoldierRotationAngles(SetRotationAnglesEvent event) {
@@ -51,21 +54,21 @@ public class SoldierModelRenderHandler
 
     @SubscribeEvent
     public void onSoldierRenderModel(RenderModelEvent event) {
-        if( !this.isInitialized ) {
-            this.isInitialized = true;
+        if( !this.p_isInitialized ) {
+            this.p_isInitialized = true;
             this.initRenderer(event.clayManRender);
         }
 
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_INGOT)) ) {
-            this.renderGoldHoodie(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
+            renderGoldHoodie(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.renderYaw, event.pitch, event.partTicks);
         }
 
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GUNPOWDER)) ) {
-            this.renderGunpowder(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
+            renderGunpowder(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.renderYaw, event.pitch, event.partTicks);
         }
 
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_MAGMACREAM)) ) {
-            this.renderMagmacream(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.yaw, event.pitch, event.partTicks);
+            renderMagmacream(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.renderYaw, event.pitch, event.partTicks);
         }
 
         if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM))
@@ -148,24 +151,24 @@ public class SoldierModelRenderHandler
         this.lilypantsLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
     }
 
-    private void renderGoldHoodie(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw, float pitch,
-                                  float partTicks) {
+    private static void renderGoldHoodie(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
+                                         float pitch, float partTicks) {
         clayManRender.bindTexture(Textures.CLAYMAN_GOLD_HOODIE);
         GL11.glPushMatrix();
         clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
         GL11.glPopMatrix();
     }
 
-    private void renderGunpowder(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw, float pitch,
-                                 float partTicks) {
+    private static void renderGunpowder(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
+                                        float pitch, float partTicks) {
         clayManRender.bindTexture(Textures.CLAYMAN_GUNPOWDER);
         GL11.glPushMatrix();
         clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
         GL11.glPopMatrix();
     }
 
-    private void renderMagmacream(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw, float pitch,
-                                  float partTicks) {
+    private static void renderMagmacream(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
+                                         float pitch, float partTicks) {
         clayManRender.bindTexture(Textures.CLAYMAN_MAGMACREAM);
         GL11.glPushMatrix();
         clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
@@ -176,32 +179,31 @@ public class SoldierModelRenderHandler
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 0.175F);
 
-        double d3 = clayMan.cloakHelper.prevSwingPosX + (clayMan.cloakHelper.swingPosX - clayMan.cloakHelper.prevSwingPosX) * (double) partTicks - (clayMan.prevPosX + (clayMan.posX - clayMan.prevPosX) * (double) partTicks);
-        double d4 = clayMan.cloakHelper.prevSwingPosY + (clayMan.cloakHelper.swingPosY - clayMan.cloakHelper.prevSwingPosY) * (double) partTicks - (clayMan.prevPosY + (clayMan.posY - clayMan.prevPosY) * (double) partTicks);
-        double d0 = clayMan.cloakHelper.prevSwingPosZ + (clayMan.cloakHelper.swingPosZ - clayMan.cloakHelper.prevSwingPosZ) * (double) partTicks - (clayMan.prevPosZ + (clayMan.posZ - clayMan.prevPosZ) * (double) partTicks);
-        float f4 = clayMan.prevRenderYawOffset + (clayMan.renderYawOffset - clayMan.prevRenderYawOffset) * partTicks;
-        double d1 = (double) MathHelper.sin(f4 * (float) Math.PI / 180.0F);
-        double d2 = (double) (-MathHelper.cos(f4 * (float) Math.PI / 180.0F));
-        float f5 = (float) d4 * 10.0F;
+        double swingProgX = calcSwingProgress(clayMan.cloakHelper.swingPosX, clayMan.cloakHelper.prevSwingPosX, clayMan.posX, clayMan.prevPosX, partTicks);
+        double swingProgY = calcSwingProgress(clayMan.cloakHelper.swingPosY, clayMan.cloakHelper.prevSwingPosY, clayMan.posY, clayMan.prevPosY, partTicks) * 10.0F;
+        double swingProgZ = calcSwingProgress(clayMan.cloakHelper.swingPosZ, clayMan.cloakHelper.prevSwingPosZ, clayMan.posZ, clayMan.prevPosZ, partTicks);
+        float yawOffProg = clayMan.prevRenderYawOffset + (clayMan.renderYawOffset - clayMan.prevRenderYawOffset) * partTicks;
+        double yawOffProgSin = MathHelper.sin(yawOffProg * (float) Math.PI / 180.0F);
+        double yawOffProgNCos = -MathHelper.cos(yawOffProg * (float) Math.PI / 180.0F);
 
-        if( f5 < -6.0F ) {
-            f5 = -6.0F;
+        if( swingProgY < -6.0F ) {
+            swingProgY = -6.0F;
         }
 
-        if( f5 > 32.0F ) {
-            f5 = 32.0F;
+        if( swingProgY > 32.0F ) {
+            swingProgY = 32.0F;
         }
 
-        float f6 = (float) (d3 * d1 + d0 * d2) * 100.0F;
-        float f7 = (float) (d3 * d2 - d0 * d1) * 100.0F;
+        float swingXZSin = (float) (swingProgX * yawOffProgSin + swingProgZ * yawOffProgNCos) * 100.0F;
+        float swingXZNCos = (float) (swingProgX * yawOffProgNCos - swingProgZ * yawOffProgSin) * 100.0F;
 
-        if( f6 < 0.0F ) {
-            f6 = 0.0F;
+        if( swingXZSin < 0.0F ) {
+            swingXZSin = 0.0F;
         }
 
-        GL11.glRotatef(6.0F + f6 / 2.0F + f5, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(f7 / 2.0F, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(-f7 / 2.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(6.0F + swingXZSin / 2.0F + (float) swingProgY, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(swingXZNCos / 2.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-swingXZNCos / 2.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 
         if( isSuper ) {
@@ -215,6 +217,12 @@ public class SoldierModelRenderHandler
         clayManRender.modelBipedMain.bipedCloak.render(0.0625F);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         GL11.glPopMatrix();
+    }
+
+    private static double calcSwingProgress(double swingPos, double prevSwingPos, double pos, double prevPos, float partTicks) {
+        double swingProg = prevSwingPos + (swingPos - prevSwingPos) * partTicks;
+        double posProg = prevPos + (pos - prevPos) * partTicks;
+        return swingProg - posProg;
     }
 
     private void renderCrown(RenderClayMan clayManRender, float partTicks, boolean isSuper) {
@@ -350,9 +358,9 @@ public class SoldierModelRenderHandler
     public float[] getSplittedColor(int color) {
         float[] splitColor = new float[3];
 
-        splitColor[0] = (float) ((color >> 16) & 0xFF) / 255.0F;
-        splitColor[1] = (float) ((color >> 8) & 0xFF) / 255.0F;
-        splitColor[2] = (float) (color & 0xFF) / 255.0F;
+        splitColor[0] = ((color >> 16) & 0xFF) / 255.0F;
+        splitColor[1] = ((color >> 8) & 0xFF) / 255.0F;
+        splitColor[2] = (color & 0xFF) / 255.0F;
 
         return splitColor;
     }

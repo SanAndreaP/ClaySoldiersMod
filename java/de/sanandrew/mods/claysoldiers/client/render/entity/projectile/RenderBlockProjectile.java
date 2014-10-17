@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.render.entity.projectile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
@@ -15,15 +17,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class RenderBlockProjectile
         extends Render
 {
-    private final RenderBlocks renderBlocks = new RenderBlocks();
-    private final Block block_;
+    private final RenderBlocks p_renderBlocks = new RenderBlocks();
+    private final Block p_block;
 
     public RenderBlockProjectile(Block block) {
         this.shadowSize = 0.0F;
-        this.block_ = block;
+        this.p_block = block;
     }
 
     @Override
@@ -38,8 +41,8 @@ public class RenderBlockProjectile
         this.bindEntityTexture(entity);
         GL11.glDisable(GL11.GL_LIGHTING);
 
-        this.renderBlocks.setRenderBoundsFromBlock(this.block_);
-        this.renderBlocks.renderBlockSandFalling(this.block_, entity.worldObj, blockX, blockY, blockZ, 0);
+        this.p_renderBlocks.setRenderBoundsFromBlock(this.p_block);
+        this.p_renderBlocks.renderBlockSandFalling(this.p_block, entity.worldObj, blockX, blockY, blockZ, 0);
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();

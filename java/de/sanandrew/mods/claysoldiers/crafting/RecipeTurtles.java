@@ -20,7 +20,7 @@ public class RecipeTurtles
 
         implements IRecipe
 {
-    private final ItemStack soulSand_ = new ItemStack(Blocks.soul_sand);
+    private final ItemStack p_soulSand = new ItemStack(Blocks.soul_sand);
 
     @Override
     public boolean matches(InventoryCrafting invCrafting, World world) {
@@ -42,7 +42,7 @@ public class RecipeTurtles
 
         pattern = new ItemStack[] {
                 null, typeItem, typeItem,
-                this.soulSand_, this.soulSand_, typeItem
+                this.p_soulSand, this.p_soulSand, typeItem
         };
 
         for( int i = 0, slotIndex = startIndex; i < pattern.length; slotIndex = startIndex + (++i) ) {
@@ -56,7 +56,7 @@ public class RecipeTurtles
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
-        for( EnumTurtleType type : EnumTurtleType.values ) {
+        for( EnumTurtleType type : EnumTurtleType.VALUES ) {
             if( SAPUtils.areStacksEqualWithWCV(type.item, invCrafting.getStackInSlot(5)) ) {
                 ItemStack stack = new ItemStack(RegistryItems.dollTurtleMount, 2);
                 ItemTurtleDoll.setType(stack, type);

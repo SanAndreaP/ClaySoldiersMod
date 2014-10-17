@@ -7,12 +7,16 @@
 package de.sanandrew.mods.claysoldiers.client.gui;
 
 import cpw.mods.fml.client.IModGuiFactory;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.gui.config.GuiConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.util.Set;
 
+@SuppressWarnings("unused")
+@SideOnly(Side.CLIENT)
 public class ModGuiFactory
         implements IModGuiFactory
 {

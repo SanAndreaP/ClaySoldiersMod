@@ -19,7 +19,7 @@ import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ASoldierEffect;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
@@ -55,17 +55,21 @@ public class EntityClayMan
     private static final int DW_MISC_COLOR = 21;
     private static final int DW_IS_TEXTURE_RARE_OR_UNIQUE = 22;
     private static final int DW_TEXTURE_INDEX = 23;
+
     public final SoldierCloakHelper cloakHelper = new SoldierCloakHelper();
-    private final Map<ASoldierUpgrade, SoldierUpgradeInst> upgrades_ = new ConcurrentHashMap<>();
-    private final Map<ASoldierEffect, SoldierEffectInst> effects_ = new ConcurrentHashMap<>();
-    private final long[] upgradeRenderFlags_ = new long[2];
-    private final long[] effectRenderFlags_ = new long[2];
+
     public ItemStack dollItem = null;
     public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
     public boolean canMove = true;
     public boolean nexusSpawn = false;
-    private Entity targetFollow_ = null;
-    private Collection entitiesInRange;
+
+    private final Map<ASoldierUpgrade, SoldierUpgradeInst> p_upgrades = new ConcurrentHashMap<>();
+    private final Map<ASoldierEffect, SoldierEffectInst> p_effects = new ConcurrentHashMap<>();
+    private final long[] p_upgradeRenderFlags = new long[2];
+    private final long[] p_effectRenderFlags = new long[2];
+
+    private Entity p_targetFollow = null;
+    private Collection p_entitiesInRange;
 
     public EntityClayMan(World world) {
         super(world);
@@ -100,7 +104,7 @@ public class EntityClayMan
     @Override
     public void disrupt() {
         if( !this.getCustomNameTag().startsWith("[UNDISRUPTABLE]") ) {
-            this.attackEntityFrom(IDisruptable.disruptDamage, 99999);
+            this.attackEntityFrom(IDisruptable.DISRUPT_DAMAGE, 99999);
         }
     }
 
@@ -118,7 +122,7 @@ public class EntityClayMan
 
         this.canMove = true;
 
-        Iterator<Map.Entry<ASoldierUpgrade, SoldierUpgradeInst>> iterUpgrades = upgrades_.entrySet().iterator();
+        Iterator<Map.Entry<ASoldierUpgrade, SoldierUpgradeInst>> iterUpgrades = p_upgrades.entrySet().iterator();
         while( iterUpgrades.hasNext() ) {
             if( !this.worldObj.isRemote ) {
                 SoldierUpgradeInst upg = iterUpgrades.next().getValue();
@@ -130,7 +134,7 @@ public class EntityClayMan
                 upg.getUpgrade().onClientUpdate(this, upg);
             }
         }
-        Iterator<Map.Entry<ASoldierEffect, SoldierEffectInst>> iterEffects = effects_.entrySet().iterator();
+        Iterator<Map.Entry<ASoldierEffect, SoldierEffectInst>> iterEffects = p_effects.entrySet().iterator();
         while( iterEffects.hasNext() ) {
             if( !this.worldObj.isRemote ) {
                 SoldierEffectInst upg = iterEffects.next().getValue();
@@ -166,7 +170,7 @@ public class EntityClayMan
         }
 
         NBTTagList upgNbtList = new NBTTagList();
-        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+        for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
             NBTTagCompound savedUpg = new NBTTagCompound();
             savedUpg.setString("name", SoldierUpgrades.getName(upg.getUpgrade()));
             savedUpg.setTag("data", upg.getNbtTag());
@@ -179,7 +183,7 @@ public class EntityClayMan
         nbt.setTag("upgrade", upgNbtList);
 
         NBTTagList effNbtList = new NBTTagList();
-        for( SoldierEffectInst eff : this.effects_.values() ) {
+        for( SoldierEffectInst eff : this.p_effects.values() ) {
             NBTTagCompound savedEff = new NBTTagCompound();
             savedEff.setString("name", SoldierEffects.getEffectName(eff.getEffect()));
             savedEff.setTag("data", eff.getNbtTag());
@@ -213,14 +217,14 @@ public class EntityClayMan
             if( savedUpg.hasKey("item") ) {
                 upgInst.readStoredItemFromNBT(savedUpg.getCompoundTag("item"));
             }
-            this.upgrades_.put(upgInst.getUpgrade(), upgInst);
+            this.p_upgrades.put(upgInst.getUpgrade(), upgInst);
         }
         NBTTagList effNbtList = nbt.getTagList("effect", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < effNbtList.tagCount(); i++ ) {
             NBTTagCompound savedEff = effNbtList.getCompoundTagAt(i);
             SoldierEffectInst effInst = new SoldierEffectInst(SoldierEffects.getEffect(savedEff.getString("name")));
             effInst.setNbtTag(savedEff.getCompoundTag("data"));
-            this.effects_.put(effInst.getEffect(), effInst);
+            this.p_effects.put(effInst.getEffect(), effInst);
         }
     }
 
@@ -231,7 +235,7 @@ public class EntityClayMan
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if( !(source.getEntity() instanceof EntityPlayer) && source != IDisruptable.disruptDamage ) {
+        if( !(source.getEntity() instanceof EntityPlayer) && source != IDisruptable.DISRUPT_DAMAGE ) {
             if( this.ridingEntity != null && rand.nextInt(4) == 0 ) {
                 this.ridingEntity.attackEntityFrom(source, damage);
                 return false;
@@ -240,7 +244,7 @@ public class EntityClayMan
             damage = 10000.0F;
         }
 
-        Iterator<Map.Entry<ASoldierUpgrade, SoldierUpgradeInst>> iter = upgrades_.entrySet().iterator();
+        Iterator<Map.Entry<ASoldierUpgrade, SoldierUpgradeInst>> iter = p_upgrades.entrySet().iterator();
         while( !this.worldObj.isRemote && iter.hasNext() ) {
             SoldierUpgradeInst upg = iter.next().getValue();
             MutableFloat newDamage = new MutableFloat(damage);
@@ -271,10 +275,10 @@ public class EntityClayMan
                 }
             }
 
-            for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+            for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
                 upg.getUpgrade().onSoldierDeath(this, upg, damageSource);
             }
-            for( SoldierEffectInst eff : this.effects_.values() ) {
+            for( SoldierEffectInst eff : this.p_effects.values() ) {
                 eff.getEffect().onSoldierDeath(this, eff, damageSource);
             }
         }
@@ -295,10 +299,10 @@ public class EntityClayMan
     public float getAIMoveSpeed() {
         MutableFloat speed = new MutableFloat(0.5F);
 
-        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+        for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
             upg.getUpgrade().getAiMoveSpeed(this, upg, speed);
         }
-        for( SoldierEffectInst eff : this.effects_.values() ) {
+        for( SoldierEffectInst eff : this.p_effects.values() ) {
             eff.getEffect().getAiMoveSpeed(this, eff, speed);
         }
 
@@ -307,8 +311,8 @@ public class EntityClayMan
 
     @Override
     public boolean canEntityBeSeen(Entity target) {
-        return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ),
-                                           Vec3.createVectorHelper(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ),
+        return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.posX, this.posY + this.getEyeHeight(), this.posZ),
+                                           Vec3.createVectorHelper(target.posX, target.posY + target.getEyeHeight(), target.posZ),
                                            false, true, false
         ) == null;
     }
@@ -369,13 +373,12 @@ public class EntityClayMan
     }
 
     @Override
-    protected boolean interact(EntityPlayer p_70085_1_) {
+    protected boolean interact(EntityPlayer player) {
         if( this.worldObj.isRemote ) {
             ClaySoldiersMod.proxy.switchClayCam(true, this);
         }
 
-//        p_70085_1_.mountEntity(this);
-        return super.interact(p_70085_1_);
+        return super.interact(player);
     }
 
     @Override
@@ -384,8 +387,8 @@ public class EntityClayMan
         if( !this.hasPath() ) {
             if( this.entityToAttack != null ) {
                 this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.entityToAttack, 16.0F, true, false, false, true));
-            } else if( this.targetFollow_ != null ) {
-                this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.targetFollow_, 16.0F, true, false, false, true));
+            } else if( this.p_targetFollow != null ) {
+                this.setPathToEntity(BugfixHelper.getPathEntityToEntity(this.worldObj, this, this.p_targetFollow, 16.0F, true, false, false, true));
             } else if( (this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100 ) {
                 this.updateWanderPath();
             }
@@ -394,10 +397,10 @@ public class EntityClayMan
         super.updateEntityActionState();
 
         if( !this.worldObj.isRemote ) {
-            this.entitiesInRange = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getTargetArea());
+            this.p_entitiesInRange = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getTargetArea());
 
             if( this.entityToAttack == null ) {
-                if( rand.nextInt(4) != 0 && targetFollow_ == null ) {
+                if( rand.nextInt(4) != 0 && p_targetFollow == null ) {
                     Collection<EntityClayMan> claymen = this.getSoldiersInRange();
                     for( EntityClayMan uberhaxornova : claymen ) {
                         if( uberhaxornova.isDead || rand.nextInt(3) != 0 ) {
@@ -413,7 +416,7 @@ public class EntityClayMan
                         break;
                     }
                 } else {
-                    if( this.targetFollow_ == null ) {
+                    if( this.p_targetFollow == null ) {
                         Collection<EntityItem> items = this.getItemsInRange();
                         items:
                         for( EntityItem seamus : items ) {
@@ -426,7 +429,7 @@ public class EntityClayMan
                                 if( this.hasUpgrade(upgrade) || !upgrade.canBePickedUp(this, seamus.getEntityItem(), null) ) {
                                     continue;
                                 } else {
-                                    for( SoldierUpgradeInst upgradeInst : this.upgrades_.values() ) {
+                                    for( SoldierUpgradeInst upgradeInst : this.p_upgrades.values() ) {
                                         if( upgrade == upgradeInst.getUpgrade() || !upgrade.canBePickedUp(this, seamus.getEntityItem(), upgradeInst.getUpgrade()) ) {
                                             continue items;
                                         }
@@ -436,19 +439,19 @@ public class EntityClayMan
                                 continue;
                             }
 
-                            this.targetFollow_ = seamus;
+                            this.p_targetFollow = seamus;
 
                             break;
                         }
                     } else {
-                        if( this.targetFollow_.isDead ) {
-                            this.targetFollow_ = null;
-                        } else if( !this.canEntityBeSeen(this.targetFollow_) ) {
-                            this.targetFollow_ = null;
+                        if( this.p_targetFollow.isDead ) {
+                            this.p_targetFollow = null;
+                        } else if( !this.canEntityBeSeen(this.p_targetFollow) ) {
+                            this.p_targetFollow = null;
                         }
 
-                        if( this.targetFollow_ instanceof EntityItem && this.targetFollow_.getDistanceToEntity(this) < 0.5F ) {
-                            EntityItem itemEntity = (EntityItem) this.targetFollow_;
+                        if( this.p_targetFollow instanceof EntityItem && this.p_targetFollow.getDistanceToEntity(this) < 0.5F ) {
+                            EntityItem itemEntity = (EntityItem) this.p_targetFollow;
                             ASoldierUpgrade upgrade = SoldierUpgrades.getUpgrade(itemEntity.getEntityItem());
                             if( upgrade != null ) {
                                 this.addUpgrade(upgrade, itemEntity.getEntityItem());
@@ -457,18 +460,18 @@ public class EntityClayMan
                                     itemEntity.setDead();
                                 }
 
-                                this.targetFollow_ = null;
+                                this.p_targetFollow = null;
                             }
-                        } else if( this.targetFollow_ instanceof IMount ) {
-                            if( this.targetFollow_.riddenByEntity != null ) {
-                                this.targetFollow_ = null;
-                            } else if( this.targetFollow_.getDistanceToEntity(this) < 0.5D ) {
-                                this.mountEntity(this.targetFollow_);
-                                this.targetFollow_ = null;
+                        } else if( this.p_targetFollow instanceof IMount ) {
+                            if( this.p_targetFollow.riddenByEntity != null ) {
+                                this.p_targetFollow = null;
+                            } else if( this.p_targetFollow.getDistanceToEntity(this) < 0.5D ) {
+                                this.mountEntity(this.p_targetFollow);
+                                this.p_targetFollow = null;
                             }
                         }
                     }
-                    if( this.targetFollow_ == null && this.ridingEntity == null ) {
+                    if( this.p_targetFollow == null && this.ridingEntity == null ) {
                         Collection<IMount> items = this.getMountsInRange();
                         for( IMount mount : items ) {
                             EntityLivingBase slyfox = (EntityLivingBase) mount;
@@ -476,7 +479,7 @@ public class EntityClayMan
                                 continue;
                             }
 
-                            this.targetFollow_ = slyfox;
+                            this.p_targetFollow = slyfox;
                             break;
                         }
                     }
@@ -490,7 +493,7 @@ public class EntityClayMan
 
                     MutableFloat atkRng = new MutableFloat(this.riddenByEntity != null ? 0.6F : 0.7F);
 
-                    for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+                    for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
                         upg.getUpgrade().getAttackRange(this, upg, this.entityToAttack, atkRng);
                     }
 
@@ -502,13 +505,13 @@ public class EntityClayMan
                             if( target instanceof EntityClayMan ) {
                                 EntityClayMan soldierTarget = (EntityClayMan) target;
                                 soldierTarget.knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
-                                for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+                                for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
                                     upg.getUpgrade().onSoldierAttack(this, upg, soldierTarget, damage);
                                 }
                             }
 
                             if( target.attackEntityFrom(DamageSource.causeMobDamage(this), damage.getValue()) && target instanceof EntityClayMan ) {
-                                for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+                                for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
                                     upg.getUpgrade().onSoldierDamage(this, upg, (EntityClayMan) target);
                                 }
                             }
@@ -528,10 +531,10 @@ public class EntityClayMan
         int z = -1;
         float maxPathWeight = -99999.0F;
 
-        for( int l = 0; l < 10; ++l ) {
-            int currX = MathHelper.floor_double(this.posX + (double) this.rand.nextInt(13) - 6.0D);
-            int currY = MathHelper.floor_double(this.posY + (double) this.rand.nextInt(7) - 3.0D);
-            int currZ = MathHelper.floor_double(this.posZ + (double) this.rand.nextInt(13) - 6.0D);
+        for( int i = 0; i < 10; ++i ) {
+            int currX = MathHelper.floor_double(this.posX + this.rand.nextInt(13) - 6.0D);
+            int currY = MathHelper.floor_double(this.posY + this.rand.nextInt(7) - 3.0D);
+            int currZ = MathHelper.floor_double(this.posZ + this.rand.nextInt(13) - 6.0D);
             float pathWeight = this.getBlockPathWeight(currX, currY, currZ);
 
             if( pathWeight > maxPathWeight ) {
@@ -571,7 +574,7 @@ public class EntityClayMan
     public double getLookRangeRad() {
         MutableDouble radiusMT = new MutableDouble(8.0D);
 
-        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+        for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
             upg.getUpgrade().getLookRange(this, upg, radiusMT);
         }
 
@@ -582,7 +585,7 @@ public class EntityClayMan
 
     @SuppressWarnings("unchecked")
     public Collection<EntityClayMan> getSoldiersInRange() {
-        return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(EntityClayMan.class)),
+        return Collections2.transform(Collections2.filter(this.p_entitiesInRange, Predicates.instanceOf(EntityClayMan.class)),
                                       new Function<Object, EntityClayMan>()
                                       {
                                           @Override
@@ -595,7 +598,7 @@ public class EntityClayMan
 
     @SuppressWarnings("unchecked")
     public Collection<EntityItem> getItemsInRange() {
-        return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(EntityItem.class)),
+        return Collections2.transform(Collections2.filter(this.p_entitiesInRange, Predicates.instanceOf(EntityItem.class)),
                                       new Function<Object, EntityItem>()
                                       {
                                           @Override
@@ -608,7 +611,7 @@ public class EntityClayMan
 
     @SuppressWarnings("unchecked")
     public Collection<IMount> getMountsInRange() {
-        return Collections2.transform(Collections2.filter(this.entitiesInRange, Predicates.instanceOf(IMount.class)),
+        return Collections2.transform(Collections2.filter(this.p_entitiesInRange, Predicates.instanceOf(IMount.class)),
                                       new Function<Object, IMount>()
                                       {
                                           @Override
@@ -639,124 +642,114 @@ public class EntityClayMan
     public void updateUpgradeEffectRenders() {
         if( this.worldObj.isRemote ) {
             for( byte renderId : SoldierUpgrades.getRegisteredRenderIds() ) {
-                long renderFlag = 1 << (renderId % 64);
+                long renderFlag = 1L << (renderId % 64);
                 int renderStorageDw = (renderId / 64);
-                long dwValue = this.upgradeRenderFlags_[renderStorageDw];
+                long dwValue = this.p_upgradeRenderFlags[renderStorageDw];
 
                 ASoldierUpgrade upgrade = SoldierUpgrades.getUpgrade(renderId);
 
                 if( (dwValue & renderFlag) == renderFlag ) {
-                    if( !this.upgrades_.containsKey(upgrade) ) {
-                        this.upgrades_.put(upgrade, new SoldierUpgradeInst(upgrade));
+                    if( !this.p_upgrades.containsKey(upgrade) ) {
+                        this.p_upgrades.put(upgrade, new SoldierUpgradeInst(upgrade));
                     }
                 } else {
-                    this.upgrades_.remove(upgrade);
+                    this.p_upgrades.remove(upgrade);
                 }
             }
 
             for( byte renderId : SoldierEffects.getRegisteredRenderIds() ) {
-                long renderFlag = 1 << (renderId % 64);
+                long renderFlag = 1L << (renderId % 64);
                 int renderStorageDw = (renderId / 64);
-                long dwValue = this.effectRenderFlags_[renderStorageDw];
+                long dwValue = this.p_effectRenderFlags[renderStorageDw];
 
                 ASoldierEffect effect = SoldierEffects.getEffect(renderId);
 
                 if( (dwValue & renderFlag) == renderFlag ) {
-                    if( !this.effects_.containsKey(effect) ) {
+                    if( !this.p_effects.containsKey(effect) ) {
                         SoldierEffectInst effectInst = new SoldierEffectInst(effect);
-                        this.effects_.put(effect, effectInst);
+                        this.p_effects.put(effect, effectInst);
                         effect.onConstruct(this, effectInst);
                     }
                 } else {
-                    this.effects_.remove(effect);
+                    this.p_effects.remove(effect);
                 }
             }
         } else {
-            this.upgradeRenderFlags_[0] = 0;
-            this.upgradeRenderFlags_[1] = 0;
-            this.effectRenderFlags_[0] = 0;
-            this.effectRenderFlags_[1] = 0;
+            this.p_upgradeRenderFlags[0] = 0;
+            this.p_upgradeRenderFlags[1] = 0;
+            this.p_effectRenderFlags[0] = 0;
+            this.p_effectRenderFlags[1] = 0;
 
-            for( SoldierUpgradeInst upgInst : this.upgrades_.values() ) {
+            for( SoldierUpgradeInst upgInst : this.p_upgrades.values() ) {
                 byte renderId = SoldierUpgrades.getRenderId(upgInst.getUpgrade());
                 if( renderId >= 0 ) {
-                    long renderFlag = 1 << (renderId % 64);
+                    long renderFlag = 1L << (renderId % 64);
                     int renderStorageDw = renderId / 64;
-                    long prevDwValue = upgradeRenderFlags_[renderStorageDw];
+                    long prevDwValue = p_upgradeRenderFlags[renderStorageDw];
 
-                    upgradeRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
+                    p_upgradeRenderFlags[renderStorageDw] = prevDwValue | renderFlag;
                 }
             }
 
             List<Pair<Byte, NBTTagCompound>> effectNbtToClt = new ArrayList<>();
-            for( SoldierEffectInst effInst : this.effects_.values() ) {
+            for( SoldierEffectInst effInst : this.p_effects.values() ) {
                 byte renderId = SoldierEffects.getRenderId(effInst.getEffect());
                 if( renderId >= 0 ) {
-                    long renderFlag = 1 << (renderId % 64);
+                    long renderFlag = 1L << (renderId % 64);
                     int renderStorageDw = renderId / 64;
-                    long prevDwValue = this.effectRenderFlags_[renderStorageDw];
+                    long prevDwValue = this.p_effectRenderFlags[renderStorageDw];
 
-                    this.effectRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
-                    if( effInst.getEffect().sendNbtToClient(this, effInst) ) {
+                    this.p_effectRenderFlags[renderStorageDw] = prevDwValue | renderFlag;
+                    if( effInst.getEffect().shouldNbtSyncToClient(this, effInst) ) {
                         effectNbtToClt.add(Pair.with(renderId, effInst.getNbtTag()));
                     }
                 }
             }
 
             List<Pair<Byte, NBTTagCompound>> upgradeNbtToClt = new ArrayList<>();
-            for( SoldierUpgradeInst upgInst : this.upgrades_.values() ) {
+            for( SoldierUpgradeInst upgInst : this.p_upgrades.values() ) {
                 byte renderId = SoldierUpgrades.getRenderId(upgInst.getUpgrade());
                 if( renderId >= 0 ) {
-                    long renderFlag = 1 << (renderId % 64);
+                    long renderFlag = 1L << (renderId % 64);
                     int renderStorageDw = renderId / 64;
-                    long prevDwValue = this.upgradeRenderFlags_[renderStorageDw];
+                    long prevDwValue = this.p_upgradeRenderFlags[renderStorageDw];
 
-                    this.upgradeRenderFlags_[renderStorageDw] = prevDwValue | renderFlag;
-                    if( upgInst.getUpgrade().sendNbtToClient(this, upgInst) ) {
+                    this.p_upgradeRenderFlags[renderStorageDw] = prevDwValue | renderFlag;
+                    if( upgInst.getUpgrade().shouldNbtSyncToClient(this, upgInst) ) {
                         upgradeNbtToClt.add(Pair.with(renderId, upgInst.getNbtTag()));
                     }
                 }
             }
 
-            PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64D,
-                                            Triplet.with(this.getEntityId(), this.upgradeRenderFlags_, this.effectRenderFlags_)
+            PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
+                                            Triplet.with(this.getEntityId(), this.p_upgradeRenderFlags, this.p_effectRenderFlags)
             );
 
             for( Pair<Byte, NBTTagCompound> effNbt : effectNbtToClt ) {
-                PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_EFFECT_NBT, this.dimension, this.posX, this.posY, this.posZ, 64D,
+                PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_EFFECT_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
                                                 Triplet.with(this.getEntityId(), effNbt.getValue0(), effNbt.getValue1())
                 );
             }
 
             for( Pair<Byte, NBTTagCompound> upgNbt : upgradeNbtToClt ) {
-                PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_UPGRADE_NBT, this.dimension, this.posX, this.posY, this.posZ, 64D,
+                PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_UPGRADE_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
                                                 Triplet.with(this.getEntityId(), upgNbt.getValue0(), upgNbt.getValue1())
                 );
             }
         }
     }
 
-    public MethodState onBeingTargeted(EntityClayMan attacker) {
-        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-            MethodState result = upg.getUpgrade().onBeingTargeted(this, upg, attacker);
-            if( result == MethodState.DENY || result == MethodState.ALLOW ) {
-                return result;
-            }
-        }
-        return MethodState.SKIP;
-    }
-
     public void onProjectileHit(ISoldierProjectile<? extends EntityThrowable> projectile, MovingObjectPosition movObjPos) {
-        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
+        for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
             upg.getUpgrade().onProjectileHit(this, upg, movObjPos, projectile);
         }
     }
 
-    public boolean targetSoldier(EntityClayMan target) {
-        return this.targetSoldier(target, true);
+    public boolean canTargetSoldier(EntityClayMan target) {
+        return this.canTargetSoldier(target, true);
     }
 
-    public boolean targetSoldier(EntityClayMan target, boolean withUpgradeCheck) {
+    public boolean canTargetSoldier(EntityClayMan target, boolean withUpgradeCheck) {
         if( this.entityToAttack == null || this.entityToAttack.isDead ) {
             if( withUpgradeCheck ) {
                 if( !this.checkIfValidTarget(target) ) {
@@ -771,11 +764,11 @@ public class EntityClayMan
     }
 
     public boolean hasUpgrade(ASoldierUpgrade upgrade) {
-        return this.upgrades_.containsKey(upgrade);
+        return this.p_upgrades.containsKey(upgrade);
     }
 
     public boolean hasUpgrade(Class upgradeClass) {
-        for( ASoldierUpgrade upgrade : this.upgrades_.keySet() ) {
+        for( ASoldierUpgrade upgrade : this.p_upgrades.keySet() ) {
             if( upgradeClass.isInstance(upgrade) ) {
                 return true;
             }
@@ -784,12 +777,12 @@ public class EntityClayMan
     }
 
     public ASoldierUpgrade[] getAvailableUpgrades() {
-        return this.upgrades_.keySet().toArray(new ASoldierUpgrade[this.upgrades_.size()]);
+        return this.p_upgrades.keySet().toArray(new ASoldierUpgrade[this.p_upgrades.size()]);
     }
 
     public SoldierUpgradeInst getUpgrade(ASoldierUpgrade upgrade) {
         if( this.hasUpgrade(upgrade) ) {
-            return this.upgrades_.get(upgrade);
+            return this.p_upgrades.get(upgrade);
         } else {
             return null;
         }
@@ -797,16 +790,16 @@ public class EntityClayMan
 
     public void removeEffect(ASoldierEffect effect) {
         if( this.hasEffect(effect) ) {
-            this.effects_.remove(effect);
+            this.p_effects.remove(effect);
         }
     }
 
     public Entity getTargetFollowing() {
-        return this.targetFollow_;
+        return this.p_targetFollow;
     }
 
     public void setTargetFollowing(Entity entity) {
-        this.targetFollow_ = entity;
+        this.p_targetFollow = entity;
     }
 
     public SoldierUpgradeInst addUpgrade(ASoldierUpgrade upgrade) {
@@ -823,11 +816,11 @@ public class EntityClayMan
                 upgrade.onPickup(this, upgradeInst, stack);
             }
 
-            for( SoldierUpgradeInst inst : this.upgrades_.values() ) {
+            for( SoldierUpgradeInst inst : this.p_upgrades.values() ) {
                 inst.getUpgrade().onUpgradeAdded(this, inst, upgradeInst);
             }
 
-            this.upgrades_.put(upgrade, upgradeInst);
+            this.p_upgrades.put(upgrade, upgradeInst);
 
             return upgradeInst;
         } else {
@@ -853,7 +846,7 @@ public class EntityClayMan
         if( !this.hasEffect(effect) ) {
             SoldierEffectInst effectInst = new SoldierEffectInst(effect);
             effect.onConstruct(this, effectInst);
-            this.effects_.put(effect, effectInst);
+            this.p_effects.put(effect, effectInst);
             return effectInst;
         } else {
             return null;
@@ -862,21 +855,21 @@ public class EntityClayMan
 
     public SoldierEffectInst getEffect(ASoldierEffect effect) {
         if( this.hasEffect(effect) ) {
-            return this.effects_.get(effect);
+            return this.p_effects.get(effect);
         } else {
             return null;
         }
     }
 
     public void applyRenderFlags(long... flags) {
-        this.upgradeRenderFlags_[0] = flags[0];
-        this.upgradeRenderFlags_[1] = flags[1];
-        this.effectRenderFlags_[0] = flags[2];
-        this.effectRenderFlags_[1] = flags[3];
+        this.p_upgradeRenderFlags[0] = flags[0];
+        this.p_upgradeRenderFlags[1] = flags[1];
+        this.p_effectRenderFlags[0] = flags[2];
+        this.p_effectRenderFlags[1] = flags[3];
     }
 
     public boolean hasEffect(ASoldierEffect effect) {
-        return this.effects_.containsKey(effect);
+        return this.p_effects.containsKey(effect);
     }
 
     public void throwSomethingAtEnemy(EntityLivingBase entity, Class<? extends ISoldierProjectile<? extends EntityThrowable>> projClass, boolean homing) {
@@ -891,7 +884,7 @@ public class EntityClayMan
             double d2 = (entity.posY + entity.getEyeHeight()) - 0.10000000298023224D - throwable.posY;
             float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
             this.worldObj.spawnEntityInWorld(throwable);
-            throwable.setThrowableHeading(d, d2 + f1, d1, 0.6F, 12F);
+            throwable.setThrowableHeading(d, d2 + f1, d1, 0.6F, 12.0F);
             this.attackTime = 30;
             this.hasAttacked = true;
         } catch( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
@@ -906,29 +899,29 @@ public class EntityClayMan
      * @return true, if the soldier is a valid target
      */
     private boolean checkIfValidTarget(EntityClayMan target) {
-        for( SoldierEffectInst eff : this.effects_.values() ) {
-            MethodState result = eff.getEffect().onTargeting(this, eff, target);
-            if( result == MethodState.DENY ) {
+        for( SoldierEffectInst eff : this.p_effects.values() ) {
+            EnumMethodState result = eff.getEffect().onTargeting(this, eff, target);
+            if( result == EnumMethodState.DENY ) {
                 return false;
-            } else if( result == MethodState.ALLOW ) {
+            } else if( result == EnumMethodState.ALLOW ) {
                 return true;
             }
         }
 
-        for( SoldierUpgradeInst upg : this.upgrades_.values() ) {
-            MethodState result = upg.getUpgrade().onTargeting(this, upg, target);
-            if( result == MethodState.DENY ) {
+        for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
+            EnumMethodState result = upg.getUpgrade().onTargeting(this, upg, target);
+            if( result == EnumMethodState.DENY ) {
                 return false;
-            } else if( result == MethodState.ALLOW ) {
+            } else if( result == EnumMethodState.ALLOW ) {
                 return true;
             }
         }
 
-        for( SoldierUpgradeInst upg : target.upgrades_.values() ) {
-            MethodState result = upg.getUpgrade().onBeingTargeted(target, upg, this);
-            if( result == MethodState.DENY ) {
+        for( SoldierUpgradeInst upg : target.p_upgrades.values() ) {
+            EnumMethodState result = upg.getUpgrade().onBeingTargeted(target, upg, this);
+            if( result == EnumMethodState.DENY ) {
                 return false;
-            } else if( result == MethodState.ALLOW ) {
+            } else if( result == EnumMethodState.ALLOW ) {
                 return true;
             }
         }

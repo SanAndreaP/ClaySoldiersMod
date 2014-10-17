@@ -34,7 +34,7 @@ public class UpgradeIronBlock
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         damage.setValue(Math.max(0.0F, damage.getValue() - 1.0F));
         if( SAPUtils.RNG.nextBoolean() ) {
-            if( source == UpgradeBlazePowder.blazePwdSrc ) {
+            if( source == UpgradeBlazePowder.BLAZEPOWDER_DAMAGE_SRC ) {
                 return true;
             }
 
@@ -58,7 +58,7 @@ public class UpgradeIronBlock
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 

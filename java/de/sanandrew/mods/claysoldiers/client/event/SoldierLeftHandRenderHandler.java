@@ -7,7 +7,10 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
+import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.EnumRenderStage;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
@@ -18,49 +21,50 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class SoldierLeftHandRenderHandler
 {
-    private final ItemStack itemShearBlade_ = new ItemStack(RegistryItems.shearBlade);
-    private final ItemStack blockGravel_ = new ItemStack(Blocks.gravel);
-    private final ItemStack blockSnow_ = new ItemStack(Blocks.snow);
-    private final ItemStack blockObsidian_ = new ItemStack(Blocks.obsidian); //TODO: substitude until proper texture arrives
-    private final ItemStack blockEmerald_ = new ItemStack(Blocks.emerald_block);
+    private final ItemStack p_itemShearBlade = new ItemStack(RegistryItems.shearBlade);
+    private final ItemStack p_blockGravel = new ItemStack(Blocks.gravel);
+    private final ItemStack p_blockSnow = new ItemStack(Blocks.snow);
+    private final ItemStack p_blockObsidian = new ItemStack(Blocks.obsidian); //TODO: substitude until proper texture arrives
+    private final ItemStack p_blockEmerald = new ItemStack(Blocks.emerald_block);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
-        if( event.stage == SoldierRenderEvent.RenderStage.EQUIPPED ) {
+        if( event.stage == EnumRenderStage.EQUIPPED ) {
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT)) ) {
-                this.renderLeftHandItem(event.clayMan, event.clayManRender, this.itemShearBlade_);
+                renderLeftHandItem(event.clayMan, event.clayManRender, this.p_itemShearBlade);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GRAVEL)) ) {
-                this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockGravel_);
+                renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockGravel);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SNOW)) ) {
-                this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockSnow_);
+                renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockSnow);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FIRECHARGE)) ) {
-                this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockObsidian_);
+                renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockObsidian);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_EMERALD)) ) {
-                this.renderThrowableBlock(event.clayMan, event.clayManRender, this.blockEmerald_);
+                renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockEmerald);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL)) ) {
-                this.renderShield(event.clayMan, event.clayManRender);
+                renderShield(event.clayMan, event.clayManRender);
             }
         }
     }
 
-    private void renderLeftHandItem(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
+    private static void renderLeftHandItem(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
-        GL11.glTranslatef(-0.1F, 0.6F, 0F);
+        GL11.glTranslatef(-0.1F, 0.6F, 0.0F);
 
         float itemScale = 0.6F;
         GL11.glScalef(itemScale, itemScale, itemScale);
-        GL11.glRotatef(140F, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(140.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
 
         renderer.getItemRenderer().renderItem(clayMan, stack, 0);
         GL11.glPopMatrix();
     }
 
-    private void renderThrowableBlock(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
+    private static void renderThrowableBlock(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);
         GL11.glTranslatef(0.05F, 0.55F, 0.0F);
@@ -69,8 +73,8 @@ public class SoldierLeftHandRenderHandler
         GL11.glPopMatrix();
     }
 
-    private void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
-        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.shieldStudIcon : Textures.shieldIcon;
+    private static void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
+        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.s_shieldStudIcon : Textures.s_shieldIcon;
 
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);

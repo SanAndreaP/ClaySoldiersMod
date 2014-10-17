@@ -21,7 +21,7 @@ public class CommonProxy
         ClaySoldiersMod.channel.register(new ServerPacketHandler());
     }
 
-    public void spawnParticles(byte particleId, Tuple data) {
+    public void spawnParticles(byte particleId, Tuple particleData) {
     }
 
     public void applySoldierRenderFlags(int entityId, long upgFlags1, long upgFlags2, long effFlags1, long effFlags2) {
@@ -37,12 +37,12 @@ public class CommonProxy
     }
 
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return null;
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return null;
     }
 }

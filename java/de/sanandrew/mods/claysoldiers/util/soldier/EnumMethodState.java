@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier;
 
-public enum MethodState
+public enum EnumMethodState
 {
     ALLOW, DENY, SKIP
 }

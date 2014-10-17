@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
@@ -46,8 +46,8 @@ public abstract class ASoldierUpgrade
      * <code>DENY, forces the calling soldier to ignore the other soldier<br>
      * <code>SKIP, if the calling soldier should skip this upgrade for checking
      */
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        return MethodState.SKIP;
+    public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+        return EnumMethodState.SKIP;
     }
 
     /**
@@ -57,11 +57,11 @@ public abstract class ASoldierUpgrade
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      * @param attacker    the solder targeting the calling soldier
      * @return An AttackStage Enum value. See
-     * {@link de.sanandrew.mods.claysoldiers.util.soldier.MethodState AttackStage}
+     * {@link de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState AttackStage}
      * for more information.
      */
-    public MethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
-        return MethodState.SKIP;
+    public EnumMethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
+        return EnumMethodState.SKIP;
     }
 
     /**
@@ -100,6 +100,7 @@ public abstract class ASoldierUpgrade
      * @param damage the damage value (can be changed)
      * @return true, if the soldier shouldn't receive any damage (and thus not playing the hurt animation)
      */
+    @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         return false;
     }
@@ -111,6 +112,7 @@ public abstract class ASoldierUpgrade
      * @param upgradeInst the instance of this upgrade (like an ItemStack for an Item)
      * @return true, if the upgrade should be removed from the soldiers upgrade list
      */
+    @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         return false;
     }
@@ -146,7 +148,7 @@ public abstract class ASoldierUpgrade
     public void getLookRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableDouble radius) {
     }
 
-    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+    public boolean shouldNbtSyncToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         return false;
     }
 

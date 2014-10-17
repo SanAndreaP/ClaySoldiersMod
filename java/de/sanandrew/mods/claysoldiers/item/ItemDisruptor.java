@@ -21,13 +21,12 @@ import java.util.List;
 public class ItemDisruptor
         extends Item
 {
-    public int cooldown = 10;
-    private boolean isHard_ = false;
+    private boolean p_isHard = false;
 
     public ItemDisruptor(boolean hardened) {
         super();
         this.maxStackSize = 1;
-        this.isHard_ = hardened;
+        this.p_isHard = hardened;
         this.setMaxDamage((hardened ? 50 : 10) - 1);
     }
 
@@ -76,6 +75,6 @@ public class ItemDisruptor
 
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + (this.isHard_ ? ":disruptor_cooked" : ":disruptor"));
+        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + (this.p_isHard ? ":disruptor_cooked" : ":disruptor"));
     }
 }

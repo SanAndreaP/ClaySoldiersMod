@@ -30,24 +30,24 @@ public final class ClaymanTeam
     private static final List<String> TEAM_NAMES_FOR_DOLLS_ = new ArrayList<>();
 
     private static boolean isInitialized = false;
-    private String name_;
-    private ResourceLocation[] texturesDefault_;
-    private ResourceLocation[] texturesRare_;
-    private ResourceLocation[] texturesUnique_;
-    private String icon_;
-    private int iconColor_;
-    private int teamColor_;
-    private ItemStack teamItem_;
-    private IIcon iconInstance_;
+    private String p_name;
+    private ResourceLocation[] p_texturesDefault;
+    private ResourceLocation[] p_texturesRare;
+    private ResourceLocation[] p_texturesUnique;
+    private String p_icon;
+    private int p_iconColor;
+    private int p_teamColor;
+    private ItemStack p_teamItem;
+    private IIcon p_iconInstance;
 
     /**
      * DO NOT USE THIS! THIS IS ONlY FOR THE DUMMY "NULL-Team"!
      */
     private ClaymanTeam() {
-        this.name_ = "nullTeam";
-        this.teamColor_ = 0xFFFFFF;
-        this.iconColor_ = 0xFFFFFF;
-        this.teamItem_ = new ItemStack(Blocks.command_block);
+        this.p_name = "nullTeam";
+        this.p_teamColor = 0xFFFFFF;
+        this.p_iconColor = 0xFFFFFF;
+        this.p_teamItem = new ItemStack(Blocks.command_block);
     }
 
     private ClaymanTeam(String teamName, int teamColor, ItemStack teamItem, String iconTexture, String[] defTextures, String[] rareTextures, String[] uniqueTextures)
@@ -68,41 +68,41 @@ public final class ClaymanTeam
             throw new ClaymanTeamRegistrationException("teamItem cannot be null!");
         }
 
-        this.name_ = teamName;
-        this.icon_ = iconTexture;
-        this.teamColor_ = teamColor;
-        this.iconColor_ = 0xFFFFFF;
-        this.teamItem_ = teamItem;
+        this.p_name = teamName;
+        this.p_icon = iconTexture;
+        this.p_teamColor = teamColor;
+        this.p_iconColor = 0xFFFFFF;
+        this.p_teamItem = teamItem;
 
         if( defTextures != null ) {
             if( defTextures.length == 0 ) {
                 throw new ClaymanTeamRegistrationException("defTextures cannot be empty!");
             }
 
-            this.texturesDefault_ = new ResourceLocation[defTextures.length];
+            this.p_texturesDefault = new ResourceLocation[defTextures.length];
             for( int i = 0; i < defTextures.length; i++ ) {
-                this.texturesDefault_[i] = new ResourceLocation(defTextures[i]);
+                this.p_texturesDefault[i] = new ResourceLocation(defTextures[i]);
             }
         } else {
             throw new ClaymanTeamRegistrationException("defTextures cannot be null!");
         }
 
         if( rareTextures != null && rareTextures.length > 0 ) {
-            this.texturesRare_ = new ResourceLocation[rareTextures.length];
+            this.p_texturesRare = new ResourceLocation[rareTextures.length];
             for( int i = 0; i < rareTextures.length; i++ ) {
-                this.texturesRare_[i] = new ResourceLocation(rareTextures[i]);
+                this.p_texturesRare[i] = new ResourceLocation(rareTextures[i]);
             }
         } else {
-            this.texturesRare_ = new ResourceLocation[0];
+            this.p_texturesRare = new ResourceLocation[0];
         }
 
         if( uniqueTextures != null && uniqueTextures.length > 0 ) {
-            this.texturesUnique_ = new ResourceLocation[uniqueTextures.length];
+            this.p_texturesUnique = new ResourceLocation[uniqueTextures.length];
             for( int i = 0; i < uniqueTextures.length; i++ ) {
-                this.texturesUnique_[i] = new ResourceLocation(uniqueTextures[i]);
+                this.p_texturesUnique[i] = new ResourceLocation(uniqueTextures[i]);
             }
         } else {
-            this.texturesUnique_ = new ResourceLocation[0];
+            this.p_texturesUnique = new ResourceLocation[0];
         }
     }
 
@@ -115,7 +115,7 @@ public final class ClaymanTeam
             isInitialized = true;
         }
 
-        TEAMS_.put(NULL_TEAM.name_, NULL_TEAM);
+        TEAMS_.put(NULL_TEAM.p_name, NULL_TEAM);
 
         registerTeam("clay", 0x999999, new ItemStack(Items.dye, 1, 7),
                      new String[] { ClaySoldiersMod.MOD_ID + ":textures/entity/soldiers/lightgray.png" },
@@ -294,60 +294,60 @@ public final class ClaymanTeam
     public static void registerIcons(IIconRegister iconRegister) {
         Map<String, IIcon> registeredIcons = Maps.newHashMap();
         for( ClaymanTeam team : TEAMS_.values() ) {
-            if( TEAM_NAMES_FOR_DOLLS_.contains(team.name_) ) {
-                if( registeredIcons.containsKey(team.icon_) ) {
-                    team.iconInstance_ = registeredIcons.get(team.icon_);
+            if( TEAM_NAMES_FOR_DOLLS_.contains(team.p_name) ) {
+                if( registeredIcons.containsKey(team.p_icon) ) {
+                    team.p_iconInstance = registeredIcons.get(team.p_icon);
                 } else {
-                    team.iconInstance_ = iconRegister.registerIcon(team.icon_);
-                    registeredIcons.put(team.icon_, team.iconInstance_);
+                    team.p_iconInstance = iconRegister.registerIcon(team.p_icon);
+                    registeredIcons.put(team.p_icon, team.p_iconInstance);
                 }
             }
         }
     }
 
     public ClaymanTeam useTeamColorAsItemColor() {
-        this.iconColor_ = this.teamColor_;
+        this.p_iconColor = this.p_teamColor;
 
         return this;
     }
 
     public String getTeamName() {
-        return this.name_;
+        return this.p_name;
     }
 
     public ResourceLocation[] getDefaultTextures() {
-        return this.texturesDefault_;
+        return this.p_texturesDefault;
     }
 
     public ResourceLocation[] getRareTextures() {
-        return this.texturesRare_;
+        return this.p_texturesRare;
     }
 
     public ResourceLocation[] getUniqueTextures() {
-        return this.texturesUnique_;
+        return this.p_texturesUnique;
     }
 
     public String getIconTexture() {
-        return this.icon_;
+        return this.p_icon;
     }
 
     public int getTeamColor() {
-        return this.teamColor_;
+        return this.p_teamColor;
     }
 
     public int getIconColor() {
-        return this.iconColor_;
+        return this.p_iconColor;
     }
 
     public ItemStack getTeamItem() {
-        return this.teamItem_.copy();
+        return this.p_teamItem.copy();
     }
 
     public IIcon getIconInstance() {
-        return this.iconInstance_;
+        return this.p_iconInstance;
     }
 
-    private class ClaymanTeamRegistrationException
+    private static class ClaymanTeamRegistrationException
             extends Exception
     {
         public ClaymanTeamRegistrationException(String message) {

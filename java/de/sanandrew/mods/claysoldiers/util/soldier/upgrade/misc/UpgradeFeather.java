@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
@@ -17,12 +17,12 @@ public class UpgradeFeather
         extends AUpgradeMisc
 {
     @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+    public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
         if( clayMan.ridingEntity != null || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
-            return MethodState.SKIP;
+            return EnumMethodState.SKIP;
         }
 
-        return !clayMan.onGround && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ? MethodState.DENY : MethodState.SKIP;
+        return !clayMan.onGround && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ? EnumMethodState.DENY : EnumMethodState.SKIP;
     }
 
     @Override
@@ -38,8 +38,8 @@ public class UpgradeFeather
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 

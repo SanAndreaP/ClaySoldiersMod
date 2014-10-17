@@ -24,7 +24,7 @@ public class UpgradeHelperShearBlade
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         ASoldierUpgrade upgrade = null;
         ItemStack savedItem = null;
 
@@ -53,8 +53,8 @@ public class UpgradeHelperShearBlade
                 stack.stackSize--;
             }
 
-            SoldierUpgradeInst upgradeInst = clayMan.addUpgrade(upgrade);
-            this.consumeItem(savedItem, upgradeInst);
+            SoldierUpgradeInst newUpgrade = clayMan.addUpgrade(upgrade);
+            this.consumeItem(savedItem, newUpgrade);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         }
     }

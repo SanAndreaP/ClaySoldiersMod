@@ -7,6 +7,9 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.EnumRenderStage;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
@@ -16,60 +19,61 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-public class RenderSoldierRightHandEvent
+@SideOnly(Side.CLIENT)
+public class SoldierRightHandRenderHandler
 {
-    private final ItemStack upgStick_ = new ItemStack(Items.stick);
-    private final ItemStack upgStickArrow_ = new ItemStack(Items.arrow);
-    private final ItemStack upgBlazeRod_ = new ItemStack(Items.blaze_rod);
-    private final ItemStack upgWoodButton_ = new ItemStack(Blocks.planks);
-    private final ItemStack upgStoneButton_ = new ItemStack(Blocks.stone);
-    private final ItemStack upgShearBlade_ = new ItemStack(RegistryItems.shearBlade);
-    private final ItemStack upgGoldMelon_ = new ItemStack(Items.speckled_melon);
-    private final ItemStack upgBone_ = new ItemStack(Items.bone);
+    private final ItemStack p_upgStick = new ItemStack(Items.stick);
+    private final ItemStack p_upgStickArrow = new ItemStack(Items.arrow);
+    private final ItemStack p_upgBlazeRod = new ItemStack(Items.blaze_rod);
+    private final ItemStack p_upgWoodButton = new ItemStack(Blocks.planks);
+    private final ItemStack p_upgStoneButton = new ItemStack(Blocks.stone);
+    private final ItemStack p_upgShearBlade = new ItemStack(RegistryItems.shearBlade);
+    private final ItemStack p_upgGoldMelon = new ItemStack(Items.speckled_melon);
+    private final ItemStack p_upgBone = new ItemStack(Items.bone);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
-        if( event.stage == SoldierRenderEvent.RenderStage.EQUIPPED ) {
+        if( event.stage == EnumRenderStage.EQUIPPED ) {
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK)) ) {
                 if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FLINT)) ) {
-                    this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgStickArrow_);
+                    renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgStickArrow);
                 } else {
-                    this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgStick_);
+                    renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgStick);
                 }
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD)) ) {
-                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgBlazeRod_);
+                renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgBlazeRod);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT)) ) {
-                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgShearBlade_);
+                renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgShearBlade);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLDMELON)) ) {
-                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgGoldMelon_);
+                renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgGoldMelon);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BONE)) ) {
-                this.renderRightHandItem(event.clayMan, event.clayManRender, this.upgBone_);
+                renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgBone);
             }
 
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOODBUTTON)) ) {
-                this.renderKnuckle(event.clayMan, event.clayManRender, this.upgWoodButton_);
+                renderKnuckle(event.clayMan, event.clayManRender, this.p_upgWoodButton);
             } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STONEBUTTON)) ) {
-                this.renderKnuckle(event.clayMan, event.clayManRender, this.upgStoneButton_);
+                renderKnuckle(event.clayMan, event.clayManRender, this.p_upgStoneButton);
             }
         }
     }
 
-    private void renderRightHandItem(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
+    private static void renderRightHandItem(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
-        GL11.glTranslatef(-0.1F, 0.6F, 0F);
+        GL11.glTranslatef(-0.1F, 0.6F, 0.0F);
 
         float itemScale = 0.6F;
         GL11.glScalef(itemScale, itemScale, itemScale);
-        GL11.glRotatef(140F, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(140.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
 
         renderer.getItemRenderer().renderItem(clayMan, stack, 0);
         GL11.glPopMatrix();
     }
 
-    private void renderKnuckle(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
+    private static void renderKnuckle(EntityClayMan clayMan, RenderClayMan renderer, ItemStack stack) {
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedRightArm.postRender(0.0625F);
         GL11.glTranslatef(-0.05F, 0.55F, 0.0F);

@@ -32,7 +32,7 @@ public class EffectThunder
     }
 
     @Override
-    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierEffectInst effectInst) {
+    public boolean shouldNbtSyncToClient(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         if( effectInst.getNbtTag().getBoolean("alreadySent") ) {
             return false;
         } else {

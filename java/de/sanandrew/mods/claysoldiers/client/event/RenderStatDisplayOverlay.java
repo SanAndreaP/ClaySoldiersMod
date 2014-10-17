@@ -8,6 +8,8 @@ package de.sanandrew.mods.claysoldiers.client.event;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
@@ -35,24 +37,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@SideOnly(Side.CLIENT)
 public class RenderStatDisplayOverlay
         extends Gui
 {
-    private FontRenderer titleRenderer = null;
-    private FontRenderer statRenderer = null;
+    private FontRenderer p_titleRenderer = null;
+    private FontRenderer p_statRenderer = null;
 
     @SubscribeEvent
     public void renderText(RenderGameOverlayEvent.Text event) {
         Minecraft mc = Minecraft.getMinecraft();
 
-        if( this.titleRenderer == null ) {
-            this.titleRenderer = mc.fontRenderer;
+        if( this.p_titleRenderer == null ) {
+            this.p_titleRenderer = mc.fontRenderer;
         }
 
-        if( this.statRenderer == null ) {
-            this.statRenderer = new FontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, true);
+        if( this.p_statRenderer == null ) {
+            this.p_statRenderer = new FontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, true);
             if( mc.gameSettings.language != null ) {
-                this.statRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
+                this.p_statRenderer.setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
             }
         }
 
@@ -65,7 +68,7 @@ public class RenderStatDisplayOverlay
 
     private void renderSoldiers(Minecraft mc) {
         @SuppressWarnings("unchecked")
-        List<EntityClayMan> soldiers = mc.theWorld.getEntitiesWithinAABB(EntityClayMan.class, this.getRangeAabbFromPlayer(mc.thePlayer));
+        List<EntityClayMan> soldiers = mc.theWorld.getEntitiesWithinAABB(EntityClayMan.class, getRangeAabbFromPlayer(mc.thePlayer));
         List<Quartet<Integer, String, Integer, ItemStack>> teams = new ArrayList<>(); // team background color, team name, team count
 
         Map<String, Integer> teamCounts = Maps.newHashMap();
@@ -90,12 +93,12 @@ public class RenderStatDisplayOverlay
 
     private void renderMounts(Minecraft mc) {
         @SuppressWarnings("unchecked")
-        List<EntityHorseMount> horses = mc.theWorld.getEntitiesWithinAABB(EntityHorseMount.class, this.getRangeAabbFromPlayer(mc.thePlayer));
+        List<EntityHorseMount> horses = mc.theWorld.getEntitiesWithinAABB(EntityHorseMount.class, getRangeAabbFromPlayer(mc.thePlayer));
         List<Quartet<Integer, String, Integer, ItemStack>> teams = new ArrayList<>();
 
         Map<String, Integer> teamCounts = Maps.newHashMap();
         for( EntityHorseMount dex : horses ) {
-            String team = EnumHorseType.values[dex.getType()].toString();
+            String team = EnumHorseType.VALUES[dex.getType()].toString();
             if( teamCounts.containsKey(team) ) {
                 teamCounts.put(team, teamCounts.get(team) + 1);
             } else {
@@ -114,11 +117,11 @@ public class RenderStatDisplayOverlay
     private void renderStats(Minecraft mc, String title, List<Quartet<Integer, String, Integer, ItemStack>> teams, int xPos, int yPos) {
         this.drawGradientRect(xPos, yPos, xPos + 100, yPos + 13, 0x00000000, 0x80FFFFFF);
 
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2 - 1, yPos + 1, 0x000000);
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2, yPos + 2, 0x000000);
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2 + 1, yPos + 1, 0x000000);
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2, yPos, 0x000000);
-        this.titleRenderer.drawString(title, xPos + 50 - this.titleRenderer.getStringWidth(title) / 2, yPos + 1, 0xFFFFFF);
+        this.p_titleRenderer.drawString(title, xPos + 50 - this.p_titleRenderer.getStringWidth(title) / 2 - 1, yPos + 1, 0x000000);
+        this.p_titleRenderer.drawString(title, xPos + 50 - this.p_titleRenderer.getStringWidth(title) / 2, yPos + 2, 0x000000);
+        this.p_titleRenderer.drawString(title, xPos + 50 - this.p_titleRenderer.getStringWidth(title) / 2 + 1, yPos + 1, 0x000000);
+        this.p_titleRenderer.drawString(title, xPos + 50 - this.p_titleRenderer.getStringWidth(title) / 2, yPos, 0x000000);
+        this.p_titleRenderer.drawString(title, xPos + 50 - this.p_titleRenderer.getStringWidth(title) / 2, yPos + 1, 0xFFFFFF);
 
         this.drawGradientRect(xPos - 1, yPos - 1, xPos, yPos + 13, 0x00000000, 0xC0000000);
         this.drawGradientRect(xPos + 100, yPos - 1, xPos + 101, yPos + 13, 0x00000000, 0xC0000000);
@@ -128,9 +131,7 @@ public class RenderStatDisplayOverlay
             String text = SAPClientUtils.translate(team.getValue1()) + ": " + team.getValue2().toString();
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 24 + pos * 11, 0x80FFFFFF);
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 23 + pos * 11, 0xC0000000 | team.getValue0());
-            this.statRenderer.drawString(text, xPos + 50 - this.statRenderer.getStringWidth(text) / 2, yPos + 14 + pos * 11,
-                                         this.getContrastTextColor(team.getValue0())
-            );
+            this.p_statRenderer.drawString(text, xPos + 50 - this.p_statRenderer.getStringWidth(text) / 2, yPos + 14 + pos * 11, getContrastTextColor(team.getValue0()));
 
             GL11.glPushMatrix();
             GL11.glScalef(0.5F, 0.5F, 0.5F);
@@ -149,13 +150,13 @@ public class RenderStatDisplayOverlay
         this.drawGradientRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 18 + pos * 11, 0x80FFFFFF, 0x00000000);
     }
 
-    private AxisAlignedBB getRangeAabbFromPlayer(EntityPlayer player) {
+    private static AxisAlignedBB getRangeAabbFromPlayer(EntityPlayer player) {
         return AxisAlignedBB.getBoundingBox(player.posX - ModConfig.statItemRange, player.posY - ModConfig.statItemRange, player.posZ - ModConfig.statItemRange,
                                             player.posX + ModConfig.statItemRange, player.posY + ModConfig.statItemRange, player.posZ + ModConfig.statItemRange
         );
     }
 
-    private int getContrastTextColor(int bkgColor) {
+    private static int getContrastTextColor(int bkgColor) {
         RGBAValues splitClr = SAPUtils.getRgbaFromColorInt(bkgColor);
         int yiq = ((splitClr.getRed() * 299) + (splitClr.getGreen() * 587) + (splitClr.getBlue() * 144)) / 1000;
         return (yiq >= 128) ? 0x000000 : 0xFFFFFF;

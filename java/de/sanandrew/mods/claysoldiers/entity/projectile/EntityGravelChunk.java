@@ -33,21 +33,21 @@ public class EntityGravelChunk
         super(world);
 
         this.setSize(0.1F, 0.1F);
-        this.renderDistanceWeight = 5D;
+        this.renderDistanceWeight = 5.0D;
     }
 
     public EntityGravelChunk(World world, EntityLivingBase thrower) {
         super(world, thrower);
 
         this.setSize(0.1F, 0.1F);
-        this.renderDistanceWeight = 5D;
+        this.renderDistanceWeight = 5.0D;
     }
 
     public EntityGravelChunk(World world, double x, double y, double z) {
         super(world, x, y, z);
 
         this.setSize(0.1F, 0.1F);
-        this.renderDistanceWeight = 5D;
+        this.renderDistanceWeight = 5.0D;
     }
 
     @Override
@@ -74,24 +74,26 @@ public class EntityGravelChunk
     @Override
     public void setThrowableHeading(double motX, double motY, double motZ, float motMulti, float rndMulti) {
         super.setThrowableHeading(motX, motY, motZ, motMulti, rndMulti);
-        float f2 = MathHelper.sqrt_double(motX * motX + motY * motY + motZ * motZ);
-        motX /= (double) f2;
-        motY /= (double) f2;
-        motZ /= (double) f2;
+        float motionNorm = MathHelper.sqrt_double(motX * motX + motY * motY + motZ * motZ);
+        motX /= motionNorm;
+        motY /= motionNorm;
+        motZ /= motionNorm;
+
         if( !this.isHoming() ) {
-            motX += this.rand.nextGaussian() * 0.0075D * (double) rndMulti;
-            motY += this.rand.nextGaussian() * 0.0075D * (double) rndMulti;
-            motZ += this.rand.nextGaussian() * 0.0075D * (double) rndMulti;
+            motX += this.rand.nextGaussian() * 0.0075D * rndMulti;
+            motY += this.rand.nextGaussian() * 0.0075D * rndMulti;
+            motZ += this.rand.nextGaussian() * 0.0075D * rndMulti;
         }
-        motX *= (double) motMulti;
-        motY *= (double) motMulti;
-        motZ *= (double) motMulti;
+
+        motX *= motMulti;
+        motY *= motMulti;
+        motZ *= motMulti;
         this.motionX = motX;
         this.motionY = motY;
         this.motionZ = motZ;
         float f3 = MathHelper.sqrt_double(motX * motX + motZ * motZ);
         this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(motX, motZ) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motY, (double) f3) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motY, f3) * 180.0D / Math.PI);
     }
 
     @Override
@@ -106,7 +108,7 @@ public class EntityGravelChunk
             double d1 = this.target.posZ - posZ;
             double d2 = (this.target.posY + this.target.getEyeHeight()) - 0.10000000298023224D - this.posY;
             float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-            this.setThrowableHeading(d, d2 + f1, d1, 0.6F, 12F);
+            this.setThrowableHeading(d, d2 + f1, d1, 0.6F, 12.0F);
         }
 
         super.onUpdate();

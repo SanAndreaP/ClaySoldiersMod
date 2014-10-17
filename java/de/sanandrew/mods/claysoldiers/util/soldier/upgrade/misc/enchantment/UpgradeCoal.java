@@ -42,8 +42,8 @@ public class UpgradeCoal
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.fizz", 1.0F, 1.0F);
     }
 

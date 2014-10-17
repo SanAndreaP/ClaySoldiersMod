@@ -40,9 +40,9 @@ public class UpgradeRedstone
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Items.redstone ) {
-            this.consumeItem(stack, upgInst);
+            this.consumeItem(stack, upgradeInst);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         } else if( stack.getItem() == Item.getItemFromBlock(Blocks.redstone_block) ) {
             clayMan.playSound("dig.stone", 1.0F, 1.0F);

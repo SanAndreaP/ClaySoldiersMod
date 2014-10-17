@@ -6,59 +6,62 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManager;
 
+@SideOnly(Side.CLIENT)
 public class EntityRendererClayCam
         extends EntityRenderer
 {
-    private final Minecraft mc;
+    private final Minecraft p_mc;
 
     public EntityRendererClayCam(Minecraft minecraft, IResourceManager resManager) {
         super(minecraft, resManager);
-        this.mc = minecraft;
+        this.p_mc = minecraft;
     }
 
     @Override
     public void updateCameraAndRender(float partialTick) {
-        if( this.mc.thePlayer == null || this.mc.thePlayer.isPlayerSleeping() || ClientProxy.clayCamEntity == null ){
+        if( this.p_mc.thePlayer == null || this.p_mc.thePlayer.isPlayerSleeping() || ClientProxy.s_clayCamEntity == null ){
             super.updateCameraAndRender(partialTick);
             return;
         }
 
         // save original offset of the player
-        float prevOffset = this.mc.thePlayer.yOffset;
+        float prevOffset = this.p_mc.thePlayer.yOffset;
 
         // set the camera yOffset to match soldier's eye height
-        this.mc.thePlayer.yOffset -= 0.55F;
+        this.p_mc.thePlayer.yOffset -= 0.55F;
 
         // set the player's position clinet-side to the position of the clayman observed
-        this.mc.thePlayer.lastTickPosX = ClientProxy.clayCamEntity.lastTickPosX;
-        this.mc.thePlayer.prevPosX = ClientProxy.clayCamEntity.prevPosX;
-        this.mc.thePlayer.posX = ClientProxy.clayCamEntity.posX;
-        this.mc.thePlayer.lastTickPosY = ClientProxy.clayCamEntity.lastTickPosY;
-        this.mc.thePlayer.prevPosY = ClientProxy.clayCamEntity.prevPosY;
-        this.mc.thePlayer.posY = ClientProxy.clayCamEntity.posY;
-        this.mc.thePlayer.lastTickPosZ = ClientProxy.clayCamEntity.lastTickPosZ;
-        this.mc.thePlayer.prevPosZ = ClientProxy.clayCamEntity.prevPosZ;
-        this.mc.thePlayer.posZ = ClientProxy.clayCamEntity.posZ;
+        this.p_mc.thePlayer.lastTickPosX = ClientProxy.s_clayCamEntity.lastTickPosX;
+        this.p_mc.thePlayer.prevPosX = ClientProxy.s_clayCamEntity.prevPosX;
+        this.p_mc.thePlayer.posX = ClientProxy.s_clayCamEntity.posX;
+        this.p_mc.thePlayer.lastTickPosY = ClientProxy.s_clayCamEntity.lastTickPosY;
+        this.p_mc.thePlayer.prevPosY = ClientProxy.s_clayCamEntity.prevPosY;
+        this.p_mc.thePlayer.posY = ClientProxy.s_clayCamEntity.posY;
+        this.p_mc.thePlayer.lastTickPosZ = ClientProxy.s_clayCamEntity.lastTickPosZ;
+        this.p_mc.thePlayer.prevPosZ = ClientProxy.s_clayCamEntity.prevPosZ;
+        this.p_mc.thePlayer.posZ = ClientProxy.s_clayCamEntity.posZ;
 
         // set the camera rotation values to the ones of the clayman observed
-        this.mc.thePlayer.rotationPitch = ClientProxy.clayCamEntity.rotationPitch;
-        this.mc.thePlayer.rotationYaw = ClientProxy.clayCamEntity.rotationYaw;
+        this.p_mc.thePlayer.rotationPitch = ClientProxy.s_clayCamEntity.rotationPitch;
+        this.p_mc.thePlayer.rotationYaw = ClientProxy.s_clayCamEntity.rotationYaw;
 
         // do parent call here, baby...
         super.updateCameraAndRender(partialTick);
 
         // reset the players yOffset
-        this.mc.thePlayer.yOffset = prevOffset;
+        this.p_mc.thePlayer.yOffset = prevOffset;
     }
 
     @Override
     public void getMouseOver(float partialTick) {
-        if( this.mc.thePlayer == null || this.mc.thePlayer.isPlayerSleeping() ){
+        if( this.p_mc.thePlayer == null || this.p_mc.thePlayer.isPlayerSleeping() ){
             super.getMouseOver(partialTick);
         }
 

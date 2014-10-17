@@ -6,7 +6,10 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.render.entity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
+import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.EnumRenderStage;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
@@ -19,6 +22,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class RenderClayMan
         extends RenderBiped
 {
@@ -33,23 +37,22 @@ public class RenderClayMan
 
     @Override
     public void doRender(EntityLiving entityLiving, double x, double y, double z, float yaw, float partTicks) {
-        if( ClientProxy.clayCamEntity == entityLiving && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 ) {
+        if( ClientProxy.s_clayCamEntity == entityLiving && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 ) {
             return;
         }
+
         this.doRenderClayMan((EntityClayMan) entityLiving, x, y, z, yaw, partTicks);
     }
 
     @Override
     protected ResourceLocation getEntityTexture(EntityLiving entityLiving) {
-        return this.getEntityTexture((EntityClayMan) entityLiving);
+        return ((EntityClayMan) entityLiving).getTexture();
     }
 
     @Override
     protected void renderEquippedItems(EntityLivingBase entityLivingBase, float partTicks) {
         super.renderEquippedItems(entityLivingBase, partTicks);
-        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(((EntityClayMan) entityLivingBase), SoldierRenderEvent.RenderStage.EQUIPPED, this, 0.0D, 0.0D, 0.0D, 0.0F,
-                                                       partTicks)
-        );
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(((EntityClayMan) entityLivingBase), EnumRenderStage.EQUIPPED, this, 0.0D, 0.0D, 0.0D, 0.0F, partTicks));
     }
 
     @Override
@@ -57,8 +60,9 @@ public class RenderClayMan
                                float partTicks) {
         GL11.glPushMatrix();
         super.renderModel(entityLivingBase, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch, partTicks);
-        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent.RenderModelEvent((EntityClayMan) entityLivingBase, this, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch,
-                                                                        partTicks)
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent.RenderModelEvent((EntityClayMan) entityLivingBase, this, limbSwing, limbSwingAmount, rotFloat, rotYaw,
+                                                                               rotPitch, partTicks
+                                       )
         );
         GL11.glPopMatrix();
     }
@@ -76,13 +80,9 @@ public class RenderClayMan
 
     private void doRenderClayMan(EntityClayMan clayMan, double x, double y, double z, float yaw, float partTicks) {
         GL11.glPushMatrix();
-        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, SoldierRenderEvent.RenderStage.PRE, this, x, y, z, yaw, partTicks));
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, EnumRenderStage.PRE, this, x, y, z, yaw, partTicks));
         super.doRender(clayMan, x, y, z, yaw, partTicks);
-        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, SoldierRenderEvent.RenderStage.POST, this, x, y, z, yaw, partTicks));
+        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, EnumRenderStage.POST, this, x, y, z, yaw, partTicks));
         GL11.glPopMatrix();
-    }
-
-    private ResourceLocation getEntityTexture(EntityClayMan clayMan) {
-        return clayMan.getTexture();
     }
 }

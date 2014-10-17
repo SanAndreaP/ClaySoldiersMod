@@ -11,7 +11,7 @@ import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -21,8 +21,8 @@ public class UpgradeNetherwart
         extends AUpgradeBehavior
 {
     @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        return MethodState.ALLOW;
+    public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+        return EnumMethodState.ALLOW;
     }
 
     @Override
@@ -37,8 +37,8 @@ public class UpgradeNetherwart
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

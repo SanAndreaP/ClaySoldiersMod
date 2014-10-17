@@ -30,7 +30,7 @@ public enum EnumBunnyType
     ORANGE(0xD87F33, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/bunny/orange.png")),
     WHITE(0xFFFFFF, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/bunny/white.png"));
 
-    public static final EnumBunnyType[] values = values();
+    public static final EnumBunnyType[] VALUES = values();
 
     public final ResourceLocation texture;
     public final int typeColor;
@@ -45,8 +45,8 @@ public enum EnumBunnyType
             return null;
         }
 
-        if( SAPUtils.isIndexInRange(values, stack.getItemDamage()) ) {
-            return values[stack.getItemDamage()];
+        if( SAPUtils.isIndexInRange(VALUES, stack.getItemDamage()) ) {
+            return VALUES[stack.getItemDamage()];
         }
 
         return null;

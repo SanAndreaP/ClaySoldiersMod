@@ -17,9 +17,9 @@ public class UpgradeGlowstone
         extends AUpgradeMisc
 {
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Items.glowstone_dust ) {
-            this.consumeItem(stack, upgInst);
+            this.consumeItem(stack, upgradeInst);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         } else if( stack.getItem() == Item.getItemFromBlock(Blocks.glowstone) ) {
             clayMan.playSound("dig.glass", 1.0F, 1.0F);

@@ -53,7 +53,7 @@ public class TileEntityClayNexus
     public static final int MOUNT_SLOT = 2;
 
     public boolean isActive = false;
-    private boolean prevRsPowerState = false;
+    private boolean p_prevRsPowerState = false;
 
     public int spawnSoldierInterval = 40;
     public int spawnThrowableInterval = 30;
@@ -63,35 +63,35 @@ public class TileEntityClayNexus
 
     public long ticksActive = 0L;
 
-    public float spinAngle = 0F;
-    public float prevSpinAngle = 0F;
+    public float spinAngle = 0.0F;
+    public float prevSpinAngle = 0.0F;
 
     protected String customName;
 
-    private ItemStack[] upgradeItems_ = new ItemStack[36];
-    private ItemStack soldierSlot_;
-    private ItemStack throwableSlot_;
-    private ItemStack mountSlot_;
-    private int spawningSoldierCounter_ = 0;
-    private int prevSpawningSoldierCounter_ = 0;
-    private float health_ = 20.0F;
-    private float maxHealth_ = 20.0F;
+    private ItemStack[] p_upgradeItems = new ItemStack[36];
+    private ItemStack p_soldierSlot;
+    private ItemStack p_throwableSlot;
+    private ItemStack p_mountSlot;
+    private int p_spawningSoldierCounter = 0;
+    private int p_prevSpawningSoldierCounter = 0;
+    private float p_health = 20.0F;
+    private float p_maxHealth = 20.0F;
 
-    private ClaymanTeam tempClayTeam_ = ClaymanTeam.NULL_TEAM;
-    private Class<? extends ISoldierProjectile<? extends EntityThrowable>> tempThrowableCls_ = null;
-    private AxisAlignedBB searchArea_;
-    private AxisAlignedBB damageArea_;
+    private ClaymanTeam p_tempClayTeam = ClaymanTeam.NULL_TEAM;
+    private Class<? extends ISoldierProjectile<? extends EntityThrowable>> p_tempThrowableCls = null;
+    private AxisAlignedBB p_searchArea;
+    private AxisAlignedBB p_damageArea;
 
     public TileEntityClayNexus() {
     }
 
     @Override
     public void updateEntity() {
-        if( this.searchArea_ == null || this.damageArea_ == null ) {
-            this.searchArea_ = AxisAlignedBB.getBoundingBox(this.xCoord - 63.0D, this.yCoord - 63.0D, this.zCoord - 63.0D,
+        if( this.p_searchArea == null || this.p_damageArea == null ) {
+            this.p_searchArea = AxisAlignedBB.getBoundingBox(this.xCoord - 63.0D, this.yCoord - 63.0D, this.zCoord - 63.0D,
                                                             this.xCoord + 64.0D, this.yCoord + 64.0D, this.zCoord + 64.0D
             );
-            this.damageArea_ = AxisAlignedBB.getBoundingBox(this.xCoord + 0.1D, this.yCoord + 0.1D, this.zCoord + 0.1D,
+            this.p_damageArea = AxisAlignedBB.getBoundingBox(this.xCoord + 0.1D, this.yCoord + 0.1D, this.zCoord + 0.1D,
                                                             this.xCoord + 0.9D, this.yCoord + 0.9D, this.zCoord + 0.9D
             );
         }
@@ -104,21 +104,21 @@ public class TileEntityClayNexus
                 || this.worldObj.getIndirectPowerLevelTo(this.xCoord, this.yCoord, this.zCoord - 1, 1) > 0
                 || this.worldObj.getIndirectPowerLevelTo(this.xCoord + 1, this.yCoord, this.zCoord, 1) > 0;
 
-        if( !this.worldObj.isRemote && !this.prevRsPowerState && isRsPowered ) {
+        if( !this.worldObj.isRemote && !this.p_prevRsPowerState && isRsPowered ) {
             this.isActive = !this.isActive;
             this.markDirty();
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
-        this.prevRsPowerState = isRsPowered;
+        this.p_prevRsPowerState = isRsPowered;
 
         if( this.isActive ) {
-            if( this.health_ <= 0.0F ) {
+            if( this.p_health <= 0.0F ) {
                 this.isActive = false;
             } else {
                 this.ticksActive++;
             }
 
-            if( !this.worldObj.isRemote && this.health_ > 0.0F ) {
+            if( !this.worldObj.isRemote && this.p_health > 0.0F ) {
                 if( this.ticksActive % 20 == 0 ) {
                     int dmgEnemies = this.countDamagingEnemies();
                     if( dmgEnemies > 0 ) {
@@ -128,10 +128,10 @@ public class TileEntityClayNexus
                             healthDamage = 0.125F * dmgEnemies;
                         }
 
-                        this.health_ -= healthDamage;
+                        this.p_health -= healthDamage;
 
-                        if( this.health_ < 0.0F ) {
-                            this.health_ = 0.0F;
+                        if( this.p_health < 0.0F ) {
+                            this.p_health = 0.0F;
                         }
 
                         this.markDirty();
@@ -148,7 +148,7 @@ public class TileEntityClayNexus
                     }
                 }
 
-                if( ticksActive % this.spawnThrowableInterval == 0 && this.throwableSlot_ != null ) {
+                if( ticksActive % this.spawnThrowableInterval == 0 && this.p_throwableSlot != null ) {
                     List<EntityClayMan> clayMen = getEnemies(true);
                     if( clayMen.size() > 0 ) {
                         EntityClayMan target = clayMen.get(SAPUtils.RNG.nextInt(clayMen.size()));
@@ -158,34 +158,34 @@ public class TileEntityClayNexus
 
                         try {
                             ISoldierProjectile<? extends EntityThrowable> projectile =
-                                    this.tempThrowableCls_.getConstructor(World.class, double.class, double.class, double.class)
+                                    this.p_tempThrowableCls.getConstructor(World.class, double.class, double.class, double.class)
                                                           .newInstance(this.worldObj, this.xCoord + 0.5F, this.yCoord + 0.875F, this.zCoord + 0.5F);
-                            projectile.initProjectile(target, true, this.tempClayTeam_.getTeamName());
+                            projectile.initProjectile(target, true, this.p_tempClayTeam.getTeamName());
                             EntityThrowable throwable = projectile.getProjectileEntity();
 
                             double d2 = (target.posY + target.getEyeHeight()) - 0.10000000298023224D - throwable.posY;
                             float f1 = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ) * 0.2F;
                             this.worldObj.spawnEntityInWorld(throwable);
-                            throwable.setThrowableHeading(deltaX, d2 + f1, deltaZ, 0.6F, 12F);
+                            throwable.setThrowableHeading(deltaX, d2 + f1, deltaZ, 0.6F, 12.0F);
                         } catch( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
-                            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", this.tempThrowableCls_.getName());
+                            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", this.p_tempThrowableCls.getName());
                             e.printStackTrace();
                         }
                     }
                 }
 
-                if( this.soldierSlot_ != null ) {
-                    if( this.ticksActive % this.spawnSoldierInterval == 0 && this.spawningSoldierCounter_ <= 0 ) {
-                        this.spawningSoldierCounter_ = Math.min(this.soldierSpawnCount, this.maxSoldierCount - this.countTeammates());
-                        this.prevSpawningSoldierCounter_ = this.spawningSoldierCounter_;
+                if( this.p_soldierSlot != null ) {
+                    if( this.ticksActive % this.spawnSoldierInterval == 0 && this.p_spawningSoldierCounter <= 0 ) {
+                        this.p_spawningSoldierCounter = Math.min(this.soldierSpawnCount, this.maxSoldierCount - this.countTeammates());
+                        this.p_prevSpawningSoldierCounter = this.p_spawningSoldierCounter;
                     }
 
                     if( ticksActive % 5 == 0 ) {
-                        if( this.spawningSoldierCounter_ > 0 ) {
-                            this.spawningSoldierCounter_ = Math.min(this.prevSpawningSoldierCounter_, this.maxSoldierCount - this.countTeammates());
-                            this.prevSpawningSoldierCounter_ = this.spawningSoldierCounter_ - 1;
-                            if( this.spawningSoldierCounter_ > 0 ) {
-                                ItemClayManDoll.spawnClayMan(this.worldObj, this.tempClayTeam_.getTeamName(), this.xCoord + 0.5F, this.yCoord + 0.2D,
+                        if( this.p_spawningSoldierCounter > 0 ) {
+                            this.p_spawningSoldierCounter = Math.min(this.p_prevSpawningSoldierCounter, this.maxSoldierCount - this.countTeammates());
+                            this.p_prevSpawningSoldierCounter = this.p_spawningSoldierCounter - 1;
+                            if( this.p_spawningSoldierCounter > 0 ) {
+                                ItemClayManDoll.spawnClayMan(this.worldObj, this.p_tempClayTeam.getTeamName(), this.xCoord + 0.5F, this.yCoord + 0.2D,
                                                              this.zCoord + 0.5F
                                 ).nexusSpawn = true;
                             }
@@ -197,9 +197,9 @@ public class TileEntityClayNexus
 
         if( this.worldObj.isRemote ) {
             this.prevSpinAngle = this.spinAngle;
-            if( this.isActive && this.health_ > 0.0F ) {
+            if( this.isActive && this.p_health > 0.0F ) {
                 this.spinAngle += 4;
-                ClaymanTeam team = ItemClayManDoll.getTeam(this.soldierSlot_);
+                ClaymanTeam team = ItemClayManDoll.getTeam(this.p_soldierSlot);
                 RGBAValues rgba = SAPUtils.getRgbaFromColorInt(team.getTeamColor());
                 ClaySoldiersMod.proxy.spawnParticles(PacketParticleFX.FX_NEXUS, Sextet.with((double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
                                                                                      rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F
@@ -230,13 +230,13 @@ public class TileEntityClayNexus
     public ItemStack getStackInSlot(int slot) {
         switch( slot ) {
             case SOLDIER_SLOT:
-                return soldierSlot_;
+                return p_soldierSlot;
             case THROWABLE_SLOT:
-                return throwableSlot_;
+                return p_throwableSlot;
             case MOUNT_SLOT:
-                return mountSlot_;
+                return p_mountSlot;
             default:
-                return this.upgradeItems_[slot - 3];
+                return this.p_upgradeItems[slot - 3];
         }
     }
 
@@ -302,9 +302,9 @@ public class TileEntityClayNexus
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this
-                && p_70300_1_.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
+               && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -333,7 +333,7 @@ public class TileEntityClayNexus
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 
-        this.upgradeItems_ = new ItemStack[36];
+        this.p_upgradeItems = new ItemStack[36];
 
         NBTTagList nbttaglist = nbt.getTagList("items", NbtTypes.NBT_COMPOUND);
         for( int i = 0; i < nbttaglist.tagCount(); i++ ) {
@@ -346,8 +346,8 @@ public class TileEntityClayNexus
         }
 
         this.isActive = nbt.getBoolean("active");
-        this.health_ = nbt.getFloat("health");
-        this.maxHealth_ = nbt.getFloat("maxHealth");
+        this.p_health = nbt.getFloat("health");
+        this.p_maxHealth = nbt.getFloat("maxHealth");
         this.spawnSoldierInterval = nbt.getInteger("spawnSldInterval");
         this.spawnThrowableInterval = nbt.getInteger("spawnThrwInterval");
         this.soldierSpawnCount = nbt.getInteger("spawnSldCount");
@@ -377,8 +377,8 @@ public class TileEntityClayNexus
         nbt.setTag("items", nbttaglist);
 
         nbt.setBoolean("active", this.isActive);
-        nbt.setFloat("health", this.health_);
-        nbt.setFloat("maxHealth", this.maxHealth_);
+        nbt.setFloat("health", this.p_health);
+        nbt.setFloat("maxHealth", this.p_maxHealth);
         nbt.setInteger("spawnSldInterval", this.spawnSoldierInterval);
         nbt.setInteger("spawnThrwInterval", this.spawnThrowableInterval);
         nbt.setInteger("spawnSldCount", this.soldierSpawnCount);
@@ -404,36 +404,35 @@ public class TileEntityClayNexus
     }
 
     public float getHealth() {
-        return this.health_;
+        return this.p_health;
     }
 
     public float getMaxHealth() {
-        return this.maxHealth_;
+        return this.p_maxHealth;
     }
 
     public void heal(float amount) {
-        this.health_ += amount;
-        if( this.health_ > this.maxHealth_ ) {
-            this.health_ = this.maxHealth_;
+        this.p_health += amount;
+        if( this.p_health > this.p_maxHealth ) {
+            this.p_health = this.p_maxHealth;
         }
     }
 
     public void repair() {
-        this.health_ = this.maxHealth_;
+        this.p_health = this.p_maxHealth;
     }
 
     public boolean canEntityBeSeen(Entity target) {
         return this.worldObj.func_147447_a(Vec3.createVectorHelper(this.xCoord + 0.5D, this.yCoord + 0.9D, this.zCoord + 0.5D),
-                                           Vec3.createVectorHelper(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ),
-                                           false, true, false) == null;
+                                           Vec3.createVectorHelper(target.posX, target.posY + target.getEyeHeight(), target.posZ), false, true, false) == null;
     }
 
     private int countTeammates() {
         @SuppressWarnings("unchecked")
-        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.searchArea_);
+        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.p_searchArea);
         int cnt = 0;
         for( EntityClayMan dodger : soldiers ) {
-            if( dodger.getClayTeam().equals(this.tempClayTeam_.getTeamName()) ) {
+            if( dodger.getClayTeam().equals(this.p_tempClayTeam.getTeamName()) ) {
                 cnt++;
             }
         }
@@ -442,11 +441,11 @@ public class TileEntityClayNexus
 
     private List<EntityClayMan> getEnemies(boolean mustBeSeen) {
         @SuppressWarnings("unchecked")
-        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.searchArea_);
+        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.p_searchArea);
         Iterator<EntityClayMan> iterator = soldiers.iterator();
         while( iterator.hasNext() ) {
             EntityClayMan roomie = iterator.next();
-            if( roomie.getClayTeam().equals(this.tempClayTeam_.getTeamName()) || (mustBeSeen && !this.canEntityBeSeen(roomie)) ) {
+            if( roomie.getClayTeam().equals(this.p_tempClayTeam.getTeamName()) || (mustBeSeen && !this.canEntityBeSeen(roomie)) ) {
                 iterator.remove();
             }
         }
@@ -455,10 +454,10 @@ public class TileEntityClayNexus
 
     private int countDamagingEnemies() {
         @SuppressWarnings("unchecked")
-        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.damageArea_);
+        List<EntityClayMan> soldiers = this.worldObj.getEntitiesWithinAABB(EntityClayMan.class, this.p_damageArea);
         int cnt = 0;
         for( EntityClayMan dodger : soldiers ) {
-            if( !dodger.getClayTeam().equals(this.tempClayTeam_.getTeamName()) ) {
+            if( !dodger.getClayTeam().equals(this.p_tempClayTeam.getTeamName()) ) {
                 cnt++;
             }
         }
@@ -468,19 +467,19 @@ public class TileEntityClayNexus
     private void setStackInSlot(int slot, ItemStack stack) {
         switch( slot ) {
             case SOLDIER_SLOT:
-                this.soldierSlot_ = stack;
-                this.tempClayTeam_ = ItemClayManDoll.getTeam(stack);
+                this.p_soldierSlot = stack;
+                this.p_tempClayTeam = ItemClayManDoll.getTeam(stack);
                 break;
             case THROWABLE_SLOT:
                 ASoldierUpgrade upg = SoldierUpgrades.getUpgrade(stack);
-                this.tempThrowableCls_ = stack != null && upg instanceof IThrowableUpgrade ? ((IThrowableUpgrade) upg).getThrowableClass() : null;
-                this.throwableSlot_ = stack;
+                this.p_tempThrowableCls = stack != null && upg instanceof IThrowableUpgrade ? ((IThrowableUpgrade) upg).getThrowableClass() : null;
+                this.p_throwableSlot = stack;
                 break;
             case MOUNT_SLOT:
-                this.mountSlot_ = stack;
+                this.p_mountSlot = stack;
                 break;
             default:
-                this.upgradeItems_[slot - 3] = stack;
+                this.p_upgradeItems[slot - 3] = stack;
         }
     }
 }

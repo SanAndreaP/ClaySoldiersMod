@@ -7,12 +7,15 @@
 package de.sanandrew.mods.claysoldiers.client.gui.config;
 
 import cpw.mods.fml.client.config.GuiConfig;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
+@SideOnly(Side.CLIENT)
 public class GuiConfigScreen
         extends GuiConfig
 {

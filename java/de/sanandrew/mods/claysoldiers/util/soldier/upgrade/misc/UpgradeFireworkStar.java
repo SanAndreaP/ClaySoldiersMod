@@ -37,7 +37,7 @@ public class UpgradeFireworkStar
     }
 
     @Override
-    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+    public boolean shouldNbtSyncToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         return true;
     }
 

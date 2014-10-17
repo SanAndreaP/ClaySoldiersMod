@@ -40,7 +40,7 @@ public class EntityHorseMount
 
         this.stepHeight = 0.1F;
         this.moveSpeed = 0.6F;
-        this.renderDistanceWeight = 5D;
+        this.renderDistanceWeight = 5.0D;
 
         this.setSize(0.35F, 0.7F);
     }
@@ -91,7 +91,7 @@ public class EntityHorseMount
         super.readFromNBT(nbt);
 
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
-        this.setType(EnumHorseType.values[nbt.getShort("horseType")]);
+        this.setType(EnumHorseType.VALUES[nbt.getShort("horseType")]);
         this.dataWatcher.updateObject(DW_TEXTURE, nbt.getShort("texture"));
     }
 
@@ -120,7 +120,7 @@ public class EntityHorseMount
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if( source == IDisruptable.disruptDamage ) {
+        if( source == IDisruptable.DISRUPT_DAMAGE ) {
             return super.attackEntityFrom(source, damage);
         }
 
@@ -172,7 +172,7 @@ public class EntityHorseMount
 ////						CSM_ModRegistry.proxy.showEffect((new EntityDiggingFX(CSM_ModRegistry.proxy.getClientWorld(), a, b, c, 0.0D, 0.0D, 0.0D, Block.dirt, 0, 0)));
 //				}
             if( source.isFireDamage() && !this.isSpecial() && shouldSpawnSpecial ) {
-                EntityHorseMount specialHorse = new EntityHorseMount(this.worldObj, EnumHorseType.values[this.getType()]);
+                EntityHorseMount specialHorse = new EntityHorseMount(this.worldObj, EnumHorseType.VALUES[this.getType()]);
                 specialHorse.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                 specialHorse.setSpecial();
                 specialHorse.chooseTexture();
@@ -184,8 +184,8 @@ public class EntityHorseMount
     }
 
     @Override
-    public void knockBack(Entity entity, float i, double d, double d1) {
-        super.knockBack(entity, i, d, d1);
+    public void knockBack(Entity entity, float f, double motionShiftX, double motionShiftZ) {
+        super.knockBack(entity, f, motionShiftX, motionShiftZ);
         if( entity instanceof EntityClayMan ) {
             motionX *= 0.6D;
             motionY *= 0.75D;
@@ -226,7 +226,7 @@ public class EntityHorseMount
 
     @Override
     public void disrupt() {
-        this.attackEntityFrom(IDisruptable.disruptDamage, 99999);
+        this.attackEntityFrom(IDisruptable.DISRUPT_DAMAGE, 99999);
     }
 
     @Override
@@ -284,7 +284,7 @@ public class EntityHorseMount
     }
 
     public void setHorseSpecs() {
-        EnumHorseType type = EnumHorseType.values[this.getType()];
+        EnumHorseType type = EnumHorseType.VALUES[this.getType()];
         this.updateHealth(type.health);
         this.moveSpeed = type.moveSpeed;
     }
@@ -296,11 +296,11 @@ public class EntityHorseMount
     }
 
     public ResourceLocation getHorseTexture() {
-        return EnumHorseType.values[this.getType()].textures[this.dataWatcher.getWatchableObjectShort(DW_TEXTURE)];
+        return EnumHorseType.VALUES[this.getType()].textures[this.dataWatcher.getWatchableObjectShort(DW_TEXTURE)];
     }
 
     protected void chooseTexture() {
-        int textureId = (this.rand.nextInt(EnumHorseType.values[this.getType()].textures.length));
+        int textureId = (this.rand.nextInt(EnumHorseType.VALUES[this.getType()].textures.length));
         this.dataWatcher.updateObject(DW_TEXTURE, (short) textureId);
     }
 

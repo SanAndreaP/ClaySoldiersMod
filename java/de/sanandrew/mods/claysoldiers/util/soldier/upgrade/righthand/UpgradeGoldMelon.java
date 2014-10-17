@@ -10,7 +10,7 @@ import de.sanandrew.core.manpack.util.javatuples.Septet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
@@ -24,8 +24,8 @@ public class UpgradeGoldMelon
     }
 
     @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        return target.getClayTeam().equals(clayMan.getClayTeam()) && target.getHealth() < (target.getMaxHealth() * 0.25F) ? MethodState.ALLOW : MethodState.DENY;
+    public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+        return target.getClayTeam().equals(clayMan.getClayTeam()) && target.getHealth() < (target.getMaxHealth() * 0.25F) ? EnumMethodState.ALLOW : EnumMethodState.DENY;
     }
 
     @Override
@@ -38,8 +38,8 @@ public class UpgradeGoldMelon
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
-        this.consumeItem(stack, upgInst);
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
+        this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

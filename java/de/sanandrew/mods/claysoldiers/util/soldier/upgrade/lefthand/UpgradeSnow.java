@@ -27,7 +27,7 @@ public class UpgradeSnow
         extends AUpgradeLeftHanded
         implements IThrowableUpgrade
 {
-    private ItemStack nexusItem_ = new ItemStack(Blocks.snow);
+    private ItemStack p_nexusItem = new ItemStack(Blocks.snow);
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -67,18 +67,18 @@ public class UpgradeSnow
 
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
-        ItemRenderHelper.renderItemIn3D(this.nexusItem_);
+        ItemRenderHelper.renderItemIn3D(this.p_nexusItem);
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Items.snowball ) {
-            upgInst.getNbtTag().setShort(NBT_USES, (short) 5);
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) 5);
         } else if( stack.getItem() == Item.getItemFromBlock(Blocks.snow_layer) ) {
-            upgInst.getNbtTag().setShort(NBT_USES, (short) 10);
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) 10);
         }
 
-        this.consumeItem(stack, upgInst);
+        this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 }

@@ -30,9 +30,9 @@ public class UpgradeNetherBrick
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Items.netherbrick ) {
-            this.consumeItem(stack, upgInst);
+            this.consumeItem(stack, upgradeInst);
         }
 
         clayMan.playSound("random.pop", 1.0F, 1.0F);

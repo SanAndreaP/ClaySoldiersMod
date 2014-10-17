@@ -53,7 +53,7 @@ public enum EnumTurtleType
            new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/turtle/spec_kawako.png")        // special!
     );
 
-    public static final EnumTurtleType[] values = values();
+    public static final EnumTurtleType[] VALUES = values();
 
     public final float health;
     public final float moveSpeed;
@@ -86,7 +86,7 @@ public enum EnumTurtleType
             return null;
         }
 
-        for( EnumTurtleType type : values ) {
+        for( EnumTurtleType type : VALUES ) {
             if( type.item == null ) {
                 return null;
             }

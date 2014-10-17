@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.render.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
@@ -26,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class RenderClayNexus
         extends TileEntitySpecialRenderer
 {
@@ -40,7 +43,7 @@ public class RenderClayNexus
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-        GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 
         this.bindTexture(Textures.NEXUS_TEXTURE);
         nexusModel.renderTileEntity();
@@ -48,16 +51,16 @@ public class RenderClayNexus
         this.renderGlowmap(nexus);
 
         if( nexus.getStackInSlot(TileEntityClayNexus.SOLDIER_SLOT) != null ) {
-            this.renderSoldierItem(nexus, nexus.getStackInSlot(TileEntityClayNexus.SOLDIER_SLOT), partTicks);
+            renderSoldierItem(nexus, nexus.getStackInSlot(TileEntityClayNexus.SOLDIER_SLOT), partTicks);
         }
 
         if( nexus.getStackInSlot(TileEntityClayNexus.THROWABLE_SLOT) != null ) {
-            this.renderThrowableItem(nexus, nexus.getStackInSlot(TileEntityClayNexus.THROWABLE_SLOT), partTicks);
+            renderThrowableItem(nexus, nexus.getStackInSlot(TileEntityClayNexus.THROWABLE_SLOT), partTicks);
         }
 
         ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
         if( heldItem != null && heldItem.getItem() == RegistryItems.statDisplay ) {
-            this.renderHealth(nexus);
+            renderHealth(nexus);
         }
 
         GL11.glPopMatrix();
@@ -93,7 +96,7 @@ public class RenderClayNexus
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private void renderSoldierItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
+    private static void renderSoldierItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
         float[] colors = new float[] { 1.0F, 1.0F, 1.0F };
         float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
 
@@ -104,7 +107,7 @@ public class RenderClayNexus
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 1.225F, 0.0F);
-        GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
         GL11.glScalef(0.25F, 0.25F, 0.25F);
         GL11.glRotatef(itmAngle, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
@@ -114,7 +117,7 @@ public class RenderClayNexus
         GL11.glPopMatrix();
     }
 
-    private void renderThrowableItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
+    private static void renderThrowableItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
         float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
         ASoldierUpgrade upg = SoldierUpgrades.getUpgrade(stack);
         IThrowableUpgrade throwableUpg = upg instanceof IThrowableUpgrade ? (IThrowableUpgrade) upg : null;
@@ -124,7 +127,7 @@ public class RenderClayNexus
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.875F, 0.0F);
-        GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
         GL11.glScalef(0.25F, 0.25F, 0.25F);
         GL11.glRotatef(-itmAngle, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
@@ -134,7 +137,7 @@ public class RenderClayNexus
         GL11.glPopMatrix();
     }
 
-    private void renderHealth(TileEntityClayNexus nexus) {
+    private static void renderHealth(TileEntityClayNexus nexus) {
         Tessellator tessellator = Tessellator.instance;
 
         GL11.glPushMatrix();

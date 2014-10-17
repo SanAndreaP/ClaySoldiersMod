@@ -28,6 +28,7 @@ import net.minecraft.network.INetHandler;
 import org.apache.logging.log4j.Level;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 public final class PacketProcessor
@@ -44,7 +45,7 @@ public final class PacketProcessor
         try( ByteBufInputStream bbis = new ByteBufInputStream(data) ) {
             packetId = bbis.readShort();
             if( ID_TO_PACKET_MAP_.containsKey(packetId) ) {
-                IPacket pktInst = ID_TO_PACKET_MAP_.get(packetId).newInstance();
+                IPacket pktInst = ID_TO_PACKET_MAP_.get(packetId).getConstructor().newInstance();
                 pktInst.process(bbis, data, handler);
             }
         } catch( IOException ioe ) {
@@ -53,34 +54,36 @@ public final class PacketProcessor
         } catch( IllegalAccessException | InstantiationException rex ) {
             FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be instantiated!", packetId);
             rex.printStackTrace();
+        } catch( NoSuchMethodException | InvocationTargetException e ) {
+            e.printStackTrace();
         }
     }
 
     public static void sendToServer(short packedId, Tuple data) {
-        sendPacketTo(packedId, PacketDirections.TO_SERVER, null, data);
+        sendPacketTo(packedId, EnumPacketDirections.TO_SERVER, null, data);
     }
 
     public static void sendToAll(short packedId, Tuple data) {
-        sendPacketTo(packedId, PacketDirections.TO_ALL, null, data);
+        sendPacketTo(packedId, EnumPacketDirections.TO_ALL, null, data);
     }
 
     public static void sendToPlayer(short packedId, EntityPlayerMP player, Tuple data) {
-        sendPacketTo(packedId, PacketDirections.TO_PLAYER, Unit.with(player), data);
+        sendPacketTo(packedId, EnumPacketDirections.TO_PLAYER, Unit.with(player), data);
     }
 
     public static void sendToAllInDimension(short packedId, int dimensionId, Tuple data) {
-        sendPacketTo(packedId, PacketDirections.TO_ALL_IN_DIMENSION, Unit.with(dimensionId), data);
+        sendPacketTo(packedId, EnumPacketDirections.TO_ALL_IN_DIMENSION, Unit.with(dimensionId), data);
     }
 
     public static void sendToAllAround(short packedId, int dimensionId, double x, double y, double z, double range, Tuple data) {
-        sendPacketTo(packedId, PacketDirections.TO_ALL_IN_RANGE, Quintet.with(dimensionId, x, y, z, range), data);
+        sendPacketTo(packedId, EnumPacketDirections.TO_ALL_IN_RANGE, Quintet.with(dimensionId, x, y, z, range), data);
     }
 
-    private static void sendPacketTo(short packetId, PacketDirections direction, Tuple dirData, Tuple packetData) {
+    private static void sendPacketTo(short packetId, EnumPacketDirections direction, Tuple dirData, Tuple packetData) {
         try( ByteBufOutputStream bbos = new ByteBufOutputStream(Unpooled.buffer()) ) {
             if( ID_TO_PACKET_MAP_.containsKey(packetId) ) {
                 bbos.writeShort(packetId);
-                IPacket pktInst = ID_TO_PACKET_MAP_.get(packetId).newInstance();
+                IPacket pktInst = ID_TO_PACKET_MAP_.get(packetId).getConstructor().newInstance();
                 pktInst.writeData(bbos, packetData);
                 FMLProxyPacket packet = new FMLProxyPacket(bbos.buffer(), ClaySoldiersMod.MOD_CHANNEL);
                 switch( direction ) {
@@ -114,10 +117,12 @@ public final class PacketProcessor
         } catch( IllegalAccessException | InstantiationException rex ) {
             FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be instantiated!", packetId);
             rex.printStackTrace();
+        } catch( NoSuchMethodException | InvocationTargetException e ) {
+            e.printStackTrace();
         }
     }
 
-    private static enum PacketDirections
+    private static enum EnumPacketDirections
     {
         TO_SERVER, TO_PLAYER, TO_ALL, TO_ALL_IN_RANGE, TO_ALL_IN_DIMENSION
     }

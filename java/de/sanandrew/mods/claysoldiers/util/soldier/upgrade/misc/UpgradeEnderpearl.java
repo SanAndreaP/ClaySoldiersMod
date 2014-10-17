@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -29,17 +29,17 @@ public class UpgradeEnderpearl
     }
 
     @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
+    public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
         if( clayMan.getClayTeam().equals(target.getClayTeam()) && !target.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
-            return MethodState.ALLOW;
+            return EnumMethodState.ALLOW;
         }
 
-        return MethodState.SKIP;
+        return EnumMethodState.SKIP;
     }
 
     @Override
-    public MethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
-        return attacker.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ? MethodState.SKIP : MethodState.ALLOW;
+    public EnumMethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
+        return attacker.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ? EnumMethodState.SKIP : EnumMethodState.ALLOW;
     }
 
     @Override

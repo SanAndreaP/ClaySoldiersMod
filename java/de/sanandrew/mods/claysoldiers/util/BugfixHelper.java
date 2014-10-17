@@ -24,14 +24,14 @@ public class BugfixHelper
     public static PathEntity getEntityPathToXYZ(World world, Entity entity, int x, int y, int z, float range, boolean allowWoodDoor, boolean blockMovement,
                                                 boolean pathInWater, boolean canEntityDrown) {
         world.theProfiler.startSection("pathfind");
-        int l = MathHelper.floor_double(entity.posX);
+        int i = MathHelper.floor_double(entity.posX);
         int i1 = MathHelper.floor_double(entity.posY);
         int j1 = MathHelper.floor_double(entity.posZ);
         int k1 = (int) (range + 8.0F);
-        int l1 = l - k1;
+        int l1 = i - k1;
         int i2 = i1 - k1;
         int j2 = j1 - k1;
-        int k2 = l + k1;
+        int k2 = i + k1;
         int l2 = i1 + k1;
         int i3 = j1 + k1;
         ChunkCache chunkcache = new ChunkCache(world, l1, i2, j2, k2, l2, i3, 0);
@@ -47,14 +47,14 @@ public class BugfixHelper
         int i = MathHelper.floor_double(entity.posX);
         int j = MathHelper.floor_double(entity.posY + 1.0D);
         int k = MathHelper.floor_double(entity.posZ);
-        int l = (int) (range + 16.0F);
-        int i1 = i - l;
-        int j1 = j - l;
-        int k1 = k - l;
-        int l1 = i + l;
-        int i2 = j + l;
-        int j2 = k + l;
-        ChunkCache chunkcache = new ChunkCache(world, i1, j1, k1, l1, i2, j2, 0);
+        int m = (int) (range + 16.0F);
+        int n = i - m;
+        int o = j - m;
+        int p = k - m;
+        int q = i + m;
+        int r = j + m;
+        int t = k + m;
+        ChunkCache chunkcache = new ChunkCache(world, n, o, p, q, r, t, 0);
         PathEntity pathentity = (new FixedPathFinder(chunkcache, allowWoodDoor, blockMovement, pathInWater, canEntityDrown))
                 .createEntityPathTo(entity, target, range);
         world.theProfiler.endSection();

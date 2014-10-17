@@ -26,7 +26,7 @@ public class UpgradeEmerald
         extends AUpgradeLeftHanded
         implements IThrowableUpgrade
 {
-    private ItemStack nexusItem_ = new ItemStack(Blocks.emerald_block);
+    private ItemStack p_nexusItem = new ItemStack(Blocks.emerald_block);
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -51,12 +51,12 @@ public class UpgradeEmerald
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Item.getItemFromBlock(Blocks.emerald_block) ) {
-            upgInst.getNbtTag().setShort(NBT_USES, (short) 45);
+            upgradeInst.getNbtTag().setShort(NBT_USES, (short) 45);
         }
 
-        this.consumeItem(stack, upgInst);
+        this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
     }
 
@@ -76,6 +76,6 @@ public class UpgradeEmerald
 
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
-        ItemRenderHelper.renderItemIn3D(this.nexusItem_);
+        ItemRenderHelper.renderItemIn3D(this.p_nexusItem);
     }
 }

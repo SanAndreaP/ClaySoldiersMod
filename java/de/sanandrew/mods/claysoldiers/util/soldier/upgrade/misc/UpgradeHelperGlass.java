@@ -31,7 +31,7 @@ public class UpgradeHelperGlass
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgasdInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         ASoldierUpgrade mainUpgrade = SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS);
         SoldierUpgradeInst inst = clayMan.hasUpgrade(mainUpgrade) ? clayMan.getUpgrade(mainUpgrade) : clayMan.addUpgrade(mainUpgrade);
 
@@ -70,7 +70,7 @@ public class UpgradeHelperGlass
     }
 
     @Override
-    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+    public boolean shouldNbtSyncToClient(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         return true;
     }
 

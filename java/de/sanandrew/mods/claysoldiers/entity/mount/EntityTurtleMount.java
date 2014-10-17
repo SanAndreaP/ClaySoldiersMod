@@ -40,7 +40,7 @@ public class EntityTurtleMount
 
         this.stepHeight = 0.1F;
         this.moveSpeed = 0.6F;
-        this.renderDistanceWeight = 5D;
+        this.renderDistanceWeight = 5.0D;
 
         this.setSize(0.35F, 0.7F);
     }
@@ -109,7 +109,7 @@ public class EntityTurtleMount
         super.readFromNBT(nbt);
 
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
-        this.setType(EnumTurtleType.values[nbt.getShort("turtleType")]);
+        this.setType(EnumTurtleType.VALUES[nbt.getShort("turtleType")]);
         this.dataWatcher.updateObject(DW_TEXTURE, nbt.getShort("texture"));
     }
 
@@ -147,7 +147,7 @@ public class EntityTurtleMount
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if( source == IDisruptable.disruptDamage ) {
+        if( source == IDisruptable.DISRUPT_DAMAGE ) {
             return super.attackEntityFrom(source, damage);
         }
 
@@ -199,7 +199,7 @@ public class EntityTurtleMount
 ////						CSM_ModRegistry.proxy.showEffect((new EntityDiggingFX(CSM_ModRegistry.proxy.getClientWorld(), a, b, c, 0.0D, 0.0D, 0.0D, Block.dirt, 0, 0)));
 //				}
             if( source.isFireDamage() && !this.isSpecial() && shouldSpawnSpecial ) {
-                EntityTurtleMount kawako = new EntityTurtleMount(this.worldObj, EnumTurtleType.values[this.getType()]);
+                EntityTurtleMount kawako = new EntityTurtleMount(this.worldObj, EnumTurtleType.VALUES[this.getType()]);
                 kawako.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                 kawako.setSpecial();
                 kawako.chooseTexture();
@@ -211,8 +211,8 @@ public class EntityTurtleMount
     }
 
     @Override
-    public void knockBack(Entity entity, float i, double d, double d1) {
-        super.knockBack(entity, i, d, d1);
+    public void knockBack(Entity entity, float f, double motionShiftX, double motionShiftZ) {
+        super.knockBack(entity, f, motionShiftX, motionShiftZ);
         if( entity instanceof EntityClayMan ) {
             motionX *= 0.6D;
             motionY *= 0.75D;
@@ -226,7 +226,7 @@ public class EntityTurtleMount
     }
 
     @Override
-    public void moveEntityWithHeading(float p_70612_1_, float p_70612_2_) {
+    public void moveEntityWithHeading(float motionShiftX, float motionShiftZ) {
         if( this.handleWaterMovement() ) {
             this.setJumping(false);
             if( this.isCollidedHorizontally ) {
@@ -236,7 +236,7 @@ public class EntityTurtleMount
             }
         }
 
-        super.moveEntityWithHeading(p_70612_1_, p_70612_2_);
+        super.moveEntityWithHeading(motionShiftX, motionShiftZ);
     }
 
     @Override
@@ -267,7 +267,7 @@ public class EntityTurtleMount
 
     @Override
     public void disrupt() {
-        this.attackEntityFrom(IDisruptable.disruptDamage, 99999);
+        this.attackEntityFrom(IDisruptable.DISRUPT_DAMAGE, 99999);
     }
 
     @Override
@@ -278,8 +278,8 @@ public class EntityTurtleMount
 
         double velocityDelta = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         for( double d = 0; velocityDelta > 0.05D && this.inWater && d < 1.0D + velocityDelta * 120.0D; d++ ) {
-            double randX = (double) (this.rand.nextFloat() * 0.5F - 0.25F);
-            double randZ = (double) (this.rand.nextFloat() * 0.5F - 0.25F);
+            double randX = (this.rand.nextFloat() * 0.5F - 0.25F);
+            double randZ = (this.rand.nextFloat() * 0.5F - 0.25F);
 
             this.worldObj.spawnParticle("splash", this.posX + randX, this.posY + 0.125D, this.posZ + randZ, this.motionX, this.motionY, this.motionZ);
         }
@@ -347,17 +347,17 @@ public class EntityTurtleMount
     }
 
     public ResourceLocation getTurtleTexture() {
-        return EnumTurtleType.values[this.getType()].textures[this.dataWatcher.getWatchableObjectShort(DW_TEXTURE)];
+        return EnumTurtleType.VALUES[this.getType()].textures[this.dataWatcher.getWatchableObjectShort(DW_TEXTURE)];
     }
 
     public void setTurtleSpecs() {
-        EnumTurtleType type = EnumTurtleType.values[this.getType()];
+        EnumTurtleType type = EnumTurtleType.VALUES[this.getType()];
         this.updateHealth(type.health);
         this.moveSpeed = type.moveSpeed;
     }
 
     protected void chooseTexture() {
-        int textureId = (this.rand.nextInt(EnumTurtleType.values[this.getType()].textures.length));
+        int textureId = (this.rand.nextInt(EnumTurtleType.VALUES[this.getType()].textures.length));
         this.dataWatcher.updateObject(DW_TEXTURE, (short) textureId);
     }
 

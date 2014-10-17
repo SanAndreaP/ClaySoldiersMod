@@ -8,6 +8,8 @@ package de.sanandrew.mods.claysoldiers.client.util;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.event.*;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
@@ -32,10 +34,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy
         extends CommonProxy
 {
-    public static EntityClayMan clayCamEntity;
+    public static EntityClayMan s_clayCamEntity;
 
     @Override
     public void modInit() {
@@ -45,7 +48,7 @@ public class ClientProxy
 
         RegistryEntities.registerRenderers();
 
-        ClaySoldiersMod.EVENT_BUS.register(new RenderSoldierRightHandEvent());
+        ClaySoldiersMod.EVENT_BUS.register(new SoldierRightHandRenderHandler());
         ClaySoldiersMod.EVENT_BUS.register(new SoldierLeftHandRenderHandler());
         ClaySoldiersMod.EVENT_BUS.register(new SoldierModelRenderHandler());
         ClaySoldiersMod.EVENT_BUS.register(new SoldierBodyRenderHandler());
@@ -55,7 +58,7 @@ public class ClientProxy
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.clayNexus), new ItemRendererClayNexus());
 
         MinecraftForge.EVENT_BUS.register(new RenderStatDisplayOverlay());
-        MinecraftForge.EVENT_BUS.register(new RenderWorldOnLastEvent());
+        MinecraftForge.EVENT_BUS.register(new WorldOnLastRenderHandler());
         MinecraftForge.EVENT_BUS.register(new Textures());
         MinecraftForge.EVENT_BUS.register(new RenderTickHandler());
 
@@ -64,16 +67,10 @@ public class ClientProxy
 
     @Override
     public void switchClayCam(boolean enable, EntityClayMan clayMan) {
-        Minecraft mc = Minecraft.getMinecraft();
-
         if( enable ) {
-//            mc.thePlayer.mountEntity(clayMan);
-            clayCamEntity = clayMan;
-//            mc.renderViewEntity = clayMan;
+            s_clayCamEntity = clayMan;
         } else {
-//            mc.thePlayer.mountEntity(null);
-            clayCamEntity = null;
-//            mc.renderViewEntity = mc.thePlayer;
+            s_clayCamEntity = null;
         }
     }
 

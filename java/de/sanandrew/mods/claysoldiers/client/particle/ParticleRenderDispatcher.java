@@ -11,9 +11,12 @@
  */
 package de.sanandrew.mods.claysoldiers.client.particle;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public final class ParticleRenderDispatcher
 {
     public static void dispatch() {
@@ -23,7 +26,7 @@ public final class ParticleRenderDispatcher
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-        EntityNexusFX.dispatchQueuedRenders(tessellator);
+        ParticleNexusFX.dispatchQueuedRenders(tessellator);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);

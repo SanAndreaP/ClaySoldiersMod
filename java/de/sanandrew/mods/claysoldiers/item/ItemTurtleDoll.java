@@ -97,7 +97,7 @@ public class ItemTurtleDoll
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityTurtleMount dan = spawnTurtle(world, getType(stack), (double) blockX + 0.5D, (double) blockY + entityOffY, (double) blockZ + 0.5D);
+                EntityTurtleMount dan = spawnTurtle(world, getType(stack), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -118,7 +118,7 @@ public class ItemTurtleDoll
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + "." + getType(stack).toString().toLowerCase();
+        return super.getUnlocalizedName(stack) + '.' + getType(stack).toString().toLowerCase();
     }
 
     @Override
@@ -134,7 +134,7 @@ public class ItemTurtleDoll
     @Override
     @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs creativeTab, List stacks) {
-        for( EnumTurtleType type : EnumTurtleType.values ) {
+        for( EnumTurtleType type : EnumTurtleType.VALUES ) {
             if( type.itemData == null ) {
                 continue;
             }
@@ -149,7 +149,7 @@ public class ItemTurtleDoll
     public void registerIcons(IIconRegister iconRegister) {
         Map<String, IIcon> names = Maps.newHashMap();
         this.icons = Maps.newEnumMap(EnumTurtleType.class);
-        for( EnumTurtleType type : EnumTurtleType.values ) {
+        for( EnumTurtleType type : EnumTurtleType.VALUES ) {
             if( type.itemData == null ) {
                 continue;
             }

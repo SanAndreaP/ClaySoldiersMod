@@ -7,17 +7,20 @@
 package de.sanandrew.mods.claysoldiers.client.util;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
+@SideOnly(Side.CLIENT)
 public final class Textures
 {
-    public static IIcon shieldIcon;
-    public static IIcon shieldStudIcon;
-    public static IIcon starfruitShieldIcon;
-    public static IIcon starfruitShieldStudIcon;
+    public static IIcon s_shieldIcon;
+    public static IIcon s_shieldStudIcon;
+    public static IIcon s_starfruitShieldIcon;
+    public static IIcon s_starfruitShieldStudIcon;
 
     public static final ResourceLocation CLAYMAN_LEATHER_ARMOR = new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/wearables/leather.png");
     public static final ResourceLocation CLAYMAN_PADDING = new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/wearables/padding.png");
@@ -39,10 +42,10 @@ public final class Textures
     @SubscribeEvent
     public void onTextureStitchPre(TextureStitchEvent.Pre event) {
         if( event.map.getTextureType() == 1 ) {
-            shieldIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":shield");
-            shieldStudIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":shield_studs");
-            starfruitShieldIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":starfruit");
-            starfruitShieldStudIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":starfruit_studs");
+            s_shieldIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":shield");
+            s_shieldStudIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":shield_studs");
+            s_starfruitShieldIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":starfruit");
+            s_starfruitShieldStudIcon = event.map.registerIcon(ClaySoldiersMod.MOD_ID + ":starfruit_studs");
         }
     }
 }

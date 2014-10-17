@@ -20,8 +20,8 @@ import net.minecraft.world.World;
 public class RecipeHorses
         implements IRecipe
 {
-    private final ItemStack feather = new ItemStack(Items.feather);
-    private final ItemStack soulSand = new ItemStack(Blocks.soul_sand);
+    private final ItemStack p_feather = new ItemStack(Items.feather);
+    private final ItemStack p_soulSand = new ItemStack(Blocks.soul_sand);
 
     @Override
     public boolean matches(InventoryCrafting invCrafting, World world) {
@@ -30,7 +30,7 @@ public class RecipeHorses
         ItemStack[] pattern;
 
         if( invCrafting.getStackInSlot(0) == null
-                && (invCrafting.getStackInSlot(1) == null || SAPUtils.areStacksEqualWithWCV(this.feather, invCrafting.getStackInSlot(1)))
+                && (invCrafting.getStackInSlot(1) == null || SAPUtils.areStacksEqualWithWCV(this.p_feather, invCrafting.getStackInSlot(1)))
                 && invCrafting.getStackInSlot(2) == null ) {
             startIndex = 3;
         } else if( invCrafting.getStackInSlot(6) == null && invCrafting.getStackInSlot(7) == null && invCrafting.getStackInSlot(8) == null ) {
@@ -44,7 +44,7 @@ public class RecipeHorses
         }
 
         pattern = new ItemStack[] {
-                typeItem, this.soulSand, typeItem,
+                typeItem, this.p_soulSand, typeItem,
                 typeItem, null, typeItem
         };
 
@@ -60,11 +60,11 @@ public class RecipeHorses
     @Override
     public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
         boolean isPegasus = false;
-        if( SAPUtils.areStacksEqualWithWCV(invCrafting.getStackInSlot(1), this.feather) ) {
+        if( SAPUtils.areStacksEqualWithWCV(invCrafting.getStackInSlot(1), this.p_feather) ) {
             isPegasus = true;
         }
 
-        for( EnumHorseType horseType : EnumHorseType.values ) {
+        for( EnumHorseType horseType : EnumHorseType.VALUES ) {
             if( SAPUtils.areStacksEqualWithWCV(horseType.item, invCrafting.getStackInSlot(3)) ) {
                 ItemStack stack = new ItemStack(RegistryItems.dollHorseMount, 2);
                 ItemHorseDoll.setType(stack, horseType, isPegasus);

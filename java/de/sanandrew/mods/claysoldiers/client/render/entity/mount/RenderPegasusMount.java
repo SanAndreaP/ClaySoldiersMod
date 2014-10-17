@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.render.entity.mount;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.model.mount.ModelPegasusMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -14,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class RenderPegasusMount
         extends RenderLiving
 {

@@ -31,8 +31,8 @@ import java.util.Map;
 public class ItemHorseDoll
         extends Item
 {
-    private Map<EnumHorseType, IIcon> icons;
-    private IIcon pegasusWings;
+    private Map<EnumHorseType, IIcon> p_icons;
+    private IIcon p_pegasusWings;
 
     public ItemHorseDoll() {
         super();
@@ -85,7 +85,7 @@ public class ItemHorseDoll
         }
     }
 
-    public static boolean getIsPegasus(ItemStack stack) {
+    public static boolean isPegasus(ItemStack stack) {
         NBTTagCompound itemNbt = stack.getTagCompound();
         return itemNbt != null && itemNbt.getBoolean("pegasus");
     }
@@ -112,9 +112,7 @@ public class ItemHorseDoll
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityHorseMount dan = spawnHorse(world, getType(stack), getIsPegasus(stack), (double) blockX + 0.5D, (double) blockY + entityOffY,
-                                                  (double) blockZ + 0.5D
-                );
+                EntityHorseMount dan = spawnHorse(world, getType(stack), isPegasus(stack), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -135,9 +133,9 @@ public class ItemHorseDoll
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        String name = super.getUnlocalizedName(stack) + "." + getType(stack).toString().toLowerCase();
+        String name = super.getUnlocalizedName(stack) + '.' + getType(stack).toString().toLowerCase();
 
-        if( getIsPegasus(stack) ) {
+        if( isPegasus(stack) ) {
             name += ".pegasus";
         }
 
@@ -146,7 +144,7 @@ public class ItemHorseDoll
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return pass == 0 || !getIsPegasus(stack) ? getType(stack).itemData.getValue1() : 0xFFFFFF;
+        return pass == 0 || !isPegasus(stack) ? getType(stack).itemData.getValue1() : 0xFFFFFF;
     }
 
     @Override
@@ -157,7 +155,7 @@ public class ItemHorseDoll
     @Override
     @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs creativeTab, List stacks) {
-        for( EnumHorseType type : EnumHorseType.values ) {
+        for( EnumHorseType type : EnumHorseType.VALUES ) {
             if( type.itemData == null ) {
                 continue;
             }
@@ -174,17 +172,17 @@ public class ItemHorseDoll
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         Map<String, IIcon> names = Maps.newHashMap();
-        this.icons = Maps.newEnumMap(EnumHorseType.class);
-        for( EnumHorseType type : EnumHorseType.values ) {
+        this.p_icons = Maps.newEnumMap(EnumHorseType.class);
+        for( EnumHorseType type : EnumHorseType.VALUES ) {
             if( type.itemData == null ) {
                 continue;
             }
             if( !names.containsKey(type.itemData.getValue0()) ) {
                 names.put(type.itemData.getValue0(), iconRegister.registerIcon(type.itemData.getValue0()));
             }
-            this.icons.put(type, names.get(type.itemData.getValue0()));
+            this.p_icons.put(type, names.get(type.itemData.getValue0()));
         }
-        this.pegasusWings = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_pegasus_wing");
+        this.p_pegasusWings = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_pegasus_wing");
     }
 
     @Override
@@ -195,11 +193,11 @@ public class ItemHorseDoll
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass) {
-        return pass == 0 || !getIsPegasus(stack) ? this.icons.get(getType(stack)) : this.pegasusWings;
+        return pass == 0 || !isPegasus(stack) ? this.p_icons.get(getType(stack)) : this.p_pegasusWings;
     }
 
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromType(EnumHorseType type) {
-        return this.icons.get(type);
+        return this.p_icons.get(type);
     }
 }

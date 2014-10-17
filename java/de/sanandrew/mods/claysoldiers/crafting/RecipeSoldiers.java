@@ -24,14 +24,14 @@ import java.util.List;
 public class RecipeSoldiers
         implements IRecipe
 {
-    private final List<ItemStack> dollMaterials_;
+    private final List<ItemStack> p_dollMaterials;
 
     public RecipeSoldiers() {
-        this.dollMaterials_ = new ArrayList<>();
+        this.p_dollMaterials = new ArrayList<>();
     }
 
     public void addDollMaterial(ItemStack stack) {
-        this.dollMaterials_.add(stack);
+        this.p_dollMaterials.add(stack);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class RecipeSoldiers
         for( int i = 0; i < 9; i++ ) {
             ItemStack stack = inventory.getStackInSlot(i);
             if( stack != null ) {
-                if( SAPUtils.isItemInStackArray(stack, this.dollMaterials_) ) {
+                if( SAPUtils.isItemInStackArray(stack, this.p_dollMaterials) ) {
                     if( !hasMaterial ) {
                         hasMaterial = true;
                     } else {
@@ -65,7 +65,7 @@ public class RecipeSoldiers
         for( int i = 0; i < 9; i++ ) {
             ItemStack stack = inventory.getStackInSlot(i);
             if( stack != null ) {
-                if( SAPUtils.isItemInStackArray(stack, this.dollMaterials_) ) {
+                if( SAPUtils.isItemInStackArray(stack, this.p_dollMaterials) ) {
                     material = stack;
                 } else if( stack.getItem() instanceof ItemClayManDoll ) {
                     if( doll == null ) {

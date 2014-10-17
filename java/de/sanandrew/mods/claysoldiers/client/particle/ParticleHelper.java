@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.particle;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Sextet;
@@ -21,6 +23,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.item.Item;
 import net.minecraft.util.MathHelper;
 
+@SideOnly(Side.CLIENT)
 public final class ParticleHelper
 {
     @SuppressWarnings("unchecked")
@@ -81,16 +84,16 @@ public final class ParticleHelper
         ClaymanTeam team = ClaymanTeam.getTeam(data.getValue3());
 
         for( int i = 0; i < 10; i++ ) {
-            EntitySoldierDeathFX fx = new EntitySoldierDeathFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), team);
+            ParticleSoldierDeath fx = new ParticleSoldierDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), team);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
     public static void spawnHorseDeathFx(Quartet<Double, Double, Double, Byte> data, Minecraft mc) {
-        EnumHorseType type = EnumHorseType.values[data.getValue3()];
+        EnumHorseType type = EnumHorseType.VALUES[data.getValue3()];
 
         for( int i = 0; i < 5; i++ ) {
-            EntityHorseDeathFX fx = new EntityHorseDeathFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
+            ParticleHorseDeath fx = new ParticleHorseDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
             mc.effectRenderer.addEffect(fx);
         }
     }
@@ -116,7 +119,7 @@ public final class ParticleHelper
     }
 
     public static void spawnNexusFx(Sextet<Double, Double, Double, Float, Float, Float> data, Minecraft mc) {
-        EntityNexusFX fx = new EntityNexusFX(mc.theWorld,
+        ParticleNexusFX fx = new ParticleNexusFX(mc.theWorld,
                                              data.getValue0() + 0.2F + SAPUtils.RNG.nextDouble() * 0.6F,
                                              data.getValue1(),
                                              data.getValue2() + 0.2F + SAPUtils.RNG.nextDouble() * 0.6F,
@@ -145,13 +148,13 @@ public final class ParticleHelper
             int particleCount = (int) (150.0D * radius);
 
             for( int i2 = 0; i2 < particleCount; ++i2 ) {
-                float rad = MathHelper.randomFloatClamp(SAPUtils.RNG, 0.0F, ((float) Math.PI * 2F));
-                double multi = (double) MathHelper.randomFloatClamp(SAPUtils.RNG, 0.75F, 1.0F);
+                float rad = MathHelper.randomFloatClamp(SAPUtils.RNG, 0.0F, ((float) Math.PI * 2.0F));
+                double multi = MathHelper.randomFloatClamp(SAPUtils.RNG, 0.75F, 1.0F);
                 double partY = 0.2D + radius / 100.0D;
-                double partX = (double) (MathHelper.cos(rad) * 0.2F) * multi * multi * (radius + 0.2D);
-                double partZ = (double) (MathHelper.sin(rad) * 0.2F) * multi * multi * (radius + 0.2D);
+                double partX = (MathHelper.cos(rad) * 0.2F) * multi * multi * (radius + 0.2D);
+                double partZ = (MathHelper.sin(rad) * 0.2F) * multi * multi * (radius + 0.2D);
 
-                mc.theWorld.spawnParticle("blockdust_" + Block.getIdFromBlock(block) + "_" + mc.theWorld.getBlockMetadata(blockX, blockY, blockZ),
+                mc.theWorld.spawnParticle("blockdust_" + Block.getIdFromBlock(block) + '_' + mc.theWorld.getBlockMetadata(blockX, blockY, blockZ),
                                           x + 0.5D, y + 1.0D, z + 0.5D, partX, partY, partZ
                 );
             }

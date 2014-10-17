@@ -21,7 +21,7 @@ public class UpgradeHelperWool
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         clayMan.setMiscColorIndex(15 - stack.getItemDamage());
         clayMan.playSound("dig.cloth", 1.0F, 1.0F);
 

@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.render.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.model.tileentity.ModelClayNexus;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import net.minecraft.client.Minecraft;
@@ -14,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class ItemRendererClayNexus
         implements IItemRenderer
 {
@@ -49,8 +52,8 @@ public class ItemRendererClayNexus
     private void renderNexus(float x, float y, float z) {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y + 1.57F + 0.125F, z);
-        GL11.glRotatef(180F, 1F, 0F, 0F);
-        GL11.glRotatef(90F, 0F, 1F, 0F);
+        GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glScalef(1.1875F, 1.1875F, 1.1875F);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(Textures.NEXUS_TEXTURE);

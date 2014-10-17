@@ -32,7 +32,7 @@ public class EntityBunnyMount
         super(world);
 
         this.stepHeight = 0.1F;
-        this.renderDistanceWeight = 5D;
+        this.renderDistanceWeight = 5.0D;
 
         this.setSize(0.35F, 0.7F);
     }
@@ -107,16 +107,16 @@ public class EntityBunnyMount
         super.readFromNBT(nbt);
 
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
-        this.setType(EnumBunnyType.values[nbt.getShort("bunnyType")]);
+        this.setType(EnumBunnyType.VALUES[nbt.getShort("bunnyType")]);
     }
 
     @Override
-    public void knockBack(Entity entity, float i, double d, double d1) {
-        super.knockBack(entity, i, d, d1);
+    public void knockBack(Entity entity, float f, double motionShiftX, double motionShiftZ) {
+        super.knockBack(entity, f, motionShiftX, motionShiftZ);
         if (entity != null && entity instanceof EntityClayMan) {
-            motionX *= 0.6D;
-            motionY *= 0.75D;
-            motionZ *= 0.6D;
+            this.motionX *= 0.6D;
+            this.motionY *= 0.75D;
+            this.motionZ *= 0.6D;
         }
     }
 
@@ -132,7 +132,7 @@ public class EntityBunnyMount
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if( source == IDisruptable.disruptDamage ) {
+        if( source == IDisruptable.DISRUPT_DAMAGE ) {
             return super.attackEntityFrom(source, damage);
         }
 
@@ -186,7 +186,7 @@ public class EntityBunnyMount
 
     @Override
     public void disrupt() {
-        this.attackEntityFrom(IDisruptable.disruptDamage, 99999);
+        this.attackEntityFrom(IDisruptable.DISRUPT_DAMAGE, 99999);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class EntityBunnyMount
     }
 
     public ResourceLocation getBunnyTexture() {
-        return EnumBunnyType.values[this.getType()].texture;
+        return EnumBunnyType.VALUES[this.getType()].texture;
     }
 
     @Override

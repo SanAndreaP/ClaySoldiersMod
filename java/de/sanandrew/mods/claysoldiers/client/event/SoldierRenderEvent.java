@@ -6,45 +6,50 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.event;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.event.SoldierEvent;
 import net.minecraft.client.model.ModelBiped;
 
+@SideOnly(Side.CLIENT)
 public class SoldierRenderEvent
         extends SoldierEvent
 {
     public final RenderClayMan clayManRender;
-    public final double x;
-    public final double y;
-    public final double z;
-    public final float yaw;
+    public final double renderX;
+    public final double renderY;
+    public final double renderZ;
+    public final float renderYaw;
     public final float partTicks;
-    public final RenderStage stage;
+    public final EnumRenderStage stage;
 
-    public SoldierRenderEvent(EntityClayMan clayMan, RenderStage stage, RenderClayMan clayManRender, double x, double y, double z, float yaw, float partTicks) {
+    public SoldierRenderEvent(EntityClayMan clayMan, EnumRenderStage stage, RenderClayMan clayManRender, double x, double y, double z, float yaw, float partTicks) {
         super(clayMan);
         this.clayManRender = clayManRender;
         this.stage = stage;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
+        this.renderX = x;
+        this.renderY = y;
+        this.renderZ = z;
+        this.renderYaw = yaw;
         this.partTicks = partTicks;
     }
 
     /**
-     * <p>An Enum for the different render stages this event can be called in.</p>
+     * <p>An Enum for the different render stages this event currently is in.</p>
      * <code>PRE</code> - Stage before the rendering happens.<br>
      * <code>POST</code> - Stage after the rendering happened.<br>
      * <code>EQUIPPED</code> - Stage during rendering of the equipped items.
      */
-    public static enum RenderStage
+    @SideOnly(Side.CLIENT)
+    public static enum EnumRenderStage
     {
         PRE, POST, EQUIPPED, MODEL, MODEL_ROTATIONS, LIVING
     }
 
+    @SideOnly(Side.CLIENT)
     public static class RenderModelEvent
             extends SoldierRenderEvent
     {
@@ -55,7 +60,7 @@ public class SoldierRenderEvent
 
         public RenderModelEvent(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw,
                                 float rotPitch, float partTicks) {
-            super(clayMan, RenderStage.MODEL, clayManRender, clayMan.posX, clayMan.posY, clayMan.posZ, rotYaw, partTicks);
+            super(clayMan, EnumRenderStage.MODEL, clayManRender, clayMan.posX, clayMan.posY, clayMan.posZ, rotYaw, partTicks);
             this.limbSwing = limbSwing;
             this.limbSwingAmount = limbSwingAmount;
             this.rotFloat = rotFloat;
@@ -63,6 +68,7 @@ public class SoldierRenderEvent
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public static class SetRotationAnglesEvent
             extends SoldierRenderEvent
     {
@@ -74,7 +80,7 @@ public class SoldierRenderEvent
 
         public SetRotationAnglesEvent(EntityClayMan clayMan, ModelClayMan clayManModel, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw,
                                       float rotPitch, float partTicks) {
-            super(clayMan, RenderStage.MODEL_ROTATIONS, null, clayMan.posX, clayMan.posY, clayMan.posZ, rotYaw, partTicks);
+            super(clayMan, EnumRenderStage.MODEL_ROTATIONS, null, clayMan.posX, clayMan.posY, clayMan.posZ, rotYaw, partTicks);
             this.limbSwing = limbSwing;
             this.limbSwingAmount = limbSwingAmount;
             this.rotFloat = rotFloat;
@@ -83,11 +89,12 @@ public class SoldierRenderEvent
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public static class RenderLivingEvent
             extends SoldierRenderEvent
     {
         public RenderLivingEvent(EntityClayMan clayMan, RenderClayMan clayManRender, double x, double y, double z) {
-            super(clayMan, RenderStage.LIVING, clayManRender, x, y, z, 0.0F, 0.0F);
+            super(clayMan, EnumRenderStage.LIVING, clayManRender, x, y, z, 0.0F, 0.0F);
         }
     }
 }

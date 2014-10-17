@@ -103,7 +103,7 @@ public class ItemClayManDoll
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityClayMan dan = spawnClayMan(world, getTeam(stack).getTeamName(), (double) blockX + 0.5D, (double) blockY + entityOffY, (double) blockZ + 0.5D);
+                EntityClayMan dan = spawnClayMan(world, getTeam(stack).getTeamName(), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -122,7 +122,7 @@ public class ItemClayManDoll
 
     @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName(par1ItemStack) + "." + getTeam(par1ItemStack).getTeamName().toLowerCase();
+        return super.getUnlocalizedName(par1ItemStack) + '.' + getTeam(par1ItemStack).getTeamName().toLowerCase();
     }
 
     @Override

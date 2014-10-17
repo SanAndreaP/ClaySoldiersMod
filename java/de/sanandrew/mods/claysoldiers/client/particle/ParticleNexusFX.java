@@ -9,6 +9,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.particle;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -21,11 +23,11 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 // TODO: recode this for my improved rendering code!
-public class EntityNexusFX
+@SideOnly(Side.CLIENT)
+public class ParticleNexusFX
         extends EntityFX
 {
-    public static Queue<EntityNexusFX> queuedRenders = new ArrayDeque<>();
-    public boolean tinkle = false;
+    public static Queue<ParticleNexusFX> s_queuedRenders = new ArrayDeque<>();
 
     float f;
     float f1;
@@ -36,7 +38,7 @@ public class EntityNexusFX
     float moteParticleScale;
     int moteHalfLife;
 
-    public EntityNexusFX(World world, double x, double y, double z, float size, float red, float green, float blue) {
+    public ParticleNexusFX(World world, double x, double y, double z, float size, float red, float green, float blue) {
         super(world, x, y, z, 0.0D, 0.0D, 0.0D);
         this.particleRed = red;
         this.particleGreen = green;
@@ -45,7 +47,7 @@ public class EntityNexusFX
         this.motionX = this.motionY = this.motionZ = 0.0D;
         this.particleScale *= size;
         this.moteParticleScale = this.particleScale;
-        this.particleMaxAge = (int) (28D / (Math.random() * 0.3D + 0.7D) * 1.0F);
+        this.particleMaxAge = (int) (28.0D / (Math.random() * 0.3D + 0.7D) * 1.0F);
 
         this.moteHalfLife = this.particleMaxAge / 2;
         this.noClip = true;
@@ -71,12 +73,12 @@ public class EntityNexusFX
         Minecraft.getMinecraft().renderEngine.bindTexture(Textures.NEXUS_PARTICLE);
 
         tessellator.startDrawingQuads();
-        for( EntityNexusFX wisp : queuedRenders ) {
+        for( ParticleNexusFX wisp : s_queuedRenders ) {
             wisp.renderQueued(tessellator);
         }
         tessellator.draw();
 
-        queuedRenders.clear();
+        s_queuedRenders.clear();
     }
 
     @Override
@@ -107,12 +109,12 @@ public class EntityNexusFX
         this.f4 = f4;
         this.f5 = f5;
 
-        queuedRenders.add(this);
+        s_queuedRenders.add(this);
     }
 
     private void renderQueued(Tessellator tessellator) {
-        float agescale = (float) this.particleAge / (float) this.moteHalfLife;
-        if( agescale > 1F ) {
+        float agescale = this.particleAge / (float) this.moteHalfLife;
+        if( agescale > 1.0F ) {
             agescale = 2 - agescale;
         }
 

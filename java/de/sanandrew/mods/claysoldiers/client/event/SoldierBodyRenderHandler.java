@@ -7,8 +7,10 @@
 package de.sanandrew.mods.claysoldiers.client.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.RenderStage;
+import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.EnumRenderStage;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
@@ -25,31 +27,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@SideOnly(Side.CLIENT)
 public class SoldierBodyRenderHandler
 {
-    private Random thunderboldRNG_ = new Random();
+    private Random p_thunderboldRNG = new Random();
 
-    private ItemStack feather_ = new ItemStack(Items.feather);
-    private ItemStack glass_ = new ItemStack(Blocks.glass);
-    private ItemStack glassStained_ = new ItemStack(Blocks.stained_glass);
+    private ItemStack p_feather = new ItemStack(Items.feather);
+    private ItemStack p_glass = new ItemStack(Blocks.glass);
+    private ItemStack p_glassStained = new ItemStack(Blocks.stained_glass);
 
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
-        if( event.stage == RenderStage.PRE || event.stage == RenderStage.POST ) {
+        if( event.stage == EnumRenderStage.PRE || event.stage == EnumRenderStage.POST ) {
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_EGG)) ) {
-                this.renderStealthEffect(event.clayMan, event.clayManRender, event.stage);
+                renderStealthEffect(event.stage);
             }
 
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLOWSTONE)) ) {
-                this.renderGlowstoneEffect(event.clayMan, event.clayManRender, event.stage);
+                renderGlowstoneEffect(event.stage);
             }
 
-            if( event.clayMan.hasEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER)) && event.stage == RenderStage.PRE ) {
-                this.renderThunderbolt(event.clayMan, event.clayManRender, event.x, event.y, event.z);
+            if( event.clayMan.hasEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER)) && event.stage == EnumRenderStage.PRE ) {
+                renderThunderbolt(event.clayMan, event.renderX, event.renderY, event.renderZ);
             }
         }
 
-        if( event.stage == RenderStage.EQUIPPED ) {
+        if( event.stage == EnumRenderStage.EQUIPPED ) {
             if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FEATHER)) && !event.clayMan.onGround && event.clayMan.motionY < -0.1D
                     && event.clayMan.fallDistance >= 1.3F )
             {
@@ -73,8 +76,8 @@ public class SoldierBodyRenderHandler
         }
     }
 
-    private void renderStealthEffect(EntityClayMan clayMan, RenderClayMan clayManRender, RenderStage stage) {
-        if( stage == RenderStage.PRE ) {
+    private static void renderStealthEffect(EnumRenderStage stage) {
+        if( stage == EnumRenderStage.PRE ) {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
@@ -83,17 +86,17 @@ public class SoldierBodyRenderHandler
         }
     }
 
-    private void renderGlowstoneEffect(EntityClayMan clayMan, RenderClayMan clayManRender, RenderStage stage) {
-        if( stage == RenderStage.PRE ) {
-            int c0 = 0xF0;
-            int j = c0 % 65536;
-            int k = c0 / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j / 1.0F, (float) k / 1.0F);
+    private static void renderGlowstoneEffect(EnumRenderStage stage) {
+        if( stage == EnumRenderStage.PRE ) {
+            int brightness = 0xF0;
+            int brightX = brightness % 65536;
+            int brightY = brightness / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 
-    private void renderThunderbolt(EntityClayMan clayMan, RenderClayMan clayManRender, double targetX, double targetY, double targetZ) {
+    private void renderThunderbolt(EntityClayMan clayMan, double targetX, double targetY, double targetZ) {
         NBTTagCompound effectNbt = clayMan.getEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER)).getNbtTag();
         if( effectNbt.getShort("ticksRemaining") < 17 ) {
             return;
@@ -106,12 +109,12 @@ public class SoldierBodyRenderHandler
         List<Triplet<Double, Double, Double>> randCoords = new ArrayList<>();
         randCoords.add(Triplet.with(0.0D, 0.0D, 0.0D));
 
-        this.thunderboldRNG_.setSeed(effectNbt.getLong("randomLightning"));
+        this.p_thunderboldRNG.setSeed(effectNbt.getLong("randomLightning"));
 
-        int size = this.thunderboldRNG_.nextInt(5) + 6;
+        int size = this.p_thunderboldRNG.nextInt(5) + 6;
         for( int i = 0; i < size; i++ ) {
-            randCoords.add(Triplet.with(this.thunderboldRNG_.nextDouble() * 0.5D - 0.25D, this.thunderboldRNG_.nextDouble() * 0.5D - 0.25D,
-                                        this.thunderboldRNG_.nextDouble() * 0.5D - 0.25D)
+            randCoords.add(Triplet.with(this.p_thunderboldRNG.nextDouble() * 0.5D - 0.25D, this.p_thunderboldRNG.nextDouble() * 0.5D - 0.25D,
+                                        this.p_thunderboldRNG.nextDouble() * 0.5D - 0.25D)
             );
         }
         randCoords.add(Triplet.with(0.0D, 0.25D, 0.0D));
@@ -129,22 +132,22 @@ public class SoldierBodyRenderHandler
         int brightness = 0xF0;
         int brightX = brightness % 65536;
         int brightY = brightness / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) brightX / 1.0F, (float) brightY / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
 
         for( int i = 0; i < size; i++ ) {
             Triplet<Double, Double, Double> origin = randCoords.get(i);
             Triplet<Double, Double, Double> target = randCoords.get(i + 1);
 
-            double oX = originX + ((targetX - originX) / (double) size) * (i) + origin.getValue0();
-            double tX = originX + ((targetX - originX) / (double) size) * (i + 1) + target.getValue0();
+            double oX = originX + ((targetX - originX) / size) * (i) + origin.getValue0();
+            double tX = originX + ((targetX - originX) / size) * (i + 1) + target.getValue0();
 
-            double oY = originY + ((targetY - originY) / (double) size) * (i) + origin.getValue1();
-            double tY = originY + ((targetY - originY) / (double) size) * (i + 1) + target.getValue1();
+            double oY = originY + ((targetY - originY) / size) * (i) + origin.getValue1();
+            double tY = originY + ((targetY - originY) / size) * (i + 1) + target.getValue1();
 
-            double oZ = originZ + ((targetZ - originZ) / (double) size) * (i) + origin.getValue2();
-            double tZ = originZ + ((targetZ - originZ) / (double) size) * (i + 1) + target.getValue2();
+            double oZ = originZ + ((targetZ - originZ) / size) * (i) + origin.getValue2();
+            double tZ = originZ + ((targetZ - originZ) / size) * (i + 1) + target.getValue2();
 
-            this.drawThunderboldPart(Tessellator.instance, oX, oY, oZ, tX, tY, tZ);
+            drawThunderboldPart(Tessellator.instance, oX, oY, oZ, tX, tY, tZ);
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -167,7 +170,7 @@ public class SoldierBodyRenderHandler
         GL11.glRotatef(22.5F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(90.0F, -1.0F, 0.0F, 1.0F);
 
-        renderer.getItemRenderer().renderItem(clayMan, this.feather_, 0);
+        renderer.getItemRenderer().renderItem(clayMan, this.p_feather, 0);
         GL11.glPopMatrix();
     }
 
@@ -183,24 +186,24 @@ public class SoldierBodyRenderHandler
 
         short color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("leftColor");
         if( color < 0 ) {
-            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
+            renderer.getItemRenderer().renderItem(clayMan, this.p_glass, 0);
         } else {
-            this.glassStained_.setItemDamage(color);
-            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
+            this.p_glassStained.setItemDamage(color);
+            renderer.getItemRenderer().renderItem(clayMan, this.p_glassStained, 0);
         }
         GL11.glTranslatef(-1.68F, 0.0F, 0.0F);
 
         color = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)).getNbtTag().getShort("rightColor");
         if( color < 0 ) {
-            renderer.getItemRenderer().renderItem(clayMan, this.glass_, 0);
+            renderer.getItemRenderer().renderItem(clayMan, this.p_glass, 0);
         } else {
-            this.glassStained_.setItemDamage(color);
-            renderer.getItemRenderer().renderItem(clayMan, this.glassStained_, 0);
+            this.p_glassStained.setItemDamage(color);
+            renderer.getItemRenderer().renderItem(clayMan, this.p_glassStained, 0);
         }
         GL11.glPopMatrix();
     }
 
-    private void drawThunderboldPart(Tessellator tessellator, double oX, double oY, double oZ, double tX, double tY, double tZ) {
+    private static void drawThunderboldPart(Tessellator tessellator, double oX, double oY, double oZ, double tX, double tY, double tZ) {
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA(255, 255, 255, 0);
         tessellator.addVertex(tX - 0.05D, tY, tZ);

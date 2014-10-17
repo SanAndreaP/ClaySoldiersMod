@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
@@ -29,12 +29,13 @@ public abstract class ASoldierEffect
      * @param effectInst the instance of this effect (like an ItemStack for an Item)
      * @return true, if the upgrade should be removed from the soldiers upgrade list
      */
+    @SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
     public boolean onUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         return false;
     }
 
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
-        return MethodState.SKIP;
+    public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
+        return EnumMethodState.SKIP;
     }
 
     public void getAiMoveSpeed(EntityClayMan clayMan, SoldierEffectInst effectInst, MutableFloat speed) {
@@ -43,7 +44,7 @@ public abstract class ASoldierEffect
     public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
     }
 
-    public boolean sendNbtToClient(EntityClayMan clayMan, SoldierEffectInst effectInst) {
+    public boolean shouldNbtSyncToClient(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         return false;
     }
 

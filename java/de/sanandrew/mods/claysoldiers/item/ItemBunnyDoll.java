@@ -79,7 +79,7 @@ public class ItemBunnyDoll
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityBunnyMount dan = spawnBunny(world, getType(stack), (double) blockX + 0.5D, (double) blockY + entityOffY, (double) blockZ + 0.5D);
+                EntityBunnyMount dan = spawnBunny(world, getType(stack), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -100,7 +100,7 @@ public class ItemBunnyDoll
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + "." + getType(stack).toString().toLowerCase();
+        return super.getUnlocalizedName(stack) + '.' + getType(stack).toString().toLowerCase();
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ItemBunnyDoll
     @Override
     @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs creativeTab, List stacks) {
-        for( EnumBunnyType type : EnumBunnyType.values ) {
+        for( EnumBunnyType type : EnumBunnyType.VALUES ) {
             ItemStack stack = new ItemStack(this, 1);
             setType(stack, type);
             stacks.add(stack);

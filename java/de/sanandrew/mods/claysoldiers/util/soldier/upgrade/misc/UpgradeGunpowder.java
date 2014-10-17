@@ -29,9 +29,9 @@ public class UpgradeGunpowder
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Items.gunpowder ) {
-            this.consumeItem(stack, upgInst);
+            this.consumeItem(stack, upgradeInst);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         } else if( stack.getItem() == Item.getItemFromBlock(Blocks.tnt) ) {
             clayMan.playSound("dig.glass", 1.0F, 1.0F);

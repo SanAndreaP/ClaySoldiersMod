@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.util.soldier.MethodState;
+import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 
 public class EffectBlindingRedstone
         extends ASoldierEffect
@@ -26,8 +26,8 @@ public class EffectBlindingRedstone
     }
 
     @Override
-    public MethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
-        return MethodState.DENY;
+    public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierEffectInst effectInst, EntityClayMan target) {
+        return EnumMethodState.DENY;
     }
 
     @Override

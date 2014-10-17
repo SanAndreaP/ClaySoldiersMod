@@ -40,9 +40,9 @@ public class UpgradeSlimeball
     }
 
     @Override
-    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgInst, ItemStack stack) {
+    public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         if( stack.getItem() == Items.slime_ball ) {
-            this.consumeItem(stack, upgInst);
+            this.consumeItem(stack, upgradeInst);
             clayMan.playSound("random.pop", 1.0F, 1.0F);
         } else if( stack.getItem() == Item.getItemFromBlock(Blocks.command_block) ) { //TODO: 1.8, here goes slime block!
             clayMan.playSound("mob.slime.small", 1.0F, 1.0F);

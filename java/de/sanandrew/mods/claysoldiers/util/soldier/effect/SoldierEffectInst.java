@@ -10,24 +10,24 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public final class SoldierEffectInst
 {
-    private ASoldierEffect effect_;
-    private NBTTagCompound nbt_ = new NBTTagCompound();
+    private ASoldierEffect p_effect;
+    private NBTTagCompound p_nbt = new NBTTagCompound();
 
     public SoldierEffectInst(ASoldierEffect effect) {
-        this.effect_ = effect;
+        this.p_effect = effect;
     }
 
     public NBTTagCompound getNbtTag() {
-        return this.nbt_;
+        return this.p_nbt;
     }
 
     public void setNbtTag(NBTTagCompound nbt) {
         if( nbt != null ) {
-            this.nbt_ = nbt;
+            this.p_nbt = nbt;
         }
     }
 
     public ASoldierEffect getEffect() {
-        return this.effect_;
+        return this.p_effect;
     }
 }

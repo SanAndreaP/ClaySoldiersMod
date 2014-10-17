@@ -26,7 +26,7 @@ public class SoldierEffects
     private static final Map<ASoldierEffect, String> EFFECT_TO_NAME_MAP_ = Maps.newHashMap();
     private static final Map<ASoldierEffect, Byte> EFFECT_TO_RENDER_ID_MAP_ = Maps.newHashMap();
     private static final Map<Byte, ASoldierEffect> RENDER_ID_TO_EFFECT_MAP_ = Maps.newHashMap();
-    private static byte currRenderId = 0;
+    private static byte s_currRenderId = 0;
 
     public static void initialize() {
         registerEffect(EFF_SLIMEFEET, new EffectSlimeFeet(), getNewRenderId());
@@ -81,11 +81,11 @@ public class SoldierEffects
     }
 
     public static byte getNewRenderId() {
-        if( currRenderId == 127 ) {
+        if( s_currRenderId == 127 ) {
             throw new RenderIdException();
         }
 
-        return currRenderId++;
+        return s_currRenderId++;
     }
 
     public static class RenderIdException

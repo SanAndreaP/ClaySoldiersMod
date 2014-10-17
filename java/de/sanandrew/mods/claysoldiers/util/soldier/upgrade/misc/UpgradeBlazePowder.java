@@ -16,7 +16,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 public class UpgradeBlazePowder
         extends AUpgradeMisc
 {
-    public static final DamageSource blazePwdSrc = new DamageSource(ClaySoldiersMod.MOD_ID + ":blaze_powder").setDamageBypassesArmor().setFireDamage();
+    public static final DamageSource BLAZEPOWDER_DAMAGE_SRC = new DamageSource(ClaySoldiersMod.MOD_ID + ":blaze_powder").setDamageBypassesArmor().setFireDamage();
 
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
@@ -26,7 +26,7 @@ public class UpgradeBlazePowder
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
-        target.attackEntityFrom(blazePwdSrc, 10000.0F);
+        target.attackEntityFrom(BLAZEPOWDER_DAMAGE_SRC, 10000.0F);
     }
 
     @Override

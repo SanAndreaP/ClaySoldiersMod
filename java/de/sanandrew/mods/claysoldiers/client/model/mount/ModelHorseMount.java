@@ -7,11 +7,14 @@
 
 package de.sanandrew.mods.claysoldiers.client.model.mount;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
+@SideOnly(Side.CLIENT)
 public class ModelHorseMount
         extends ModelBase
 {
@@ -63,7 +66,7 @@ public class ModelHorseMount
 
         this.leg3 = new ModelRenderer(this, 24, 10);
         this.leg3.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.25F);
-        this.leg3.setRotationPoint(-.0F, 3.75F, 2.75F);
+        this.leg3.setRotationPoint(-1.0F, 3.75F, 2.75F);
 
         this.leg4 = new ModelRenderer(this, 24, 10);
         this.leg4.mirror = true;

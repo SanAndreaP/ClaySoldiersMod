@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.particle;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
@@ -13,10 +15,11 @@ import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.client.particle.EntityBreakingFX;
 import net.minecraft.world.World;
 
-public class EntityHorseDeathFX
+@SideOnly(Side.CLIENT)
+public class ParticleHorseDeath
         extends EntityBreakingFX
 {
-    public EntityHorseDeathFX(World world, double x, double y, double z, EnumHorseType type) {
+    public ParticleHorseDeath(World world, double x, double y, double z, EnumHorseType type) {
         super(world, x, y, z, RegistryItems.dollHorseMount);
 
         RGBAValues splitClr = SAPUtils.getRgbaFromColorInt(type.typeColor);

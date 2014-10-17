@@ -6,15 +6,18 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.model.mount;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
+@SideOnly(Side.CLIENT)
 public class ModelPegasusMount
         extends ModelHorseMount
 {
     public float wingSwingAmount;
-    public boolean onGroundB;
+    public boolean isOnGround;
     public ModelRenderer wingLeft;
     public ModelRenderer wingRight;
 
@@ -35,7 +38,7 @@ public class ModelPegasusMount
     public void render(Entity entity, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch, float partTicks) {
         EntityPegasusMount pegasus = (EntityPegasusMount) entity;
 
-        this.onGroundB = pegasus.onGround;
+        this.isOnGround = pegasus.onGround;
         this.wingSwingAmount = (pegasus.wingSwingStep + (pegasus.wingSwing - pegasus.prevWingSwing) * partTicks);
         pegasus.wingSwingStep = this.wingSwingAmount;
 
@@ -56,7 +59,7 @@ public class ModelPegasusMount
 
         this.wingLeft.rotateAngleY += Math.sin(this.wingSwingAmount) / 6.0F;
         this.wingRight.rotateAngleY -= Math.sin(this.wingSwingAmount) / 6.0F;
-        this.wingLeft.rotateAngleZ -= Math.cos(this.wingSwingAmount) / (this.onGroundB ? 10.0F : 1.5F);
-        this.wingRight.rotateAngleZ += Math.cos(this.wingSwingAmount) / (this.onGroundB ? 10.0F : 1.5F);
+        this.wingLeft.rotateAngleZ -= Math.cos(this.wingSwingAmount) / (this.isOnGround ? 10.0F : 1.5F);
+        this.wingRight.rotateAngleZ += Math.cos(this.wingSwingAmount) / (this.isOnGround ? 10.0F : 1.5F);
     }
 }
