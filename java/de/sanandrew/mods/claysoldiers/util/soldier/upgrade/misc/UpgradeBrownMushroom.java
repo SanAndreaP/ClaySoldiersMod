@@ -12,6 +12,8 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
+
 public class UpgradeBrownMushroom
         extends UpgradeFood
 {
@@ -31,5 +33,13 @@ public class UpgradeBrownMushroom
     @Override
     protected void spawnParticles(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         ParticlePacketSender.sendDiggingFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, Blocks.brown_mushroom);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 2 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

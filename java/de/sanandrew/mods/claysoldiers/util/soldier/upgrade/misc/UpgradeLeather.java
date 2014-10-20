@@ -18,6 +18,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public class UpgradeLeather
         extends AUpgradeMisc
 {
@@ -43,7 +45,8 @@ public class UpgradeLeather
             clayMan.playSound("random.break", 1.0F, 1.0F);
             PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, clayMan.dimension, clayMan.posX, clayMan.posY, clayMan.posZ, 64.0D,
                                             Quintet.with(PacketParticleFX.FX_BREAK, clayMan.posX, clayMan.posY, clayMan.posZ,
-                                                         Item.itemRegistry.getNameForObject(Items.leather))
+                                                         Item.itemRegistry.getNameForObject(Items.leather)
+                                            )
             );
             return true;
         }
@@ -55,5 +58,13 @@ public class UpgradeLeather
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 20 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

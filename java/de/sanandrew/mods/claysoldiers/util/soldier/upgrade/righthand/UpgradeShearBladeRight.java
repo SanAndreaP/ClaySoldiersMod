@@ -12,8 +12,11 @@ import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IMeeleeUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.lang3.mutable.MutableFloat;
+
+import java.util.ArrayList;
 
 public class UpgradeShearBladeRight
         extends AUpgradeRightHanded
@@ -49,5 +52,13 @@ public class UpgradeShearBladeRight
         }
 
         return false;
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 25 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

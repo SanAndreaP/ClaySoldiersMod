@@ -23,6 +23,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public class UpgradeSnow
         extends AUpgradeLeftHanded
         implements IThrowableUpgrade
@@ -80,5 +82,19 @@ public class UpgradeSnow
 
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        int maxUses = upgradeInst.getStoredItem().getItem() == Items.snowball
+                      ? 5
+                      : upgradeInst.getStoredItem().getItem() == Item.getItemFromBlock(Blocks.snow_layer)
+                        ? 10
+                        : 20;
+
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == maxUses ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

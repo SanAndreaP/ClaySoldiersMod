@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class UpgradeClay
@@ -72,5 +73,13 @@ public class UpgradeClay
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 4 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

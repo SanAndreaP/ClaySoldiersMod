@@ -15,6 +15,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public class UpgradeBone
         extends AUpgradeRightHanded
 {
@@ -52,5 +54,13 @@ public class UpgradeBone
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         return super.canBePickedUp(clayMan, stack, upgrade) && clayMan.ridingEntity == null;
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 30 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

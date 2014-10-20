@@ -22,6 +22,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public class UpgradeEmerald
         extends AUpgradeLeftHanded
         implements IThrowableUpgrade
@@ -77,5 +79,14 @@ public class UpgradeEmerald
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
         ItemRenderHelper.renderItemIn3D(this.p_nexusItem);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        int maxUses = upgradeInst.getStoredItem().getItem() == Item.getItemFromBlock(Blocks.emerald_block) ? 45 : 5;
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == maxUses ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

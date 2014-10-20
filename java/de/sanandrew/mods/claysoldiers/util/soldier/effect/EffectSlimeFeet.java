@@ -33,4 +33,9 @@ public class EffectSlimeFeet
     public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         clayMan.canMove = false;
     }
+
+    @Override
+    public boolean isCompatibleWith(EntityClayMan clayMan, SoldierEffectInst effectInst, SoldierEffectInst checkEffect) {
+        return checkEffect.getEffect() != SoldierEffects.getEffect(SoldierEffects.EFF_REDSTONE);
+    }
 }

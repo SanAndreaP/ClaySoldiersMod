@@ -50,4 +50,8 @@ public abstract class ASoldierEffect
 
     public void onSoldierDeath(EntityClayMan clayMan, SoldierEffectInst effectInst, DamageSource source) {
     }
+
+    public boolean isCompatibleWith(EntityClayMan clayMan, SoldierEffectInst effectInst, SoldierEffectInst checkEffect) {
+        return true;
+    }
 }

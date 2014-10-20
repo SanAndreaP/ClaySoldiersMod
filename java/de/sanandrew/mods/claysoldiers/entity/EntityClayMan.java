@@ -269,15 +269,27 @@ public class EntityClayMan
                 this.dollItem = brickItem;
             }
 
+            ArrayList<ItemStack> drops = new ArrayList<>();
+
             if( !this.nexusSpawn ) {
                 if( this.dollItem != null ) {
-                    this.entityDropItem(this.dollItem.copy(), 0.0F);
+                    drops.add(this.dollItem.copy());
+                }
+
+                for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
+                    upg.getUpgrade().onItemDrop(this, upg, drops);
+                }
+
+                drops.removeAll(Collections.singleton(null));
+                for( ItemStack drop : drops ) {
+                    this.entityDropItem(drop, 0.0F);
                 }
             }
 
             for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
                 upg.getUpgrade().onSoldierDeath(this, upg, damageSource);
             }
+
             for( SoldierEffectInst eff : this.p_effects.values() ) {
                 eff.getEffect().onSoldierDeath(this, eff, damageSource);
             }
@@ -846,6 +858,13 @@ public class EntityClayMan
         if( !this.hasEffect(effect) ) {
             SoldierEffectInst effectInst = new SoldierEffectInst(effect);
             effect.onConstruct(this, effectInst);
+
+            for(SoldierEffectInst existEffect : this.p_effects.values()) {
+                if( !effect.isCompatibleWith(this, effectInst, existEffect) ) {
+                    return null;
+                }
+            }
+
             this.p_effects.put(effect, effectInst);
             return effectInst;
         } else {

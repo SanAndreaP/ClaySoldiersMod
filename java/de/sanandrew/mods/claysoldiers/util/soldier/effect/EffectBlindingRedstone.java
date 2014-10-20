@@ -34,4 +34,9 @@ public class EffectBlindingRedstone
     public void onClientUpdate(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         clayMan.worldObj.spawnParticle("reddust", clayMan.posX, clayMan.posY, clayMan.posZ, 1.0F, 0.0F, 0.0F);
     }
+
+    @Override
+    public boolean isCompatibleWith(EntityClayMan clayMan, SoldierEffectInst effectInst, SoldierEffectInst checkEffect) {
+        return checkEffect.getEffect() != SoldierEffects.getEffect(SoldierEffects.EFF_SLIMEFEET);
+    }
 }

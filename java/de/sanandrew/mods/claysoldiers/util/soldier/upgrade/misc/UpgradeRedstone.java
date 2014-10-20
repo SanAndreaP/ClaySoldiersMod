@@ -16,7 +16,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
-import org.apache.commons.lang3.mutable.MutableFloat;
+
+import java.util.ArrayList;
 
 public class UpgradeRedstone
         extends AUpgradeMisc
@@ -27,7 +28,7 @@ public class UpgradeRedstone
     }
 
     @Override
-    public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
+    public void onSoldierDamage(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
         if( target.addEffect(SoldierEffects.getEffect(SoldierEffects.EFF_REDSTONE)) != null ) {
             target.playSound("random.fizz", 1.0F, 1.0F);
             upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
@@ -58,6 +59,14 @@ public class UpgradeRedstone
                 caddicarus.playSound("random.fizz", 1.0F, 1.0F);
                 upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
             }
+        }
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 4 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
         }
     }
 }

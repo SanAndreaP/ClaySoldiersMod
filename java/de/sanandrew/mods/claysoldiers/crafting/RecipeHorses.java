@@ -27,11 +27,15 @@ public class RecipeHorses
     public boolean matches(InventoryCrafting invCrafting, World world) {
         ItemStack typeItem = invCrafting.getStackInSlot(3);
         int startIndex;
-        ItemStack[] pattern;
+        ItemStack[] pattern = new ItemStack[] {
+                typeItem, this.p_soulSand, typeItem,
+                typeItem, null, typeItem
+        };
 
         if( invCrafting.getStackInSlot(0) == null
-                && (invCrafting.getStackInSlot(1) == null || SAPUtils.areStacksEqualWithWCV(this.p_feather, invCrafting.getStackInSlot(1)))
-                && invCrafting.getStackInSlot(2) == null ) {
+            && (invCrafting.getStackInSlot(1) == null || SAPUtils.areStacksEqualWithWCV(this.p_feather, invCrafting.getStackInSlot(1)))
+            && invCrafting.getStackInSlot(2) == null )
+        {
             startIndex = 3;
         } else if( invCrafting.getStackInSlot(6) == null && invCrafting.getStackInSlot(7) == null && invCrafting.getStackInSlot(8) == null ) {
             startIndex = 0;
@@ -42,11 +46,6 @@ public class RecipeHorses
         if( EnumHorseType.getTypeFromItem(typeItem) == null ) {
             return false;
         }
-
-        pattern = new ItemStack[] {
-                typeItem, this.p_soulSand, typeItem,
-                typeItem, null, typeItem
-        };
 
         for( int i = 0, slotIndex = startIndex; i < pattern.length; slotIndex = startIndex + (++i) ) {
             if( !SAPUtils.areStacksEqualWithWCV(pattern[i], invCrafting.getStackInSlot(slotIndex)) ) {

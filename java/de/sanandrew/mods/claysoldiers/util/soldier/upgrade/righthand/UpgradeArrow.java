@@ -12,6 +12,8 @@ import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
+
 public class UpgradeArrow
         extends AUpgradeRightHanded
 {
@@ -32,5 +34,9 @@ public class UpgradeArrow
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         return super.canBePickedUp(clayMan, stack, upgrade) && upgrade != SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FEATHER);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
     }
 }

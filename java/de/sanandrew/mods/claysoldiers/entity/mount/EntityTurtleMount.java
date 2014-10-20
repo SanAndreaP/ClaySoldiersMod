@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumTurtleType;
 import net.minecraft.block.material.Material;
@@ -162,26 +163,13 @@ public class EntityTurtleMount
             return false;
         }
 
-        //TODO: readd ranged projectile check!
-        if( this.riddenByEntity instanceof EntityClayMan ) {
-//			if (e instanceof EntityGravelChunk) {
-//				if (((EntityGravelChunk)e).getClayTeam() == ((EntityClayMan)riddenByEntity).getClayTeam())
-//					return false;
-//				else
-//					i = origDmg;
-//			}
-//			if (e instanceof EntityFireball) {
-//				if (((EntityFireball)e).getClayTeam() == ((EntityClayMan)riddenByEntity).getClayTeam())
-//					return false;
-//				else
-//					i = origDmg;
-//			}
-//			if (e instanceof EntitySnowball) {
-//				if (((EntitySnowball)e).getClayTeam() == ((EntityClayMan)riddenByEntity).getClayTeam())
-//					return false;
-//				else
-//					i = origDmg;
-//			}
+        if( this.riddenByEntity instanceof EntityClayMan && source.getEntity() instanceof ISoldierProjectile ) {
+            EntityClayMan clayMan = (EntityClayMan) this.riddenByEntity;
+            ISoldierProjectile projectile = (ISoldierProjectile) source.getEntity();
+
+            if( clayMan.getClayTeam().equals(projectile.getTrowingTeam()) ) {
+                return false;
+            }
         }
 
         boolean damageSuccess = super.attackEntityFrom(source, damage);

@@ -78,4 +78,12 @@ public class UpgradeFood
     protected void spawnParticles(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
         ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, upgradeInst.getStoredItem().getItem());
     }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 4 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
+    }
 }

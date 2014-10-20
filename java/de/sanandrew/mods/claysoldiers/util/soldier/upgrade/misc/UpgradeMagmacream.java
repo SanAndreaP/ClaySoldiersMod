@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 
+import java.util.ArrayList;
+
 public class UpgradeMagmacream
         extends AUpgradeMisc
         implements IExplosiveUpgrade
@@ -43,5 +45,13 @@ public class UpgradeMagmacream
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         return !clayMan.hasUpgrade(IExplosiveUpgrade.class);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 1 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

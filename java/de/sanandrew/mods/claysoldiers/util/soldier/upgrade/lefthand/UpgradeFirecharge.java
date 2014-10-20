@@ -21,6 +21,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public class UpgradeFirecharge
         extends AUpgradeLeftHanded
         implements IThrowableUpgrade
@@ -70,5 +72,13 @@ public class UpgradeFirecharge
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
         ItemRenderHelper.renderIconIn3D(Blocks.lava.getIcon(0, 0), true, false, 0xFFFFFF);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 15 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

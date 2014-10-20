@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public class UpgradeBlazeRod
         extends AUpgradeRightHanded
         implements IMeeleeUpgrade
@@ -50,5 +52,13 @@ public class UpgradeBlazeRod
     public void onPickup(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ItemStack stack) {
         this.consumeItem(stack, upgradeInst);
         clayMan.playSound("random.pop", 1.0F, 1.0F);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 20 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

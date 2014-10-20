@@ -35,11 +35,15 @@ public class RecipeSoldiers
     }
 
     @Override
-    public boolean matches(InventoryCrafting inventory, World world) {
+    public boolean matches(InventoryCrafting invCrafting, World world) {
+        if( invCrafting.getSizeInventory() < 9 ) {
+            return false;
+        }
+
         boolean hasMaterial = false;
         boolean hasDoll = false;
         for( int i = 0; i < 9; i++ ) {
-            ItemStack stack = inventory.getStackInSlot(i);
+            ItemStack stack = invCrafting.getStackInSlot(i);
             if( stack != null ) {
                 if( SAPUtils.isItemInStackArray(stack, this.p_dollMaterials) ) {
                     if( !hasMaterial ) {
@@ -59,11 +63,11 @@ public class RecipeSoldiers
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inventory) {
+    public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
         ItemStack material = null;
         Pair<ItemStack, MutableInt> doll = null;
         for( int i = 0; i < 9; i++ ) {
-            ItemStack stack = inventory.getStackInSlot(i);
+            ItemStack stack = invCrafting.getStackInSlot(i);
             if( stack != null ) {
                 if( SAPUtils.isItemInStackArray(stack, this.p_dollMaterials) ) {
                     material = stack;

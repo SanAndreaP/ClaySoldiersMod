@@ -21,6 +21,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public class UpgradeGravel
         extends AUpgradeLeftHanded
         implements IThrowableUpgrade
@@ -72,5 +74,13 @@ public class UpgradeGravel
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
         ItemRenderHelper.renderItemIn3D(this.p_nexusItem);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        // TODO: drop it when unused or?
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) == 15 ) {
+            droppedItems.add(upgradeInst.getStoredItem());
+        }
     }
 }

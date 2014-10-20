@@ -58,6 +58,11 @@ public class EntityGravelChunk
     }
 
     @Override
+    public String getTrowingTeam() {
+        return this.dataWatcher.getWatchableObjectString(DW_CLAYMANTEAM);
+    }
+
+    @Override
     public EntityGravelChunk getProjectileEntity() {
         return this;
     }

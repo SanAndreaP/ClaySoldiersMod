@@ -17,16 +17,22 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
 public class RecipeTurtles
-
         implements IRecipe
 {
     private final ItemStack p_soulSand = new ItemStack(Blocks.soul_sand);
 
     @Override
     public boolean matches(InventoryCrafting invCrafting, World world) {
+        if( invCrafting.getSizeInventory() < 9 ) {
+            return false;
+        }
+
         ItemStack typeItem = invCrafting.getStackInSlot(5);
         int startIndex;
-        ItemStack[] pattern;
+        ItemStack[] pattern = new ItemStack[] {
+                null, typeItem, typeItem,
+                this.p_soulSand, this.p_soulSand, typeItem
+        };
 
         if( invCrafting.getStackInSlot(0) == null && invCrafting.getStackInSlot(1) == null && invCrafting.getStackInSlot(2) == null ) {
             startIndex = 3;
@@ -39,11 +45,6 @@ public class RecipeTurtles
         if( EnumTurtleType.getTypeFromItem(typeItem) == null ) {
             return false;
         }
-
-        pattern = new ItemStack[] {
-                null, typeItem, typeItem,
-                this.p_soulSand, this.p_soulSand, typeItem
-        };
 
         for( int i = 0, slotIndex = startIndex; i < pattern.length; slotIndex = startIndex + (++i) ) {
             if( !SAPUtils.areStacksEqualWithWCV(pattern[i], invCrafting.getStackInSlot(slotIndex)) ) {

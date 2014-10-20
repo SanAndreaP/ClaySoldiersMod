@@ -17,6 +17,8 @@ import net.minecraft.util.MovingObjectPosition;
 import org.apache.commons.lang3.mutable.MutableDouble;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+import java.util.ArrayList;
+
 public abstract class ASoldierUpgrade
 {
     /**
@@ -155,7 +157,9 @@ public abstract class ASoldierUpgrade
     public void onUpgradeAdded(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, SoldierUpgradeInst appliedUpgradeInst) {
     }
 
-    protected void consumeItem(ItemStack stack, SoldierUpgradeInst upgradeInst) {
+    public void consumeItem(ItemStack stack, SoldierUpgradeInst upgradeInst) {
         upgradeInst.setStoredItem(stack.splitStack(1));
     }
+
+    public abstract void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems);
 }

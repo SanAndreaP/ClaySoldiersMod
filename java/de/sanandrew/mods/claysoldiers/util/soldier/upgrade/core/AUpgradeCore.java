@@ -8,7 +8,10 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
 
 public abstract class AUpgradeCore
         extends ASoldierUpgrade
@@ -16,5 +19,10 @@ public abstract class AUpgradeCore
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         return !(upgrade instanceof AUpgradeCore);
+    }
+
+    @Override
+    public void onItemDrop(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, ArrayList<ItemStack> droppedItems) {
+        droppedItems.add(upgradeInst.getStoredItem());
     }
 }

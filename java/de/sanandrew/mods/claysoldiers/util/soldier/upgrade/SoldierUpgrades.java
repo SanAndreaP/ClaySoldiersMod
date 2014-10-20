@@ -88,6 +88,7 @@ public final class SoldierUpgrades
     public static final String UPG_MUSHROOM_BROWN = "brown_mushroom";
     public static final String UPG_DIAMOND_ITEM = "diamond";
     public static final String UPG_DIAMOND_BLOCK = "diamond_block";
+    public static final String UPG_GHAST_TEAR = "ghasttear";
 
     private static final Map<String, ASoldierUpgrade> NAME_TO_UPGRADE_MAP_ = Maps.newHashMap();
     private static final Map<ASoldierUpgrade, String> UPGRADE_TO_NAME_MAP_ = Maps.newHashMap();
@@ -229,6 +230,7 @@ public final class SoldierUpgrades
         registerUpgrade(UPG_MUSHROOM_BROWN, new ItemStack(Blocks.brown_mushroom), new UpgradeBrownMushroom());
         registerUpgrade(UPG_BLAZE_POWDER, new ItemStack(Items.blaze_powder), new UpgradeBlazePowder());
         registerUpgrade("wool_helper", new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), new UpgradeHelperWool());
+        registerUpgrade(UPG_GHAST_TEAR, new ItemStack(Items.ghast_tear), new UpgradeGhastTear());
 
         // upgrades with multiple items and render ID
         registerUpgrade(UPG_GLOWSTONE, new ItemStack[] {

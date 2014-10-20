@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.RecipeSorter.Category;
 
 public final class RegistryRecipes
 {
-    public static RecipeSoldiers s_recSoldiersInst;
+    public static RecipeSoldiers recipeSoldiers;
 
     @SuppressWarnings("unchecked")
     public static void initialize() {
@@ -74,20 +74,22 @@ public final class RegistryRecipes
                                                 'O', new ItemStack(Blocks.obsidian)
         );
 
-        s_recSoldiersInst = new RecipeSoldiers();
+        recipeSoldiers = new RecipeSoldiers();
 
-        s_recSoldiersInst.addDollMaterial(new ItemStack(Items.dye, 1, OreDictionary.WILDCARD_VALUE));
-        s_recSoldiersInst.addDollMaterial(new ItemStack(Blocks.melon_block, 1, OreDictionary.WILDCARD_VALUE));
-        s_recSoldiersInst.addDollMaterial(new ItemStack(Blocks.pumpkin, 1, OreDictionary.WILDCARD_VALUE));
-        s_recSoldiersInst.addDollMaterial(new ItemStack(Blocks.torch, 1, OreDictionary.WILDCARD_VALUE));
-        s_recSoldiersInst.addDollMaterial(new ItemStack(Blocks.redstone_torch, 1, OreDictionary.WILDCARD_VALUE));
+        recipeSoldiers.addDollMaterial(new ItemStack(Items.dye, 1, OreDictionary.WILDCARD_VALUE));
+        recipeSoldiers.addDollMaterial(new ItemStack(Blocks.melon_block, 1, OreDictionary.WILDCARD_VALUE));
+        recipeSoldiers.addDollMaterial(new ItemStack(Blocks.pumpkin, 1, OreDictionary.WILDCARD_VALUE));
+        recipeSoldiers.addDollMaterial(new ItemStack(Blocks.torch, 1, OreDictionary.WILDCARD_VALUE));
+        recipeSoldiers.addDollMaterial(new ItemStack(Blocks.redstone_torch, 1, OreDictionary.WILDCARD_VALUE));
 
         RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_soldiers", RecipeSoldiers.class, Category.SHAPED, "after:minecraft:shaped");
         RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_horses", RecipeHorses.class, Category.SHAPED, "after:minecraft:shaped");
         RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_turtles", RecipeTurtles.class, Category.SHAPED, "after:minecraft:shaped");
+        RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_bunnies", RecipeBunnies.class, Category.SHAPED, "after:minecraft:shaped");
 
-        CraftingManager.getInstance().getRecipeList().add(s_recSoldiersInst);
+        CraftingManager.getInstance().getRecipeList().add(recipeSoldiers);
         CraftingManager.getInstance().getRecipeList().add(new RecipeHorses());
         CraftingManager.getInstance().getRecipeList().add(new RecipeTurtles());
+        CraftingManager.getInstance().getRecipeList().add(new RecipeBunnies());
     }
 }
