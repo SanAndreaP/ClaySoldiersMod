@@ -110,9 +110,9 @@ public class ItemClayManDoll
                         dan.setCustomNameTag(stack.getDisplayName());
                     }
 
-//                    if( !player.capabilities.isCreativeMode ) {
-                    dan.dollItem = stack.splitStack(1);
-//                    }
+                    if( !player.capabilities.isCreativeMode ) {
+                        dan.dollItem = stack.splitStack(1);
+                    }
                 }
             }
 

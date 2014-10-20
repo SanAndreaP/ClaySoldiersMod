@@ -105,9 +105,7 @@ public class ItemTurtleDoll
                     }
 
                     if( !player.capabilities.isCreativeMode ) {
-                        --stack.stackSize;
-                    } else {
-                        dan.shouldDropDoll = false;
+                        dan.dollItem = stack.splitStack(1);
                     }
                 }
             }

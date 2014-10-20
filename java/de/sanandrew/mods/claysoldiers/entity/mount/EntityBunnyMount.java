@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
+import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
@@ -15,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +29,7 @@ public class EntityBunnyMount
     protected static final int DW_TYPE = 20;
 
     public boolean spawnedFromNexus = false;
-    public boolean shouldDropDoll = true;
+    public ItemStack dollItem = null;
 
     public EntityBunnyMount(World world) {
         super(world);
@@ -99,8 +101,13 @@ public class EntityBunnyMount
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
 
-        nbt.setBoolean("fromNexus", spawnedFromNexus);
+        nbt.setBoolean("fromNexus", this.spawnedFromNexus);
         nbt.setShort("bunnyType", (short) this.getType());
+        if( this.dollItem != null ) {
+            NBTTagCompound itemNBT = new NBTTagCompound();
+            this.dollItem.writeToNBT(itemNBT);
+            nbt.setTag("dollItem", itemNBT);
+        }
     }
 
     @Override
@@ -109,6 +116,9 @@ public class EntityBunnyMount
 
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
         this.setType(EnumBunnyType.VALUES[nbt.getShort("bunnyType")]);
+        if( nbt.hasKey("dollItem", NbtTypes.NBT_COMPOUND) ) {
+            this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
+        }
     }
 
     @Override
@@ -219,5 +229,12 @@ public class EntityBunnyMount
     @Override
     protected String getDeathSound() {
         return "step.cloth";
+    }
+
+    @Override
+    protected void dropFewItems(boolean flag, int i) {
+        if( !this.spawnedFromNexus && this.dollItem != null ) {
+            this.entityDropItem(this.dollItem, 0.0F);
+        }
     }
 }

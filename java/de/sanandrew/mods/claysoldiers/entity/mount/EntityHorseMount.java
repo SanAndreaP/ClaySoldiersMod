@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
+import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
@@ -14,7 +15,6 @@ import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,7 +32,7 @@ public class EntityHorseMount
 
     public boolean spawnedFromNexus = false;
     public boolean specialDeath = false;
-    public boolean shouldDropDoll = true;
+    public ItemStack dollItem = null;
 
     protected float moveSpeed;
 
@@ -85,6 +85,11 @@ public class EntityHorseMount
         nbt.setBoolean("fromNexus", spawnedFromNexus);
         nbt.setShort("horseType", (short) this.getType());
         nbt.setShort("texture", this.dataWatcher.getWatchableObjectShort(DW_TEXTURE));
+        if( this.dollItem != null ) {
+            NBTTagCompound itemNBT = new NBTTagCompound();
+            this.dollItem.writeToNBT(itemNBT);
+            nbt.setTag("dollItem", itemNBT);
+        }
     }
 
     @Override
@@ -94,11 +99,9 @@ public class EntityHorseMount
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
         this.setType(EnumHorseType.VALUES[nbt.getShort("horseType")]);
         this.dataWatcher.updateObject(DW_TEXTURE, nbt.getShort("texture"));
-    }
-
-    @Override
-    public EntityItem entityDropItem(ItemStack par1ItemStack, float par2) {
-        return this.spawnedFromNexus || this.specialDeath ? null : super.entityDropItem(par1ItemStack, par2);
+        if( nbt.hasKey("dollItem", NbtTypes.NBT_COMPOUND) ) {
+            this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
+        }
     }
 
     @Override
@@ -259,11 +262,11 @@ public class EntityHorseMount
         this.isAirBorne = true;
     }
 
-    //TODO: drop doll!
     @Override
     protected void dropFewItems(boolean flag, int i) {
-//		Item item1 = CSMModRegistry.horseDoll;
-//		dropItem(item1.itemID, 1, this.dataWatcher.getWatchableObjectShort(19));
+        if( !this.spawnedFromNexus && !this.specialDeath && this.dollItem != null ) {
+            this.entityDropItem(this.dollItem, 0.0F);
+        }
     }
 
     @Override
@@ -290,11 +293,6 @@ public class EntityHorseMount
     protected void chooseTexture() {
         int textureId = (this.rand.nextInt(EnumHorseType.VALUES[this.getType()].textures.length));
         this.dataWatcher.updateObject(DW_TEXTURE, (short) textureId);
-    }
-
-    //TODO: drop doll!
-    protected void dropItem(int itemID, int i, int j) {
-//		entityDropItem(new ItemStack(itemID, i, j), 0.0F);
     }
 
     private void updateHealth(float health) {
