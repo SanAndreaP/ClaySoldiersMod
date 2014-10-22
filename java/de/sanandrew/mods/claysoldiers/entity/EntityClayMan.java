@@ -782,6 +782,10 @@ public class EntityClayMan
         return this.p_upgrades.containsKey(upgrade);
     }
 
+    public boolean hasUpgrade(String upgradeName) {
+        return this.hasUpgrade(SoldierUpgrades.getUpgrade(upgradeName));
+    }
+
     public boolean hasUpgrade(Class upgradeClass) {
         for( ASoldierUpgrade upgrade : this.p_upgrades.keySet() ) {
             if( upgradeClass.isInstance(upgrade) ) {
@@ -883,6 +887,10 @@ public class EntityClayMan
         }
     }
 
+    public SoldierEffectInst getEffect(String effectName) {
+        return this.getEffect(SoldierEffects.getEffect(effectName));
+    }
+
     public void applyRenderFlags(long... flags) {
         this.p_upgradeRenderFlags[0] = flags[0];
         this.p_upgradeRenderFlags[1] = flags[1];
@@ -892,6 +900,10 @@ public class EntityClayMan
 
     public boolean hasEffect(ASoldierEffect effect) {
         return this.p_effects.containsKey(effect);
+    }
+
+    public boolean hasEffect(String effectName) {
+        return this.hasEffect(SoldierEffects.getEffect(effectName));
     }
 
     public void throwSomethingAtEnemy(EntityLivingBase entity, Class<? extends ISoldierProjectile<? extends EntityThrowable>> projClass, boolean homing) {

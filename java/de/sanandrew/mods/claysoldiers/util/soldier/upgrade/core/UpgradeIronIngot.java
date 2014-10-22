@@ -28,9 +28,7 @@ public class UpgradeIronIngot
 
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
-        if( source.getEntity() instanceof EntityClayMan
-            && ((EntityClayMan) source.getEntity()).hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) )
-        {
+        if( source.getEntity() instanceof EntityClayMan && ((EntityClayMan) source.getEntity()).hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) ) {
             clayMan.knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
         } else {
             clayMan.knockBack = Triplet.with(0.4D, 0.4D, 0.4D);

@@ -38,9 +38,7 @@ public class UpgradeGravel
     public void getAttackRange(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, Entity target, MutableFloat attackRange) {
         boolean isInRange = target.getDistanceSqToEntity(clayMan) <= 64.0D;
         if( target instanceof EntityLivingBase && !target.isDead && clayMan.canEntityBeSeen(target) && ((EntityLivingBase) target).getHealth() > 0 && isInRange ) {
-            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityGravelChunk.class,
-                                          clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SUGARCANE))
-            );
+            clayMan.throwSomethingAtEnemy(((EntityLivingBase) target), EntityGravelChunk.class, clayMan.hasUpgrade(SoldierUpgrades.UPG_SUGARCANE));
             clayMan.attackTime = 30;
             upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
         }

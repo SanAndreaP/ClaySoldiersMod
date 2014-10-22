@@ -27,6 +27,6 @@ public class UpgradeWool
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER));
+        return !clayMan.hasUpgrade(SoldierUpgrades.UPG_LEATHER);
     }
 }

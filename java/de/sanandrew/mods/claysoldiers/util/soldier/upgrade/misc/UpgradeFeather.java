@@ -18,7 +18,7 @@ public class UpgradeFeather
 {
     @Override
     public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        if( clayMan.ridingEntity != null || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
+        if( clayMan.ridingEntity != null || clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) ) {
             return EnumMethodState.SKIP;
         }
 
@@ -27,9 +27,7 @@ public class UpgradeFeather
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.ridingEntity == null && !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT))
-            && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F )
-        {
+        if( clayMan.ridingEntity == null && !clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) && clayMan.motionY < -0.2D && clayMan.fallDistance >= 1.4F ) {
             clayMan.motionY *= 0.2D;
             clayMan.fallDistance = 1.5F;
         }
@@ -45,9 +43,7 @@ public class UpgradeFeather
 
     @Override
     public void getAiMoveSpeed(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, MutableFloat speed) {
-        if( clayMan.ridingEntity == null && !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT))
-            && clayMan.motionY < -0.3D && clayMan.fallDistance >= 1.4F )
-        {
+        if( clayMan.ridingEntity == null && !clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) && clayMan.motionY < -0.3D && clayMan.fallDistance >= 1.4F ) {
             speed.setValue(speed.getValue() * 0.25F);
         }
     }

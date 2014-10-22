@@ -30,7 +30,7 @@ public class UpgradeEnderpearl
 
     @Override
     public EnumMethodState onTargeting(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target) {
-        if( clayMan.getClayTeam().equals(target.getClayTeam()) && !target.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
+        if( clayMan.getClayTeam().equals(target.getClayTeam()) && !target.hasUpgrade(SoldierUpgrades.UPG_ENDERPEARL) ) {
             return EnumMethodState.ALLOW;
         }
 
@@ -39,7 +39,7 @@ public class UpgradeEnderpearl
 
     @Override
     public EnumMethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
-        return attacker.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ? EnumMethodState.SKIP : EnumMethodState.ALLOW;
+        return attacker.hasUpgrade(SoldierUpgrades.UPG_ENDERPEARL) ? EnumMethodState.SKIP : EnumMethodState.ALLOW;
     }
 
     @Override

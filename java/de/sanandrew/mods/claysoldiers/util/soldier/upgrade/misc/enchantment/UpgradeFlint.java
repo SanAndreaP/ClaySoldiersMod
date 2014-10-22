@@ -19,7 +19,7 @@ public class UpgradeFlint
 {
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK));
+        return clayMan.hasUpgrade(SoldierUpgrades.UPG_STICK);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class UpgradeFlint
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK));
+        return !clayMan.hasUpgrade(SoldierUpgrades.UPG_STICK);
     }
 }

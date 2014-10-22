@@ -34,25 +34,25 @@ public class SoldierRightHandRenderHandler
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
         if( event.stage == EnumRenderStage.EQUIPPED ) {
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK)) ) {
-                if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FLINT)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_STICK) ) {
+                if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_FLINT) ) {
                     renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgStickArrow);
                 } else {
                     renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgStick);
                 }
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_BLAZEROD) ) {
                 renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgBlazeRod);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARRIGHT)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_SHEARRIGHT) ) {
                 renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgShearBlade);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLDMELON)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GOLDMELON) ) {
                 renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgGoldMelon);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BONE)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_BONE) ) {
                 renderRightHandItem(event.clayMan, event.clayManRender, this.p_upgBone);
             }
 
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOODBUTTON)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_WOODBUTTON) ) {
                 renderKnuckle(event.clayMan, event.clayManRender, this.p_upgWoodButton);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STONEBUTTON)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_STONEBUTTON) ) {
                 renderKnuckle(event.clayMan, event.clayManRender, this.p_upgStoneButton);
             }
         }

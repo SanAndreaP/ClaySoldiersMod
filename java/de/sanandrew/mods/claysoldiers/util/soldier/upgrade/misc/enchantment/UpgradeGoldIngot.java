@@ -59,6 +59,6 @@ public class UpgradeGoldIngot
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET));
+        return clayMan.hasUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET);
     }
 }

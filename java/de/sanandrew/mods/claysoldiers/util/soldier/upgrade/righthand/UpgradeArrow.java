@@ -19,7 +19,7 @@ public class UpgradeArrow
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_STICK));
+        return !clayMan.hasUpgrade(SoldierUpgrades.UPG_STICK);
     }
 
     @Override

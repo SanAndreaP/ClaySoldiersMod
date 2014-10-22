@@ -54,7 +54,7 @@ public class UpgradeIronBlock
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL));
+        return !clayMan.hasUpgrade(SoldierUpgrades.UPG_BOWL);
     }
 
     @Override
@@ -64,6 +64,6 @@ public class UpgradeIronBlock
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL));
+        return clayMan.hasUpgrade(SoldierUpgrades.UPG_BOWL);
     }
 }

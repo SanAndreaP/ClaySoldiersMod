@@ -17,7 +17,7 @@ public class UpgradeLilyPads
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.isInWater() && !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
+        if( clayMan.isInWater() && !clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) ) {
             clayMan.setJumping(false);
             if( clayMan.isCollidedHorizontally ) {
                 clayMan.motionY = 0.2D;

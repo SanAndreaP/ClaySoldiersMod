@@ -40,13 +40,12 @@ public class SoldierModelRenderHandler
 
     @SubscribeEvent
     public void onSoldierRotationAngles(SetRotationAnglesEvent event) {
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FEATHER)) && !event.clayMan.onGround && event.clayMan.motionY < -0.1D
-                && event.clayMan.fallDistance >= 1.3F ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_FEATHER) && !event.clayMan.onGround && event.clayMan.motionY < -0.1D && event.clayMan.fallDistance >= 1.3F ) {
             event.model.bipedLeftArm.rotateAngleX = (float) Math.PI;
             event.model.bipedRightArm.rotateAngleX = (float) Math.PI;
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_ENDERPEARL) ) {
             event.model.bipedLeftArm.rotateAngleX = -(float) Math.PI * 0.5F;
             event.model.bipedRightArm.rotateAngleX = -(float) Math.PI * 0.5F;
         }
@@ -59,46 +58,44 @@ public class SoldierModelRenderHandler
             this.initRenderer(event.clayManRender);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_INGOT)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GOLD_INGOT) ) {
             renderGoldHoodie(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.renderYaw, event.pitch, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GUNPOWDER)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GUNPOWDER) ) {
             renderGunpowder(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.renderYaw, event.pitch, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_MAGMACREAM)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_MAGMACREAM) ) {
             renderMagmacream(event.clayMan, event.clayManRender, event.limbSwing, event.limbSwingAmount, event.rotFloat, event.renderYaw, event.pitch, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM))
-                || event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_BLOCK)) )
-        {
-            this.renderCape(event.clayMan, event.clayManRender, event.partTicks, true);
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM) || event.clayMan.hasUpgrade(SoldierUpgrades.UPG_DIAMOND_BLOCK) ) {
+            renderCape(event.clayMan, event.clayManRender, event.partTicks, true);
             this.renderCrown(event.clayManRender, event.partTicks, true);
         } else {
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_PAPER)) ) {
-                this.renderCape(event.clayMan, event.clayManRender, event.partTicks, false);
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_PAPER) ) {
+                renderCape(event.clayMan, event.clayManRender, event.partTicks, false);
             }
 
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GOLD_NUGGET) ) {
                 this.renderCrown(event.clayManRender, event.partTicks, false);
             }
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) ) {
             this.renderIronCoreBuff(event.clayMan, event.clayManRender, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LILYPADS)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_LILYPADS) ) {
             this.renderLilyPants(event.clayManRender, event.partTicks);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_LEATHER) ) {
             this.renderHideArmor(event.clayMan, event.clayManRender, event.partTicks, SoldierUpgrades.UPG_LEATHER);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GLASS) ) {
             this.renderGoggleStripes(event.clayManRender, event.partTicks);
         }
 
@@ -151,80 +148,6 @@ public class SoldierModelRenderHandler
         this.lilypantsLeftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
     }
 
-    private static void renderGoldHoodie(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
-                                         float pitch, float partTicks) {
-        clayManRender.bindTexture(Textures.CLAYMAN_GOLD_HOODIE);
-        GL11.glPushMatrix();
-        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
-        GL11.glPopMatrix();
-    }
-
-    private static void renderGunpowder(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
-                                        float pitch, float partTicks) {
-        clayManRender.bindTexture(Textures.CLAYMAN_GUNPOWDER);
-        GL11.glPushMatrix();
-        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
-        GL11.glPopMatrix();
-    }
-
-    private static void renderMagmacream(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
-                                         float pitch, float partTicks) {
-        clayManRender.bindTexture(Textures.CLAYMAN_MAGMACREAM);
-        GL11.glPushMatrix();
-        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
-        GL11.glPopMatrix();
-    }
-
-    private void renderCape(EntityClayMan clayMan, RenderClayMan clayManRender, float partTicks, boolean isSuper) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 0.0F, 0.175F);
-
-        double swingProgX = calcSwingProgress(clayMan.cloakHelper.swingPosX, clayMan.cloakHelper.prevSwingPosX, clayMan.posX, clayMan.prevPosX, partTicks);
-        double swingProgY = calcSwingProgress(clayMan.cloakHelper.swingPosY, clayMan.cloakHelper.prevSwingPosY, clayMan.posY, clayMan.prevPosY, partTicks) * 10.0F;
-        double swingProgZ = calcSwingProgress(clayMan.cloakHelper.swingPosZ, clayMan.cloakHelper.prevSwingPosZ, clayMan.posZ, clayMan.prevPosZ, partTicks);
-        float yawOffProg = clayMan.prevRenderYawOffset + (clayMan.renderYawOffset - clayMan.prevRenderYawOffset) * partTicks;
-        double yawOffProgSin = MathHelper.sin(yawOffProg * (float) Math.PI / 180.0F);
-        double yawOffProgNCos = -MathHelper.cos(yawOffProg * (float) Math.PI / 180.0F);
-
-        if( swingProgY < -6.0F ) {
-            swingProgY = -6.0F;
-        }
-
-        if( swingProgY > 32.0F ) {
-            swingProgY = 32.0F;
-        }
-
-        float swingXZSin = (float) (swingProgX * yawOffProgSin + swingProgZ * yawOffProgNCos) * 100.0F;
-        float swingXZNCos = (float) (swingProgX * yawOffProgNCos - swingProgZ * yawOffProgSin) * 100.0F;
-
-        if( swingXZSin < 0.0F ) {
-            swingXZSin = 0.0F;
-        }
-
-        GL11.glRotatef(6.0F + swingXZSin / 2.0F + (float) swingProgY, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(swingXZNCos / 2.0F, 0.0F, 0.0F, 1.0F);
-        GL11.glRotatef(-swingXZNCos / 2.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-
-        if( isSuper ) {
-            clayManRender.bindTexture(Textures.CLAYMAN_CAPE_DIAMOND);
-        } else {
-            float[] color = this.getSplittedColor(clayMan.getMiscColor());
-            GL11.glColor3f(color[0], color[1], color[2]);
-            clayManRender.bindTexture(Textures.CLAYMAN_CAPE_BLANK);
-        }
-
-        clayManRender.modelBipedMain.bipedCloak.render(0.0625F);
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-        GL11.glPopMatrix();
-    }
-
-    private static double calcSwingProgress(double swingPos, double prevSwingPos, double pos, double prevPos, float partTicks) {
-        double swingProg = prevSwingPos + (swingPos - prevSwingPos) * partTicks;
-        double posProg = prevPos + (pos - prevPos) * partTicks;
-        return swingProg - posProg;
-    }
-
     private void renderCrown(RenderClayMan clayManRender, float partTicks, boolean isSuper) {
         ModelBiped model = clayManRender.modelBipedMain;
 
@@ -238,6 +161,7 @@ public class SoldierModelRenderHandler
         } else {
             GL11.glColor3f(1.0F, 0.9F, 0.0F);
         }
+
         this.crown.render(partTicks);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
     }
@@ -305,14 +229,14 @@ public class SoldierModelRenderHandler
         this.armorLeftArm.render(partTicks);
         this.armorRightArm.render(partTicks);
 
-        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
+        if( clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) ) {
             this.buffedBody.render(partTicks);
         }
 
         GL11.glPopMatrix();
 
-        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOOL)) ) {
-            float[] color = this.getSplittedColor(clayMan.getMiscColor());
+        if( clayMan.hasUpgrade(SoldierUpgrades.UPG_WOOL) ) {
+            float[] color = getSplittedColor(clayMan.getMiscColor());
 
             clayManRender.bindTexture(Textures.CLAYMAN_PADDING);
             GL11.glPushMatrix();
@@ -355,7 +279,81 @@ public class SoldierModelRenderHandler
         GL11.glPopMatrix();
     }
 
-    public float[] getSplittedColor(int color) {
+    private static void renderGoldHoodie(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
+                                         float pitch, float partTicks) {
+        clayManRender.bindTexture(Textures.CLAYMAN_GOLD_HOODIE);
+        GL11.glPushMatrix();
+        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
+        GL11.glPopMatrix();
+    }
+
+    private static void renderGunpowder(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
+                                        float pitch, float partTicks) {
+        clayManRender.bindTexture(Textures.CLAYMAN_GUNPOWDER);
+        GL11.glPushMatrix();
+        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
+        GL11.glPopMatrix();
+    }
+
+    private static void renderMagmacream(EntityClayMan clayMan, RenderClayMan clayManRender, float limbSwing, float limbSwingAmount, float rotFloat, float yaw,
+                                         float pitch, float partTicks) {
+        clayManRender.bindTexture(Textures.CLAYMAN_MAGMACREAM);
+        GL11.glPushMatrix();
+        clayManRender.modelBipedMain.render(clayMan, limbSwing, limbSwingAmount, rotFloat, yaw, pitch, partTicks);
+        GL11.glPopMatrix();
+    }
+
+    private static void renderCape(EntityClayMan clayMan, RenderClayMan clayManRender, float partTicks, boolean isSuper) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.0F, 0.175F);
+
+        double swingProgX = calcSwingProgress(clayMan.cloakHelper.swingPosX, clayMan.cloakHelper.prevSwingPosX, clayMan.posX, clayMan.prevPosX, partTicks);
+        double swingProgY = calcSwingProgress(clayMan.cloakHelper.swingPosY, clayMan.cloakHelper.prevSwingPosY, clayMan.posY, clayMan.prevPosY, partTicks) * 10.0F;
+        double swingProgZ = calcSwingProgress(clayMan.cloakHelper.swingPosZ, clayMan.cloakHelper.prevSwingPosZ, clayMan.posZ, clayMan.prevPosZ, partTicks);
+        float yawOffProg = clayMan.prevRenderYawOffset + (clayMan.renderYawOffset - clayMan.prevRenderYawOffset) * partTicks;
+        double yawOffProgSin = MathHelper.sin(yawOffProg * (float) Math.PI / 180.0F);
+        double yawOffProgNCos = -MathHelper.cos(yawOffProg * (float) Math.PI / 180.0F);
+
+        if( swingProgY < -6.0F ) {
+            swingProgY = -6.0F;
+        }
+
+        if( swingProgY > 32.0F ) {
+            swingProgY = 32.0F;
+        }
+
+        float swingXZSin = (float) (swingProgX * yawOffProgSin + swingProgZ * yawOffProgNCos) * 100.0F;
+        float swingXZNCos = (float) (swingProgX * yawOffProgNCos - swingProgZ * yawOffProgSin) * 100.0F;
+
+        if( swingXZSin < 0.0F ) {
+            swingXZSin = 0.0F;
+        }
+
+        GL11.glRotatef(6.0F + swingXZSin / 2.0F + (float) swingProgY, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(swingXZNCos / 2.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-swingXZNCos / 2.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+
+        if( isSuper ) {
+            clayManRender.bindTexture(Textures.CLAYMAN_CAPE_DIAMOND);
+        } else {
+            float[] color = getSplittedColor(clayMan.getMiscColor());
+            GL11.glColor3f(color[0], color[1], color[2]);
+            clayManRender.bindTexture(Textures.CLAYMAN_CAPE_BLANK);
+        }
+
+        clayManRender.modelBipedMain.bipedCloak.render(0.0625F);
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glPopMatrix();
+    }
+
+    private static double calcSwingProgress(double swingPos, double prevSwingPos, double pos, double prevPos, float partTicks) {
+        double swingProg = prevSwingPos + (swingPos - prevSwingPos) * partTicks;
+        double posProg = prevPos + (pos - prevPos) * partTicks;
+        return swingProg - posProg;
+    }
+
+    public static float[] getSplittedColor(int color) {
         float[] splitColor = new float[3];
 
         splitColor[0] = ((color >> 16) & 0xFF) / 255.0F;

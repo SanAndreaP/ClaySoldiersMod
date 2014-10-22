@@ -23,7 +23,7 @@ public class UpgradeCoal
 {
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER)) ) {
+        if( clayMan.hasUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER) ) {
             SoldierUpgradeInst bpUpgInst = clayMan.getUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER));
             bpUpgInst.getNbtTag().setShort(NBT_USES, (short) (bpUpgInst.getNbtTag().getShort(NBT_USES) + 1));
         }
@@ -31,14 +31,14 @@ public class UpgradeCoal
 
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD)) ) {
+        if( clayMan.hasUpgrade(SoldierUpgrades.UPG_BLAZEROD) ) {
             target.setFire(6);
         }
     }
 
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD));
+        return !clayMan.hasUpgrade(SoldierUpgrades.UPG_BLAZEROD);
     }
 
     @Override
@@ -57,8 +57,7 @@ public class UpgradeCoal
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZEROD))
-                || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER))
-                || clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FIRECHARGE));
+        return clayMan.hasUpgrade(SoldierUpgrades.UPG_BLAZEROD) || clayMan.hasUpgrade(SoldierUpgrades.UPG_BLAZE_POWDER)
+               || clayMan.hasUpgrade(SoldierUpgrades.UPG_FIRECHARGE);
     }
 }

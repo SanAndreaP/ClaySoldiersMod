@@ -46,6 +46,6 @@ public class UpgradeDiamondBlock
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM));
+        return !clayMan.hasUpgrade(SoldierUpgrades.UPG_DIAMOND_ITEM);
     }
 }

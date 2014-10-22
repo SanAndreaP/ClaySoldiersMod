@@ -33,17 +33,17 @@ public class SoldierLeftHandRenderHandler
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
         if( event.stage == EnumRenderStage.EQUIPPED ) {
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SHEARLEFT)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_SHEARLEFT) ) {
                 renderLeftHandItem(event.clayMan, event.clayManRender, this.p_itemShearBlade);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GRAVEL)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GRAVEL) ) {
                 renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockGravel);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_SNOW)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_SNOW) ) {
                 renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockSnow);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FIRECHARGE)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_FIRECHARGE) ) {
                 renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockObsidian);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_EMERALD)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_EMERALD) ) {
                 renderThrowableBlock(event.clayMan, event.clayManRender, this.p_blockEmerald);
-            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_BOWL)) ) {
+            } else if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_BOWL) ) {
                 renderShield(event.clayMan, event.clayManRender);
             }
         }
@@ -74,7 +74,7 @@ public class SoldierLeftHandRenderHandler
     }
 
     private static void renderShield(EntityClayMan clayMan, RenderClayMan renderer) {
-        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_BLOCK)) ? Textures.s_shieldStudIcon : Textures.s_shieldIcon;
+        IIcon icon = clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_BLOCK) ? Textures.s_shieldStudIcon : Textures.s_shieldIcon;
 
         GL11.glPushMatrix();
         renderer.modelBipedMain.bipedLeftArm.postRender(0.0625F);

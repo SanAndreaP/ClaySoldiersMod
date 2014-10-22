@@ -91,6 +91,7 @@ public class BlockClayNexus
             teNexus.markDirty();
             world.markBlockForUpdate(x, y, z);
         }
+
         return true;
     }
 

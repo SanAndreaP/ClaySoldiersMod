@@ -17,7 +17,7 @@ public class UpgradeEgg
 {
     @Override
     public EnumMethodState onBeingTargeted(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan attacker) {
-        return attacker.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)) ? EnumMethodState.SKIP : EnumMethodState.DENY;
+        return attacker.hasUpgrade(SoldierUpgrades.UPG_GLASS) ? EnumMethodState.SKIP : EnumMethodState.DENY;
     }
 
     @Override

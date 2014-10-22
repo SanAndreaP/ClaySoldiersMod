@@ -17,7 +17,7 @@ public class UpgradeWheatSeeds
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
+        if( clayMan.hasUpgrade(SoldierUpgrades.UPG_ENDERPEARL) ) {
             clayMan.attackEntityFrom(DamageSource.magic, 10000.0F);
         }
 

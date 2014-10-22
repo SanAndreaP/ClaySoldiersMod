@@ -59,8 +59,8 @@ public class RenderStatDisplayOverlay
             }
         }
 
-        if( !mc.gameSettings.showDebugInfo && mc.thePlayer.getCurrentEquippedItem() != null
-                && mc.thePlayer.getCurrentEquippedItem().getItem() == RegistryItems.statDisplay ) {
+        ItemStack equippedStack = mc.thePlayer.getCurrentEquippedItem();
+        if( !mc.gameSettings.showDebugInfo && equippedStack != null && equippedStack.getItem() == RegistryItems.statDisplay ) {
             this.renderSoldiers(mc);
             this.renderMounts(mc);
         }

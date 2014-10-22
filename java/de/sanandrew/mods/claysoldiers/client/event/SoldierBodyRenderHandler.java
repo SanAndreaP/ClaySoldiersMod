@@ -39,27 +39,27 @@ public class SoldierBodyRenderHandler
     @SubscribeEvent
     public void onSoldierRender(SoldierRenderEvent event) {
         if( event.stage == EnumRenderStage.PRE || event.stage == EnumRenderStage.POST ) {
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_EGG)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_EGG) ) {
                 renderStealthEffect(event.stage);
             }
 
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLOWSTONE)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GLOWSTONE) ) {
                 renderGlowstoneEffect(event.stage);
             }
 
-            if( event.clayMan.hasEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER)) && event.stage == EnumRenderStage.PRE ) {
+            if( event.clayMan.hasEffect(SoldierEffects.EFF_THUNDER) && event.stage == EnumRenderStage.PRE ) {
                 renderThunderbolt(event.clayMan, event.renderX, event.renderY, event.renderZ);
             }
         }
 
         if( event.stage == EnumRenderStage.EQUIPPED ) {
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_FEATHER)) && !event.clayMan.onGround && event.clayMan.motionY < -0.1D
-                    && event.clayMan.fallDistance >= 1.3F )
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_FEATHER) && !event.clayMan.onGround && event.clayMan.motionY < -0.1D
+                && event.clayMan.fallDistance >= 1.3F )
             {
                 this.renderFeather(event.clayMan, event.clayManRender);
             }
 
-            if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_GLASS)) ) {
+            if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_GLASS) ) {
                 this.renderGlass(event.clayMan, event.clayManRender);
             }
         }
@@ -67,11 +67,11 @@ public class SoldierBodyRenderHandler
 
     @SubscribeEvent
     public void onSoldierLivingRender(SoldierRenderEvent.RenderLivingEvent event) {
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_IRON_INGOT)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_IRON_INGOT) ) {
             GL11.glScalef(1.19F, 1.19F, 1.19F);
         }
 
-        if( event.clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_ENDERPEARL)) ) {
+        if( event.clayMan.hasUpgrade(SoldierUpgrades.UPG_ENDERPEARL) ) {
             GL11.glColor3f(0.5F, 0.5F, 0.5F);
         }
     }
@@ -97,7 +97,7 @@ public class SoldierBodyRenderHandler
     }
 
     private void renderThunderbolt(EntityClayMan clayMan, double targetX, double targetY, double targetZ) {
-        NBTTagCompound effectNbt = clayMan.getEffect(SoldierEffects.getEffect(SoldierEffects.EFF_THUNDER)).getNbtTag();
+        NBTTagCompound effectNbt = clayMan.getEffect(SoldierEffects.EFF_THUNDER).getNbtTag();
         if( effectNbt.getShort("ticksRemaining") < 17 ) {
             return;
         }

@@ -31,7 +31,7 @@ public class UpgradeShearBladeLeft
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         float baseDmg = 1.0F;
-        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_EGG)) && target.getEntityToAttack() == null ) {
+        if( clayMan.hasUpgrade(SoldierUpgrades.UPG_EGG) && target.getEntityToAttack() == null ) {
             baseDmg = 3.0F;
             ParticlePacketSender.sendCritFx(target.posX, target.posY, target.posZ, target.dimension);
         }

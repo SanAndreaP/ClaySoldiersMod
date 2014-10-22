@@ -25,15 +25,13 @@ public class UpgradeHelperWool
         clayMan.setMiscColorIndex(15 - stack.getItemDamage());
         clayMan.playSound("dig.cloth", 1.0F, 1.0F);
 
-        if( clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_LEATHER))
-            && !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOOL)) )
-        {
+        if( clayMan.hasUpgrade(SoldierUpgrades.UPG_LEATHER) && !clayMan.hasUpgrade(SoldierUpgrades.UPG_WOOL) ) {
             clayMan.addUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOOL));
         }
     }
 
     @Override
     public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
-        return clayMan.getMiscColorIndex() != 15 - stack.getItemDamage() || !clayMan.hasUpgrade(SoldierUpgrades.getUpgrade(SoldierUpgrades.UPG_WOOL));
+        return clayMan.getMiscColorIndex() != 15 - stack.getItemDamage() || !clayMan.hasUpgrade(SoldierUpgrades.UPG_WOOL);
     }
 }
