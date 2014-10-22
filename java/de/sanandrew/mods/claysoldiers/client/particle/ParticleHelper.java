@@ -13,8 +13,10 @@ import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Sextet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,35 +29,41 @@ import net.minecraft.util.MathHelper;
 public final class ParticleHelper
 {
     @SuppressWarnings("unchecked")
-    public static void spawnParticles(byte particleId, Tuple particleData) {
+    public static void spawnParticles(EnumParticleFx particleId, Tuple particleData) {
         Minecraft mc = Minecraft.getMinecraft();
 
         switch( particleId ) {                                                      // TODO: use lambdas (Java 8) instead of this when Java 7 gets its EOL!
-            case PacketParticleFX.FX_BREAK:
+            case FX_BREAK:
                 spawnBreakFx((Quartet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_CRIT:
+            case FX_CRIT:
                 spawnCritFx((Triplet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_SOLDIER_DEATH:
+            case FX_SOLDIER_DEATH:
                 spawnSoldierDeathFx((Quartet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_HORSE_DEATH:
+            case FX_HORSE_DEATH:
                 spawnHorseDeathFx((Quartet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_DIGGING:
+            case FX_BUNNY_DEATH:
+                spawnBunnyDeathFx((Quartet) particleData, mc);
+                break;
+            case FX_TURTLE_DEATH:
+                spawnTurtleDeathFx((Quartet) particleData, mc);
+                break;
+            case FX_DIGGING:
                 spawnDiggingFx((Quartet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_SPELL:
+            case FX_SPELL:
                 spawnSpellFx((Sextet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_NEXUS:
+            case FX_NEXUS:
                 spawnNexusFx((Sextet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_SHOCKWAVE:
+            case FX_SHOCKWAVE:
                 spawnShockwaveFx((Triplet) particleData, mc);
                 break;
-            case PacketParticleFX.FX_MAGMAFUSE:
+            case FX_MAGMAFUSE:
                 spawnMagmafuseFx((Triplet) particleData, mc);
                 break;
         }
@@ -94,6 +102,24 @@ public final class ParticleHelper
 
         for( int i = 0; i < 5; i++ ) {
             ParticleHorseDeath fx = new ParticleHorseDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
+            mc.effectRenderer.addEffect(fx);
+        }
+    }
+
+    public static void spawnBunnyDeathFx(Quartet<Double, Double, Double, Byte> data, Minecraft mc) {
+        EnumBunnyType type = EnumBunnyType.VALUES[data.getValue3()];
+
+        for( int i = 0; i < 5; i++ ) {
+            ParticleBunnyDeath fx = new ParticleBunnyDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
+            mc.effectRenderer.addEffect(fx);
+        }
+    }
+
+    public static void spawnTurtleDeathFx(Quartet<Double, Double, Double, Byte> data, Minecraft mc) {
+        EnumTurtleType type = EnumTurtleType.VALUES[data.getValue3()];
+
+        for( int i = 0; i < 5; i++ ) {
+            ParticleTurtleDeath fx = new ParticleTurtleDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
             mc.effectRenderer.addEffect(fx);
         }
     }

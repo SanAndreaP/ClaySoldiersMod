@@ -6,8 +6,11 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityBunnyMount;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,6 +26,7 @@ import java.util.List;
 
 public class ItemBunnyDoll
         extends Item
+        implements IDisruptable
 {
     public ItemBunnyDoll() {
         super();
@@ -117,7 +121,11 @@ public class ItemBunnyDoll
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_bunny");
     }
+
+    @Override
+    public void disrupt() { }
 }

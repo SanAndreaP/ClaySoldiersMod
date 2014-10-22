@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.render;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManager;
@@ -27,6 +28,12 @@ public class EntityRendererClayCam
     @Override
     public void updateCameraAndRender(float partialTick) {
         if( this.p_mc.thePlayer == null || this.p_mc.thePlayer.isPlayerSleeping() || ClientProxy.s_clayCamEntity == null ){
+            super.updateCameraAndRender(partialTick);
+            return;
+        }
+
+        if( ClientProxy.s_clayCamEntity.isDead ) {
+            ClaySoldiersMod.proxy.switchClayCam(false, null);
             super.updateCameraAndRender(partialTick);
             return;
         }

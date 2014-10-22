@@ -17,6 +17,7 @@ import de.sanandrew.mods.claysoldiers.client.render.item.ItemRendererClayNexus;
 import de.sanandrew.mods.claysoldiers.client.render.tileentity.RenderClayNexus;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
+import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
@@ -76,8 +77,8 @@ public class ClientProxy
 
     @Override
     @SuppressWarnings("unchecked")
-    public void spawnParticles(byte particleId, Tuple particleData) {
-        ParticleHelper.spawnParticles(particleId, particleData);
+    public void spawnParticles(EnumParticleFx fxType, Tuple particleData) {
+        ParticleHelper.spawnParticles(fxType, particleData);
     }
 
     @Override

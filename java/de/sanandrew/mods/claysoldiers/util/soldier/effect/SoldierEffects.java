@@ -7,12 +7,12 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Bytes;
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import org.apache.logging.log4j.Level;
 
 import java.util.Map;
+import java.util.Set;
 
 public class SoldierEffects
 {
@@ -76,8 +76,8 @@ public class SoldierEffects
         return RENDER_ID_TO_EFFECT_MAP_.get((byte) renderId);
     }
 
-    public static byte[] getRegisteredRenderIds() {
-        return Bytes.toArray(RENDER_ID_TO_EFFECT_MAP_.keySet());
+    public static Set<Byte> getRegisteredRenderIds() {
+        return RENDER_ID_TO_EFFECT_MAP_.keySet();
     }
 
     public static byte getNewRenderId() {

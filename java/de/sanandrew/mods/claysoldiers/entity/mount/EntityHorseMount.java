@@ -151,17 +151,6 @@ public class EntityHorseMount
         boolean damageSuccess = super.attackEntityFrom(source, damage);
 
         if( damageSuccess && this.getHealth() <= 0 ) {
-//				Item item1 = CSM_ModRegistry.horseDoll;
-            //TODO: readd particles!
-//				for( int i = 0; i < 4; i++ ) {
-//					double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
-//					double b = boundingBox.minY + 0.125D + ((rand.nextFloat() - rand.nextFloat()) * 0.25D);
-//					double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
-//
-////					CSMModRegistry.proxy.showEffect(this.worldObj, this, 13);
-////					if (FMLCommonHandler.instance().getSide().isClient())
-////						CSM_ModRegistry.proxy.showEffect((new EntityDiggingFX(CSM_ModRegistry.proxy.getClientWorld(), a, b, c, 0.0D, 0.0D, 0.0D, Block.dirt, 0, 0)));
-//				}
             if( source.isFireDamage() && !this.isSpecial() && shouldSpawnSpecial ) {
                 EntityHorseMount specialHorse = new EntityHorseMount(this.worldObj, EnumHorseType.VALUES[this.getType()]);
                 specialHorse.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);

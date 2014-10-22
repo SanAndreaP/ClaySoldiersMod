@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class ItemClayManDoll
         extends Item
+        implements IDisruptable
 {
     public ItemClayManDoll() {
         super();
@@ -149,4 +151,7 @@ public class ItemClayManDoll
     public IIcon getIcon(ItemStack stack, int pass) {
         return getTeam(stack).getIconInstance();
     }
+
+    @Override
+    public void disrupt() { }
 }

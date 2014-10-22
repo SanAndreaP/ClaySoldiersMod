@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.item;
 import com.google.common.collect.Maps;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtleMount;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumTurtleType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 public class ItemTurtleDoll
         extends Item
+        implements IDisruptable
 {
     private Map<EnumTurtleType, IIcon> icons;
     private IIcon baseIcon;
@@ -56,14 +58,15 @@ public class ItemTurtleDoll
         return jordan;
     }
 
-    public static void setType(ItemStack stack, EnumTurtleType type) {
+    public static ItemStack setType(ItemStack stack, EnumTurtleType type) {
         if( type.itemData == null ) {
-            return;
+            return stack;
         }
 
         NBTTagCompound nbt = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
         nbt.setString("type", type.toString());
         stack.setTagCompound(nbt);
+        return stack;
     }
 
     public static EnumTurtleType getType(ItemStack stack) {
@@ -169,7 +172,6 @@ public class ItemTurtleDoll
         return pass == 0 ? this.icons.get(getType(stack)) : this.baseIcon;
     }
 
-    public IIcon getIconFromType(EnumTurtleType type) {
-        return this.icons.get(type);
-    }
+    @Override
+    public void disrupt() { }
 }

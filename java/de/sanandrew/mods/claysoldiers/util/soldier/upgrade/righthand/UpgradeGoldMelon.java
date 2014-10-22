@@ -6,10 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand;
 
-import de.sanandrew.core.manpack.util.javatuples.Septet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
-import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
@@ -34,9 +32,7 @@ public class UpgradeGoldMelon
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         damage.setValue(0.0F);
         clayMan.heal(15.0F);
-        PacketProcessor.sendToAllAround(PacketProcessor.PKG_PARTICLES, target.dimension, target.posX, target.posY, target.posZ, 64.0D,
-                                        Septet.with(PacketParticleFX.FX_SPELL, target.posX, target.posY, target.posZ, 1.0D, 0.0D, 0.0D)
-        );
+        ParticlePacketSender.sendSpellFx(target.posX, target.posY, target.posZ, target.dimension, 1.0D, 0.0D, 0.0D);
     }
 
     @Override

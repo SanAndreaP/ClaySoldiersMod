@@ -15,7 +15,7 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.item.IMountDoll;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
-import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import de.sanandrew.mods.claysoldiers.util.BugfixHelper;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
@@ -199,11 +199,9 @@ public class TileEntityClayNexus
             this.prevSpinAngle = this.spinAngle;
             if( this.isActive && this.p_health > 0.0F ) {
                 this.spinAngle += 4;
-                ClaymanTeam team = ItemClayManDoll.getTeam(this.p_soldierSlot);
-                RGBAValues rgba = SAPUtils.getRgbaFromColorInt(team.getTeamColor());
-                ClaySoldiersMod.proxy.spawnParticles(PacketParticleFX.FX_NEXUS, Sextet.with((double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
-                                                                                     rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F
-                                              )
+                RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(this.p_soldierSlot).getTeamColor());
+                ClaySoldiersMod.proxy.spawnParticles(EnumParticleFx.FX_NEXUS, Sextet.with((double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
+                                                                                          rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F)
                 );
             } else if( this.spinAngle % 90 != 0 ) {
                 this.spinAngle += 2;

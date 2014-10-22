@@ -1,9 +1,17 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.CsmPlayerProperties;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
-import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,14 +22,10 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-/**
- * @author SanAndreas
- * @version 1.0
- */
 public class ItemDisruptor
         extends Item
 {
-    private boolean p_isHard = false;
+    private final boolean p_isHard;
 
     public ItemDisruptor(boolean hardened) {
         super();
@@ -30,26 +34,41 @@ public class ItemDisruptor
         this.setMaxDamage((hardened ? 50 : 10) - 1);
     }
 
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        disrupt(stack, world, player.posX, player.posY, player.posZ, player);
+        return stack;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
+        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + (this.p_isHard ? ":disruptor_cooked" : ":disruptor"));
+    }
+
     @SuppressWarnings("unchecked")
     public static void disrupt(ItemStack stack, World world, double x, double y, double z, EntityPlayer player) {
         if( !world.isRemote ) {
             if( player != null && player.capabilities.isCreativeMode && player.isSneaking() ) {
-                List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x - 32.0D, y - 32.0D, z - 32.0D,
-                                                                                                                    x + 32.0D, y + 32.0D, z + 32.0D
-                                                                     )
-                );
+                List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, getRangedBB(x, y, z, 32.0D));
 
                 for( EntityItem item : items ) {
-                    if( item.getEntityItem() != null && item.getEntityItem().getItem() == RegistryItems.dollSoldier ) {
+                    if( item.getEntityItem() != null && item.getEntityItem().getItem() instanceof IDisruptable ) {
                         item.setDead();
                     }
                 }
             }
 
-            List<IDisruptable> disruptables = world.getEntitiesWithinAABB(IDisruptable.class, AxisAlignedBB.getBoundingBox(x - 32.0D, y - 32.0D, z - 32.0D,
-                                                                                                                           x + 32.0D, y + 32.0D, z + 32.0D
-                                                                          )
-            );
+            if( player != null ) {
+                CsmPlayerProperties prop = CsmPlayerProperties.get(player);
+                if( prop != null && prop.canDisruptorBeUsed() ) {
+                    prop.setDisruptorFired();
+                } else {
+                    return;
+                }
+            }
+
+            List<IDisruptable> disruptables = world.getEntitiesWithinAABB(IDisruptable.class, getRangedBB(x, y, z, 32.0D));
 
             for( IDisruptable disruptable : disruptables ) {
                 disruptable.disrupt();
@@ -67,14 +86,7 @@ public class ItemDisruptor
         }
     }
 
-    @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        disrupt(stack, world, player.posX, player.posY, player.posZ, player);
-        return stack;
-    }
-
-    @Override
-    public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + (this.p_isHard ? ":disruptor_cooked" : ":disruptor"));
+    private static AxisAlignedBB getRangedBB(double x, double y, double z, double range) {
+        return AxisAlignedBB.getBoundingBox(x - range, y - range, z - range, x + range, y + range, z + range);
     }
 }

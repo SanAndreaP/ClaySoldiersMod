@@ -9,9 +9,9 @@ package de.sanandrew.mods.claysoldiers.entity.mount;
 import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
+import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
-import de.sanandrew.mods.claysoldiers.util.mount.EnumTurtleType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -73,13 +73,12 @@ public class EntityBunnyMount
 
     @Override
     public void updateEntityActionState() {
-        if (riddenByEntity == null || !(riddenByEntity instanceof EntityClayMan)) {
+        if( riddenByEntity == null || !(riddenByEntity instanceof EntityClayMan) ) {
             super.updateEntityActionState();
         } else {
             EntityClayMan rider = (EntityClayMan)riddenByEntity;
-//			isJumping = rider.isJumping() || handleWaterMovement();
             this.isJumping = true;
-            moveForward = rider.moveForward;
+            this.moveForward = rider.moveForward;
             moveStrafing = rider.moveStrafing;
             rotationYaw = prevRotationYaw = rider.rotationYaw;
             rotationPitch = prevRotationPitch = rider.rotationPitch;
@@ -150,8 +149,6 @@ public class EntityBunnyMount
         Entity entity = source.getSourceOfDamage();
         if( !(entity instanceof EntityClayMan) && !source.isFireDamage() ) {
             damage = 999;
-        } else if( source.isFireDamage() && this.getType() == EnumTurtleType.NETHERRACK.ordinal() ) {
-            return false;
         }
 
         if( this.riddenByEntity instanceof EntityClayMan && source.getEntity() instanceof ISoldierProjectile ) {
@@ -163,23 +160,7 @@ public class EntityBunnyMount
             }
         }
 
-        boolean damageSuccess = super.attackEntityFrom(source, damage);
-
-        if( damageSuccess && this.getHealth() <= 0 ) {
-//				Item item1 = CSM_ModRegistry.horseDoll;
-            //TODO: readd particles!
-//				for( int i = 0; i < 4; i++ ) {
-//					double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
-//					double b = boundingBox.minY + 0.125D + ((rand.nextFloat() - rand.nextFloat()) * 0.25D);
-//					double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
-//
-////					CSMModRegistry.proxy.showEffect(this.worldObj, this, 13);
-////					if (FMLCommonHandler.instance().getSide().isClient())
-////						CSM_ModRegistry.proxy.showEffect((new EntityDiggingFX(CSM_ModRegistry.proxy.getClientWorld(), a, b, c, 0.0D, 0.0D, 0.0D, Block.dirt, 0, 0)));
-//				}
-        }
-
-        return damageSuccess;
+        return super.attackEntityFrom(source, damage);
     }
 
     @Override
@@ -199,9 +180,7 @@ public class EntityBunnyMount
     }
 
     @Override
-    public void setSpecial() {
-
-    }
+    public void setSpecial() { }
 
     @Override
     public boolean isSpecial() {
@@ -236,5 +215,12 @@ public class EntityBunnyMount
         if( !this.spawnedFromNexus && this.dollItem != null ) {
             this.entityDropItem(this.dollItem, 0.0F);
         }
+    }
+
+    @Override
+    protected void onDeathUpdate() {
+        this.deathTime = 20;
+        this.setDead();
+        ParticlePacketSender.sendBunnyDeathFx(this.posX, this.posY, this.posZ, this.dimension, (byte) this.getType());
     }
 }

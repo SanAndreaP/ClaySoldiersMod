@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.entity.mount;
 import de.sanandrew.core.manpack.util.NbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
+import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumTurtleType;
 import net.minecraft.block.material.Material;
@@ -178,17 +179,6 @@ public class EntityTurtleMount
         boolean damageSuccess = super.attackEntityFrom(source, damage);
 
         if( damageSuccess && this.getHealth() <= 0 ) {
-//				Item item1 = CSM_ModRegistry.horseDoll;
-            //TODO: readd particles!
-//				for( int i = 0; i < 4; i++ ) {
-//					double a = posX + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
-//					double b = boundingBox.minY + 0.125D + ((rand.nextFloat() - rand.nextFloat()) * 0.25D);
-//					double c = posZ + ((rand.nextFloat() - rand.nextFloat()) * 0.125D);
-//
-////					CSMModRegistry.proxy.showEffect(this.worldObj, this, 13);
-////					if (FMLCommonHandler.instance().getSide().isClient())
-////						CSM_ModRegistry.proxy.showEffect((new EntityDiggingFX(CSM_ModRegistry.proxy.getClientWorld(), a, b, c, 0.0D, 0.0D, 0.0D, Block.dirt, 0, 0)));
-//				}
             if( source.isFireDamage() && !this.isSpecial() && shouldSpawnSpecial ) {
                 EntityTurtleMount kawako = new EntityTurtleMount(this.worldObj, EnumTurtleType.VALUES[this.getType()]);
                 kawako.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -280,8 +270,7 @@ public class EntityTurtleMount
     protected void onDeathUpdate() {
         this.deathTime = 20;
         this.setDead();
-        //TODO spawn particles!
-//        ParticlePacketSender.sendHorseDeathFx(this.posX, this.posY, this.posZ, this.dimension, (byte) this.getType());
+        ParticlePacketSender.sendTurtleDeathFx(this.posX, this.posY, this.posZ, this.dimension, (byte) this.getType());
     }
 
     @Override

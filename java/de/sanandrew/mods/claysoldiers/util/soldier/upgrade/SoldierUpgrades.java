@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Bytes;
 import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
@@ -28,10 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class SoldierUpgrades
 {
@@ -167,8 +163,8 @@ public final class SoldierUpgrades
         return RENDER_ID_TO_UPGRADE_MAP_.get((byte) renderId);
     }
 
-    public static byte[] getRegisteredRenderIds() {
-        return Bytes.toArray(RENDER_ID_TO_UPGRADE_MAP_.keySet());
+    public static Set<Byte> getRegisteredRenderIds() {
+        return RENDER_ID_TO_UPGRADE_MAP_.keySet();
     }
 
     public static byte getNewRenderId() {

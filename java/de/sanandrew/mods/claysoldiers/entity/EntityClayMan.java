@@ -45,6 +45,7 @@ import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityClayMan
@@ -150,6 +151,7 @@ public class EntityClayMan
         if( (ticksExisted % 5) == 0 ) {
             this.updateUpgradeEffectRenders();
         }
+
     }
 
     @Override
@@ -244,14 +246,15 @@ public class EntityClayMan
             damage = 10000.0F;
         }
 
-        Iterator<Map.Entry<ASoldierUpgrade, SoldierUpgradeInst>> iter = p_upgrades.entrySet().iterator();
-        while( !this.worldObj.isRemote && iter.hasNext() ) {
-            SoldierUpgradeInst upg = iter.next().getValue();
-            MutableFloat newDamage = new MutableFloat(damage);
-            if( upg.getUpgrade().onSoldierHurt(this, upg, source, newDamage) ) {
-                return false;
-            } else {
-                damage = newDamage.floatValue();
+        if( !this.worldObj.isRemote ) {
+            for( Entry<ASoldierUpgrade, SoldierUpgradeInst> upgrade : this.p_upgrades.entrySet() ) {
+                SoldierUpgradeInst upg = upgrade.getValue();
+                MutableFloat newDamage = new MutableFloat(damage);
+                if( upg.getUpgrade().onSoldierHurt(this, upg, source, newDamage) ) {
+                    return false;
+                } else {
+                    damage = newDamage.floatValue();
+                }
             }
         }
 
@@ -498,7 +501,8 @@ public class EntityClayMan
                 }
             } else {
                 if( this.entityToAttack.isDead || !this.canEntityBeSeen(this.entityToAttack)
-                        || (this.entityToAttack instanceof EntityClayMan && !this.checkIfValidTarget((EntityClayMan) this.entityToAttack)) ) {
+                    || (this.entityToAttack instanceof EntityClayMan && !this.checkIfValidTarget((EntityClayMan) this.entityToAttack)) )
+                {
                     this.entityToAttack = null;
                 } else if( this.attackTime == 0 ) {
                     this.attackTime = 5;
@@ -653,13 +657,12 @@ public class EntityClayMan
 
     public void updateUpgradeEffectRenders() {
         if( this.worldObj.isRemote ) {
-            for( byte renderId : SoldierUpgrades.getRegisteredRenderIds() ) {
+            for( Byte renderId : SoldierUpgrades.getRegisteredRenderIds() ) {
                 long renderFlag = 1L << (renderId % 64);
                 int renderStorageDw = (renderId / 64);
                 long dwValue = this.p_upgradeRenderFlags[renderStorageDw];
 
                 ASoldierUpgrade upgrade = SoldierUpgrades.getUpgrade(renderId);
-
                 if( (dwValue & renderFlag) == renderFlag ) {
                     if( !this.p_upgrades.containsKey(upgrade) ) {
                         this.p_upgrades.put(upgrade, new SoldierUpgradeInst(upgrade));

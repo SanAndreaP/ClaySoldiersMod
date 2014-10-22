@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasusMount;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -30,6 +31,7 @@ import java.util.Map;
 
 public class ItemHorseDoll
         extends Item
+        implements IDisruptable
 {
     private Map<EnumHorseType, IIcon> p_icons;
     private IIcon p_pegasusWings;
@@ -198,4 +200,7 @@ public class ItemHorseDoll
     public IIcon getIconFromType(EnumHorseType type) {
         return this.p_icons.get(type);
     }
+
+    @Override
+    public void disrupt() { }
 }

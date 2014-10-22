@@ -6,22 +6,31 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.event.EntityConstructHandler;
+import de.sanandrew.mods.claysoldiers.event.PlayerTickHandler;
 import de.sanandrew.mods.claysoldiers.network.ServerPacketHandler;
+import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy
     implements IGuiHandler
 {
     public void modInit() {
         ClaySoldiersMod.channel.register(new ServerPacketHandler());
+
+        MinecraftForge.EVENT_BUS.register(new EntityConstructHandler());
+
+        FMLCommonHandler.instance().bus().register(new PlayerTickHandler());
     }
 
-    public void spawnParticles(byte particleId, Tuple particleData) {
+    public void spawnParticles(EnumParticleFx fxType, Tuple particleData) {
     }
 
     public void applySoldierRenderFlags(int entityId, long upgFlags1, long upgFlags2, long effFlags1, long effFlags2) {
