@@ -20,6 +20,7 @@ import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.mods.claysoldiers.crafting.RegistryRecipes;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
@@ -27,6 +28,7 @@ import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.UpgradeFood;
+import de.sanandrew.mods.claysoldiers.world.gen.WorldGenerator;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -68,6 +70,8 @@ public final class ClaySoldiersMod
 
         UpgradeFood.excludeFood((ItemFood) Items.potato);
         UpgradeFood.excludeFood((ItemFood) Items.carrot);
+
+        GameRegistry.registerWorldGenerator(new WorldGenerator(), 100);
     }
 
     @EventHandler
