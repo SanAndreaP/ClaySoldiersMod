@@ -22,6 +22,7 @@ public final class RegistryItems
     public static ItemHorseDoll dollHorseMount;
     public static ItemTurtleDoll dollTurtleMount;
     public static ItemBunnyDoll dollBunnyMount;
+    public static ItemGeckoDoll dollGeckoMount;
 
     public static void initialize() {
         dollSoldier = new ItemClayManDoll();
@@ -33,6 +34,7 @@ public final class RegistryItems
         dollHorseMount = new ItemHorseDoll();
         dollTurtleMount = new ItemTurtleDoll();
         dollBunnyMount = new ItemBunnyDoll();
+        dollGeckoMount = new ItemGeckoDoll();
 
         dollSoldier.setCreativeTab(ClaySoldiersMod.clayTab);
         dollSoldier.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":clayman_doll");
@@ -61,6 +63,10 @@ public final class RegistryItems
         dollBunnyMount.setCreativeTab(ClaySoldiersMod.clayTab);
         dollBunnyMount.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":bunnymount_doll");
 
-        SAPUtils.registerItems(dollSoldier, dollBrick, disruptor, disruptorHardened, statDisplay, shearBlade, dollHorseMount, dollTurtleMount, dollBunnyMount);
+        dollGeckoMount.setCreativeTab(ClaySoldiersMod.clayTab);
+        dollGeckoMount.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":geckomount_doll");
+
+        SAPUtils.registerItems(dollSoldier, dollBrick, disruptor, disruptorHardened, statDisplay, shearBlade, dollHorseMount, dollTurtleMount, dollBunnyMount,
+                               dollGeckoMount);
     }
 }

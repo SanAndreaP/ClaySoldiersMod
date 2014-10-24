@@ -56,11 +56,11 @@ public class WorldGenClayHut
         ChestGenHooks.addItem(CHEST_CONTENT, new WeightedRandomChestContent(Item.getItemFromBlock(RegistryBlocks.clayNexus), 0, 1, 1, 1));
 
         POSSIBLE_TEAMS = ImmutableList.of(
-                Triplet.with("pink", 6, new ItemStack(Blocks.red_flower, 1, 7)),
-                Triplet.with("blue", 11, new ItemStack(Blocks.red_flower, 1, 1)),
-                Triplet.with("yellow", 4, new ItemStack(Blocks.yellow_flower, 1, 0)),
                 Triplet.with("red", 14, new ItemStack(Blocks.red_flower, 1, 0)),
+                Triplet.with("yellow", 4, new ItemStack(Blocks.yellow_flower, 1, 0)),
                 Triplet.with("green", 13, new ItemStack(Blocks.cactus, 1, 0)),
+                Triplet.with("blue", 11, new ItemStack(Blocks.red_flower, 1, 1)),
+                Triplet.with("pink", 6, new ItemStack(Blocks.red_flower, 1, 7)),
                 Triplet.with("purple", 10, new ItemStack(Blocks.red_flower, 1, 2))
         );
     }

@@ -8,10 +8,11 @@ package de.sanandrew.mods.claysoldiers.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityBunnyMount;
+import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityGeckoMount;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
-import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumGeckoType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,16 +20,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemBunnyDoll
+public class ItemGeckoDoll
         extends Item
         implements IDisruptable
 {
-    public ItemBunnyDoll() {
+    public IIcon iconSpots;
+
+    public ItemGeckoDoll() {
         super();
         this.setMaxStackSize(16);
         this.setHasSubtypes(true);
@@ -36,24 +40,32 @@ public class ItemBunnyDoll
     }
 
     /**
-     * Spawns the bunny specified by the type in the location specified by the last three parameters.
+     * Spawns the gecko specified by the type in the location specified by the last three parameters.
      *
      * @param world the World the entity will spawn in
      * @param type  the type the bunny will be
      */
-    public static EntityBunnyMount spawnBunny(World world, EnumBunnyType type, double x, double y, double z) {
-        EntityBunnyMount jordan = new EntityBunnyMount(world, type);
+    public static EntityGeckoMount spawnGecko(World world, EnumGeckoType type, double x, double y, double z) {
+        EntityGeckoMount jordan = new EntityGeckoMount(world, type);
 
         jordan.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
         jordan.rotationYawHead = jordan.rotationYaw;
         jordan.renderYawOffset = jordan.rotationYaw;
         world.spawnEntityInWorld(jordan);
-        jordan.playSound("step.gravel", 1.0F, 1.0F);
+        jordan.playSound("step.wood", 1.0F, 1.0F);
 
         return jordan;
     }
 
-    public static void setType(ItemStack stack, EnumBunnyType type) {
+    public static EnumGeckoType getType(ItemStack stack) {
+        if(stack == null || !SAPUtils.isIndexInRange(EnumGeckoType.VALUES, stack.getItemDamage())) {
+            return EnumGeckoType.BIRCH_BIRCH;
+        }
+
+        return EnumGeckoType.VALUES[stack.getItemDamage()];
+    }
+
+    public static void setType(ItemStack stack, EnumGeckoType type) {
         stack.setItemDamage(type.ordinal());
     }
 
@@ -79,7 +91,7 @@ public class ItemBunnyDoll
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityBunnyMount dan = spawnBunny(world, EnumBunnyType.getTypeFromItem(stack), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
+                EntityGeckoMount dan = spawnGecko(world, getType(stack), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -98,18 +110,18 @@ public class ItemBunnyDoll
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + '.' + EnumBunnyType.getTypeFromItem(stack).toString().toLowerCase();
+        return super.getUnlocalizedName(stack) + '.' + getType(stack).toString().toLowerCase();
     }
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return EnumBunnyType.getTypeFromItem(stack).typeColor;
+        return pass == 1 ? getType(stack).colors.getValue1() : getType(stack).colors.getValue0();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs creativeTab, List stacks) {
-        for( EnumBunnyType type : EnumBunnyType.VALUES ) {
+        for( EnumGeckoType type : EnumGeckoType.VALUES ) {
             ItemStack stack = new ItemStack(this, 1);
             setType(stack, type);
             stacks.add(stack);
@@ -119,7 +131,23 @@ public class ItemBunnyDoll
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_bunny");
+        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_gecko_body");
+        this.iconSpots = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_gecko_spots");
+    }
+
+    @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
+    @Override
+    public int getRenderPasses(int metadata) {
+        return 2;
+    }
+
+    @Override
+    public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
+        return pass == 1 ? this.iconSpots : this.itemIcon;
     }
 
     @Override

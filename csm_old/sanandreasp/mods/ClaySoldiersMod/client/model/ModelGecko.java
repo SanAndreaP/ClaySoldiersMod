@@ -23,12 +23,12 @@ public class ModelGecko extends ModelBiped
     ModelRenderer leftleg;
     ModelRenderer head2;
     ModelRenderer Shape1;
-  
+
   public ModelGecko()
   {
     textureWidth = 64;
     textureHeight = 32;
-    
+
       head = new ModelRenderer(this, 0, 0);
       head.addBox(-1F, 0F, -3F, 2, 1, 2);
       head.setRotationPoint(0F, 21F, -4F);
@@ -78,7 +78,7 @@ public class ModelGecko extends ModelBiped
       Shape1.mirror = true;
       setRotation(Shape1, 1.487144F, 0F, 0F);
   }
-  
+
   @Override
 public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
   {
@@ -93,14 +93,14 @@ public void render(Entity entity, float f, float f1, float f2, float f3, float f
     head2.render(f5);
     Shape1.render(f5);
   }
-  
+
   private void setRotation(ModelRenderer model, float x, float y, float z)
   {
     model.rotateAngleX = x;
     model.rotateAngleY = y;
     model.rotateAngleZ = z;
   }
-  
+
   @Override
 public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e)
   {
@@ -114,7 +114,7 @@ public void setRotationAngles(float f, float f1, float f2, float f3, float f4, f
     rightleg.rotateAngleY = 0.0F;
     leftleg.rotateAngleY = 0.0F;
     Shape1.rotateAngleY = MathHelper.cos(f * 0.6662F + 3.141593F) * 0.5F * f1;
-//    Shape1.rotateAngleY = 0.0F;
+//    tail.rotateAngleY = 0.0F;
   }
 
 }

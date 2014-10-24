@@ -4,12 +4,10 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.crafting;
+package de.sanandrew.mods.claysoldiers.util;
 
+import de.sanandrew.mods.claysoldiers.crafting.*;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
-import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
-import de.sanandrew.mods.claysoldiers.util.RegistryBlocks;
-import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -86,10 +84,12 @@ public final class RegistryRecipes
         RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_horses", RecipeHorses.class, Category.SHAPED, "after:minecraft:shaped");
         RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_turtles", RecipeTurtles.class, Category.SHAPED, "after:minecraft:shaped");
         RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_bunnies", RecipeBunnies.class, Category.SHAPED, "after:minecraft:shaped");
+        RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_geckos", RecipeGeckos.class, Category.SHAPED, "after:minecraft:shaped");
 
         CraftingManager.getInstance().getRecipeList().add(recipeSoldiers);
         CraftingManager.getInstance().getRecipeList().add(new RecipeHorses());
         CraftingManager.getInstance().getRecipeList().add(new RecipeTurtles());
         CraftingManager.getInstance().getRecipeList().add(new RecipeBunnies());
+        CraftingManager.getInstance().getRecipeList().add(new RecipeGeckos());
     }
 }

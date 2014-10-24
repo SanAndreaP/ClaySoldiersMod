@@ -33,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityGecko extends EntityCreature implements IMount {
 	protected float moveSpeed;
-    
+
 	public EntityGecko(World world) {
 		super(world);
 		this.dataWatcher.addObject(19, (short)0);
@@ -42,13 +42,13 @@ public class EntityGecko extends EntityCreature implements IMount {
 		postInit = true;
 		yOffset = 0.0F;
 		stepHeight = 0.1F;
-		moveSpeed = 1F; 
+		moveSpeed = 1F;
 		setSize(0.25F, 0.4F);
 		setPosition(posX, posY, posZ);
 		renderDistanceWeight = 5D;
         this.dataWatcher.addObject(16, new Byte((byte)0));
 	}
-    
+
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
@@ -58,32 +58,33 @@ public class EntityGecko extends EntityCreature implements IMount {
 //	public boolean hasAltSkin() {
 //		return (this.dataWatcher.getWatchableObjectByte(20) & 1) == 1;
 //	}
-	
+
 //	public void setAltSkin(boolean b) {
 //		byte byt = this.dataWatcher.getWatchableObjectByte(20);
 //		this.dataWatcher.updateObject(20, (byte)(b ? (byt | 1) : (byt & ~1)));
 //	}
-	
+
 	public float prevSpeed = 0.0F;
-	
+
 	public EntityGecko(World world, double x, double y, double z, int i, int j) {
 		this(world);
 		setType(i, j);
 		setPosition(x, y, z);
 		worldObj.playSoundAtEntity(this, "step.wood", 0.8F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.9F);
 	}
-	
+
 	private void setType(int i, int j) {
 		this.dataWatcher.updateObject(19, (short)i);
 		this.dataWatcher.updateObject(18, (short)j);
 	}
-	
+
 	public int getType(int ind) {
-		if (ind == 0)
-			return this.dataWatcher.getWatchableObjectShort(19);
+		if (ind == 0) {
+            return this.dataWatcher.getWatchableObjectShort(19);
+        }
 		return this.dataWatcher.getWatchableObjectShort(18);
 	}
-    
+
     private static int[] getTypes(int i) {
     	int j[] = new int[2];
     	if (i > 11 && i < 16) {
@@ -99,14 +100,14 @@ public class EntityGecko extends EntityCreature implements IMount {
     		j[0] = 0;
     		j[1] = i;
     	}
-    	
+
     	return j;
     }
-	
-	public EntityGecko(World world, double x, double y, double z, int i) {    	
+
+	public EntityGecko(World world, double x, double y, double z, int i) {
     	this(world, x, y, z, getTypes(i)[0],  getTypes(i)[1]);
 	}
-	
+
 //	private String getTypeName(int i) {
 //		switch(i) {
 //			case 1: return "Birch";
@@ -142,7 +143,7 @@ public class EntityGecko extends EntityCreature implements IMount {
 //			epona += getTypeName(i) + getTypeName(j);
 //		return epona + ".png";
 //	}
-	
+
 	@Override
 	public void onUpdate() {
         super.onUpdate();
@@ -151,7 +152,7 @@ public class EntityGecko extends EntityCreature implements IMount {
         {
             this.setBesideClimbableBlock(this.isCollidedHorizontally);
         }
-        
+
         if (this.onGround && !this.isCollidedHorizontally) {
         	maxHeightCnt = 0;
         } else if (this.isCollidedHorizontally) {
@@ -186,12 +187,12 @@ public class EntityGecko extends EntityCreature implements IMount {
             gotRider = false;
         }
     }
-	
+
 	@Override
 	public double getMountedYOffset() {
 		return super.getMountedYOffset()-0.3D;
 	}
-	
+
 	@Override
 	public void updateEntityActionState() {
 		if (riddenByEntity == null || !(riddenByEntity instanceof EntityClayMan)) {
@@ -206,18 +207,18 @@ public class EntityGecko extends EntityCreature implements IMount {
 			rotationPitch = prevRotationPitch = rider.rotationPitch;
 			rider.renderYawOffset = renderYawOffset;
 			riddenByEntity.fallDistance = 0.0F;
-			
+
 			if (rider.isDead || rider.getHealth() <= 0) {
 				rider.mountEntity(null);
 			}
 		}
 	}
-	
+
 	@Override
 	public float getAIMoveSpeed() {
 	    return 0.5F * this.moveSpeed;
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound)
     {
@@ -230,7 +231,7 @@ public class EntityGecko extends EntityCreature implements IMount {
 		nbttagcompound.setInteger("maxHeightCnt", maxHeightCnt);
 //		nbttagcompound.setBoolean("altSkin", this.hasAltSkin());
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound)
     {
@@ -243,42 +244,42 @@ public class EntityGecko extends EntityCreature implements IMount {
 //		texture = geckoTexture(getType(0), getType(1));
 //		this.setAltSkin(nbttagcompound.getBoolean("altSkin"));
 	}
-	
+
 //	@Override
 //	@SideOnly(Side.CLIENT)
 //	public String getTexture() {
 //		return geckoTexture(getType(0), getType(1));
 //	}
-	
+
 	@Override
 	protected String getHurtSound()
     {
 		worldObj.playSoundAtEntity(this, "step.wood", 0.6F, 1.0F / (rand.nextFloat() * 0.2F + 0.9F));
 		return "";
     }
-	
+
 	@Override
 	protected String getDeathSound()
     {
 		return "step.wood";
     }
-	
+
 	@Override
 	protected void jump() { }
-	
+
 	@Override
 	public void mountEntity(Entity e) {
 		if (!(e != null && e instanceof EntityMinecart)) {
 			super.mountEntity(e);
 		}
 	}
-	
+
 	@Override
 	protected boolean canDespawn()
     {
         return false;
     }
-	
+
 	@Override
 	protected void dropFewItems(boolean flag, int i) {
 		Item item1 = CSMModRegistry.geckoDoll;
@@ -289,14 +290,14 @@ public class EntityGecko extends EntityCreature implements IMount {
 			else
 				dmg += 4;
 		}
-		
+
 		dropItem(item1.itemID, 1, dmg);
 	}
-	
+
 	protected void dropItem(int itemID, int i, int j) {
 		entityDropItem(new ItemStack(itemID, i, j), 0.0F);
 	}
-	
+
 	@Override
 	public EntityItem entityDropItem(ItemStack par1ItemStack, float par2) {
 		return spawnedFromNexus ? null : super.entityDropItem(par1ItemStack, par2);
@@ -309,7 +310,7 @@ public class EntityGecko extends EntityCreature implements IMount {
 		if ((e == null || !(e instanceof EntityClayMan)) && !damagesource.isFireDamage()) {
 			i = 100;
 		}
-		
+
 		if (riddenByEntity != null && riddenByEntity instanceof EntityClayMan) {
 			if (e instanceof EntityGravelChunk) {
 				if (((EntityGravelChunk)e).getClayTeam() == ((EntityClayMan)riddenByEntity).getClayTeam())
@@ -330,10 +331,10 @@ public class EntityGecko extends EntityCreature implements IMount {
 					i = origDmg;
 			}
 		}
-		
+
 		if (e != null && (e instanceof EntityClayMan)) {
 //			EntityClayMan danz = ((EntityClayMan)e);
-//			if (danz.getDataWatcherShort("stickPoints") <= 0 || 
+//			if (danz.getDataWatcherShort("stickPoints") <= 0 ||
 //			danz.getDataWatcherShort("rodPoints") <= 0 ||
 //			danz.getDataWatcherShort("shearPointsA") <= 0 ||
 //			danz.getDataWatcherShort("shearPointsB") <= 0) {
@@ -342,7 +343,7 @@ public class EntityGecko extends EntityCreature implements IMount {
 //				moveSpeed = 1F;
 //			}
 		}
-		
+
 		boolean fred = super.attackEntityFrom(damagesource, i);
 		if (fred && this.getHealth() <= 0) {
 				for (int j = 0; j < 4; j++) {
@@ -355,7 +356,7 @@ public class EntityGecko extends EntityCreature implements IMount {
 		}
 		return fred;
 	}
-	
+
 	@Override
 	public void knockBack(Entity entity, float i, double d, double d1)
     {
@@ -366,34 +367,34 @@ public class EntityGecko extends EntityCreature implements IMount {
 			motionZ *= 0.6D;
 		}
     }
-	
+
 
     @Override
 	public boolean isOnLadder()
     {
         return this.isBesideClimbableBlock() && maxHeightCnt <= 27;
     }
-	
+
 	@Override
 	public boolean interact(EntityPlayer e) {
 		return false;
 	}
-	
+
 	@Override
 	public EntityGecko setSpawnedFromNexus() {
 		spawnedFromNexus = true;
 		return this;
 	}
-	
+
 //	@Override
 //	public int getMaxHealth() {
 //		return 30;
 //	}
-	
+
 	public boolean gotRider, spawnedFromNexus = false;
 	public int maxHeightCnt = 0;
 	public boolean postInit;
-	
+
 	@Override
 	public int getType() {
 		return getType(0) + getType(1);
