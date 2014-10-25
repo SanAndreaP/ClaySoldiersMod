@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.crafting.*;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import net.minecraft.init.Blocks;
@@ -13,7 +14,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
 public final class RegistryRecipes
@@ -80,16 +80,10 @@ public final class RegistryRecipes
         recipeSoldiers.addDollMaterial(new ItemStack(Blocks.torch, 1, OreDictionary.WILDCARD_VALUE));
         recipeSoldiers.addDollMaterial(new ItemStack(Blocks.redstone_torch, 1, OreDictionary.WILDCARD_VALUE));
 
-        RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_soldiers", RecipeSoldiers.class, Category.SHAPED, "after:minecraft:shaped");
-        RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_horses", RecipeHorses.class, Category.SHAPED, "after:minecraft:shaped");
-        RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_turtles", RecipeTurtles.class, Category.SHAPED, "after:minecraft:shaped");
-        RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_bunnies", RecipeBunnies.class, Category.SHAPED, "after:minecraft:shaped");
-        RecipeSorter.register(ClaySoldiersMod.MOD_ID + ":recipe_geckos", RecipeGeckos.class, Category.SHAPED, "after:minecraft:shaped");
-
-        CraftingManager.getInstance().getRecipeList().add(recipeSoldiers);
-        CraftingManager.getInstance().getRecipeList().add(new RecipeHorses());
-        CraftingManager.getInstance().getRecipeList().add(new RecipeTurtles());
-        CraftingManager.getInstance().getRecipeList().add(new RecipeBunnies());
-        CraftingManager.getInstance().getRecipeList().add(new RecipeGeckos());
+        SAPUtils.registerSortedRecipe(recipeSoldiers, ClaySoldiersMod.MOD_ID + ":recipe_soldiers", Category.SHAPED, "after:minecraft:shaped");
+        SAPUtils.registerSortedRecipe(new RecipeHorses(), ClaySoldiersMod.MOD_ID + ":recipe_horses", Category.SHAPED, "after:minecraft:shaped");
+        SAPUtils.registerSortedRecipe(new RecipeTurtles(), ClaySoldiersMod.MOD_ID + ":recipe_turtles", Category.SHAPED, "after:minecraft:shaped");
+        SAPUtils.registerSortedRecipe(new RecipeBunnies(), ClaySoldiersMod.MOD_ID + ":recipe_bunnies", Category.SHAPED, "after:minecraft:shaped");
+        SAPUtils.registerSortedRecipe(new RecipeGeckos(), ClaySoldiersMod.MOD_ID + ":recipe_geckos", Category.SHAPED, "after:minecraft:shaped");
     }
 }

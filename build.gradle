@@ -17,13 +17,13 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-2.0.0a"
+version = "1.7.10-2.0.0b"
 group = "de.sanandrew.mods.claysoldiers"
 archivesBaseName = "ClaySoldiersMod"
 
 minecraft {
-    version = "1.7.10-10.13.0.1186"
-    runDir = "eclipse/assets"
+    version = "1.7.10-10.13.2.1232"
+    runDir = "eclipse"
 }
 
 dependencies {

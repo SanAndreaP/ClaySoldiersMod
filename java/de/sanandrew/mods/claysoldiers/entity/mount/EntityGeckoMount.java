@@ -211,8 +211,6 @@ public class EntityGeckoMount
             this.setBesideClimbableBlock(this.isCollidedHorizontally && hasGround);
         }
 
-        System.out.println(this.fallDistance);
-
         if( this.tmpFallDistance > 3.5F ) {
             this.tmpFallDistance = this.fallDistance + 3.5F;
         } else {
@@ -233,8 +231,8 @@ public class EntityGeckoMount
         this.dataWatcher.updateObject(DW_TYPE, (short) type.ordinal());
     }
 
-    public ResourceLocation getGeckoTexture() {
-        return EnumGeckoType.VALUES[this.getType()].texture;
+    public ResourceLocation[] getGeckoTexture() {
+        return EnumGeckoType.VALUES[this.getType()].textures;
     }
 
     @Override

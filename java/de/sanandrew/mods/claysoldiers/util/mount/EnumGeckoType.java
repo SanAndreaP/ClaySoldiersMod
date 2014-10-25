@@ -15,36 +15,55 @@ import net.minecraft.util.ResourceLocation;
 
 public enum EnumGeckoType
 {
-    //TODO: add acacia and dark oak variants
-    OAK_OAK(0x919191,    0, 0, 0x684923, 0x57AD3F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/oak_oak.png")),
-    OAK_PINE(0x919191,   0, 1, 0x684923, 0x395A39, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/oak_pine.png")),
-    OAK_BIRCH(0x919191,  0, 2, 0x684923, 0x8FC64F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/oak_birch.png")),
-    OAK_JUNGLE(0x919191, 0, 3, 0x684923, 0x378020, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/oak_jungle.png")),
-    PINE_OAK(0x919191,    1, 0, 0x130803, 0x57AD3F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/pine_oak.png")),
-    PINE_PINE(0x919191,   1, 1, 0x130803, 0x395A39, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/pine_pine.png")),
-    PINE_BIRCH(0x919191,  1, 2, 0x130803, 0x8FC64F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/pine_birch.png")),
-    PINE_JUNGLE(0x919191, 1, 3, 0x130803, 0x378020, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/pine_jungle.png")),
-    BIRCH_OAK(0x919191,    2, 0, 0xBCCEA9, 0x57AD3F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/birch_oak.png")),
-    BIRCH_PINE(0x919191,   2, 1, 0xBCCEA9, 0x395A39, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/birch_pine.png")),
-    BIRCH_BIRCH(0x919191,  2, 2, 0xBCCEA9, 0x8FC64F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/birch_birch.png")),
-    BIRCH_JUNGLE(0x919191, 2, 3, 0xBCCEA9, 0x378020, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/birch_jungle.png")),
-    JUNGLE_OAK(0x919191,    3, 0, 0x181F05, 0x57AD3F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/jungle_oak.png")),
-    JUNGLE_PINE(0x919191,   3, 1, 0x181F05, 0x395A39, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/jungle_pine.png")),
-    JUNGLE_BIRCH(0x919191,  3, 2, 0x181F05, 0x8FC64F, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/jungle_birch.png")),
-    JUNGLE_JUNGLE(0x919191, 3, 3, 0x181F05, 0x378020, new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/gecko/jungle_jungle.png"));
+    OAK_OAK(0x919191,     0, 0, 0x4E9C39, 0x7F6139, "textures/entity/mount/gecko/spots_oak.png", "textures/entity/mount/gecko/body_oak.png"),
+    OAK_PINE(0x919191,    0, 1, 0x4E9C39, 0x2E1D0A, "textures/entity/mount/gecko/spots_oak.png", "textures/entity/mount/gecko/body_pine.png"),
+    OAK_BIRCH(0x919191,   0, 2, 0x4E9C39, 0xCFE3BA, "textures/entity/mount/gecko/spots_oak.png", "textures/entity/mount/gecko/body_birch.png"),
+    OAK_JUNGLE(0x919191,  0, 3, 0x4E9C39, 0x181F05, "textures/entity/mount/gecko/spots_oak.png", "textures/entity/mount/gecko/body_jungle.png"),
+    OAK_ACACIA(0x919191,  0, 4, 0x4E9C39, 0x846412, "textures/entity/mount/gecko/spots_oak.png", "textures/entity/mount/gecko/body_acacia.png"),
+    OAK_DARKOAK(0x919191, 0, 5, 0x4E9C39, 0x442D12, "textures/entity/mount/gecko/spots_oak.png", "textures/entity/mount/gecko/body_darkoak.png"),
+    PINE_OAK(0x919191,     1, 0, 0x395A39, 0x7F6139, "textures/entity/mount/gecko/spots_pine.png", "textures/entity/mount/gecko/body_oak.png"),
+    PINE_PINE(0x919191,    1, 1, 0x395A39, 0x2E1D0A, "textures/entity/mount/gecko/spots_pine.png", "textures/entity/mount/gecko/body_pine.png"),
+    PINE_BIRCH(0x919191,   1, 2, 0x395A39, 0xCFE3BA, "textures/entity/mount/gecko/spots_pine.png", "textures/entity/mount/gecko/body_birch.png"),
+    PINE_JUNGLE(0x919191,  1, 3, 0x395A39, 0x181F05, "textures/entity/mount/gecko/spots_pine.png", "textures/entity/mount/gecko/body_jungle.png"),
+    PINE_ACACIA(0x919191,  1, 4, 0x395A39, 0x846412, "textures/entity/mount/gecko/spots_pine.png", "textures/entity/mount/gecko/body_acacia.png"),
+    PINE_DARKOAK(0x919191, 1, 5, 0x395A39, 0x442D12, "textures/entity/mount/gecko/spots_pine.png", "textures/entity/mount/gecko/body_darkoak.png"),
+    BIRCH_OAK(0x919191,     2, 0, 0x90C679, 0x7F6139, "textures/entity/mount/gecko/spots_birch.png", "textures/entity/mount/gecko/body_oak.png"),
+    BIRCH_PINE(0x919191,    2, 1, 0x90C679, 0x2E1D0A, "textures/entity/mount/gecko/spots_birch.png", "textures/entity/mount/gecko/body_pine.png"),
+    BIRCH_BIRCH(0x919191,   2, 2, 0x90C679, 0xCFE3BA, "textures/entity/mount/gecko/spots_birch.png", "textures/entity/mount/gecko/body_birch.png"),
+    BIRCH_JUNGLE(0x919191,  2, 3, 0x90C679, 0x181F05, "textures/entity/mount/gecko/spots_birch.png", "textures/entity/mount/gecko/body_jungle.png"),
+    BIRCH_ACACIA(0x919191,  2, 4, 0x90C679, 0x846412, "textures/entity/mount/gecko/spots_birch.png", "textures/entity/mount/gecko/body_acacia.png"),
+    BIRCH_DARKOAK(0x919191, 2, 5, 0x90C679, 0x442D12, "textures/entity/mount/gecko/spots_birch.png", "textures/entity/mount/gecko/body_darkoak.png"),
+    JUNGLE_OAK(0x919191,     3, 0, 0x378020, 0x7F6139, "textures/entity/mount/gecko/spots_jungle.png", "textures/entity/mount/gecko/body_oak.png"),
+    JUNGLE_PINE(0x919191,    3, 1, 0x378020, 0x2E1D0A, "textures/entity/mount/gecko/spots_jungle.png", "textures/entity/mount/gecko/body_pine.png"),
+    JUNGLE_BIRCH(0x919191,   3, 2, 0x378020, 0xCFE3BA, "textures/entity/mount/gecko/spots_jungle.png", "textures/entity/mount/gecko/body_birch.png"),
+    JUNGLE_JUNGLE(0x919191,  3, 3, 0x378020, 0x181F05, "textures/entity/mount/gecko/spots_jungle.png", "textures/entity/mount/gecko/body_jungle.png"),
+    JUNGLE_ACACIA(0x919191,  3, 4, 0x378020, 0x846412, "textures/entity/mount/gecko/spots_jungle.png", "textures/entity/mount/gecko/body_acacia.png"),
+    JUNGLE_DARKOAK(0x919191, 3, 5, 0x378020, 0x442D12, "textures/entity/mount/gecko/spots_jungle.png", "textures/entity/mount/gecko/body_darkoak.png"),
+    ACACIA_OAK(0x919191,     4, 0, 0x72891B, 0x7F6139, "textures/entity/mount/gecko/spots_acacia.png", "textures/entity/mount/gecko/body_oak.png"),
+    ACACIA_PINE(0x919191,    4, 1, 0x72891B, 0x2E1D0A, "textures/entity/mount/gecko/spots_acacia.png", "textures/entity/mount/gecko/body_pine.png"),
+    ACACIA_BIRCH(0x919191,   4, 2, 0x72891B, 0xCFE3BA, "textures/entity/mount/gecko/spots_acacia.png", "textures/entity/mount/gecko/body_birch.png"),
+    ACACIA_JUNGLE(0x919191,  4, 3, 0x72891B, 0x181F05, "textures/entity/mount/gecko/spots_acacia.png", "textures/entity/mount/gecko/body_jungle.png"),
+    ACACIA_ACACIA(0x919191,  4, 4, 0x72891B, 0x846412, "textures/entity/mount/gecko/spots_acacia.png", "textures/entity/mount/gecko/body_acacia.png"),
+    ACACIA_DARKOAK(0x919191, 4, 5, 0x72891B, 0x442D12, "textures/entity/mount/gecko/spots_acacia.png", "textures/entity/mount/gecko/body_darkoak.png"),
+    DARKOAK_OAK(0x919191,     5, 0, 0x459633, 0x7F6139, "textures/entity/mount/gecko/spots_darkoak.png", "textures/entity/mount/gecko/body_oak.png"),
+    DARKOAK_PINE(0x919191,    5, 1, 0x459633, 0x2E1D0A, "textures/entity/mount/gecko/spots_darkoak.png", "textures/entity/mount/gecko/body_pine.png"),
+    DARKOAK_BIRCH(0x919191,   5, 2, 0x459633, 0xCFE3BA, "textures/entity/mount/gecko/spots_darkoak.png", "textures/entity/mount/gecko/body_birch.png"),
+    DARKOAK_JUNGLE(0x919191,  5, 3, 0x459633, 0x181F05, "textures/entity/mount/gecko/spots_darkoak.png", "textures/entity/mount/gecko/body_jungle.png"),
+    DARKOAK_ACACIA(0x919191,  5, 4, 0x459633, 0x846412, "textures/entity/mount/gecko/spots_darkoak.png", "textures/entity/mount/gecko/body_acacia.png"),
+    DARKOAK_DARKOAK(0x919191, 5, 5, 0x459633, 0x442D12, "textures/entity/mount/gecko/spots_darkoak.png", "textures/entity/mount/gecko/body_darkoak.png");
 
     public static final EnumGeckoType[] VALUES = values();
 
     public final int typeColor;
     public final Pair<Integer, Integer> saplingTypes;
     public final Pair<Integer, Integer> colors;
-    public final ResourceLocation texture;
+    public final ResourceLocation textures[];
 
-    private EnumGeckoType(int typeColor, int saplingOne, int saplingTwo, int itemColorLimbs, int itemColorBody, ResourceLocation texture) {
+    private EnumGeckoType(int typeColor, int saplingOne, int saplingTwo, int itemColorLimbs, int itemColorBody, String textureSpots, String textureBody) {
         this.typeColor = typeColor;
         this.saplingTypes = Pair.with(saplingOne, saplingTwo);
         this.colors = Pair.with(itemColorLimbs, itemColorBody);
-        this.texture = texture;
+        this.textures = new ResourceLocation[] {new ResourceLocation(ClaySoldiersMod.MOD_ID, textureSpots), new ResourceLocation(ClaySoldiersMod.MOD_ID, textureBody)};
     }
 
     public static EnumGeckoType getTypeFromItem(ItemStack stack1, ItemStack stack2) {

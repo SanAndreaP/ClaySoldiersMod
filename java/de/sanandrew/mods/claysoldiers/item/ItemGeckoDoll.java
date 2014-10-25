@@ -30,7 +30,7 @@ public class ItemGeckoDoll
         extends Item
         implements IDisruptable
 {
-    public IIcon iconSpots;
+    public IIcon iconBody;
 
     public ItemGeckoDoll() {
         super();
@@ -131,8 +131,8 @@ public class ItemGeckoDoll
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_gecko_body");
-        this.iconSpots = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_gecko_spots");
+        this.itemIcon = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_gecko_spots");
+        this.iconBody = iconRegister.registerIcon(ClaySoldiersMod.MOD_ID + ":doll_gecko_body");
     }
 
     @Override
@@ -147,7 +147,7 @@ public class ItemGeckoDoll
 
     @Override
     public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
-        return pass == 1 ? this.iconSpots : this.itemIcon;
+        return pass == 1 ? this.iconBody : this.itemIcon;
     }
 
     @Override
