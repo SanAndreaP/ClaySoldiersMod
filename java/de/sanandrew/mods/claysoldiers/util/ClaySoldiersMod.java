@@ -35,7 +35,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraftforge.common.config.Configuration;
 
 @Mod(modid = ClaySoldiersMod.MOD_ID, version = ClaySoldiersMod.VERSION, name = "Clay Soldiers Mod", guiFactory = ClaySoldiersMod.MOD_GUI_FACTORY,
-     dependencies = "required-after:sapmanpack@[2.0.1,)")
+     dependencies = "required-after:sapmanpack@[2.1.0,)")
 public final class ClaySoldiersMod
 {
     public static final String MOD_ID = "claysoldiers";
