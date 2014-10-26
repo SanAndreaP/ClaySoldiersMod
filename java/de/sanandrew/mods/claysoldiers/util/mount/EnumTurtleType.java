@@ -43,7 +43,7 @@ public enum EnumTurtleType
             new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/turtle/pumpkin.png"),
             new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/turtle/pumpkin.png")
     ),
-    LAPIS(35.0F, 0.6F, 0x270AC9, new ItemStack(Blocks.lapis_block), ClaySoldiersMod.MOD_ID + ":doll_turtle_shell", 0x4D3225, 0x270AC9,
+    LAPIS(35.0F, 0.6F, 0x270AC9, new ItemStack(Items.dye, 1, 4), ClaySoldiersMod.MOD_ID + ":doll_turtle_shell", 0x4D3225, 0x270AC9,
           new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/turtle/lapis.png")
     ),
     CAKE(30.0F, 0.6F, 0xFFA1A1, new ItemStack(Items.cake), ClaySoldiersMod.MOD_ID + ":doll_turtle_cakeshell", 0xA60000, 0xFFFFFF,

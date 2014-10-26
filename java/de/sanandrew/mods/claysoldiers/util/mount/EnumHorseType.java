@@ -11,8 +11,10 @@ import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 public enum EnumHorseType
 {
@@ -32,7 +34,7 @@ public enum EnumHorseType
     SNOW(40.0F, 0.5F, 0xFFFFFF, new ItemStack(Blocks.snow), ClaySoldiersMod.MOD_ID + ":doll_horse", 0xFFFFFF,
          new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/horses/snow.png")
     ),
-    GRASS(20.0F, 0.9F, 0x2ABA1A, new ItemStack(Blocks.tallgrass), ClaySoldiersMod.MOD_ID + ":doll_horse", 0x2ABA1A,
+    GRASS(20.0F, 0.9F, 0x2ABA1A, new ItemStack(Blocks.tallgrass, 1, OreDictionary.WILDCARD_VALUE), ClaySoldiersMod.MOD_ID + ":doll_horse", 0x2ABA1A,
           new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/horses/grass1.png"),
           new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/horses/grass2.png")
     ),
@@ -49,7 +51,7 @@ public enum EnumHorseType
     SOULSAND(35.0F, 0.8F, 0x5C3100, new ItemStack(Blocks.soul_sand), ClaySoldiersMod.MOD_ID + ":doll_horse", 0x5C3100,
              new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/horses/soulsand.png")
     ),
-    CAKE(30.0F, 1.1F, 0xFFFFFF, new ItemStack(Blocks.cake), ClaySoldiersMod.MOD_ID + ":doll_horse_cake", 0xFFFFFF,
+    CAKE(30.0F, 1.1F, 0xFFFFFF, new ItemStack(Items.cake), ClaySoldiersMod.MOD_ID + ":doll_horse_cake", 0xFFFFFF,
          new ResourceLocation(ClaySoldiersMod.MOD_ID, "textures/entity/mount/horses/cake.png")
     ),
     NIGHTMARE(50.0F, 1.2F, 0x000000, null,
@@ -86,6 +88,10 @@ public enum EnumHorseType
 
     public static EnumHorseType getTypeFromItem(ItemStack stack) {
         if( stack == null ) {
+            return null;
+        }
+
+        if( stack.getItem() == Item.getItemFromBlock(Blocks.tallgrass) && stack.getItemDamage() == 0 ) {
             return null;
         }
 

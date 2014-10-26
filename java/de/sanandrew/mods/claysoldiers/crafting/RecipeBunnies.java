@@ -6,73 +6,36 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.crafting;
 
-import de.sanandrew.mods.claysoldiers.item.ItemBunnyDoll;
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeBunnies
         implements IRecipe
 {
-    private final Item p_soulSand = Item.getItemFromBlock(Blocks.soul_sand);
-    private final Item p_wool = Item.getItemFromBlock(Blocks.wool);
+    private final ItemStack p_soulSand = new ItemStack(Blocks.soul_sand);
+    private final ItemStack p_wool = new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE);
 
     @Override
     public boolean matches(InventoryCrafting invCrafting, World world) {
-        if( invCrafting.getSizeInventory() < 9 ) {
-            return false;
-        }
+        int slotR1 = getSngItemInCol(invCrafting, this.p_wool, 0);
+        int slotR2 = getSngItemInCol(invCrafting, this.p_soulSand, 1);
+        int slotR3 = getSngItemInCol(invCrafting, this.p_wool, 2);
 
-        boolean hasRightPattern = false;
-
-        for( int i = 0; i < 9; i += 3 ) {
-            ItemStack[] row = new ItemStack[] {invCrafting.getStackInSlot(i), invCrafting.getStackInSlot(i+1), invCrafting.getStackInSlot(i+2)};
-
-            if( row[0] == null && row[1] == null && row[2] == null) {
-                continue;
-            }
-
-            if( !hasRightPattern ) {
-                if( row[0].getItem() == this.p_wool && row[1].getItem() == this.p_soulSand && row[2].getItem() == this.p_wool
-                    && row[0].getItemDamage() == row[2].getItemDamage() )
-                {
-                    hasRightPattern = true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        return hasRightPattern;
+        return slotR1 >= 0 && slotR1 == slotR2 && slotR1 == slotR3
+               && invCrafting.getStackInSlot(slotR1 * 3).getItemDamage() == invCrafting.getStackInSlot(slotR1 * 3 + 2).getItemDamage();
     }
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
-        ItemStack wool = null;
-        for( int i = 0; i < 9; i += 3 ) {
-            if( (wool = invCrafting.getStackInSlot(i)).getItem() != this.p_wool ) {
-                wool = null;
-            }
-        }
-
-        if( wool == null ) {
-            return null;
-        }
-
-        for( EnumBunnyType type : EnumBunnyType.VALUES ) {
-            if( type.woolMeta == wool.getItemDamage() ) {
-                ItemStack stack = new ItemStack(RegistryItems.dollBunnyMount, 2);
-                ItemBunnyDoll.setType(stack, type);
-                return stack;
-            }
-        }
-
-        return null;
+        ItemStack woolClr = invCrafting.getStackInSlot(getSngItemInCol(invCrafting, this.p_wool, 0) * 3);
+        return new ItemStack(RegistryItems.dollBunnyMount, 4, EnumBunnyType.getTypeFromItem(woolClr).woolMeta);
     }
 
     @Override
@@ -83,5 +46,21 @@ public class RecipeBunnies
     @Override
     public ItemStack getRecipeOutput() {
         return null;
+    }
+
+    private static int getSngItemInCol(InventoryCrafting invCrafting, ItemStack stack, int col) {
+        int slotFound = -1;
+        for(int i = 0; i < 3; i++) {
+            ItemStack item = invCrafting.getStackInSlot(col + i * 3);
+            if( item != null ) {
+                if( slotFound >= 0 ) {
+                    return -1;
+                } else if( SAPUtils.areStacksEqualWithWCV(item, stack) ) {
+                    slotFound = i;
+                }
+            }
+        }
+
+        return slotFound;
     }
 }

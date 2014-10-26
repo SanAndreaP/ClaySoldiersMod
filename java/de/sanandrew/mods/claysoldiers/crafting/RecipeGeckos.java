@@ -19,24 +19,24 @@ import net.minecraftforge.oredict.OreDictionary;
 public class RecipeGeckos
         implements IRecipe
 {
-    private final ItemStack sapling = new ItemStack(Blocks.sapling, 1, OreDictionary.WILDCARD_VALUE);
-    private final ItemStack soulSand = new ItemStack(Blocks.soul_sand);
+    private final ItemStack p_sapling = new ItemStack(Blocks.sapling, 1, OreDictionary.WILDCARD_VALUE);
+    private final ItemStack p_soulSand = new ItemStack(Blocks.soul_sand);
 
     @Override
     public boolean matches(InventoryCrafting invCrafting, World world) {
-        int slotR1 = getSngItemInRow(invCrafting, sapling, 0);
-        int slotR2 = getSngItemInRow(invCrafting, soulSand, 1);
-        int slotR3 = getSngItemInRow(invCrafting, sapling, 2);
+        int slotR1 = getSngItemInRow(invCrafting, this.p_sapling, 0);
+        int slotR2 = getSngItemInRow(invCrafting, this.p_soulSand, 1);
+        int slotR3 = getSngItemInRow(invCrafting, this.p_sapling, 2);
 
         return slotR1 >= 0 && slotR1 == slotR2 && slotR1 == slotR3;
     }
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
-        ItemStack sapOne = invCrafting.getStackInSlot(getSngItemInRow(invCrafting, sapling, 0));
-        ItemStack sapTwo = invCrafting.getStackInSlot(getSngItemInRow(invCrafting, sapling, 2) + 6);
+        ItemStack sapOne = invCrafting.getStackInSlot(getSngItemInRow(invCrafting, this.p_sapling, 0));
+        ItemStack sapTwo = invCrafting.getStackInSlot(getSngItemInRow(invCrafting, this.p_sapling, 2) + 6);
 
-        return new ItemStack(RegistryItems.dollGeckoMount, 1, EnumGeckoType.getTypeFromItem(sapOne, sapTwo).ordinal());
+        return new ItemStack(RegistryItems.dollGeckoMount, 2, EnumGeckoType.getTypeFromItem(sapOne, sapTwo).ordinal());
     }
 
     @Override
