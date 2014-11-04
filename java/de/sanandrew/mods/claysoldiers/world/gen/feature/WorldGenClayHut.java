@@ -194,6 +194,10 @@ public class WorldGenClayHut
 
     private static void insertFlower(World world, int potX, int potY, int potZ, ItemStack flower) {
         TileEntityFlowerPot pot = (TileEntityFlowerPot) world.getTileEntity(potX, potY, potZ);
+        if( pot == null ) {
+            pot = new TileEntityFlowerPot();
+            world.setTileEntity(potX, potY, potZ, pot);
+        }
         pot.func_145964_a(flower.getItem(), flower.getItemDamage());
         pot.markDirty();
         world.markBlockForUpdate(potX, potY, potZ);
