@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
-import de.sanandrew.core.manpack.util.NbtTypes;
+import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
@@ -28,7 +28,7 @@ public class UpgradeDiamondBlock
         ASoldierUpgrade[] upgrades = clayMan.getAvailableUpgrades();
         for( ASoldierUpgrade upgrade : upgrades ) {
             NBTTagCompound upgNbt = clayMan.getUpgrade(upgrade).getNbtTag();
-            if( upgNbt.hasKey(NBT_USES, NbtTypes.NBT_SHORT) ) {
+            if( upgNbt.hasKey(NBT_USES, EnumNbtTypes.NBT_SHORT.ordinal()) ) {
                 upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 5));
             }
         }
@@ -39,7 +39,7 @@ public class UpgradeDiamondBlock
     @Override
     public void onUpgradeAdded(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, SoldierUpgradeInst appliedUpgradeInst) {
         NBTTagCompound upgNbt = appliedUpgradeInst.getNbtTag();
-        if( upgNbt.hasKey(NBT_USES, NbtTypes.NBT_SHORT) ) {
+        if( upgNbt.hasKey(NBT_USES, EnumNbtTypes.NBT_SHORT.ordinal()) ) {
             upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
         }
     }

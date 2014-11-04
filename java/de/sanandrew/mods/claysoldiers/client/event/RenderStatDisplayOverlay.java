@@ -10,10 +10,9 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
@@ -88,7 +87,7 @@ public class RenderStatDisplayOverlay
             teams.add(Quartet.with(teamInst.getTeamColor(), renderedItem.getUnlocalizedName() + ".color", team.getValue(), renderedItem));
         }
 
-        this.renderStats(mc, SAPClientUtils.translate(RegistryItems.statDisplay.getUnlocalizedName() + ".title.soldiers"), teams, 5, 5);
+        this.renderStats(mc, SAPUtils.translate(RegistryItems.statDisplay.getUnlocalizedName() + ".title.soldiers"), teams, 5, 5);
     }
 
     private void renderMounts(Minecraft mc) {
@@ -111,7 +110,7 @@ public class RenderStatDisplayOverlay
             teams.add(Quartet.with(teamInst.typeColor, team.getKey(), team.getValue(), (ItemStack) null));
         }
 
-        this.renderStats(mc, SAPClientUtils.translate(RegistryItems.statDisplay.getUnlocalizedName() + ".title.mounts"), teams, 110, 5);
+        this.renderStats(mc, SAPUtils.translate(RegistryItems.statDisplay.getUnlocalizedName() + ".title.mounts"), teams, 110, 5);
     }
 
     private void renderStats(Minecraft mc, String title, List<Quartet<Integer, String, Integer, ItemStack>> teams, int xPos, int yPos) {
@@ -128,7 +127,7 @@ public class RenderStatDisplayOverlay
 
         int pos = 0;
         for( Quartet<Integer, String, Integer, ItemStack> team : teams ) {
-            String text = SAPClientUtils.translate(team.getValue1()) + ": " + team.getValue2().toString();
+            String text = SAPUtils.translate(team.getValue1()) + ": " + team.getValue2().toString();
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 24 + pos * 11, 0x80FFFFFF);
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 23 + pos * 11, 0xC0000000 | team.getValue0());
             this.p_statRenderer.drawString(text, xPos + 50 - this.p_statRenderer.getStringWidth(text) / 2, yPos + 14 + pos * 11, getContrastTextColor(team.getValue0()));

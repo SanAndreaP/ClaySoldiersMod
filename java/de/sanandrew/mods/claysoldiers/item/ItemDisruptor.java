@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CsmPlayerProperties;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;

@@ -8,8 +8,8 @@ package de.sanandrew.mods.claysoldiers.client.render.tileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
 import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.client.model.tileentity.ModelClayNexus;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;

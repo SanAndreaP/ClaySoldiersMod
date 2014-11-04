@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Sextet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;

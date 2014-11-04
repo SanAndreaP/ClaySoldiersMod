@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
-import de.sanandrew.core.manpack.util.NbtTypes;
+import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
@@ -24,10 +24,10 @@ public class UpgradeMobHead
             ItemStack newSkull = new ItemStack(Items.skull, 1, upgradeInst.getNbtTag().getShort("itemMeta"));
             NBTTagCompound newNbt = null;
 
-            if( upgradeInst.getNbtTag().hasKey("skullNbtTag", NbtTypes.NBT_COMPOUND) ) {
+            if( upgradeInst.getNbtTag().hasKey("skullNbtTag", EnumNbtTypes.NBT_COMPOUND.ordinal()) ) {
                 newNbt = new NBTTagCompound();
                 newNbt.setTag("SkullOwner", upgradeInst.getNbtTag().getCompoundTag("skullNbtTag"));
-            } else if( upgradeInst.getNbtTag().hasKey("skullNbtTag", NbtTypes.NBT_STRING) ) {
+            } else if( upgradeInst.getNbtTag().hasKey("skullNbtTag", EnumNbtTypes.NBT_STRING.ordinal()) ) {
                 newNbt = new NBTTagCompound();
                 newNbt.setString("SkullOwner", upgradeInst.getNbtTag().getString("skullNbtTag"));
             }
@@ -47,9 +47,9 @@ public class UpgradeMobHead
 
         if( stack.hasTagCompound() ) {
             NBTTagCompound stackTag = stack.getTagCompound();
-            if( stackTag.hasKey("SkullOwner", NbtTypes.NBT_COMPOUND) ) {
+            if( stackTag.hasKey("SkullOwner", EnumNbtTypes.NBT_COMPOUND.ordinal()) ) {
                 upgradeInst.getNbtTag().setTag("skullNbtTag", stackTag.getCompoundTag("SkullOwner"));
-            } else if( stackTag.hasKey("SkullOwner", NbtTypes.NBT_STRING) && !StringUtils.isNullOrEmpty(stackTag.getString("SkullOwner")) ) {
+            } else if( stackTag.hasKey("SkullOwner", EnumNbtTypes.NBT_STRING.ordinal()) && !StringUtils.isNullOrEmpty(stackTag.getString("SkullOwner")) ) {
                 upgradeInst.getNbtTag().setString("skullNbtTag", stackTag.getString("SkullOwner"));
             }
         }

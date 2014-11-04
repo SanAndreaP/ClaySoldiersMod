@@ -7,9 +7,9 @@
 package de.sanandrew.mods.claysoldiers.tileentity;
 
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.NbtTypes;
-import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
+import de.sanandrew.core.manpack.util.EnumNbtTypes;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
 import de.sanandrew.core.manpack.util.javatuples.Sextet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
@@ -333,7 +333,7 @@ public class TileEntityClayNexus
 
         this.p_upgradeItems = new ItemStack[36];
 
-        NBTTagList nbttaglist = nbt.getTagList("items", NbtTypes.NBT_COMPOUND);
+        NBTTagList nbttaglist = nbt.getTagList("items", EnumNbtTypes.NBT_COMPOUND.ordinal());
         for( int i = 0; i < nbttaglist.tagCount(); i++ ) {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             int slot = nbttagcompound1.getByte("slot") & 255;

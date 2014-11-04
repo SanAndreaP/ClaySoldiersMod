@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.crafting.*;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import net.minecraft.init.Blocks;

@@ -10,7 +10,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.NbtTypes;
+import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.mount.IMount;
@@ -211,7 +211,7 @@ public class EntityClayMan
             this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
         }
 
-        NBTTagList upgNbtList = nbt.getTagList("upgrade", NbtTypes.NBT_COMPOUND);
+        NBTTagList upgNbtList = nbt.getTagList("upgrade", EnumNbtTypes.NBT_COMPOUND.ordinal());
         for( int i = 0; i < upgNbtList.tagCount(); i++ ) {
             NBTTagCompound savedUpg = upgNbtList.getCompoundTagAt(i);
             SoldierUpgradeInst upgInst = new SoldierUpgradeInst(SoldierUpgrades.getUpgrade(savedUpg.getString("name")));
@@ -221,7 +221,7 @@ public class EntityClayMan
             }
             this.p_upgrades.put(upgInst.getUpgrade(), upgInst);
         }
-        NBTTagList effNbtList = nbt.getTagList("effect", NbtTypes.NBT_COMPOUND);
+        NBTTagList effNbtList = nbt.getTagList("effect", EnumNbtTypes.NBT_COMPOUND.ordinal());
         for( int i = 0; i < effNbtList.tagCount(); i++ ) {
             NBTTagCompound savedEff = effNbtList.getCompoundTagAt(i);
             SoldierEffectInst effInst = new SoldierEffectInst(SoldierEffects.getEffect(savedEff.getString("name")));

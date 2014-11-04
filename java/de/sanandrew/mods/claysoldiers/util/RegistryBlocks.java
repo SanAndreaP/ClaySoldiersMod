@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.block.BlockClayNexus;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import net.minecraft.block.Block;

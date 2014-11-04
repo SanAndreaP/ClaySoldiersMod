@@ -6,8 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.enchantment;
 
-import de.sanandrew.core.manpack.util.NbtTypes;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.EnumNbtTypes;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
@@ -26,7 +26,7 @@ public class UpgradeGoldIngot
         ASoldierUpgrade[] upgrades = clayMan.getAvailableUpgrades();
         for( ASoldierUpgrade upgrade : upgrades ) {
             NBTTagCompound upgNbt = clayMan.getUpgrade(upgrade).getNbtTag();
-            if( upgNbt.hasKey(NBT_USES, NbtTypes.NBT_SHORT) ) {
+            if( upgNbt.hasKey(NBT_USES, EnumNbtTypes.NBT_SHORT.ordinal()) ) {
                 upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
             }
         }
@@ -52,7 +52,7 @@ public class UpgradeGoldIngot
     @Override
     public void onUpgradeAdded(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, SoldierUpgradeInst appliedUpgradeInst) {
         NBTTagCompound upgNbt = appliedUpgradeInst.getNbtTag();
-        if( upgNbt.hasKey(NBT_USES, NbtTypes.NBT_SHORT) ) {
+        if( upgNbt.hasKey(NBT_USES, EnumNbtTypes.NBT_SHORT.ordinal()) ) {
             upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
         }
     }

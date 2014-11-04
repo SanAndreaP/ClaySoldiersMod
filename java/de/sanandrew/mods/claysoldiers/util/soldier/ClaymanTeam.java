@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;

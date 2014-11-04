@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
-import de.sanandrew.core.manpack.util.NbtTypes;
+import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
@@ -115,7 +115,7 @@ public class EntityBunnyMount
 
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
         this.setType(EnumBunnyType.VALUES[nbt.getShort("bunnyType")]);
-        if( nbt.hasKey("dollItem", NbtTypes.NBT_COMPOUND) ) {
+        if( nbt.hasKey("dollItem", EnumNbtTypes.NBT_COMPOUND.ordinal()) ) {
             this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
         }
     }

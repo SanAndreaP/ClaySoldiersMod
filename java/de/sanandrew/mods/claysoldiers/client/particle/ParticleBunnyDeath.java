@@ -8,8 +8,8 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.core.manpack.util.SAPUtils.RGBAValues;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
 import net.minecraft.client.particle.EntityBreakingFX;
