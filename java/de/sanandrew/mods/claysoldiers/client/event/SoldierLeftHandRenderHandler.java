@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
+import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.EnumRenderStage;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;

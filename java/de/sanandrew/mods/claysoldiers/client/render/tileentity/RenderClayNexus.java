@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
-import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
+import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.client.model.tileentity.ModelClayNexus;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
