@@ -7,9 +7,9 @@
 package de.sanandrew.mods.claysoldiers.network.packet;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import de.sanandrew.core.manpack.network.IPacket;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.claysoldiers.network.IPacket;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;

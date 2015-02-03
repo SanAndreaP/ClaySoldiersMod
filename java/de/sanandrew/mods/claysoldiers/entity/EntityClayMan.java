@@ -15,7 +15,7 @@ import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.mount.IMount;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
-import de.sanandrew.mods.claysoldiers.network.PacketProcessor;
+import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.*;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
@@ -60,7 +60,7 @@ public class EntityClayMan
     public final SoldierCloakHelper cloakHelper = new SoldierCloakHelper();
 
     public ItemStack dollItem = null;
-    public Triplet<Double, Double, Double> knockBack = Triplet.with(0.8D, 0.8D, 0.8D);
+    public Triplet<Double, Double, Double> knockBack = Triplet.with(0.7D, 0.7D, 0.7D);
     public boolean canMove = true;
     public boolean nexusSpawn = false;
 
@@ -304,6 +304,7 @@ public class EntityClayMan
         if( !this.canMove ) {
             return;
         }
+
         super.knockBack(par1Entity, par2, par3, par5);
         this.motionX *= knockBack.getValue0();
         this.motionY *= knockBack.getValue1();
@@ -736,18 +737,18 @@ public class EntityClayMan
                 }
             }
 
-            PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
-                                            Triplet.with(this.getEntityId(), this.p_upgradeRenderFlags, this.p_effectRenderFlags)
+            PacketManager.sendToAllAround(PacketManager.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
+                                          Triplet.with(this.getEntityId(), this.p_upgradeRenderFlags, this.p_effectRenderFlags)
             );
 
             for( Pair<Byte, NBTTagCompound> effNbt : effectNbtToClt ) {
-                PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_EFFECT_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
+                PacketManager.sendToAllAround(PacketManager.PKG_SOLDIER_EFFECT_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
                                                 Triplet.with(this.getEntityId(), effNbt.getValue0(), effNbt.getValue1())
                 );
             }
 
             for( Pair<Byte, NBTTagCompound> upgNbt : upgradeNbtToClt ) {
-                PacketProcessor.sendToAllAround(PacketProcessor.PKG_SOLDIER_UPGRADE_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
+                PacketManager.sendToAllAround(PacketManager.PKG_SOLDIER_UPGRADE_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
                                                 Triplet.with(this.getEntityId(), upgNbt.getValue0(), upgNbt.getValue1())
                 );
             }

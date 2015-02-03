@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0-beta.2",
+  "downloadUrl": "",
+  "description": "A new update. Crash fixes and improvements.",
+  "changelog": [
+    "Using new Update Manager. You'll get automatically notified if there's a new version out!",
+    "fixed several issues with the Manager Pack crashing. It now \"knows\" the new packet structure of it.",
+    "utilized the centralized Packet Management system from the Manager Pack. No duplicated code anymore in this regard!",
+    "cleanups",
+    "knockback reduced on soldiers",
+    "improved clay cam!"
+  ]
+}

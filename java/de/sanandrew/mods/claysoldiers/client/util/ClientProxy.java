@@ -16,7 +16,6 @@ import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
 import de.sanandrew.mods.claysoldiers.client.render.item.ItemRendererClayNexus;
 import de.sanandrew.mods.claysoldiers.client.render.tileentity.RenderClayNexus;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.network.ClientPacketHandler;
 import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
@@ -45,8 +44,6 @@ public class ClientProxy
     public void modInit() {
         super.modInit();
 
-        ClaySoldiersMod.channel.register(new ClientPacketHandler());
-
         RegistryEntities.registerRenderers();
 
         ClaySoldiersMod.EVENT_BUS.register(new SoldierRightHandRenderHandler());
@@ -61,9 +58,10 @@ public class ClientProxy
         MinecraftForge.EVENT_BUS.register(new RenderStatDisplayOverlay());
         MinecraftForge.EVENT_BUS.register(new WorldOnLastRenderHandler());
         MinecraftForge.EVENT_BUS.register(new Textures());
-        MinecraftForge.EVENT_BUS.register(new RenderTickHandler());
 
-        FMLCommonHandler.instance().bus().register(new RenderTickHandler());
+        RenderClayCamHandler clayCamHandler = new RenderClayCamHandler();
+        MinecraftForge.EVENT_BUS.register(clayCamHandler);
+        FMLCommonHandler.instance().bus().register(clayCamHandler);
     }
 
     @Override

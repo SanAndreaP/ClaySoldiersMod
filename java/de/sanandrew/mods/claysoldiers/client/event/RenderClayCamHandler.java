@@ -16,13 +16,15 @@ import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 @SideOnly(Side.CLIENT)
-public class RenderTickHandler
+public class RenderClayCamHandler
 {
     private EntityRendererClayCam p_clayCamRenderer;
     private EntityRenderer p_prevEntityRenderer;
+    private int viewMode = -1;
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
@@ -30,6 +32,10 @@ public class RenderTickHandler
 
         if( event.phase == Phase.START ) {
             if( mc.thePlayer != null && ClientProxy.s_clayCamEntity != null ) {
+                if( this.viewMode == -1 ) {
+                    this.viewMode = mc.gameSettings.thirdPersonView;
+                }
+                mc.gameSettings.thirdPersonView = 1;
                 if( this.p_clayCamRenderer == null ) {
                     this.p_clayCamRenderer = new EntityRendererClayCam(mc, mc.getResourceManager());
                 }
@@ -40,13 +46,25 @@ public class RenderTickHandler
                     mc.entityRenderer = this.p_clayCamRenderer;
                 }
 
-                if( mc.thePlayer.isSneaking() ) {
+                if( mc.thePlayer.isSneaking() || ClientProxy.s_clayCamEntity.isDead ) {
+                    mc.gameSettings.thirdPersonView = this.viewMode;
+                    this.viewMode = -1;
                     ClaySoldiersMod.proxy.switchClayCam(false, null);
                 }
             } else if( this.p_prevEntityRenderer != null && mc.entityRenderer != this.p_prevEntityRenderer ) {
                 // reset the renderer
                 mc.entityRenderer = this.p_prevEntityRenderer;
             }
+        } else if( ClientProxy.s_clayCamEntity != null ) {
+            mc.gameSettings.thirdPersonView = this.viewMode;
+        }
+    }
+
+    @SubscribeEvent
+    public void getFovMulti(FOVUpdateEvent event) {
+//        System.out.println();
+        if( Minecraft.getMinecraft().entityRenderer == this.p_clayCamRenderer ) {
+            event.newfov = 0.5F;
         }
     }
 

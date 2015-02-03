@@ -9,7 +9,6 @@ package de.sanandrew.mods.claysoldiers.client.render;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
-import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManager;
@@ -33,7 +32,6 @@ public class EntityRendererClayCam
         }
 
         if( ClientProxy.s_clayCamEntity.isDead ) {
-            ClaySoldiersMod.proxy.switchClayCam(false, null);
             super.updateCameraAndRender(partialTick);
             return;
         }
@@ -56,8 +54,10 @@ public class EntityRendererClayCam
         this.p_mc.thePlayer.posZ = ClientProxy.s_clayCamEntity.posZ;
 
         // set the camera rotation values to the ones of the clayman observed
-        this.p_mc.thePlayer.rotationPitch = ClientProxy.s_clayCamEntity.rotationPitch;
+        this.p_mc.thePlayer.rotationPitch = ClientProxy.s_clayCamEntity.rotationPitch + 20.0F;
         this.p_mc.thePlayer.rotationYaw = ClientProxy.s_clayCamEntity.rotationYaw;
+        this.p_mc.thePlayer.prevRotationPitch = ClientProxy.s_clayCamEntity.prevRotationPitch + 20.0F;
+        this.p_mc.thePlayer.prevRotationYaw = ClientProxy.s_clayCamEntity.prevRotationYaw;
 
         // do parent call here, baby...
         super.updateCameraAndRender(partialTick);
