@@ -17,12 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-2.0.0b"
+version = "1.7.10-2.0.0-beta.2"
 group = "de.sanandrew.mods.claysoldiers"
 archivesBaseName = "ClaySoldiersMod"
 
 minecraft {
-    version = "1.7.10-10.13.2.1232"
+    version = "1.7.10-10.13.2.1286"
     runDir = "eclipse"
 }
 

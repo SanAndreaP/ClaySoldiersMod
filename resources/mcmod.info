@@ -11,6 +11,6 @@
   "credits": "The Forge and FML guys",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": ["required-after:sapmanpack@[2.0.0,)"]
+  "dependencies": ["required-after:sapmanpack@[2.4.0,)"]
 }
 ]
