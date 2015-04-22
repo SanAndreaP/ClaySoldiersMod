@@ -4,9 +4,7 @@ A Minecraft Mod which adds tiny clay soldiers and additional content for those.
 
 ###For Players:
 If you experience any bug, issue, crash whilst using this mod or you have any feature request, feel free to open a new issue over here &gt; [SanAndreasP/ClaySoldiersMod/issues](https://github.com/SanAndreasP/ClaySoldiersMod/issues)!<br>
-Please label the issue <b style="background-color:#FF0000;color:#FFF;padding: 3px 4px;border-radius:3px;box-shadow:0 -1px 0 rgba(0, 0, 0, 0.12) inset;font-size:11px">bug</b> if you have a bug/crash/any other issue.<br>
-Use the label <b style="background-color:#84b6eb;color:#000;padding: 3px 4px;border-radius:3px;box-shadow:0 -1px 0 rgba(0, 0, 0, 0.12) inset;font-size:11px">enchantment</b> if you have a feature request.<br>
-The label <b style="background-color:#A000A0;color:#FFF;padding: 3px 4px;border-radius:3px;box-shadow:0 -1px 0 rgba(0, 0, 0, 0.12) inset;font-size:11px">question</b> should be used for questions.
+<b style="color:#FF0000">Please read [this](https://github.com/SanAndreasP/ClaySoldiersMod/issues/67) first if you're running a Mac! (or have Java 6)</b>
 
 ###For Modders:
 If you want to add a new feature / possible bugfix to the mod, feel free to fork this repo, make your changes and make a Pull Request.<br>
