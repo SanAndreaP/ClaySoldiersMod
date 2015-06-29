@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityBunnyMount;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
@@ -94,6 +95,14 @@ public class ItemBunnyDoll
 
             return true;
         }
+    }
+
+    public static EnumBunnyType getType(ItemStack stack) {
+        if( stack == null || !SAPUtils.isIndexInRange(EnumBunnyType.VALUES, stack.getItemDamage()) ) {
+            return EnumBunnyType.WHITE;
+        }
+
+        return EnumBunnyType.VALUES[stack.getItemDamage()];
     }
 
     @Override

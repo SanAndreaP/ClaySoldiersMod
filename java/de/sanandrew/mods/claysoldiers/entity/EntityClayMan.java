@@ -155,6 +155,11 @@ public class EntityClayMan
     }
 
     @Override
+    public boolean canBreatheUnderwater() {
+        return this.hasUpgrade(SoldierUpgrades.UPG_LILYPADS);
+    }
+
+    @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
 

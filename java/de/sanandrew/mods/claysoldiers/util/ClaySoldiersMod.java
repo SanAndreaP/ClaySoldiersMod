@@ -22,7 +22,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.managers.SAPUpdateManager;
 import de.sanandrew.core.manpack.managers.SAPUpdateManager.Version;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
-import de.sanandrew.mods.claysoldiers.dispenser.BehaviorSoldierDispenseItem;
+import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDollDispenseItem;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
@@ -92,9 +92,15 @@ public final class ClaySoldiersMod
 
         RegistryEntities.registerEntities(this);
 
-        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.dollSoldier, new BehaviorSoldierDispenseItem());
-        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.disruptor, new BehaviorDisruptorDispenseItem());
-        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.disruptorHardened, new BehaviorDisruptorDispenseItem());
+        BehaviorDollDispenseItem bdiDoll = new BehaviorDollDispenseItem();
+        BehaviorDisruptorDispenseItem bdiDisrupt = new BehaviorDisruptorDispenseItem();
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.dollSoldier, bdiDoll);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.dollHorseMount, bdiDoll);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.dollGeckoMount, bdiDoll);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.dollTurtleMount, bdiDoll);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.dollBunnyMount, bdiDoll);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.disruptor, bdiDisrupt);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(RegistryItems.disruptorHardened, bdiDisrupt);
     }
 
     @EventHandler

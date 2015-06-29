@@ -3,31 +3,28 @@
 A Minecraft Mod which adds tiny clay soldiers and additional content for those.
 
 ###For Players:
+####Please read [this](https://github.com/SanAndreasP/ClaySoldiersMod/issues/67) first if you're running a Mac! (or have Java 6)
+
 If you experience any bug, issue, crash whilst using this mod or you have any feature request, feel free to open a new issue over here &gt; [SanAndreasP/ClaySoldiersMod/issues](https://github.com/SanAndreasP/ClaySoldiersMod/issues)!<br>
-<b style="color:#FF0000">Please read [this](https://github.com/SanAndreasP/ClaySoldiersMod/issues/67) first if you're running a Mac! (or have Java 6)</b>
 
 ###For Modders:
-If you want to add a new feature / possible bugfix to the mod, feel free to fork this repo, make your changes and make a Pull Request.<br>
+If you want to add a new feature / possible bugfix to the mod, feel free to fork this repo, make your changes and make a Pull Request. Read the ***For Developers*** section below on how to get a workspace built.<br>
 If you want to develop a new addon for this mod, download the compiled jar file and add it as a library in your workspace (IDE required).<br>
-For both, you'll also need to get the Manager Pack Coremod from here &gt; [SanAndreasP/SAPManagerPack](https://github.com/SanAndreasP/SAPManagerPack). Instructions on how to use that are in the README there.
+For the latter, you'll also need to get the Manager Pack Coremod from here &gt; [SanAndreasP/SAPManagerPack](https://github.com/SanAndreasP/SAPManagerPack). Instructions on how to use that are in the README there.
 
 ###For Developers
-I recommend you use the [ForgeGradleWrapper](https://github.com/SanAndreasP/ForgeGradleWrapper) to setup/build the mod. Use following steps:
+Here are the Instructions on how to build a new workspace (for PullRequests / Maintainers) of this repo:
+* Fork this repo and download it via a git client (I recommend SourceTree)
+* run <tt>gradlew setupDecompWorkspace</tt>
+* setup a new workspace in your preferred IDE, here an example for IntelliJ:
+  * open IntelliJ and open a new project
+  * point to the build.gradle
+  * leave the default settings and click "OK"
+  * After the project is loaded, open the "Gradle" tab (**may be invisible for you, in which case click on the icon in the bottom left corner and select "Gradle" from there**)
+  * Execute the task "genIntelliJRuns" via double-click on it
+  * Reload the project
+* Done!
+* *Please note that we code in Java 7, so you'll need at least the Java Development Kit (JDK) 7 (ver. 8 works as well)! Also make sure your code added to this repo compiles against Java 7 or earlier!*
 
-1. Run the fGradleW.py file (if you have python 2.7)
-2. Choose "[1] setup Forge", use the build which is listed inside the build.gradle under "minecraft->version". If you've already built with the wrapper, but have a different build number, update the workspace
-3. Clone the SAPManagerPack repo and put the repo folder (either directly or per symbolic link) inside the src folder of your workspace (like forge/src/SAPManagerPack/)
-4. After that, clone this repo and put the repo folder (either directly or per symbolic link) inside the src folder of your workspace (like forge/src/ClaySoldiersMod/)
-5. In your IDE, mark the java and resources folder within both repos as Source Folders
-  * For Eclipse: Right-click the folder, choose "Build Path", then "Use as Source Folder"
-  * For IntelliJ IDEA:  Right-click the folder, choose "Mark Directory As", then "sources Root"
-6. To compile the mod:
-  1. Clean the build folder (if you have one) in both repos
-  2. Run the fGradleH.py file and choose "[3] build mod"
-  3. Choose to build the Manager Pack first
-  4. After it's done building, build the Clay Soldiers Mod
-  5. Copy the SAPManPack-[version].jar and the ClaySoldiersMod-[version].jar, not those suffixed with either -deobf or -src
-  6. ???
-  7. Zoidberg
 
 Have fun playing :squirrel:
