@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
-import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
@@ -15,6 +14,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class UpgradeDiamond
         extends AUpgradeMisc
@@ -28,7 +28,7 @@ public class UpgradeDiamond
         ASoldierUpgrade[] upgrades = clayMan.getAvailableUpgrades();
         for( ASoldierUpgrade upgrade : upgrades ) {
             NBTTagCompound upgNbt = clayMan.getUpgrade(upgrade).getNbtTag();
-            if( upgNbt.hasKey(NBT_USES, EnumNbtTypes.NBT_SHORT.ordinal()) ) {
+            if( upgNbt.hasKey(NBT_USES, NBT.TAG_COMPOUND) ) {
                 upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
             }
         }
@@ -39,7 +39,7 @@ public class UpgradeDiamond
     @Override
     public void onUpgradeAdded(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, SoldierUpgradeInst appliedUpgradeInst) {
         NBTTagCompound upgNbt = appliedUpgradeInst.getNbtTag();
-        if( upgNbt.hasKey(NBT_USES, EnumNbtTypes.NBT_SHORT.ordinal()) ) {
+        if( upgNbt.hasKey(NBT_USES, NBT.TAG_COMPOUND) ) {
             upgNbt.setShort(NBT_USES, (short) (upgNbt.getShort(NBT_USES) * 2));
         }
     }

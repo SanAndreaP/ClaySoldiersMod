@@ -34,12 +34,12 @@ public class UpgradeGoldNugget
     }
 
     @Override
-    public boolean canBePickedUp(EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
+    public boolean canBePickedUp(final EntityClayMan clayMan, ItemStack stack, ASoldierUpgrade upgrade) {
         Predicate<EntityClayMan> filterBy = new Predicate<EntityClayMan>()
         {
             @Override
             public boolean apply(EntityClayMan input) {
-                return input != null && input.hasUpgrade(UpgradeGoldNugget.class);
+                return input != null && input.hasUpgrade(UpgradeGoldNugget.class) && input.getClayTeam().equals(clayMan.getClayTeam());
             }
         };
         return Collections2.filter(clayMan.getSoldiersInRange(), filterBy).isEmpty();

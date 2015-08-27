@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
-import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
@@ -23,6 +22,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class EntityGeckoMount
         extends EntityCreature
@@ -121,7 +121,7 @@ public class EntityGeckoMount
 
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
         this.setType(EnumGeckoType.VALUES[nbt.getShort("geckoType")]);
-        if( nbt.hasKey("dollItem", EnumNbtTypes.NBT_COMPOUND.ordinal()) ) {
+        if( nbt.hasKey("dollItem", NBT.TAG_COMPOUND) ) {
             this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
         }
     }

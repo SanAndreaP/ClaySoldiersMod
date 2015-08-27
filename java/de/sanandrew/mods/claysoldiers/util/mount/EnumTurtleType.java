@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.mount;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.ItemUtils;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.init.Blocks;
@@ -91,7 +91,7 @@ public enum EnumTurtleType
                 return null;
             }
 
-            if( SAPUtils.areStacksEqualWithWCV(type.item, stack) ) {
+            if( ItemUtils.areStacksEqual(type.item, stack, true) ) {
                 return type;
             }
         }

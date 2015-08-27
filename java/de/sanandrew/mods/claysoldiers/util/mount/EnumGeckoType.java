@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.mount;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.ItemUtils;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.init.Blocks;
@@ -59,7 +59,7 @@ public enum EnumGeckoType
     public final Pair<Integer, Integer> colors;
     public final ResourceLocation textures[];
 
-    private EnumGeckoType(int typeColor, int saplingOne, int saplingTwo, int itemColorLimbs, int itemColorBody, String textureSpots, String textureBody) {
+    EnumGeckoType(int typeColor, int saplingOne, int saplingTwo, int itemColorLimbs, int itemColorBody, String textureSpots, String textureBody) {
         this.typeColor = typeColor;
         this.saplingTypes = Pair.with(saplingOne, saplingTwo);
         this.colors = Pair.with(itemColorLimbs, itemColorBody);
@@ -78,7 +78,7 @@ public enum EnumGeckoType
             sapling1.setItemDamage(type.saplingTypes.getValue0());
             sapling2.setItemDamage(type.saplingTypes.getValue1());
 
-            if( SAPUtils.areStacksEqualWithWCV(sapling1, stack1) && SAPUtils.areStacksEqualWithWCV(sapling2, stack2) ) {
+            if( ItemUtils.areStacksEqual(sapling1, stack1, true) && ItemUtils.areStacksEqual(sapling2, stack2, true) ) {
                 return type;
             }
         }

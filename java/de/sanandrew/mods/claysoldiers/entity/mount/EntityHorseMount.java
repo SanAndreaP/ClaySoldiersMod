@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
-import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
@@ -22,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class EntityHorseMount
         extends EntityCreature
@@ -99,7 +99,7 @@ public class EntityHorseMount
         this.spawnedFromNexus = nbt.getBoolean("fromNexus");
         this.setType(EnumHorseType.VALUES[nbt.getShort("horseType")]);
         this.dataWatcher.updateObject(DW_TEXTURE, nbt.getShort("texture"));
-        if( nbt.hasKey("dollItem", EnumNbtTypes.NBT_COMPOUND.ordinal()) ) {
+        if( nbt.hasKey("dollItem", NBT.TAG_COMPOUND) ) {
             this.dollItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("dollItem"));
         }
     }

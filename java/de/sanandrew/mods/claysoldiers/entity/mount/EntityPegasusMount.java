@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
-import de.sanandrew.core.manpack.util.UsedByReflection;
+import de.sanandrew.core.manpack.util.annotation.UsedByReflection;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.block.Block;

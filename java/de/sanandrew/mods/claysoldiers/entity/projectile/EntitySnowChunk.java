@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
-import de.sanandrew.core.manpack.util.UsedByReflection;
+import de.sanandrew.core.manpack.util.annotation.UsedByReflection;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;

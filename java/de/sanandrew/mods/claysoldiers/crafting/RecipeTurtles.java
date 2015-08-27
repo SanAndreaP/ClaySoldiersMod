@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.crafting;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.ItemUtils;
 import de.sanandrew.mods.claysoldiers.item.ItemTurtleDoll;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumTurtleType;
@@ -47,7 +47,7 @@ public class RecipeTurtles
         }
 
         for( int i = 0, slotIndex = startIndex; i < pattern.length; slotIndex = startIndex + (++i) ) {
-            if( !SAPUtils.areStacksEqualWithWCV(pattern[i], invCrafting.getStackInSlot(slotIndex)) ) {
+            if( !ItemUtils.areStacksEqual(pattern[i], invCrafting.getStackInSlot(slotIndex), true) ) {
                 return false;
             }
         }
@@ -58,7 +58,7 @@ public class RecipeTurtles
     @Override
     public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
         for( EnumTurtleType type : EnumTurtleType.VALUES ) {
-            if( SAPUtils.areStacksEqualWithWCV(type.item, invCrafting.getStackInSlot(5)) ) {
+            if( ItemUtils.areStacksEqual(type.item, invCrafting.getStackInSlot(5), true) ) {
                 ItemStack stack = new ItemStack(RegistryItems.dollTurtleMount, 2);
                 ItemTurtleDoll.setType(stack, type);
                 return stack;

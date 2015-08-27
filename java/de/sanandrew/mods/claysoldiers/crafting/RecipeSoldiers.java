@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.crafting;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.ItemUtils;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
@@ -45,7 +45,7 @@ public class RecipeSoldiers
         for( int i = 0; i < 9; i++ ) {
             ItemStack stack = invCrafting.getStackInSlot(i);
             if( stack != null ) {
-                if( SAPUtils.isItemInStackArray(stack, this.p_dollMaterials) ) {
+                if( ItemUtils.isItemStackInArray(stack, true, this.p_dollMaterials.toArray(new ItemStack[this.p_dollMaterials.size()])) ) {
                     if( !hasMaterial ) {
                         hasMaterial = true;
                     } else {
@@ -69,7 +69,7 @@ public class RecipeSoldiers
         for( int i = 0; i < 9; i++ ) {
             ItemStack stack = invCrafting.getStackInSlot(i);
             if( stack != null ) {
-                if( SAPUtils.isItemInStackArray(stack, this.p_dollMaterials) ) {
+                if( ItemUtils.isItemStackInArray(stack, true, this.p_dollMaterials.toArray(new ItemStack[this.p_dollMaterials.size()])) ) {
                     material = stack;
                 } else if( stack.getItem() instanceof ItemClayManDoll ) {
                     if( doll == null ) {

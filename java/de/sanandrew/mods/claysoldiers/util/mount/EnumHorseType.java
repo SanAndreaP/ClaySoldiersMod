@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.mount;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.ItemUtils;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.init.Blocks;
@@ -68,7 +68,7 @@ public enum EnumHorseType
     public final int typeColor;
     public final ItemStack item;
 
-    private EnumHorseType(float health, float speed, int typeColor, ItemStack materialItem, ResourceLocation... textures) {
+    EnumHorseType(float health, float speed, int typeColor, ItemStack materialItem, ResourceLocation... textures) {
         this.health = health;
         this.moveSpeed = speed;
         this.textures = textures;
@@ -77,7 +77,7 @@ public enum EnumHorseType
         this.item = materialItem;
     }
 
-    private EnumHorseType(float health, float speed, int typeColor, ItemStack materialItem, String itemTexture, int itemColor, ResourceLocation... textures) {
+    EnumHorseType(float health, float speed, int typeColor, ItemStack materialItem, String itemTexture, int itemColor, ResourceLocation... textures) {
         this.health = health;
         this.moveSpeed = speed;
         this.textures = textures;
@@ -100,7 +100,7 @@ public enum EnumHorseType
                 return null;
             }
 
-            if( SAPUtils.areStacksEqualWithWCV(type.item, stack) ) {
+            if( ItemUtils.areStacksEqual(type.item, stack, true) ) {
                 return type;
             }
         }

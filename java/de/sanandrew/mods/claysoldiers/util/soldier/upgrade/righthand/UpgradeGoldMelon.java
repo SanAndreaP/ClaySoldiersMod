@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.soldier.EnumMethodState;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
@@ -31,8 +32,21 @@ public class UpgradeGoldMelon
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         damage.setValue(0.0F);
-        clayMan.heal(15.0F);
+        target.heal(15.0F);
         ParticlePacketSender.sendSpellFx(target.posX, target.posY, target.posZ, target.dimension, 1.0D, 0.0D, 0.0D);
+
+        upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
+    }
+
+    @Override
+    public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
+        if( upgradeInst.getNbtTag().getShort(NBT_USES) <= 0 ) {
+            clayMan.playSound("random.break", 1.0F, 1.0F);
+            ParticlePacketSender.sendBreakFx(clayMan.posX, clayMan.posY, clayMan.posZ, clayMan.dimension, Items.speckled_melon);
+            return true;
+        }
+
+        return false;
     }
 
     @Override

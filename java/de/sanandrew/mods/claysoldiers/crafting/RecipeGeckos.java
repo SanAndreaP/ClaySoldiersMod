@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.crafting;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.ItemUtils;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumGeckoType;
 import net.minecraft.init.Blocks;
@@ -56,7 +56,7 @@ public class RecipeGeckos
             if( item != null ) {
                 if( slotFound >= 0 ) {
                     return -1;
-                } else if( SAPUtils.areStacksEqualWithWCV(item, stack) ) {
+                } else if( ItemUtils.areStacksEqual(item, stack, true) ) {
                     slotFound = i;
                 }
             }
