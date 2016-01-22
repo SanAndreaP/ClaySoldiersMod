@@ -6,8 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.mount;
 
-import de.sanandrew.core.manpack.util.helpers.ItemUtils;
-import de.sanandrew.core.manpack.util.javatuples.Pair;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -78,7 +78,7 @@ public enum EnumGeckoType
             sapling1.setItemDamage(type.saplingTypes.getValue0());
             sapling2.setItemDamage(type.saplingTypes.getValue1());
 
-            if( ItemUtils.areStacksEqual(sapling1, stack1, true) && ItemUtils.areStacksEqual(sapling2, stack2, true) ) {
+            if( ItemStackUtils.areStacksEqual(sapling1, stack1, true) && ItemStackUtils.areStacksEqual(sapling2, stack2, true) ) {
                 return type;
             }
         }

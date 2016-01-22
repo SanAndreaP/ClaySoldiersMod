@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.crafting;
 
-import de.sanandrew.core.manpack.util.helpers.ItemUtils;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import de.sanandrew.mods.claysoldiers.item.ItemHorseDoll;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
@@ -33,7 +33,7 @@ public class RecipeHorses
         };
 
         if( invCrafting.getStackInSlot(0) == null
-            && (invCrafting.getStackInSlot(1) == null || ItemUtils.areStacksEqual(this.p_feather, invCrafting.getStackInSlot(1), true))
+            && (invCrafting.getStackInSlot(1) == null || ItemStackUtils.areStacksEqual(this.p_feather, invCrafting.getStackInSlot(1), true))
             && invCrafting.getStackInSlot(2) == null )
         {
             startIndex = 3;
@@ -48,7 +48,7 @@ public class RecipeHorses
         }
 
         for( int i = 0, slotIndex = startIndex; i < pattern.length; slotIndex = startIndex + (++i) ) {
-            if( !ItemUtils.areStacksEqual(pattern[i], invCrafting.getStackInSlot(slotIndex), true) ) {
+            if( !ItemStackUtils.areStacksEqual(pattern[i], invCrafting.getStackInSlot(slotIndex), true) ) {
                 return false;
             }
         }
@@ -59,12 +59,12 @@ public class RecipeHorses
     @Override
     public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
         boolean isPegasus = false;
-        if( ItemUtils.areStacksEqual(invCrafting.getStackInSlot(1), this.p_feather, true) ) {
+        if( ItemStackUtils.areStacksEqual(invCrafting.getStackInSlot(1), this.p_feather, true) ) {
             isPegasus = true;
         }
 
         for( EnumHorseType horseType : EnumHorseType.VALUES ) {
-            if( ItemUtils.areStacksEqual(horseType.item, invCrafting.getStackInSlot(3), true) ) {
+            if( ItemStackUtils.areStacksEqual(horseType.item, invCrafting.getStackInSlot(3), true) ) {
                 ItemStack stack = new ItemStack(RegistryItems.dollHorseMount, 2);
                 ItemHorseDoll.setType(stack, horseType, isPegasus);
                 return stack;

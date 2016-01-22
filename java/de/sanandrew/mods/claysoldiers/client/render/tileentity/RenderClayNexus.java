@@ -8,9 +8,6 @@ package de.sanandrew.mods.claysoldiers.client.render.tileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
-import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.client.model.tileentity.ModelClayNexus;
 import de.sanandrew.mods.claysoldiers.client.util.Textures;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
@@ -19,6 +16,7 @@ import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.IThrowableUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
+import net.darkhax.bookshelf.lib.ColorObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -67,12 +65,9 @@ public class RenderClayNexus
     }
 
     private void renderGlowmap(TileEntityClayNexus nexus) {
-        float[] colors = new float[] { 1.0F, 1.0F, 1.0F };
+        ColorObject rgba = new ColorObject(0xFFFFFFFF);
         if( nexus.getStackInSlot(0) != null ) {
-            RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(nexus.getStackInSlot(0)).getIconColor());
-            colors[0] = rgba.getRed() / 255.0F;
-            colors[1] = rgba.getGreen() / 255.0F;
-            colors[2] = rgba.getBlue() / 255.0F;
+            rgba = new ColorObject(ItemClayManDoll.getTeam(nexus.getStackInSlot(0)).getIconColor());
         }
 
         GL11.glEnable(GL11.GL_BLEND);
@@ -88,7 +83,7 @@ public class RenderClayNexus
         }
 
         this.bindTexture(Textures.NEXUS_GLOWING);
-        GL11.glColor3f(colors[0], colors[1], colors[2]);
+        GL11.glColor3f(rgba.getRed(), rgba.getGreen(), rgba.getBlue());
         this.nexusModel.renderTileEntityGlowmap();
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevBrightX, prevBrightY);
@@ -97,13 +92,9 @@ public class RenderClayNexus
     }
 
     private static void renderSoldierItem(TileEntityClayNexus nexus, ItemStack stack, float partTicks) {
-        float[] colors = new float[] { 1.0F, 1.0F, 1.0F };
         float itmAngle = nexus.prevSpinAngle + (nexus.spinAngle - nexus.prevSpinAngle) * partTicks - 45.0F;
 
-        RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(stack).getIconColor());
-        colors[0] = rgba.getRed() / 255.0F;
-        colors[1] = rgba.getGreen() / 255.0F;
-        colors[2] = rgba.getBlue() / 255.0F;
+        ColorObject rgba = new ColorObject(ItemClayManDoll.getTeam(stack).getIconColor());
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 1.225F, 0.0F);
@@ -111,8 +102,9 @@ public class RenderClayNexus
         GL11.glScalef(0.25F, 0.25F, 0.25F);
         GL11.glRotatef(itmAngle, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
-        GL11.glColor3f(colors[0], colors[1], colors[2]);
-        ItemRenderHelper.renderItemIn3D(stack);
+        GL11.glColor3f(rgba.getRed(), rgba.getGreen(), rgba.getBlue());
+//      TODO: FIX THIS SHIT!
+//        ItemRenderHelper.renderItemIn3D(stack);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         GL11.glPopMatrix();
     }

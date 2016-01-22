@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier.upgrade;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.javatuples.Pair;
+import net.darkhax.bookshelf.lib.javatuples.Pair;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.behavior.UpgradeFermSpiderEye;

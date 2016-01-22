@@ -6,8 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.enchantment;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;
@@ -34,7 +34,7 @@ public class UpgradeGoldIngot
 
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
-        damage.add(SAPUtils.RNG.nextFloat() + 1.0F);
+        damage.add(ClaySoldiersMod.RNG.nextFloat() + 1.0F);
     }
 
     @Override

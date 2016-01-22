@@ -6,8 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc.enchantment;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.ASoldierEffect;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
@@ -33,7 +33,7 @@ public class UpgradeIronBlock
     @Override
     public boolean onSoldierHurt(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, DamageSource source, MutableFloat damage) {
         damage.setValue(Math.max(0.0F, damage.getValue() - 1.0F));
-        if( SAPUtils.RNG.nextBoolean() ) {
+        if( ClaySoldiersMod.RNG.nextBoolean() ) {
             if( source == UpgradeBlazePowder.BLAZEPOWDER_DAMAGE_SRC ) {
                 return true;
             }

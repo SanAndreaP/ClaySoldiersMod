@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.mount;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -44,13 +43,14 @@ public enum EnumBunnyType
 
     public static EnumBunnyType getTypeFromItem(ItemStack stack) {
         if( stack == null ) {
-            return null;
+            return EnumBunnyType.WHITE;
         }
 
-        if( SAPUtils.isIndexInRange(VALUES, stack.getItemDamage()) ) {
-            return VALUES[stack.getItemDamage()];
+        int dmg = stack.getItemDamage();
+        if( dmg >= 0 && dmg < EnumBunnyType.VALUES.length ) {
+            return EnumBunnyType.WHITE;
         }
 
-        return null;
+        return EnumBunnyType.VALUES[stack.getItemDamage()];
     }
 }

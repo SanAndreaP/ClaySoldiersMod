@@ -10,7 +10,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import net.darkhax.bookshelf.lib.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.client.event.*;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
 import de.sanandrew.mods.claysoldiers.client.render.item.ItemRendererClayNexus;

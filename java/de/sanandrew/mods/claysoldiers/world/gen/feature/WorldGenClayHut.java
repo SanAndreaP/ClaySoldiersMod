@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.world.gen.feature;
 
 import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
 import de.sanandrew.mods.claysoldiers.util.ModConfig;

@@ -6,9 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.righthand;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mount.IMount;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.ASoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.entity.Entity;
@@ -28,7 +28,7 @@ public class UpgradeBone
     @Override
     public void onSoldierAttack(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst, EntityClayMan target, MutableFloat damage) {
         upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
-        damage.setValue(3.0F + SAPUtils.RNG.nextFloat());
+        damage.setValue(3.0F + ClaySoldiersMod.RNG.nextFloat());
     }
 
     @Override

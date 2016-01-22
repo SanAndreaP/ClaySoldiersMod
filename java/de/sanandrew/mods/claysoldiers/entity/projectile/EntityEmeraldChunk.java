@@ -6,8 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
-import de.sanandrew.core.manpack.util.annotation.UsedByReflection;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffectInst;
@@ -24,19 +23,16 @@ public class EntityEmeraldChunk
 {
     public Triplet<Double, Double, Double> origin;
 
-    @UsedByReflection
     public EntityEmeraldChunk(World world) {
         super(world);
     }
 
-    @UsedByReflection
     public EntityEmeraldChunk(World world, EntityLivingBase thrower) {
         super(world, thrower);
 
         this.origin = Triplet.with(thrower.posX, thrower.posY + 0.5F, thrower.posZ);
     }
 
-    @UsedByReflection
     public EntityEmeraldChunk(World world, double x, double y, double z) {
         super(world, x, y, z);
 

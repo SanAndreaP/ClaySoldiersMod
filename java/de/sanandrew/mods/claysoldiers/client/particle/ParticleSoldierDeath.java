@@ -8,10 +8,9 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
+import net.darkhax.bookshelf.lib.ColorObject;
 import net.minecraft.client.particle.EntityBreakingFX;
 import net.minecraft.world.World;
 
@@ -22,12 +21,12 @@ public class ParticleSoldierDeath
     public ParticleSoldierDeath(World world, double x, double y, double z, ClaymanTeam team) {
         super(world, x, y, z, RegistryItems.dollSoldier);
 
-        RGBAValues splitClr = SAPUtils.getRgbaFromColorInt(team.getIconColor());
+        ColorObject splitClr = new ColorObject(team.getIconColor());
 
         this.setParticleIcon(team.getIconInstance());
 
-        this.particleRed = splitClr.getRed() / 255.0F;
-        this.particleGreen = splitClr.getGreen() / 255.0F;
-        this.particleBlue = splitClr.getBlue() / 255.0F;
+        this.particleRed = splitClr.getRed();
+        this.particleGreen = splitClr.getGreen();
+        this.particleBlue = splitClr.getBlue();
     }
 }

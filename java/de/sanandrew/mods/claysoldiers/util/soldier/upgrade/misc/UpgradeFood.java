@@ -6,9 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.misc;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
@@ -53,7 +53,7 @@ public class UpgradeFood
             upgradeInst.getNbtTag().setShort(NBT_USES, (short) (upgradeInst.getNbtTag().getShort(NBT_USES) - 1));
             clayMan.heal(upgradeInst.getNbtTag().getFloat("healAmount"));
             this.spawnParticles(clayMan, upgradeInst);
-            clayMan.playSound("random.eat", 1.0F, 0.9F + SAPUtils.RNG.nextFloat() * 0.2F);
+            clayMan.playSound("random.eat", 1.0F, 0.9F + ClaySoldiersMod.RNG.nextFloat() * 0.2F);
         }
 
         if( upgradeInst.getNbtTag().getShort(NBT_USES) == 0 ) {

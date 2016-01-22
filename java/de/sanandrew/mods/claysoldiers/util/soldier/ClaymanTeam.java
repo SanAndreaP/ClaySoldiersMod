@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.util.soldier;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.helpers.ItemUtils;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -279,7 +279,7 @@ public final class ClaymanTeam
         }
 
         for( ClaymanTeam team : TEAMS_.values() ) {
-            if( ItemUtils.areStacksEqual(stack, team.getTeamItem(), true) ) {
+            if( ItemStackUtils.areStacksEqual(stack, team.getTeamItem(), true) ) {
                 return team;
             }
         }

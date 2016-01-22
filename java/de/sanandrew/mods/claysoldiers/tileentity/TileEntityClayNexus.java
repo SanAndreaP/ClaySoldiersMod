@@ -7,9 +7,8 @@
 package de.sanandrew.mods.claysoldiers.tileentity;
 
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
-import de.sanandrew.core.manpack.util.javatuples.Sextet;
+import net.darkhax.bookshelf.lib.ColorObject;
+import net.darkhax.bookshelf.lib.javatuples.Sextet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.item.IMountDoll;
@@ -151,7 +150,7 @@ public class TileEntityClayNexus
                 if( ticksActive % this.spawnThrowableInterval == 0 && this.p_throwableSlot != null ) {
                     List<EntityClayMan> clayMen = getEnemies(true);
                     if( clayMen.size() > 0 ) {
-                        EntityClayMan target = clayMen.get(SAPUtils.RNG.nextInt(clayMen.size()));
+                        EntityClayMan target = clayMen.get(ClaySoldiersMod.RNG.nextInt(clayMen.size()));
 
                         double deltaX = target.posX - this.xCoord + 0.5F;
                         double deltaZ = target.posZ - this.zCoord + 0.5F;
@@ -199,9 +198,9 @@ public class TileEntityClayNexus
             this.prevSpinAngle = this.spinAngle;
             if( this.isActive && this.p_health > 0.0F ) {
                 this.spinAngle += 4;
-                RGBAValues rgba = SAPUtils.getRgbaFromColorInt(ItemClayManDoll.getTeam(this.p_soldierSlot).getTeamColor());
+                ColorObject rgba = new ColorObject(ItemClayManDoll.getTeam(this.p_soldierSlot).getTeamColor());
                 ClaySoldiersMod.proxy.spawnParticles(EnumParticleFx.FX_NEXUS, Sextet.with((double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
-                                                                                          rgba.getRed() / 255.0F, rgba.getGreen() / 255.0F, rgba.getBlue() / 255.0F)
+                                                                                          rgba.getRed(), rgba.getGreen(), rgba.getBlue())
                 );
             } else if( this.spinAngle % 90 != 0 ) {
                 this.spinAngle += 2;

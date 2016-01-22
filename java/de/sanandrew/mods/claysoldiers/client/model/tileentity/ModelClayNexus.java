@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.model.tileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import org.lwjgl.opengl.GL11;

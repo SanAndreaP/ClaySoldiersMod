@@ -8,11 +8,11 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.javatuples.Quartet;
-import de.sanandrew.core.manpack.util.javatuples.Sextet;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import net.darkhax.bookshelf.lib.javatuples.Quartet;
+import net.darkhax.bookshelf.lib.javatuples.Sextet;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
@@ -80,9 +80,9 @@ public final class ParticleHelper
 
     public static void spawnCritFx(Triplet<Double, Double, Double> data, Minecraft mc) {
         for( int i = 0; i < 10; i++ ) {
-            double motX = SAPUtils.RNG.nextDouble() - 0.5D;
-            double motY = SAPUtils.RNG.nextDouble() * 0.5D;
-            double motZ = SAPUtils.RNG.nextDouble() - 0.5D;
+            double motX = ClaySoldiersMod.RNG.nextDouble() - 0.5D;
+            double motY = ClaySoldiersMod.RNG.nextDouble() * 0.5D;
+            double motZ = ClaySoldiersMod.RNG.nextDouble() - 0.5D;
             EntityCritFX fx = new EntityCritFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), motX, motY, motZ);
             mc.effectRenderer.addEffect(fx);
         }
@@ -128,8 +128,8 @@ public final class ParticleHelper
         Block block = (Block) Block.blockRegistry.getObject(data.getValue3());
 
         for( int i = 0; i < 8; i++ ) {
-            EntityDiggingFX fx = new EntityDiggingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), SAPUtils.RNG.nextGaussian() * 0.15D,
-                                                     SAPUtils.RNG.nextDouble() * 0.2D, SAPUtils.RNG.nextGaussian() * 0.15D, block, 0
+            EntityDiggingFX fx = new EntityDiggingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), ClaySoldiersMod.RNG.nextGaussian() * 0.15D,
+                    ClaySoldiersMod.RNG.nextDouble() * 0.2D, ClaySoldiersMod.RNG.nextGaussian() * 0.15D, block, 0
             );
             mc.effectRenderer.addEffect(fx);
         }
@@ -137,7 +137,7 @@ public final class ParticleHelper
 
     public static void spawnSpellFx(Sextet<Double, Double, Double, Double, Double, Double> data, Minecraft mc) {
         for( int i = 0; i < 4; i++ ) {
-            EntitySpellParticleFX fx = new EntitySpellParticleFX(mc.theWorld, data.getValue0(), data.getValue1() - SAPUtils.RNG.nextDouble() * 0.2D,
+            EntitySpellParticleFX fx = new EntitySpellParticleFX(mc.theWorld, data.getValue0(), data.getValue1() - ClaySoldiersMod.RNG.nextDouble() * 0.2D,
                                                                  data.getValue2(), data.getValue3(), data.getValue4(), data.getValue5()
             );
             mc.effectRenderer.addEffect(fx);
@@ -146,10 +146,10 @@ public final class ParticleHelper
 
     public static void spawnNexusFx(Sextet<Double, Double, Double, Float, Float, Float> data, Minecraft mc) {
         ParticleNexusFX fx = new ParticleNexusFX(mc.theWorld,
-                                             data.getValue0() + 0.2F + SAPUtils.RNG.nextDouble() * 0.6F,
+                                             data.getValue0() + 0.2F + ClaySoldiersMod.RNG.nextDouble() * 0.6F,
                                              data.getValue1(),
-                                             data.getValue2() + 0.2F + SAPUtils.RNG.nextDouble() * 0.6F,
-                                             0.1F + SAPUtils.RNG.nextFloat() * 0.2F,
+                                             data.getValue2() + 0.2F + ClaySoldiersMod.RNG.nextDouble() * 0.6F,
+                                             0.1F + ClaySoldiersMod.RNG.nextFloat() * 0.2F,
                                              data.getValue3(),
                                              data.getValue4(),
                                              data.getValue5()
@@ -174,8 +174,8 @@ public final class ParticleHelper
             int particleCount = (int) (150.0D * radius);
 
             for( int i2 = 0; i2 < particleCount; ++i2 ) {
-                float rad = MathHelper.randomFloatClamp(SAPUtils.RNG, 0.0F, ((float) Math.PI * 2.0F));
-                double multi = MathHelper.randomFloatClamp(SAPUtils.RNG, 0.75F, 1.0F);
+                float rad = MathHelper.randomFloatClamp(ClaySoldiersMod.RNG, 0.0F, ((float) Math.PI * 2.0F));
+                double multi = MathHelper.randomFloatClamp(ClaySoldiersMod.RNG, 0.75F, 1.0F);
                 double partY = 0.2D + radius / 100.0D;
                 double partX = (MathHelper.cos(rad) * 0.2F) * multi * multi * (radius + 0.2D);
                 double partZ = (MathHelper.sin(rad) * 0.2F) * multi * multi * (radius + 0.2D);
@@ -188,11 +188,11 @@ public final class ParticleHelper
     }
 
     public static void spawnMagmafuseFx(Triplet<Double, Double, Double> data, Minecraft mc) {
-        float red = SAPUtils.RNG.nextInt(2) - 0.001F;
-        float green = SAPUtils.RNG.nextInt(2);
+        float red = ClaySoldiersMod.RNG.nextInt(2) - 0.001F;
+        float green = ClaySoldiersMod.RNG.nextInt(2);
 
         if( red + green <= 0.5F ) {
-            if( SAPUtils.RNG.nextBoolean() ) {
+            if( ClaySoldiersMod.RNG.nextBoolean() ) {
                 green = 1.0F;
             } else {
                 red = 1.0F;

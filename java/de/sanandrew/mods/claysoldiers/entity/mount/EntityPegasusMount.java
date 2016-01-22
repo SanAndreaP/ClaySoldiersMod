@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
-import de.sanandrew.core.manpack.util.annotation.UsedByReflection;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
 import net.minecraft.block.Block;
@@ -20,7 +19,6 @@ public class EntityPegasusMount
     public float wingSwingStep = 0.0F;
     public float prevWingSwing = 0.0F;
 
-    @UsedByReflection
     public EntityPegasusMount(World world) {
         super(world);
         this.wingSwing = this.rand.nextFloat() * (float) Math.PI;

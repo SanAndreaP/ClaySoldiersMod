@@ -6,9 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network;
 
-import de.sanandrew.core.manpack.util.javatuples.Quartet;
-import de.sanandrew.core.manpack.util.javatuples.Quintet;
-import de.sanandrew.core.manpack.util.javatuples.Septet;
+import net.darkhax.bookshelf.lib.javatuples.Quartet;
+import net.darkhax.bookshelf.lib.javatuples.Quintet;
+import net.darkhax.bookshelf.lib.javatuples.Septet;
 import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

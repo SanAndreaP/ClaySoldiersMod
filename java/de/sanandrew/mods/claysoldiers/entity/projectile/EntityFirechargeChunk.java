@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
-import de.sanandrew.core.manpack.util.annotation.UsedByReflection;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.network.ParticlePacketSender;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,17 +18,14 @@ import net.minecraft.world.World;
 public class EntityFirechargeChunk
         extends EntityGravelChunk
 {
-    @UsedByReflection
     public EntityFirechargeChunk(World world) {
         super(world);
     }
 
-    @UsedByReflection
     public EntityFirechargeChunk(World world, EntityLivingBase thrower) {
         super(world, thrower);
     }
 
-    @UsedByReflection
     public EntityFirechargeChunk(World world, double x, double y, double z) {
         super(world, x, y, z);
     }

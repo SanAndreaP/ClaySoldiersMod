@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core;
 
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgrades;

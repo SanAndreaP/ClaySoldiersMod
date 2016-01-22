@@ -6,8 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.mount;
 
-import de.sanandrew.core.manpack.util.helpers.ItemUtils;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.util.ItemStackUtils;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -91,7 +91,7 @@ public enum EnumTurtleType
                 return null;
             }
 
-            if( ItemUtils.areStacksEqual(type.item, stack, true) ) {
+            if( ItemStackUtils.areStacksEqual(type.item, stack, true) ) {
                 return type;
             }
         }

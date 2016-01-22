@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.core;
 
 import cpw.mods.fml.common.FMLLog;
-import de.sanandrew.core.manpack.util.SAPReflectionHelper;
+import net.darkhax.bookshelf.lib.util.ReflectionUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.soldier.upgrade.SoldierUpgradeInst;
@@ -22,7 +22,7 @@ public class UpgradeCactus
 {
     @Override
     public boolean onUpdate(EntityClayMan clayMan, SoldierUpgradeInst upgradeInst) {
-        Field cmFireField = SAPReflectionHelper.getCachedField(Entity.class, "field_70151_c", "fire");
+        Field cmFireField = ReflectionUtils.getCachedField(Entity.class, "field_70151_c", "fire");
 
         try {
             int fire = cmFireField.getInt(clayMan);

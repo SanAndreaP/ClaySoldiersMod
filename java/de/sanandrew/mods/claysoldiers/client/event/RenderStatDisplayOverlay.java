@@ -10,10 +10,8 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils.RGBAValues;
-import de.sanandrew.core.manpack.util.javatuples.Quartet;
+import net.darkhax.bookshelf.lib.ColorObject;
+import net.darkhax.bookshelf.lib.javatuples.Quartet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityHorseMount;
 import de.sanandrew.mods.claysoldiers.item.ItemClayManDoll;
@@ -24,10 +22,12 @@ import de.sanandrew.mods.claysoldiers.util.soldier.ClaymanTeam;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.opengl.GL11;
 
@@ -87,7 +87,7 @@ public class RenderStatDisplayOverlay
             teams.add(Quartet.with(teamInst.getTeamColor(), renderedItem.getUnlocalizedName() + ".color", team.getValue(), renderedItem));
         }
 
-        this.renderStats(mc, SAPUtils.translate(RegistryItems.statDisplay.getUnlocalizedName() + ".title.soldiers"), teams, 5, 5);
+        this.renderStats(mc, I18n.format(RegistryItems.statDisplay.getUnlocalizedName() + ".title.soldiers"), teams, 5, 5);
     }
 
     private void renderMounts(Minecraft mc) {
@@ -110,7 +110,7 @@ public class RenderStatDisplayOverlay
             teams.add(Quartet.with(teamInst.typeColor, team.getKey(), team.getValue(), (ItemStack) null));
         }
 
-        this.renderStats(mc, SAPUtils.translate(RegistryItems.statDisplay.getUnlocalizedName() + ".title.mounts"), teams, 110, 5);
+        this.renderStats(mc, I18n.format(RegistryItems.statDisplay.getUnlocalizedName() + ".title.mounts"), teams, 110, 5);
     }
 
     private void renderStats(Minecraft mc, String title, List<Quartet<Integer, String, Integer, ItemStack>> teams, int xPos, int yPos) {
@@ -127,14 +127,15 @@ public class RenderStatDisplayOverlay
 
         int pos = 0;
         for( Quartet<Integer, String, Integer, ItemStack> team : teams ) {
-            String text = SAPUtils.translate(team.getValue1()) + ": " + team.getValue2().toString();
+            String text = I18n.format(team.getValue1()) + ": " + team.getValue2().toString();
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 24 + pos * 11, 0x80FFFFFF);
             drawRect(xPos, yPos + 13 + pos * 11, xPos + 100, yPos + 23 + pos * 11, 0xC0000000 | team.getValue0());
             this.p_statRenderer.drawString(text, xPos + 50 - this.p_statRenderer.getStringWidth(text) / 2, yPos + 14 + pos * 11, getContrastTextColor(team.getValue0()));
 
             GL11.glPushMatrix();
             GL11.glScalef(0.5F, 0.5F, 0.5F);
-            ItemRenderHelper.renderItemInGui(mc, team.getValue3(), xPos * 2, (yPos + 14 + pos * 11) * 2);
+            //TODO: FIX THIS SHIT
+//            ItemRenderHelper.renderItemInGui(mc, team.getValue3(), xPos * 2, (yPos + 14 + pos * 11) * 2);
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glPopMatrix();
 
@@ -156,8 +157,8 @@ public class RenderStatDisplayOverlay
     }
 
     private static int getContrastTextColor(int bkgColor) {
-        RGBAValues splitClr = SAPUtils.getRgbaFromColorInt(bkgColor);
-        int yiq = ((splitClr.getRed() * 299) + (splitClr.getGreen() * 587) + (splitClr.getBlue() * 144)) / 1000;
-        return (yiq >= 128) ? 0x000000 : 0xFFFFFF;
+        ColorObject splitClr = new ColorObject(bkgColor);
+        float yiq = ((splitClr.getRed() * 299.0F) + (splitClr.getGreen() * 587.0F) + (splitClr.getBlue() * 144.0F)) / 1000F;
+        return (yiq >= 0.5F) ? 0x000000 : 0xFFFFFF;
     }
 }

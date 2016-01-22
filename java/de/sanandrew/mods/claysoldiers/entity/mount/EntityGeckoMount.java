@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;

@@ -7,8 +7,8 @@
 package de.sanandrew.mods.claysoldiers.network.packet;
 
 import de.sanandrew.core.manpack.network.IPacket;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;

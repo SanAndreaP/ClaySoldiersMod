@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.mods.claysoldiers.item.*;
 import net.minecraft.item.Item;
 
@@ -66,7 +66,14 @@ public final class RegistryItems
         dollGeckoMount.setCreativeTab(ClaySoldiersMod.clayTab);
         dollGeckoMount.setUnlocalizedName(ClaySoldiersMod.MOD_ID + ":geckomount_doll");
 
-        SAPUtils.registerItems(dollSoldier, dollBrick, disruptor, disruptorHardened, statDisplay, shearBlade, dollHorseMount, dollTurtleMount, dollBunnyMount,
-                               dollGeckoMount);
+        registerItems(dollSoldier, dollBrick, disruptor, disruptorHardened, statDisplay, shearBlade, dollHorseMount, dollTurtleMount, dollBunnyMount, dollGeckoMount);
+    }
+
+    public static void registerItems(Item... items) {
+        for( Item item : items ) {
+            String itemName = item.getUnlocalizedName();
+            itemName = itemName.substring(itemName.lastIndexOf(':') + 1);
+            GameRegistry.registerItem(item, itemName.toLowerCase());
+        }
     }
 }

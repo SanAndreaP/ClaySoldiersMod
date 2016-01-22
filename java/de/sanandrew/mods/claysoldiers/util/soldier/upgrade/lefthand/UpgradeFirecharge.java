@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand;
 
-import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityFirechargeChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
@@ -69,7 +68,8 @@ public class UpgradeFirecharge
 
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
-        ItemRenderHelper.renderIconIn3D(Blocks.lava.getIcon(0, 0), true, false, 0xFFFFFF);
+//        TODO: FIX THIS SHIZ!
+//        ItemRenderHelper.renderIconIn3D(Blocks.lava.getIcon(0, 0), true, false, 0xFFFFFF);
     }
 
     @Override

@@ -7,33 +7,56 @@
 package de.sanandrew.mods.claysoldiers.network.packet;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import de.sanandrew.core.manpack.network.IPacket;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import net.darkhax.bookshelf.common.network.AbstractMessage;
+import net.darkhax.bookshelf.lib.javatuples.Triplet;
+import net.darkhax.bookshelf.lib.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 
 import java.io.IOException;
 
 public class PacketSendUpgradeNBT
-        implements IPacket
+        extends AbstractMessage<PacketSendUpgradeNBT>
 {
-    @Override
-    public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
-        ClaySoldiersMod.proxy.applyUpgradeNbt(stream.readInt(), stream.readByte(), ByteBufUtils.readTag(rawData));
+    private int entityId;
+    private byte upgRenderId;
+    private NBTTagCompound upgNbt;
+
+    public PacketSendUpgradeNBT() {}
+
+    public PacketSendUpgradeNBT(EntityClayMan clayMan, byte renderId, NBTTagCompound nbt) {
+        this.entityId = clayMan.getEntityId();
+        this.upgRenderId = renderId;
+        this.upgNbt = nbt;
     }
 
     @Override
-    public void writeData(ByteBufOutputStream stream, Tuple dataTuple) throws IOException {
-        @SuppressWarnings("unchecked")
-        Triplet<Integer, Byte, NBTTagCompound> data = (Triplet) dataTuple;
+    public void handleClientMessage(PacketSendUpgradeNBT packet, EntityPlayer player) {
+        ClaySoldiersMod.proxy.applyUpgradeNbt(packet.entityId, packet.upgRenderId, packet.upgNbt);
+    }
 
-        stream.writeInt(data.getValue0());
-        stream.writeByte(data.getValue1());
-        ByteBufUtils.writeTag(stream.buffer(), data.getValue2());
+    @Override
+    public void handleServerMessage(PacketSendUpgradeNBT packet, EntityPlayer player) {
+
+    }
+
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        this.entityId = buf.readInt();
+        this.upgRenderId = buf.readByte();
+        this.upgNbt = ByteBufUtils.readTag(buf);
+    }
+
+    @Override
+    public void toBytes(ByteBuf buf) {
+        buf.writeInt(this.entityId);
+        buf.writeByte(this.upgRenderId);
+        ByteBufUtils.writeTag(buf, this.upgNbt);
     }
 }

@@ -6,8 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network;
 
-import de.sanandrew.core.manpack.network.NetworkManager;
-import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import net.darkhax.bookshelf.lib.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSendEffectNBT;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSendUpgradeNBT;

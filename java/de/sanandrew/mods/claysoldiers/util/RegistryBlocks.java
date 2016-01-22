@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.block.BlockClayNexus;
 import de.sanandrew.mods.claysoldiers.tileentity.TileEntityClayNexus;
 import net.minecraft.block.Block;
@@ -23,6 +22,14 @@ public final class RegistryBlocks
         clayNexus.setBlockName(ClaySoldiersMod.MOD_ID + ":nexus");
         GameRegistry.registerTileEntity(TileEntityClayNexus.class, ClaySoldiersMod.MOD_ID + ":nexus_te");
 
-        SAPUtils.registerBlocks(clayNexus);
+        registerBlocks(clayNexus);
+    }
+
+    public static void registerBlocks(Block... blocks) {
+        for( Block block : blocks ) {
+            String blockName = block.getUnlocalizedName();
+            blockName = blockName.substring(blockName.lastIndexOf(':') + 1);
+            GameRegistry.registerBlock(block, blockName.toLowerCase());
+        }
     }
 }

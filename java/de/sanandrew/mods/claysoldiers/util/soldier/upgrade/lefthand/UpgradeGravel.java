@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.upgrade.lefthand;
 
-import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityGravelChunk;
 import de.sanandrew.mods.claysoldiers.entity.projectile.ISoldierProjectile;
@@ -71,7 +70,8 @@ public class UpgradeGravel
 
     @Override
     public void renderNexusThrowable(TileEntityClayNexus nexus, float partTicks) {
-        ItemRenderHelper.renderItemIn3D(this.p_nexusItem);
+        //TODO: FIX THIS SHIT!
+//        ItemRenderHelper.renderItemIn3D(this.p_nexusItem);
     }
 
     @Override

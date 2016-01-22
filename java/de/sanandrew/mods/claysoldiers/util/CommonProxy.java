@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
-import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import net.darkhax.bookshelf.lib.javatuples.Tuple;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.event.EntityConstructHandler;
 import de.sanandrew.mods.claysoldiers.event.PlayerTickHandler;

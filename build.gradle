@@ -10,10 +10,6 @@ buildscript {
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
         maven {
-            name = 'SAPManagerPack'
-            url = 'https://github.com/SanAndreasP/SAPManagerPack/raw/master/maven-repo-2/'
-        }
-        maven {
             name = 'CodeChicken'
             url = 'http://chickenbones.net/maven/'
         }
@@ -21,11 +17,15 @@ buildscript {
 
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath 'de.sanandrew.core:SAPManagerPack:1.7.10-2.6.0.3:dev'
         classpath 'codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev'
         classpath 'codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev'
         classpath 'codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev'
     }
+}
+
+task downloadBookshelf(type: LibDownloader) {
+	sourceUrl = 'http://minecraft.curseforge.com/projects/bookshelf/files/2274153/download'
+    target = file('libs/Bookshelf.jar')
 }
 
 apply plugin: 'idea'
@@ -42,17 +42,17 @@ group = "de.sanandrew.mods"
 archivesBaseName = "ClaySoldiersMod"
 
 minecraft {
-    version = "1.7.10-10.13.4.1448-1.7.10"
+    version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "minecraft"
 }
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+setupDecompWorkspace.finalizedBy downloadBookshelf
+setupDevWorkspace.finalizedBy downloadBookshelf
 
+processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
@@ -69,17 +69,12 @@ sourceSets {
 
 repositories {
     maven {
-        name = 'SAPManPack'
-        url = 'https://github.com/SanAndreasP/SAPManagerPack/raw/master/maven-repo-2/'
-    }
-    maven {
         name = 'CodeChicken'
         url = 'http://chickenbones.net/maven/'
     }
 }
 
 dependencies {
-    compile 'de.sanandrew.core:SAPManagerPack:1.7.10-2.6.0.3:dev'
     compile 'codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev'
     compile 'codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev'
     compile 'codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev'
@@ -120,5 +115,18 @@ uploadDeployDev {
         pom.artifactId = project.name
         pom.version = project.version + '-deobf'
         repository(url: project.releaseRepoUrl)
+    }
+}
+
+class LibDownloader extends DefaultTask {
+    @Input
+    String sourceUrl
+
+    @OutputFile
+    File target
+
+    @TaskAction
+    void download() {
+       ant.get(src: sourceUrl, dest: target)
     }
 }

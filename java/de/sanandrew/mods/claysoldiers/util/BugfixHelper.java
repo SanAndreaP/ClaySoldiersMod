@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
-import de.sanandrew.core.manpack.util.SAPReflectionHelper;
+import net.darkhax.bookshelf.lib.util.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -139,7 +139,7 @@ public class BugfixHelper
         @Override
         public int getVerticalOffset(Entity entity, int x, int y, int z, PathPoint pathPoint) {
             try {
-                this.isPathingInWater = SAPReflectionHelper.getCachedField(PathFinder.class, "isPathingInWater", "field_75863_g").getBoolean(this);
+                this.isPathingInWater = ReflectionUtils.getCachedField(PathFinder.class, "isPathingInWater", "field_75863_g").getBoolean(this);
                 return getPathApplicable(entity, x, y, z, pathPoint, this.isPathingInWater, this.isMovementBlockAllowed,
                                          this.isWoddenDoorAllowed
                 );

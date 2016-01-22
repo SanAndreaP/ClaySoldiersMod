@@ -6,8 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util.soldier.effect;
 
-import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 
 public class EffectThunder
         extends ASoldierEffect
@@ -15,7 +15,7 @@ public class EffectThunder
     @Override
     public void onConstruct(EntityClayMan clayMan, SoldierEffectInst effectInst) {
         effectInst.getNbtTag().setShort("ticksRemaining", (short) 20);
-        effectInst.getNbtTag().setLong("randomLightning", SAPUtils.RNG.nextLong());
+        effectInst.getNbtTag().setLong("randomLightning", ClaySoldiersMod.RNG.nextLong());
     }
 
     @Override
