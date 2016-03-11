@@ -27,7 +27,7 @@ public class CommonProxy
         FMLCommonHandler.instance().bus().register(new PlayerTickHandler());
     }
 
-    public void spawnParticles(EnumParticleFx fxType, Tuple particleData) {
+    public void spawnParticles(EnumParticleFx fxType, double posX, double posY, double posZ, Tuple particleData) {
     }
 
     public void applySoldierRenderFlags(int entityId, long upgFlags1, long upgFlags2, long effFlags1, long effFlags2) {

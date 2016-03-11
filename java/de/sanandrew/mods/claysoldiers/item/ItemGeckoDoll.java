@@ -12,6 +12,8 @@ import de.sanandrew.mods.claysoldiers.entity.mount.EntityGeckoMount;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.IDisruptable;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumGeckoType;
+import net.darkhax.bookshelf.lib.util.MathsUtils;
+import net.darkhax.bookshelf.lib.util.Utilities;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,6 +24,7 @@ import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 
@@ -56,14 +59,6 @@ public class ItemGeckoDoll
         return jordan;
     }
 
-    public static EnumGeckoType getType(ItemStack stack) {
-        if(stack == null || !SAPUtils.isIndexInRange(EnumGeckoType.VALUES, stack.getItemDamage())) {
-            return EnumGeckoType.BIRCH_BIRCH;
-        }
-
-        return EnumGeckoType.VALUES[stack.getItemDamage()];
-    }
-
     public static void setType(ItemStack stack, EnumGeckoType type) {
         stack.setItemDamage(type.ordinal());
     }
@@ -90,7 +85,7 @@ public class ItemGeckoDoll
             blockZ += Facing.offsetsZForSide[side];
 
             for( int i = 0; i < maxSpawns; i++ ) {
-                EntityGeckoMount dan = spawnGecko(world, getType(stack), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
+                EntityGeckoMount dan = spawnGecko(world, EnumGeckoType.getType(stack), blockX + 0.5D, blockY + entityOffY, blockZ + 0.5D);
 
                 if( dan != null ) {
                     if( stack.hasDisplayName() ) {
@@ -109,12 +104,12 @@ public class ItemGeckoDoll
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + '.' + getType(stack).toString().toLowerCase();
+        return super.getUnlocalizedName(stack) + '.' + EnumGeckoType.getType(stack).toString().toLowerCase();
     }
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return pass == 1 ? getType(stack).colors.getValue1() : getType(stack).colors.getValue0();
+        return pass == 1 ? EnumGeckoType.getType(stack).colors.getValue1() : EnumGeckoType.getType(stack).colors.getValue0();
     }
 
     @Override

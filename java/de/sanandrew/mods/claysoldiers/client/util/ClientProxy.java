@@ -75,8 +75,8 @@ public class ClientProxy
 
     @Override
     @SuppressWarnings("unchecked")
-    public void spawnParticles(EnumParticleFx fxType, Tuple particleData) {
-        ParticleHelper.spawnParticles(fxType, particleData);
+    public void spawnParticles(EnumParticleFx fxType, double posX, double posY, double posZ, Tuple particleData) {
+        ParticleHelper.spawnParticles(fxType, posX, posY, posZ, particleData);
     }
 
     @Override

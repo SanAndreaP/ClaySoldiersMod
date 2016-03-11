@@ -117,9 +117,9 @@ public final class SoldierUpgrades
 
         if( clientRenderId >= 0 ) {
             if( clientRenderId > 127 ) {
-                FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", name);
+                ClaySoldiersMod.MOD_LOG.log(Level.WARN, String.format("The Upgrade \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", name));
             } else if( RENDER_ID_TO_UPGRADE_MAP_.containsKey((byte) clientRenderId) ) {
-                FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "The Upgrade \"%s\" cannot be bound to the render ID! The render ID is already registered!", name);
+                ClaySoldiersMod.MOD_LOG.log(Level.WARN, String.format("The Upgrade \"%s\" cannot be bound to the render ID! The render ID is already registered!", name));
             } else {
                 UPGRADE_TO_RENDER_ID_MAP_.put(instance, (byte) clientRenderId);
                 RENDER_ID_TO_UPGRADE_MAP_.put((byte) clientRenderId, instance);
@@ -284,9 +284,7 @@ public final class SoldierUpgrades
     }
 
     public static void logUpgradeCount() {
-        FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.DEBUG, "There are %d soldier upgrades registered. %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(),
-                   currRenderId + 1
-        );
+        ClaySoldiersMod.MOD_LOG.log(Level.DEBUG, String.format("There are %d soldier upgrades registered. %d of them use client renderers!", NAME_TO_UPGRADE_MAP_.size(), currRenderId + 1));
     }
 
     private static ItemStack[] getFoodItems() {

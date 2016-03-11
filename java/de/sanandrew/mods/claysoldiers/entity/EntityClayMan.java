@@ -10,6 +10,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import cpw.mods.fml.common.FMLLog;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSendEffectNBT;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSendUpgradeNBT;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSoldierRender;
 import net.darkhax.bookshelf.lib.javatuples.Pair;
 import net.darkhax.bookshelf.lib.javatuples.Triplet;
 import de.sanandrew.mods.claysoldiers.entity.mount.IMount;
@@ -742,20 +745,16 @@ public class EntityClayMan
                 }
             }
 
-            PacketManager.sendToAllAround(PacketManager.PKG_SOLDIER_RENDERS, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
-                                          Triplet.with(this.getEntityId(), this.p_upgradeRenderFlags, this.p_effectRenderFlags)
-            );
+
+
+            PacketManager.sendToAllAround(new PacketSoldierRender(this), this.dimension, this.posX, this.posY, this.posZ, 64.0D);
 
             for( Pair<Byte, NBTTagCompound> effNbt : effectNbtToClt ) {
-                PacketManager.sendToAllAround(PacketManager.PKG_SOLDIER_EFFECT_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
-                                                Triplet.with(this.getEntityId(), effNbt.getValue0(), effNbt.getValue1())
-                );
+                PacketManager.sendToAllAround(new PacketSendEffectNBT(this, effNbt.getValue0(), effNbt.getValue1()), this.dimension, this.posX, this.posY, this.posZ, 64.0D);
             }
 
             for( Pair<Byte, NBTTagCompound> upgNbt : upgradeNbtToClt ) {
-                PacketManager.sendToAllAround(PacketManager.PKG_SOLDIER_UPGRADE_NBT, this.dimension, this.posX, this.posY, this.posZ, 64.0D,
-                                                Triplet.with(this.getEntityId(), upgNbt.getValue0(), upgNbt.getValue1())
-                );
+                PacketManager.sendToAllAround(new PacketSendUpgradeNBT(this, upgNbt.getValue0(), upgNbt.getValue1()), this.dimension, this.posX, this.posY, this.posZ, 64.0D);
             }
         }
     }
@@ -904,6 +903,10 @@ public class EntityClayMan
         this.p_effectRenderFlags[1] = flags[3];
     }
 
+    public long[] getRenderFlags() {
+        return new long[] {this.p_upgradeRenderFlags[0], this.p_upgradeRenderFlags[1], this.p_effectRenderFlags[0], this.p_effectRenderFlags[1]};
+    }
+
     public boolean hasEffect(ASoldierEffect effect) {
         return this.p_effects.containsKey(effect);
     }
@@ -928,8 +931,7 @@ public class EntityClayMan
             this.attackTime = 30;
             this.hasAttacked = true;
         } catch( InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e ) {
-            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "%1$s cannot be instantiated! %1$s is not thrown to target!", projClass.getName());
-            e.printStackTrace();
+            ClaySoldiersMod.MOD_LOG.log(Level.ERROR, String.format("%1$s cannot be instantiated! %1$s is not thrown to target!", projClass.getName()), e);
         }
     }
 

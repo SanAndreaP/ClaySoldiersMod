@@ -85,4 +85,17 @@ public enum EnumGeckoType
 
         return null;
     }
+
+    public static EnumGeckoType getType(ItemStack stack) {
+        if(stack == null) {
+            return EnumGeckoType.BIRCH_BIRCH;
+        }
+
+        int dmg = stack.getItemDamage();
+        if( dmg >= 0 && dmg < VALUES.length ) {
+            return VALUES[stack.getItemDamage()];
+        }
+
+        return EnumGeckoType.BIRCH_BIRCH;
+    }
 }

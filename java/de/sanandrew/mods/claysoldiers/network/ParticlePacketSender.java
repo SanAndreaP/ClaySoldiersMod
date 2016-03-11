@@ -6,9 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network;
 
-import net.darkhax.bookshelf.lib.javatuples.Quartet;
-import net.darkhax.bookshelf.lib.javatuples.Quintet;
-import net.darkhax.bookshelf.lib.javatuples.Septet;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketParticleFX;
+import net.darkhax.bookshelf.lib.javatuples.*;
 import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -16,50 +15,42 @@ import net.minecraft.item.Item;
 public final class ParticlePacketSender
 {
     public static void sendSoldierDeathFx(double x, double y, double z, int dimension, String team) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D, Quintet.with(EnumParticleFx.FX_SOLDIER_DEATH, x, y, z, team));
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_SOLDIER_DEATH, x, y, z, Unit.with(team)), dimension, x, y, z, 64.0D);
     }
 
     public static void sendBreakFx(double x, double y, double z, int dimension, Item item) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D,
-                                        Quintet.with(EnumParticleFx.FX_BREAK, x, y, z, Item.itemRegistry.getNameForObject(item))
-        );
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_BREAK, x, y, z, Unit.with(Item.itemRegistry.getNameForObject(item))), dimension, x, y, z, 64.0D);
     }
 
     public static void sendDiggingFx(double x, double y, double z, int dimension, Block block) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D,
-                                        Quintet.with(EnumParticleFx.FX_DIGGING, x, y, z, Block.blockRegistry.getNameForObject(block))
-        );
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_DIGGING, x, y, z, Unit.with(Block.blockRegistry.getNameForObject(block))), dimension, x, y, z, 64.0D);
     }
 
     public static void sendSpellFx(double x, double y, double z, int dimension, double red, double green, double blue) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D,
-                                        Septet.with(EnumParticleFx.FX_SPELL, x, y, z, red, green, blue)
-        );
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_SPELL, x, y, z, Triplet.with(red, green, blue)), dimension, x, y, z, 64.0D);
     }
 
     public static void sendCritFx(double x, double y, double z, int dimension) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D, Quartet.with(EnumParticleFx.FX_CRIT, x, y, z));
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_CRIT, x, y, z), dimension, x, y, z, 64.0D);
     }
 
     public static void sendHorseDeathFx(double x, double y, double z, int dimension, byte type) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D, Quintet.with(EnumParticleFx.FX_HORSE_DEATH, x, y, z, type));
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_HORSE_DEATH, x, y, z, Unit.with(type)), dimension, x, y, z, 64.0D);
     }
 
     public static void sendBunnyDeathFx(double x, double y, double z, int dimension, byte type) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D, Quintet.with(EnumParticleFx.FX_BUNNY_DEATH, x, y, z, type));
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_BUNNY_DEATH, x, y, z, Unit.with(type)), dimension, x, y, z, 64.0D);
     }
 
     public static void sendTurtleDeathFx(double x, double y, double z, int dimension, byte type) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D, Quintet.with(EnumParticleFx.FX_TURTLE_DEATH, x, y, z, type));
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_TURTLE_DEATH, x, y, z, Unit.with(type)), dimension, x, y, z, 64.0D);
     }
 
     public static void sendShockwaveFx(double x, double y, double z, float yOff, int dimension) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D,
-                                        Quartet.with(EnumParticleFx.FX_SHOCKWAVE, x, y - 0.20000000298023224D - yOff, z)
-        );
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_SHOCKWAVE, x, y - 0.20000000298023224D - yOff, z), dimension, x, y, z, 64.0D);
     }
 
     public static void sendMagmafuseFx(double x, double y, double z, int dimension) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimension, x, y, z, 64.0D, Quartet.with(EnumParticleFx.FX_MAGMAFUSE, x, y, z));
+        PacketManager.sendToAllAround(new PacketParticleFX(EnumParticleFx.FX_MAGMAFUSE, x, y, z), dimension, x, y, z, 64.0D);
     }
 }

@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.util;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -18,6 +19,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDollDispenseItem;
@@ -32,18 +34,20 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraftforge.common.config.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
 @Mod(modid = ClaySoldiersMod.MOD_ID, version = ClaySoldiersMod.VERSION, name = "Clay Soldiers Mod", guiFactory = ClaySoldiersMod.MOD_GUI_FACTORY,
-     dependencies = "required-after:sapmanpack@[2.4.0,)")
+     dependencies = "required-after:bookshelf@[1.0.4.178,)")
 public final class ClaySoldiersMod
 {
     public static final String MOD_ID = "claysoldiers";
     public static final String VERSION = "2.0.0-beta.2";
-    public static final String MOD_LOG = "ClaySoldiers";
     public static final String MOD_CHANNEL = "ClaySoldiersNWCH";
     public static final String MOD_GUI_FACTORY = "de.sanandrew.mods.claysoldiers.client.gui.ModGuiFactory";
+    public static final Logger MOD_LOG = LogManager.getLogger("ClaySoldiers");
     public static final EventBus EVENT_BUS = new EventBus();
 
     private static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.claysoldiers.client.util.ClientProxy";

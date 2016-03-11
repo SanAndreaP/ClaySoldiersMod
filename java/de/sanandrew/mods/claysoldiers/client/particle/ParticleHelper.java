@@ -9,10 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
-import net.darkhax.bookshelf.lib.javatuples.Quartet;
-import net.darkhax.bookshelf.lib.javatuples.Sextet;
-import net.darkhax.bookshelf.lib.javatuples.Triplet;
-import net.darkhax.bookshelf.lib.javatuples.Tuple;
+import net.darkhax.bookshelf.lib.javatuples.*;
 import de.sanandrew.mods.claysoldiers.network.packet.EnumParticleFx;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumHorseType;
@@ -29,143 +26,140 @@ import net.minecraft.util.MathHelper;
 public final class ParticleHelper
 {
     @SuppressWarnings("unchecked")
-    public static void spawnParticles(EnumParticleFx particleId, Tuple particleData) {
+    public static void spawnParticles(EnumParticleFx particleId, double posX, double posY, double posZ, Tuple particleData) {
         Minecraft mc = Minecraft.getMinecraft();
 
         switch( particleId ) {                                                      // TODO: use lambdas (Java 8) instead of this when Java 7 gets its EOL!
             case FX_BREAK:
-                spawnBreakFx((Quartet) particleData, mc);
+                spawnBreakFx(posX, posY, posZ, (Unit) particleData, mc);
                 break;
             case FX_CRIT:
-                spawnCritFx((Triplet) particleData, mc);
+                spawnCritFx(posX, posY, posZ, mc);
                 break;
             case FX_SOLDIER_DEATH:
-                spawnSoldierDeathFx((Quartet) particleData, mc);
+                spawnSoldierDeathFx(posX, posY, posZ, (Unit) particleData, mc);
                 break;
             case FX_HORSE_DEATH:
-                spawnHorseDeathFx((Quartet) particleData, mc);
+                spawnHorseDeathFx(posX, posY, posZ, (Unit) particleData, mc);
                 break;
             case FX_BUNNY_DEATH:
-                spawnBunnyDeathFx((Quartet) particleData, mc);
+                spawnBunnyDeathFx(posX, posY, posZ, (Unit) particleData, mc);
                 break;
             case FX_TURTLE_DEATH:
-                spawnTurtleDeathFx((Quartet) particleData, mc);
+                spawnTurtleDeathFx(posX, posY, posZ, (Unit) particleData, mc);
                 break;
             case FX_DIGGING:
-                spawnDiggingFx((Quartet) particleData, mc);
+                spawnDiggingFx(posX, posY, posZ, (Unit) particleData, mc);
                 break;
             case FX_SPELL:
-                spawnSpellFx((Sextet) particleData, mc);
+                spawnSpellFx(posX, posY, posZ, (Triplet) particleData, mc);
                 break;
             case FX_NEXUS:
-                spawnNexusFx((Sextet) particleData, mc);
+                spawnNexusFx(posX, posY, posZ, (Triplet) particleData, mc);
                 break;
             case FX_SHOCKWAVE:
-                spawnShockwaveFx((Triplet) particleData, mc);
+                spawnShockwaveFx(posX, posY, posZ, mc);
                 break;
             case FX_MAGMAFUSE:
-                spawnMagmafuseFx((Triplet) particleData, mc);
+                spawnMagmafuseFx(posX, posY, posZ, mc);
                 break;
         }
     }
 
-    public static void spawnBreakFx(Quartet<Double, Double, Double, String> data, Minecraft mc) {
-        Item item = (Item) Item.itemRegistry.getObject(data.getValue3());
+    public static void spawnBreakFx(double posX, double posY, double posZ, Unit<String> data, Minecraft mc) {
+        Item item = (Item) Item.itemRegistry.getObject(data.getValue0());
 
         for( int i = 0; i < 5; i++ ) {
-            EntityBreakingFX fx = new EntityBreakingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), item);
+            EntityBreakingFX fx = new EntityBreakingFX(mc.theWorld, posX, posY, posZ, item);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnCritFx(Triplet<Double, Double, Double> data, Minecraft mc) {
+    public static void spawnCritFx(double posX, double posY, double posZ, Minecraft mc) {
         for( int i = 0; i < 10; i++ ) {
             double motX = ClaySoldiersMod.RNG.nextDouble() - 0.5D;
             double motY = ClaySoldiersMod.RNG.nextDouble() * 0.5D;
             double motZ = ClaySoldiersMod.RNG.nextDouble() - 0.5D;
-            EntityCritFX fx = new EntityCritFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), motX, motY, motZ);
+            EntityCritFX fx = new EntityCritFX(mc.theWorld, posX, posY, posZ, motX, motY, motZ);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnSoldierDeathFx(Quartet<Double, Double, Double, String> data, Minecraft mc) {
-        ClaymanTeam team = ClaymanTeam.getTeam(data.getValue3());
+    public static void spawnSoldierDeathFx(double posX, double posY, double posZ, Unit<String> data, Minecraft mc) {
+        ClaymanTeam team = ClaymanTeam.getTeam(data.getValue0());
 
         for( int i = 0; i < 10; i++ ) {
-            ParticleSoldierDeath fx = new ParticleSoldierDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), team);
+            ParticleSoldierDeath fx = new ParticleSoldierDeath(mc.theWorld, posX, posY, posZ, team);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnHorseDeathFx(Quartet<Double, Double, Double, Byte> data, Minecraft mc) {
-        EnumHorseType type = EnumHorseType.VALUES[data.getValue3()];
+    public static void spawnHorseDeathFx(double posX, double posY, double posZ, Unit<Byte> data, Minecraft mc) {
+        EnumHorseType type = EnumHorseType.VALUES[data.getValue0()];
 
         for( int i = 0; i < 5; i++ ) {
-            ParticleHorseDeath fx = new ParticleHorseDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
+            ParticleHorseDeath fx = new ParticleHorseDeath(mc.theWorld, posX, posY, posZ, type);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnBunnyDeathFx(Quartet<Double, Double, Double, Byte> data, Minecraft mc) {
-        EnumBunnyType type = EnumBunnyType.VALUES[data.getValue3()];
+    public static void spawnBunnyDeathFx(double posX, double posY, double posZ, Unit<Byte> data, Minecraft mc) {
+        EnumBunnyType type = EnumBunnyType.VALUES[data.getValue0()];
 
         for( int i = 0; i < 5; i++ ) {
-            ParticleBunnyDeath fx = new ParticleBunnyDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
+            ParticleBunnyDeath fx = new ParticleBunnyDeath(mc.theWorld, posX, posY, posZ, type);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnTurtleDeathFx(Quartet<Double, Double, Double, Byte> data, Minecraft mc) {
-        EnumTurtleType type = EnumTurtleType.VALUES[data.getValue3()];
+    public static void spawnTurtleDeathFx(double posX, double posY, double posZ, Unit<Byte> data, Minecraft mc) {
+        EnumTurtleType type = EnumTurtleType.VALUES[data.getValue0()];
 
         for( int i = 0; i < 5; i++ ) {
-            ParticleTurtleDeath fx = new ParticleTurtleDeath(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), type);
+            ParticleTurtleDeath fx = new ParticleTurtleDeath(mc.theWorld, posX, posY, posZ, type);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnDiggingFx(Quartet<Double, Double, Double, String> data, Minecraft mc) {
-        Block block = (Block) Block.blockRegistry.getObject(data.getValue3());
+    public static void spawnDiggingFx(double posX, double posY, double posZ, Unit<String> data, Minecraft mc) {
+        Block block = (Block) Block.blockRegistry.getObject(data.getValue0());
 
         for( int i = 0; i < 8; i++ ) {
-            EntityDiggingFX fx = new EntityDiggingFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), ClaySoldiersMod.RNG.nextGaussian() * 0.15D,
-                    ClaySoldiersMod.RNG.nextDouble() * 0.2D, ClaySoldiersMod.RNG.nextGaussian() * 0.15D, block, 0
-            );
+            EntityDiggingFX fx = new EntityDiggingFX(mc.theWorld, posX, posY, posZ,
+                                                     ClaySoldiersMod.RNG.nextGaussian() * 0.15D,
+                                                     ClaySoldiersMod.RNG.nextDouble() * 0.2D,
+                                                     ClaySoldiersMod.RNG.nextGaussian() * 0.15D, block, 0);
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnSpellFx(Sextet<Double, Double, Double, Double, Double, Double> data, Minecraft mc) {
+    public static void spawnSpellFx(double posX, double posY, double posZ, Triplet<Double, Double, Double> data, Minecraft mc) {
         for( int i = 0; i < 4; i++ ) {
-            EntitySpellParticleFX fx = new EntitySpellParticleFX(mc.theWorld, data.getValue0(), data.getValue1() - ClaySoldiersMod.RNG.nextDouble() * 0.2D,
-                                                                 data.getValue2(), data.getValue3(), data.getValue4(), data.getValue5()
+            EntitySpellParticleFX fx = new EntitySpellParticleFX(mc.theWorld, posX, posY - ClaySoldiersMod.RNG.nextDouble() * 0.2D,
+                    posZ, data.getValue0(), data.getValue1(), data.getValue2()
             );
             mc.effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnNexusFx(Sextet<Double, Double, Double, Float, Float, Float> data, Minecraft mc) {
+    public static void spawnNexusFx(double posX, double posY, double posZ, Triplet<Float, Float, Float> data, Minecraft mc) {
         ParticleNexusFX fx = new ParticleNexusFX(mc.theWorld,
-                                             data.getValue0() + 0.2F + ClaySoldiersMod.RNG.nextDouble() * 0.6F,
-                                             data.getValue1(),
-                                             data.getValue2() + 0.2F + ClaySoldiersMod.RNG.nextDouble() * 0.6F,
+                                             posX + 0.2F + ClaySoldiersMod.RNG.nextDouble() * 0.6F,
+                                             posY,
+                                             posZ + 0.2F + ClaySoldiersMod.RNG.nextDouble() * 0.6F,
                                              0.1F + ClaySoldiersMod.RNG.nextFloat() * 0.2F,
-                                             data.getValue3(),
-                                             data.getValue4(),
-                                             data.getValue5()
+                                             data.getValue0(),
+                                             data.getValue1(),
+                                             data.getValue2()
         );
         fx.motionY = 0.02F;
         mc.effectRenderer.addEffect(fx);
     }
 
-    public static void spawnShockwaveFx(Triplet particleData, Minecraft mc) {
-        double x = (double) particleData.getValue0();
-        double y = (double) particleData.getValue1();
-        double z = (double) particleData.getValue2();
-
-        int blockX = MathHelper.floor_double(x);
-        int blockY = MathHelper.floor_double(y);
-        int blockZ = MathHelper.floor_double(z);
+    public static void spawnShockwaveFx(double posX, double posY, double posZ, Minecraft mc) {
+        int blockX = MathHelper.floor_double(posX);
+        int blockY = MathHelper.floor_double(posY);
+        int blockZ = MathHelper.floor_double(posZ);
 
         Block block = mc.theWorld.getBlock(blockX, blockY, blockZ);
 
@@ -181,13 +175,13 @@ public final class ParticleHelper
                 double partZ = (MathHelper.sin(rad) * 0.2F) * multi * multi * (radius + 0.2D);
 
                 mc.theWorld.spawnParticle("blockdust_" + Block.getIdFromBlock(block) + '_' + mc.theWorld.getBlockMetadata(blockX, blockY, blockZ),
-                                          x + 0.5D, y + 1.0D, z + 0.5D, partX, partY, partZ
+                        posX + 0.5D, posY + 1.0D, posZ + 0.5D, partX, partY, partZ
                 );
             }
         }
     }
 
-    public static void spawnMagmafuseFx(Triplet<Double, Double, Double> data, Minecraft mc) {
+    public static void spawnMagmafuseFx(double posX, double posY, double posZ, Minecraft mc) {
         float red = ClaySoldiersMod.RNG.nextInt(2) - 0.001F;
         float green = ClaySoldiersMod.RNG.nextInt(2);
 
@@ -199,7 +193,7 @@ public final class ParticleHelper
             }
         }
 
-        EntityReddustFX fx = new EntityReddustFX(mc.theWorld, data.getValue0(), data.getValue1(), data.getValue2(), red, green, 0.0F);
+        EntityReddustFX fx = new EntityReddustFX(mc.theWorld, posX, posY, posZ, red, green, 0.0F);
         mc.effectRenderer.addEffect(fx);
     }
 }

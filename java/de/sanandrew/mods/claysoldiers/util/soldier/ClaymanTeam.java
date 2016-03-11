@@ -109,7 +109,7 @@ public final class ClaymanTeam
     // NOTE: use http://www.colorpicker.com/ to pick a fitting color
     public static void initialize() {
         if( isInitialized ) {
-            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "Something tried to re-initialize the clayman teams! This is not allowed and should be checked!");
+            ClaySoldiersMod.MOD_LOG.log(Level.WARN, "Something tried to re-initialize the clayman teams! This is not allowed and should be checked!");
             return;
         } else {
             isInitialized = true;
@@ -253,7 +253,7 @@ public final class ClaymanTeam
         try {
             ClaymanTeam inst = new ClaymanTeam(teamName, teamColor, teamItem, iconTexture, defTextures, rareTextures, uniqueTextures);
             if( TEAMS_.containsKey(teamName) ) {
-                FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "A mod has overridden the soldier team \"%s\"!", teamName);
+                ClaySoldiersMod.MOD_LOG.log(Level.WARN, String.format("A mod has overridden the soldier team \"%s\"!", teamName));
             } else {
                 TEAM_NAMES_FOR_DOLLS_.add(teamName);
             }
@@ -261,10 +261,7 @@ public final class ClaymanTeam
 
             return inst;
         } catch( ClaymanTeamRegistrationException ex ) {
-            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "There was an error while trying to register the soldier team %s:", teamName);
-            ex.printStackTrace();
-            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.ERROR, "This team will not be registered!");
-
+            ClaySoldiersMod.MOD_LOG.log(Level.ERROR, String.format("There was an error while trying to register the soldier team %s:", teamName), ex);
             return null;
         }
     }

@@ -30,7 +30,7 @@ public class UpgradeCactus
                 cmFireField.setInt(clayMan, clayMan.getRNG().nextInt(4) != 0 ? 0 : fire / 2);
             }
         } catch( IllegalAccessException e ) {
-            FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "Couldn't access fire field for cactus upgrade!");
+            ClaySoldiersMod.MOD_LOG.log(Level.WARN, "Couldn't access fire field for cactus upgrade!");
         }
 
         return false;

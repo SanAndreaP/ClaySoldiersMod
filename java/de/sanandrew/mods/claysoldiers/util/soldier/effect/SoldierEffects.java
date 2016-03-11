@@ -46,9 +46,9 @@ public class SoldierEffects
 
         if( clientRenderId >= 0 ) {
             if( clientRenderId > 127 ) {
-                FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "The Effect \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", name);
+                ClaySoldiersMod.MOD_LOG.log(Level.WARN, String.format("The Effect \"%s\" cannot be bound to the render ID! The render ID is greater than 127!", name));
             } else if( RENDER_ID_TO_EFFECT_MAP_.containsKey((byte) clientRenderId) ) {
-                FMLLog.log(ClaySoldiersMod.MOD_LOG, Level.WARN, "The Effect \"%s\" cannot be bound to the render ID! The render ID is already registered!", name);
+                ClaySoldiersMod.MOD_LOG.log(Level.WARN, String.format("The Effect \"%s\" cannot be bound to the render ID! The render ID is already registered!", name));
             } else {
                 EFFECT_TO_RENDER_ID_MAP_.put(instance, (byte) clientRenderId);
                 RENDER_ID_TO_EFFECT_MAP_.put((byte) clientRenderId, instance);

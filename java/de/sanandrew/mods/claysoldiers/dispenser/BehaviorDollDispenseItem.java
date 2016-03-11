@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtleMount;
 import de.sanandrew.mods.claysoldiers.item.*;
 import de.sanandrew.mods.claysoldiers.util.RegistryItems;
 import de.sanandrew.mods.claysoldiers.util.mount.EnumBunnyType;
+import de.sanandrew.mods.claysoldiers.util.mount.EnumGeckoType;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
@@ -40,7 +41,7 @@ public class BehaviorDollDispenseItem
             EntityTurtleMount spencer = ItemTurtleDoll.spawnTurtle(world, ItemTurtleDoll.getType(stack), x, y, z);
             spencer.dollItem = stack;
         } else if( stack.getItem() == RegistryItems.dollGeckoMount ) {
-            EntityGeckoMount spencer = ItemGeckoDoll.spawnGecko(world, ItemGeckoDoll.getType(stack), x, y, z);
+            EntityGeckoMount spencer = ItemGeckoDoll.spawnGecko(world, EnumGeckoType.getType(stack), x, y, z);
             spencer.dollItem = stack;
         } else if( stack.getItem() == RegistryItems.dollBunnyMount ) {
             EntityBunnyMount spencer = ItemBunnyDoll.spawnBunny(world, EnumBunnyType.getTypeFromItem(stack), x, y, z);
