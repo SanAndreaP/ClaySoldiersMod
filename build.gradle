@@ -1,49 +1,51 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-        maven {
-            name = 'SAPManagerPack'
-            url = 'https://github.com/SanAndreasP/SAPManagerPack/raw/master/maven-repo-2/'
-        }
-        maven {
-            name = 'CodeChicken'
-            url = 'http://chickenbones.net/maven/'
-        }
     }
-
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath 'de.sanandrew.core:SAPManagerPack:1.7.10-2.6.0.3:dev'
-        classpath 'codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev'
-        classpath 'codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev'
-        classpath 'codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 apply plugin: 'idea'
 idea {
     module {
         inheritOutputDirs = true
     }
+    project {
+        languageLevel = '1.8' //due to a bug in gradle or IDEA, this doesn't work :(
+    }
 }
 
-apply plugin: 'forge'
-
-version = "1.7.10-2.0.0-beta.3"
+version = "1.10.2-3.0.0-alpha.1"
 group = "de.sanandrew.mods"
 archivesBaseName = "ClaySoldiersMod"
 
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
 minecraft {
-    version = "1.7.10-10.13.4.1448-1.7.10"
-    runDir = "minecraft"
+    version = "1.10.2-12.18.2.2099"
+    runDir = "run"
+    mappings = "snapshot_20161115"
+}
+
+repositories {
+  maven {
+    url = "http://dvs1.progwml6.com/files/maven"
+  }
+}
+
+dependencies {
+  deobfCompile "mezz.jei:jei_1.10.2:3.14.2.401:api"
+  runtime "mezz.jei:jei_1.10.2:3.14.2.401"
 }
 
 processResources {
@@ -52,6 +54,7 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
+        
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
 
@@ -60,35 +63,7 @@ processResources {
     }
 }
 
-sourceSets {
-    main {
-        java { srcDir 'java' }
-        resources { srcDir 'resources' }
-    }
-}
-
-repositories {
-    maven {
-        name = 'SAPManPack'
-        url = 'https://github.com/SanAndreasP/SAPManagerPack/raw/master/maven-repo-2/'
-    }
-    maven {
-        name = 'CodeChicken'
-        url = 'http://chickenbones.net/maven/'
-    }
-}
-
-dependencies {
-    compile 'de.sanandrew.core:SAPManagerPack:1.7.10-2.6.0.3:dev'
-    compile 'codechicken:CodeChickenCore:1.7.10-1.0.7.46:dev'
-    compile 'codechicken:CodeChickenLib:1.7.10-1.1.3.138:dev'
-    compile 'codechicken:NotEnoughItems:1.7.10-1.0.5.110:dev'
-}
-
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
-
-task sourceJar(type: Jar) {
+sourceJar {
     from sourceSets.main.java
     appendix = 'src'
     archiveName = "${baseName}-${version}-${appendix}.jar"
@@ -101,24 +76,24 @@ task deobfJar(type: Jar) {
 }
 
 configurations {
-    deployDev
+//    deployDev
 }
 
 artifacts {
     archives deobfJar
     archives sourceJar
     archives jar
-    deployDev deobfJar
+//    deployDev deobfJar
 }
 
 project.ext {
     releaseRepoUrl = "file://${project(':').projectDir}/maven-repo/"
 }
 
-uploadDeployDev {
-    repositories.mavenDeployer {
-        pom.artifactId = project.name
-        pom.version = project.version + '-deobf'
-        repository(url: project.releaseRepoUrl)
-    }
-}
+//uploadDeployDev {
+//    repositories.mavenDeployer {
+//        pom.artifactId = project.name
+//        pom.version = project.version + '-deobf'
+//        repository(url: project.releaseRepoUrl)
+//    }
+//}
