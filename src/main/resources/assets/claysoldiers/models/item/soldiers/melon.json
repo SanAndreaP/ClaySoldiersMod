@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer1": "claysoldiers:items/soldiers/standard"
+    "layer0": "claysoldiers:items/soldiers/melon"
   }
 }

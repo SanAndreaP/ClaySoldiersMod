@@ -2,7 +2,7 @@
     "mob.soldier.hurt": {
         "category": "neutral",
         "sounds": [
-            "mob/soldier/hurt"
+            "claysoldiers:mob/soldier/hurt"
         ]
     }
 }

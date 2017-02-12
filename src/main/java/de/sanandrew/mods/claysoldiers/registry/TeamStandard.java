@@ -25,30 +25,42 @@ public class TeamStandard
     private final String name;
     private final ResourceLocation itmModel;
     private final int itmColor;
-    private final ResourceLocation nrmlTexture;
+    private final Map<Integer, ResourceLocation> nrmlTextures;
+    private int[] nrmlTextureIds;
     private final Map<Integer, ResourceLocation> rareTextures;
     private int[] rareTextureIds;
     private final Map<Integer, ResourceLocation> uniqTextures;
     private int[] uniqTextureIds;
 
-    public TeamStandard(UUID id, String name, ResourceLocation itmModel, int itmColor, ResourceLocation nrmlTexture, ResourceLocation[] rareTextures, ResourceLocation[] uniqTextures) {
+    public TeamStandard(UUID id, String name, ResourceLocation itmModel, int itmColor, ResourceLocation[] nrmlTextures, ResourceLocation[] rareTextures, ResourceLocation[] uniqTextures) {
         this.id = id;
         this.name = name;
-        this.nrmlTexture = nrmlTexture;
         this.itmModel = itmModel;
         this.itmColor = itmColor;
+        this.nrmlTextures = new Int2ObjectArrayMap<>();
         this.rareTextures = new Int2ObjectArrayMap<>();
         this.uniqTextures = new Int2ObjectArrayMap<>();
+
+        {
+            List<ResourceLocation> lst = Arrays.asList(nrmlTextures);
+            this.nrmlTextures.putAll(lst.stream().collect(Collectors.toMap(lst::indexOf, val -> val)));
+            this.nrmlTextureIds = this.nrmlTextures.keySet().stream().mapToInt(val -> val).toArray();
+        }
 
         if( rareTextures != null ) {
             List<ResourceLocation> lst = Arrays.asList(rareTextures);
             this.rareTextures.putAll(lst.stream().collect(Collectors.toMap(lst::indexOf, val -> val)));
             this.rareTextureIds = this.rareTextures.keySet().stream().mapToInt(val -> val).toArray();
+        } else {
+            this.rareTextureIds = new int[0];
         }
+
         if( uniqTextures != null ) {
             List<ResourceLocation> lst = Arrays.asList(uniqTextures);
             this.uniqTextures.putAll(lst.stream().collect(Collectors.toMap(lst::indexOf, val -> val)));
             this.uniqTextureIds = this.uniqTextures.keySet().stream().mapToInt(val -> val).toArray();
+        } else {
+            this.uniqTextureIds = new int[0];
         }
     }
 
@@ -73,8 +85,13 @@ public class TeamStandard
     }
 
     @Override
-    public ResourceLocation getNormalTexture() {
-        return this.nrmlTexture;
+    public ResourceLocation getNormalTexture(int id) {
+        return this.nrmlTextures.get(id);
+    }
+
+    @Override
+    public int[] getNormalTextureIds() {
+        return this.nrmlTextureIds;
     }
 
     @Override
@@ -98,28 +115,41 @@ public class TeamStandard
     }
 
     @Override
-    public boolean addRareTexture(int id, ResourceLocation texture) {
-        if( !this.rareTextures.containsKey(id) ) {
-            this.rareTextures.put(id, texture);
+    public boolean addNormalTexture(byte id, ResourceLocation texture) {
+        if( !this.nrmlTextures.containsKey((int) id) ) {
+            this.nrmlTextures.put((int) id, texture);
+            this.nrmlTextureIds = this.nrmlTextures.keySet().stream().mapToInt(val -> val).toArray();
+
+            return true;
+        }
+
+        CsmConstants.LOG.log(Level.DEBUG, String.format("Already registered normal texture with ID %d for team %s!", id, this.name));
+        return false;
+    }
+
+    @Override
+    public boolean addRareTexture(byte id, ResourceLocation texture) {
+        if( !this.rareTextures.containsKey((int) id) ) {
+            this.rareTextures.put((int) id, texture);
             this.rareTextureIds = this.rareTextures.keySet().stream().mapToInt(val -> val).toArray();
 
             return true;
         }
 
-        CsmConstants.LOG.log(Level.DEBUG, String.format("Already registered rare texture with ID %d for team %s!", id, this.getName()));
+        CsmConstants.LOG.log(Level.DEBUG, String.format("Already registered rare texture with ID %d for team %s!", id, this.name));
         return false;
     }
 
     @Override
-    public boolean addUniqueTexture(int id, ResourceLocation texture) {
-        if( !this.uniqTextures.containsKey(id) ) {
-            this.uniqTextures.put(id, texture);
+    public boolean addUniqueTexture(byte id, ResourceLocation texture) {
+        if( !this.uniqTextures.containsKey((int) id) ) {
+            this.uniqTextures.put((int) id, texture);
             this.uniqTextureIds = this.uniqTextures.keySet().stream().mapToInt(val -> val).toArray();
 
             return true;
         }
 
-        CsmConstants.LOG.log(Level.DEBUG, String.format("Already registered unique texture with ID %d for team %s!", id, this.getName()));
+        CsmConstants.LOG.log(Level.DEBUG, String.format("Already registered unique texture with ID %d for team %s!", id, this.name));
         return false;
     }
 }

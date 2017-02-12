@@ -35,14 +35,21 @@ public interface Team
      * gets the item color for that team.
      * @return the team item color as 0xRRGGBB
      */
-    int getItemColor();
+    default int getItemColor() { return -1; }
 
     /**
      * gets the standard texture for this team to use for the soldier entity.<br>
      * Gets called when the soldier spawns for the first time.
+     * @param id The ID of the texture to use
      * @return location to a texture
      */
-    ResourceLocation getNormalTexture();
+    ResourceLocation getNormalTexture(int id);
+
+    /**
+     * gets the amount of rare textures defined for this team.
+     * @return the texture count
+     */
+    int[] getNormalTextureIds();
 
     /**
      * gets a rare texture for this team to use for the soldier entity based on an ID.<br>
@@ -76,12 +83,20 @@ public interface Team
     int[] getUniqueTextureIds();
 
     /**
+     * adds a new texture to be used as a normal option.
+     * @param id the unique ID for the normal texture
+     * @param texture The normal texture
+     * @return true, if the normal texture is successfully registered, false otherwise
+     */
+    boolean addNormalTexture(byte id, ResourceLocation texture);
+
+    /**
      * adds a new texture to be used as a rare option.
      * @param id the unique ID for the rare texture
      * @param texture The rare texture
      * @return true, if the rare texture is successfully registered, false otherwise
      */
-    boolean addRareTexture(int id, ResourceLocation texture);
+    boolean addRareTexture(byte id, ResourceLocation texture);
 
     /**
      * adds a new texture to be used as an unique option.
@@ -89,7 +104,7 @@ public interface Team
      * @param texture The unique texture
      * @return true, if the unique texture is successfully registered, false otherwise
      */
-    boolean addUniqueTexture(int id, ResourceLocation texture);
+    boolean addUniqueTexture(byte id, ResourceLocation texture);
 
     /**
      * checks wether or not an unique texture should be enforced on spawn (e.g. a special occassion like a custom name of the soldier)
