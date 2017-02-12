@@ -25,7 +25,7 @@ import java.util.List;
 public final class RayTraceFixed
 {
     @Nullable
-    public static RayTraceResult collisionRayTrace(IBlockState blockState, Entity e, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
+    private static RayTraceResult collisionRayTrace(IBlockState blockState, Entity e, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
         List<AxisAlignedBB> collisionBBs = new ArrayList<>();
         blockState.addCollisionBoxToList(worldIn, pos, blockState.getBoundingBox(worldIn, pos).offset(pos), collisionBBs, e);
         for( AxisAlignedBB aabb : collisionBBs ) {
@@ -38,7 +38,7 @@ public final class RayTraceFixed
     }
 
     @Nullable
-    protected static RayTraceResult rayTrace(BlockPos pos, Vec3d start, Vec3d end, AxisAlignedBB boundingBox)
+    private static RayTraceResult rayTrace(BlockPos pos, Vec3d start, Vec3d end, AxisAlignedBB boundingBox)
     {
         Vec3d vec3d = start.subtract(pos.getX(), pos.getY(), pos.getZ());
         Vec3d vec3d1 = end.subtract(pos.getX(), pos.getY(), pos.getZ());

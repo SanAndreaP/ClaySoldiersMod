@@ -10,37 +10,53 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAITarget;
+import net.minecraft.util.math.AxisAlignedBB;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class EntityAISoldierAttackableTarget
-        extends EntityAINearestAttackableTarget<EntityClaySoldier>
+        extends EntityAITarget
 {
-    private final EntityClaySoldier soldierOwner;
+    private final EntityClaySoldier attacker;
+    private EntityClaySoldier targetSoldier;
+    private Comparator<Entity> nearestSorter;
 
     public EntityAISoldierAttackableTarget(EntityClaySoldier soldier) {
-        super(soldier, EntityClaySoldier.class, 0, true, false,
-              target -> target != null && target.getSoldierTeam() != soldier.getSoldierTeam() && target.canEntityBeSeen(soldier));
-        this.unseenMemoryTicks = 0;
-        this.soldierOwner = soldier;
+        super(soldier, false, false);
+        this.attacker = soldier;
+        this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
     }
 
     @Override
     public boolean shouldExecute() {
-        Entity e = this.soldierOwner.getAttackTarget();
+        Entity e = this.attacker.getAttackTarget();
         if( e != null && e.isEntityAlive() ) {
             return false;
         }
 
-        List<EntityClaySoldier> list = this.taskOwner.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+        Predicate<EntityClaySoldier> tgtSelector = entity -> entity != null && entity.isEntityAlive() && entity.getSoldierTeam() != this.attacker.getSoldierTeam();
+        List<EntityClaySoldier> list = this.taskOwner.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getTargetableArea(this.getTargetDistance()), tgtSelector::test);
 
-        list.removeIf(ziclag -> ziclag.getSoldierTeam() == EntityAISoldierAttackableTarget.this.soldierOwner.getSoldierTeam());
+        list.removeIf(ziclag -> ziclag.getSoldierTeam() == EntityAISoldierAttackableTarget.this.attacker.getSoldierTeam());
 
         if( list.isEmpty() ) {
             return false;
         } else {
-            list.sort(this.theNearestAttackableTargetSorter);
-            this.targetEntity = list.get(MiscUtils.RNG.randomInt(list.size()));
+            list.sort(this.nearestSorter);
+            this.targetSoldier = list.get(MiscUtils.RNG.randomInt(list.size()));
             return true;
         }
+    }
+
+    public void startExecuting() {
+        this.attacker.setAttackTarget(this.targetSoldier);
+        super.startExecuting();
+    }
+
+    private AxisAlignedBB getTargetableArea(double targetDistance) {
+        return this.attacker.getEntityBoundingBox().expand(targetDistance, targetDistance, targetDistance);
     }
 }

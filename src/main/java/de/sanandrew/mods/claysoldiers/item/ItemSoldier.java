@@ -73,7 +73,8 @@ public class ItemSoldier
             }
 
             EntityClaySoldier[] soldiers = spawnSoldiers(world, TeamRegistry.INSTANCE.getTeam(stack), player.isSneaking() ? 1 : stack.stackSize,
-                                                         pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D);
+                                                         pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D,
+                                                         player.capabilities.isCreativeMode ? null : stack);
 
             for( EntityClaySoldier james : soldiers ) {
                 if( james != null ) {
@@ -91,7 +92,7 @@ public class ItemSoldier
         }
     }
 
-    public static EntityClaySoldier[] spawnSoldiers(World world, Team team, final int count, double x, double y, double z) {
+    public static EntityClaySoldier[] spawnSoldiers(World world, Team team, final int count, double x, double y, double z, ItemStack dollStack) {
         if( team != TeamRegistry.NULL_TEAM ) {
             EntityClaySoldier[] soldiers = new EntityClaySoldier[count];
 
@@ -99,7 +100,12 @@ public class ItemSoldier
                 double xs = x - 0.1D + MiscUtils.RNG.randomFloat() * 0.02D;
                 double zs = z - 0.1D + MiscUtils.RNG.randomFloat() * 0.02D;
 
-                EntityClaySoldier aleks = new EntityClaySoldier(world, team);
+                ItemStack newDollStack = null;
+                if( dollStack != null ) {
+                    newDollStack = dollStack.copy();
+                    newDollStack.stackSize = 1;
+                }
+                EntityClaySoldier aleks = new EntityClaySoldier(world, team, newDollStack);
                 aleks.setLocationAndAngles(xs, y, zs, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
                 aleks.rotationYawHead = aleks.rotationYaw;
                 aleks.renderYawOffset = aleks.rotationYaw;

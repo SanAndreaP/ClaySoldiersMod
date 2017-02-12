@@ -10,12 +10,12 @@ import de.sanandrew.mods.claysoldiers.api.Disruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.Team;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackMelee;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
-import de.sanandrew.mods.claysoldiers.entity.ai.PathNavigateSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.RayTraceFixed;
+import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -33,7 +33,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -42,6 +41,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -59,6 +59,8 @@ public class EntityClaySoldier
     private static final DataParameter<Byte> TEXTURE_TYPE_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializers.BYTE);
     private static final DataParameter<Byte> TEXTURE_ID_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializers.BYTE);
     private final DataWatcherBooleans<EntityClaySoldier> dwBooleans;
+
+    private ItemStack doll;
 
     public EntityClaySoldier(World world) {
         super(world);
@@ -80,6 +82,12 @@ public class EntityClaySoldier
         ((PathNavigateGround) this.getNavigator()).setCanSwim(true);
     }
 
+    public EntityClaySoldier(World world, @Nonnull Team team, @Nullable ItemStack doll) {
+        this(world, team);
+
+        this.doll = doll;
+    }
+
     public EntityClaySoldier(World world, @Nonnull Team team) {
         this(world);
 
@@ -91,7 +99,7 @@ public class EntityClaySoldier
                 this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x02);
                 this.dataManager.set(TEXTURE_ID_PARAM, (byte) (texIds[MiscUtils.RNG.randomInt(texIds.length)]));
             }
-        } else if( MiscUtils.RNG.randomInt(1_0) == 0 ) {
+        } else if( MiscUtils.RNG.randomInt(250) == 0 ) {
             int[] texIds = team.getRareTextureIds();
             if( texIds.length > 0 ) {
                 this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x01);
@@ -264,6 +272,10 @@ public class EntityClaySoldier
         compound.setByte("soldier_texture_type", this.dataManager.get(TEXTURE_TYPE_PARAM));
         compound.setByte("soldier_texture_id", this.dataManager.get(TEXTURE_ID_PARAM));
 
+        if( this.doll != null ) {
+            ItemStackUtils.writeStackToTag(this.doll, compound, "soldier_doll");
+        }
+
         this.dwBooleans.writeToNbt(compound);
     }
 
@@ -275,6 +287,10 @@ public class EntityClaySoldier
         this.dataManager.set(TEAM_PARAM, UuidUtils.isStringUuid(teamId) ? UUID.fromString(teamId) : UuidUtils.EMPTY_UUID);
         this.dataManager.set(TEXTURE_TYPE_PARAM, compound.getByte("soldier_texture_type"));
         this.dataManager.set(TEXTURE_ID_PARAM, compound.getByte("soldier_texture_id"));
+
+        if( compound.hasKey("soldier_doll", Constants.NBT.TAG_COMPOUND) ) {
+            this.doll = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("soldier_doll"));
+        }
 
         this.dwBooleans.readFromNbt(compound);
     }
@@ -306,6 +322,9 @@ public class EntityClaySoldier
 
             ArrayList<ItemStack> drops = new ArrayList<>();
 
+            if( this.doll != null ) {
+                drops.add(this.doll);
+            }
 //            if( !this.nexusSpawn ) {
 //                if( this.dollItem != null ) {
 //                    drops.add(this.dollItem.copy());
@@ -409,10 +428,5 @@ public class EntityClaySoldier
     @Override
     public DisruptType getDisruptType() {
         return DisruptType.SOLDIER;
-    }
-
-    @Override
-    protected PathNavigate getNewNavigator(World worldIn) {
-        return super.getNewNavigator(worldIn);// PathNavigateSoldier(this, worldIn);
     }
 }
