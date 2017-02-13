@@ -74,7 +74,7 @@ public class ItemSoldier
 
             EntityClaySoldier[] soldiers = spawnSoldiers(world, TeamRegistry.INSTANCE.getTeam(stack), player.isSneaking() ? 1 : stack.stackSize,
                                                          pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D,
-                                                         player.capabilities.isCreativeMode ? null : stack);
+                                                         stack);
 
             for( EntityClaySoldier james : soldiers ) {
                 if( james != null ) {
@@ -82,10 +82,18 @@ public class ItemSoldier
                         james.setCustomNameTag(stack.getDisplayName());
                     }
 
-                    if( !player.capabilities.isCreativeMode ) {
-                        --stack.stackSize;
-                    }
+                    --stack.stackSize;
                 }
+            }
+
+            if( hand != null && player.capabilities.isCreativeMode ) {
+                if( stack.stackSize < 1 ) {
+                    player.setHeldItem(hand, null);
+                } else {
+                    player.setHeldItem(hand, stack.copy());
+                }
+
+                player.inventoryContainer.detectAndSendChanges();
             }
 
             return EnumActionResult.SUCCESS;

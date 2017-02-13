@@ -58,6 +58,8 @@ public class ClaySoldiersMod
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
+
+        CraftingRecipes.initialize();
     }
 
     @Mod.EventHandler

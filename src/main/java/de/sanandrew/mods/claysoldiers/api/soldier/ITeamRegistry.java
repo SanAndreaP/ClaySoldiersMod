@@ -11,7 +11,6 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public interface ITeamRegistry
@@ -66,6 +65,14 @@ public interface ITeamRegistry
      * @return the ItemStack with the team
      */
     ItemStack setTeam(ItemStack stack, Team team);
+
+    /**
+     * applies the team to the ItemStack
+     * @param stack the ItemStack the team should be saved in
+     * @param team the team ID the ItemStack should save
+     * @return the ItemStack with the team
+     */
+    default ItemStack setTeam(ItemStack stack, UUID team) { return this.setTeam(stack, this.getTeam(team)); }
 
     /**
      * registers a team with a standard implementation without unique textures, which is returned if the registration succeeded.
