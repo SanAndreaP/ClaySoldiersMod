@@ -12,13 +12,17 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
+import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -62,6 +66,22 @@ public class ItemSoldier
             return EnumActionResult.SUCCESS;
         } else if( !player.canPlayerEdit(pos.offset(facing), facing, stack) ) {
             return EnumActionResult.FAIL;
+        } else if( world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
+            if( !player.isSneaking() && !UuidUtils.areUuidsEqual(TeamRegistry.INSTANCE.getTeam(stack).getId(), TeamRegistry.SOLDIER_CLAY) ) {
+                IBlockState state = world.getBlockState(pos);
+                int level = state.getValue(BlockCauldron.LEVEL);
+                if( level > 0 ) {
+                    player.setHeldItem(hand, TeamRegistry.INSTANCE.setTeam(stack.copy(), TeamRegistry.SOLDIER_CLAY));
+                    player.inventoryContainer.detectAndSendChanges();
+
+                    player.addStat(StatList.CAULDRON_USED);
+                    Blocks.CAULDRON.setWaterLevel(world, pos, state, level - 1);
+
+                    return EnumActionResult.SUCCESS;
+                }
+            }
+
+            return EnumActionResult.FAIL;
         } else {
             IBlockState iblockstate = world.getBlockState(pos);
 
@@ -73,8 +93,7 @@ public class ItemSoldier
             }
 
             EntityClaySoldier[] soldiers = spawnSoldiers(world, TeamRegistry.INSTANCE.getTeam(stack), player.isSneaking() ? 1 : stack.stackSize,
-                                                         pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D,
-                                                         stack);
+                                                         pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D, stack);
 
             for( EntityClaySoldier james : soldiers ) {
                 if( james != null ) {

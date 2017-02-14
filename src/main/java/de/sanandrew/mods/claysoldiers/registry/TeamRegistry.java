@@ -128,6 +128,16 @@ public class TeamRegistry
         return stack;
     }
 
+    @Override
+    public ItemStack getNewTeamStack(int count, Team team) {
+        return setTeam(new ItemStack(ItemRegistry.doll_soldier, count), team);
+    }
+
+    @Override
+    public ItemStack getNewTeamStack(int count, UUID team) {
+        return setTeam(new ItemStack(ItemRegistry.doll_soldier, count), team);
+    }
+
     public static final Team NULL_TEAM = new Team()
     {
         @Override public UUID getId() { return UuidUtils.EMPTY_UUID; }

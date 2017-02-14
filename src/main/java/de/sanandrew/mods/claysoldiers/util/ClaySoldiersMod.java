@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.util;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
+import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;

@@ -72,7 +72,6 @@ public class DisruptorRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients) {
         ingredients.setInputLists(ItemStack.class, this.input);
-//        ingredients.setOutputs(ItemStack.class, this.output);
         ingredients.setOutput(ItemStack.class, this.output);
     }
 

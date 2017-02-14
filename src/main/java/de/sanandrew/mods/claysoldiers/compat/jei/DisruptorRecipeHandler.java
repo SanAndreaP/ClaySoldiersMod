@@ -8,17 +8,20 @@
  */
 package de.sanandrew.mods.claysoldiers.compat.jei;
 
+import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 
+import java.util.List;
+
 public class DisruptorRecipeHandler
-        implements IRecipeHandler<DisruptorRecipeHandler.DisruptorRecipe>
+        implements IRecipeHandler<DisruptorRecipeHandler.JeiDisruptorRecipe>
 {
     @Override
-    public Class<DisruptorRecipeHandler.DisruptorRecipe> getRecipeClass() {
-        return DisruptorRecipeHandler.DisruptorRecipe.class;
+    public Class<JeiDisruptorRecipe> getRecipeClass() {
+        return JeiDisruptorRecipe.class;
     }
 
     @Override
@@ -27,24 +30,30 @@ public class DisruptorRecipeHandler
     }
 
     @Override
-    public String getRecipeCategoryUid(DisruptorRecipeHandler.DisruptorRecipe recipe) {
+    public String getRecipeCategoryUid(JeiDisruptorRecipe recipe) {
         return VanillaRecipeCategoryUid.CRAFTING;
     }
 
     @Override
-    public IRecipeWrapper getRecipeWrapper(DisruptorRecipeHandler.DisruptorRecipe recipe) {
+    public IRecipeWrapper getRecipeWrapper(JeiDisruptorRecipe recipe) {
         return new DisruptorRecipeWrapper(recipe.type);
     }
 
     @Override
-    public boolean isRecipeValid(DisruptorRecipeHandler.DisruptorRecipe recipe) {
+    public boolean isRecipeValid(JeiDisruptorRecipe recipe) {
         return true;
     }
 
-    public static class DisruptorRecipe {
+    public static List<JeiDisruptorRecipe> getRecipeList() {
+        return ImmutableList.of(new JeiDisruptorRecipe(ItemDisruptor.DisruptorType.CLAY),
+                                new JeiDisruptorRecipe(ItemDisruptor.DisruptorType.HARDENED),
+                                new JeiDisruptorRecipe(ItemDisruptor.DisruptorType.OBSIDIAN));
+    }
+
+    static class JeiDisruptorRecipe {
         public final ItemDisruptor.DisruptorType type;
 
-        public DisruptorRecipe(ItemDisruptor.DisruptorType type) {
+        public JeiDisruptorRecipe(ItemDisruptor.DisruptorType type) {
             this.type = type;
         }
     }

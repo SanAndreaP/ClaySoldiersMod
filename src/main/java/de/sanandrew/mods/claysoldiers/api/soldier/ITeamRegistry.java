@@ -67,6 +67,22 @@ public interface ITeamRegistry
     ItemStack setTeam(ItemStack stack, Team team);
 
     /**
+     * gets a new ItemStack instance with the soldier doll item for the given team.
+     * @param count the stack size
+     * @param team the team
+     * @return A new ItemStack holding the soldier doll item with the given team
+     */
+    ItemStack getNewTeamStack(int count, Team team);
+
+    /**
+     * gets a new ItemStack instance with the soldier doll item for the given team.
+     * @param count the stack size
+     * @param team the team ID
+     * @return A new ItemStack holding the soldier doll item with the given team
+     */
+    ItemStack getNewTeamStack(int count, UUID team);
+
+    /**
      * applies the team to the ItemStack
      * @param stack the ItemStack the team should be saved in
      * @param team the team ID the ItemStack should save
