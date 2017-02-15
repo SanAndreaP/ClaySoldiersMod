@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class TeamRegistry
+public final class TeamRegistry
         implements ITeamRegistry
 {
     public static final TeamRegistry INSTANCE = new TeamRegistry();

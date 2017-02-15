@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.entity;
 
 import de.sanandrew.mods.claysoldiers.api.Disruptable;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.Team;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackMelee;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
@@ -53,7 +54,7 @@ import java.util.UUID;
 
 public class EntityClaySoldier
         extends EntityCreature
-        implements Disruptable
+        implements Disruptable, ISoldier<EntityClaySoldier>
 {
     private static final DataParameter<UUID> TEAM_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializerUUID.INSTANCE);
     private static final DataParameter<Byte> TEXTURE_TYPE_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializers.BYTE);
@@ -96,19 +97,16 @@ public class EntityClaySoldier
         if( MiscUtils.RNG.randomInt(1_000_000) == 0 ) {
             int[] texIds = team.getUniqueTextureIds();
             if( texIds.length > 0 ) {
-                this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x02);
-                this.dataManager.set(TEXTURE_ID_PARAM, (byte) (texIds[MiscUtils.RNG.randomInt(texIds.length)]));
+                this.setUniqueTextureId((byte) texIds[MiscUtils.RNG.randomInt(texIds.length)]);
             }
         } else if( MiscUtils.RNG.randomInt(250) == 0 ) {
             int[] texIds = team.getRareTextureIds();
             if( texIds.length > 0 ) {
-                this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x01);
-                this.dataManager.set(TEXTURE_ID_PARAM, (byte) (texIds[MiscUtils.RNG.randomInt(texIds.length)]));
+                this.setRareTextureId((byte) texIds[MiscUtils.RNG.randomInt(texIds.length)]);
             }
         } else {
             int[] texIds = team.getNormalTextureIds();
-            this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x00);
-            this.dataManager.set(TEXTURE_ID_PARAM, (byte) (texIds[MiscUtils.RNG.randomInt(texIds.length)]));
+            this.setNormalTextureId((byte) texIds[MiscUtils.RNG.randomInt(texIds.length)]);
         }
     }
 
@@ -134,28 +132,69 @@ public class EntityClaySoldier
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
 
+    @Override
     public boolean canMove() {
         return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit);
     }
 
+    @Override
     public void setMovable(boolean move) {
         this.dwBooleans.setBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit, move);
     }
 
+    @Override
     public void setBreathableUnderwater(boolean breathable) {
         this.dwBooleans.setBit(DataWatcherBooleans.Soldier.BREATHE_WATER.bit, breathable);
     }
 
+    @Override
     public Team getSoldierTeam() {
         return TeamRegistry.INSTANCE.getTeam(this.dataManager.get(TEAM_PARAM));
     }
 
+    @Override
+    public EntityClaySoldier getEntity() {
+        return this;
+    }
+
+    @Override
     public int getTextureType() {
         return this.dataManager.get(TEXTURE_TYPE_PARAM);
     }
 
+    @Override
     public int getTextureId() {
         return this.dataManager.get(TEXTURE_ID_PARAM);
+    }
+
+    @Override
+    public void setNormalTextureId(byte id) {
+        if( id < 0 || id >= this.getSoldierTeam().getNormalTextureIds().length ) {
+            return;
+        }
+
+        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x00);
+        this.dataManager.set(TEXTURE_ID_PARAM, id);
+    }
+
+    @Override
+    public void setRareTextureId(byte id) {
+        if( id < 0 || id >= this.getSoldierTeam().getRareTextureIds().length ) {
+            return;
+        }
+
+        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x01);
+        this.dataManager.set(TEXTURE_ID_PARAM, id);
+    }
+
+    @Override
+    public void setUniqueTextureId(byte id) {
+        if( id < 0 || id >= this.getSoldierTeam().getNormalTextureIds().length ) {
+            return;
+        }
+
+        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x02);
+        this.dataManager.set(TEXTURE_ID_PARAM, id);
     }
 
     @Override
