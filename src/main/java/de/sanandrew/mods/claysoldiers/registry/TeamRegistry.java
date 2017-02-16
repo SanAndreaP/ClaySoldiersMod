@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry;
 
+import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.Team;
@@ -21,6 +22,7 @@ import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -98,8 +100,8 @@ public final class TeamRegistry
     }
 
     @Override
-    public ArrayList<Team> getTeams() {
-        return new ArrayList<>(this.teams);
+    public List<Team> getTeams() {
+        return ImmutableList.copyOf(this.teams);
     }
 
     @Override

@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry;
 
+import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.IUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeRegistry;
@@ -17,6 +18,7 @@ import org.apache.logging.log4j.Level;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,12 +27,14 @@ public final class UpgradeRegistry
 {
     public static final UpgradeRegistry INSTANCE = new UpgradeRegistry();
 
+    private final List<IUpgrade> upgrades;
     private final Map<UUID, IUpgrade> uuidUpgradeMap;
     private final Map<HashItemStack, IUpgrade> stackUpgradeMap;
 
     private UpgradeRegistry() {
         this.uuidUpgradeMap = new HashMap<>();
         this.stackUpgradeMap = new HashMap<>();
+        this.upgrades = new ArrayList<>();
     }
 
     @Override
@@ -60,6 +64,7 @@ public final class UpgradeRegistry
 
         this.uuidUpgradeMap.put(id, upgradeInst);
         this.stackUpgradeMap.put(hStack, upgradeInst);
+        this.upgrades.add(upgradeInst);
 
         return true;
     }
@@ -77,8 +82,8 @@ public final class UpgradeRegistry
     }
 
     @Override
-    public ArrayList<IUpgrade> getUpgrades() {
-        return null;
+    public List<IUpgrade> getUpgrades() {
+        return ImmutableList.copyOf(this.upgrades);
     }
 
     private static class HashItemStack

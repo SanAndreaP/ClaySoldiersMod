@@ -16,19 +16,19 @@ public interface IUpgrade
 {
     ItemStack getItem();
 
-    ItemStack onPickup(ISoldier<?> soldier, ItemStack stack, IUpgradeInst upgInstance);
+    default ItemStack onPickup(ISoldier<?> soldier, ItemStack stack, IUpgradeInst upgInstance) { return null; }
 
-    void onTick(ISoldier<?> soldier, IUpgradeInst upgInstance);
+    default void onTick(ISoldier<?> soldier, IUpgradeInst upgInstance) { }
 
-    void onLoad(ISoldier<?> soldier, IUpgradeInst upgInstance, NBTTagCompound upgNbt);
+    default void onLoad(ISoldier<?> soldier, IUpgradeInst upgInstance, NBTTagCompound upgNbt) { }
 
-    void onSave(ISoldier<?> soldier, IUpgradeInst upgInstance, NBTTagCompound upgNbt);
+    default void onSave(ISoldier<?> soldier, IUpgradeInst upgInstance, NBTTagCompound upgNbt) { }
 
-    void onDestroyed(ISoldier<?> soldier, IUpgradeInst upgInstance);
+    default void onDestroyed(ISoldier<?> soldier, IUpgradeInst upgInstance) { }
 
-    void onAttack(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity target, DamageSource dmgSource, MutableFloat damage);
+    default void onAttack(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity target, DamageSource dmgSource, MutableFloat damage) { }
 
-    void onDamaged(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity attacker, DamageSource dmgSource, MutableFloat damage);
+    default void onDamaged(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity attacker, DamageSource dmgSource, MutableFloat damage) { }
 
-    void onDeath(ISoldier<?> soldier, IUpgradeInst upgInstance, ItemStack stack);
+    default void onDeath(ISoldier<?> soldier, IUpgradeInst upgInstance, ItemStack stack) { }
 }

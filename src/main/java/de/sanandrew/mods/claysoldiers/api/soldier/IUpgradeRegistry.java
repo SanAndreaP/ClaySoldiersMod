@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.api.soldier;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public interface IUpgradeRegistry
@@ -22,5 +22,5 @@ public interface IUpgradeRegistry
     @Nullable
     IUpgrade getUpgrade(ItemStack stack);
 
-    ArrayList<IUpgrade> getUpgrades();
+    List<IUpgrade> getUpgrades();
 }

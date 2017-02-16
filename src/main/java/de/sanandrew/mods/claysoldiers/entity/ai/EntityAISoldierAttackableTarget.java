@@ -24,10 +24,13 @@ public class EntityAISoldierAttackableTarget
     private EntityClaySoldier targetSoldier;
     private Comparator<Entity> nearestSorter;
 
+    private final Predicate<EntityClaySoldier> tgtSelector;
+
     public EntityAISoldierAttackableTarget(EntityClaySoldier soldier) {
         super(soldier, false, false);
         this.attacker = soldier;
         this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
+        this.tgtSelector = entity -> entity != null && entity.isEntityAlive() && entity.getSoldierTeam() != this.attacker.getSoldierTeam() && entity.canEntityBeSeen(this.attacker);
     }
 
     @Override
@@ -37,10 +40,9 @@ public class EntityAISoldierAttackableTarget
             return false;
         }
 
-        Predicate<EntityClaySoldier> tgtSelector = entity -> entity != null && entity.isEntityAlive() && entity.getSoldierTeam() != this.attacker.getSoldierTeam();
-        List<EntityClaySoldier> list = this.taskOwner.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getTargetableArea(this.getTargetDistance()), tgtSelector::test);
+        List<EntityClaySoldier> list = this.taskOwner.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getTargetableArea(this.getTargetDistance()), this.tgtSelector::test);
 
-        list.removeIf(ziclag -> ziclag.getSoldierTeam() == EntityAISoldierAttackableTarget.this.attacker.getSoldierTeam());
+//        list.removeIf(ziclag -> ziclag.getSoldierTeam() == EntityAISoldierAttackableTarget.this.attacker.getSoldierTeam());
 
         if( list.isEmpty() ) {
             return false;

@@ -112,7 +112,7 @@ public class EntityClaySoldier
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISoldierAttackMelee(this, 0.8D));
+        this.tasks.addTask(1, new EntityAISoldierAttackMelee(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -257,12 +257,17 @@ public class EntityClaySoldier
     public void onUpdate() {
         super.onUpdate();
 
+//        this.navigator.clearPathEntity();
 //        this.cloakHelper.onUpdate(this.posX, this.posY, this.posZ);
 
         if( !this.canMove() ) {
             this.motionX = 0.0F;
             this.motionZ = 0.0F;
             this.isJumping = false;
+        }
+
+        if( !this.world.isRemote ) {
+//            System.out.println(this.getAttackTarget());
         }
 
 //        this.canMove = true;

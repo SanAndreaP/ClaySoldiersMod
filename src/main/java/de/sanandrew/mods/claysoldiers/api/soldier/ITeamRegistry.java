@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public interface ITeamRegistry
@@ -48,7 +49,7 @@ public interface ITeamRegistry
      * @return a list of all teams
      */
     @Nonnull
-    ArrayList<Team> getTeams();
+    List<Team> getTeams();
 
     /**
      * gets the team instance associated with the given item
