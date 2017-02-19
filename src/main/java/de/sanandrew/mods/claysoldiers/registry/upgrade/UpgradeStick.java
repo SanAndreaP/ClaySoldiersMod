@@ -22,8 +22,9 @@ public class UpgradeStick
     private static final ItemStack UPG_ITEM = new ItemStack(Items.STICK, 1);
     private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_PICKUP,
                                                                                     EnumFunctionCalls.ON_ATTACK,
+                                                                                    EnumFunctionCalls.ON_ATTACK_SUCCESS,
                                                                                     EnumFunctionCalls.ON_DEATH};
-    private static final byte MAX_USAGES = 20;
+    private static final byte MAX_USAGES = 1;
 
     @Override
     public ItemStack getItem() {
@@ -49,7 +50,10 @@ public class UpgradeStick
     @Override
     public void onAttack(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity target, DamageSource dmgSource, MutableFloat damage) {
         damage.add(1.0F + MiscUtils.RNG.randomFloat() * 0.5F);
+    }
 
+    @Override
+    public void onAttackSuccess(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity target) {
         byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
         if( uses < 1 ) {
             soldier.destroyUpgrade(upgInstance.getUpgrade());

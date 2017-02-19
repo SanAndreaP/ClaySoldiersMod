@@ -31,6 +31,7 @@ public class EntityAISoldierAttackableTarget
         this.attacker = soldier;
         this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
         this.tgtSelector = entity -> entity != null && entity.isEntityAlive() && entity.getSoldierTeam() != this.attacker.getSoldierTeam() && entity.canEntityBeSeen(this.attacker);
+        this.setMutexBits(1);
     }
 
     @Override

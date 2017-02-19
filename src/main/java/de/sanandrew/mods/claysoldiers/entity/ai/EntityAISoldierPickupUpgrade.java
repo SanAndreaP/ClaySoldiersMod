@@ -6,46 +6,43 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
 
-public class EntityAISoldierAttackMelee
+public class EntityAISoldierPickupUpgrade
         extends EntityAIBase
 {
-    protected EntityCreature attacker;
-    protected int attackTick;
+    protected EntityClaySoldier attacker;
     double speedTowardsTarget;
     Path entityPathEntity;
     private double targetX;
     private double targetY;
     private double targetZ;
 
-    public EntityAISoldierAttackMelee(EntityCreature creature, double speedIn) {
-        this.attacker = creature;
+    public EntityAISoldierPickupUpgrade(EntityClaySoldier soldier, double speedIn) {
+        this.attacker = soldier;
         this.speedTowardsTarget = speedIn;
         this.setMutexBits(3);
     }
 
     @Override
     public boolean shouldExecute() {
-        EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
+        Entity item = this.attacker.followingEntity;
 
-        if( entitylivingbase == null ) {
+        if( !(item instanceof EntityItem) ) {
             return false;
-        } else if( !entitylivingbase.isEntityAlive() ) {
+        } else if( !item.isEntityAlive() ) {
             return false;
         } else {
-            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
+            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(item);
             if( this.entityPathEntity == null ) {
                 Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
                 this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.xCoord, this.targetY + vec.yCoord, this.targetZ + vec.zCoord);
@@ -56,8 +53,7 @@ public class EntityAISoldierAttackMelee
 
     @Override
     public boolean continueExecuting() {
-        EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
-        return entitylivingbase != null && (entitylivingbase.isEntityAlive() && (!this.attacker.getNavigator().noPath()));
+        return this.attacker.followingEntity instanceof EntityItem && (this.attacker.followingEntity.isEntityAlive() && (!this.attacker.getNavigator().noPath()));
     }
 
     @Override
@@ -72,8 +68,8 @@ public class EntityAISoldierAttackMelee
 
     @Override
     public void updateTask() {
-        EntityLivingBase jack = this.attacker.getAttackTarget();
-        if( jack == null ) {
+        Entity jack = this.attacker.followingEntity;
+        if( !(jack instanceof EntityItem) ) {
             return;
         }
 
@@ -89,21 +85,12 @@ public class EntityAISoldierAttackMelee
             this.targetZ = jack.posZ;
         }
 
-        this.attackTick = Math.max(this.attackTick - 1, 0);
-        this.checkAndPerformAttack(jack, tgtDist);
-    }
-
-    protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-        double d0 = this.getAttackReachSqr(entity);
-
-        if( dist <= d0 && this.attackTick <= 0 ) {
-            this.attackTick = 20;
-            this.attacker.swingArm(EnumHand.MAIN_HAND);
-            this.attacker.attackEntityAsMob(entity);
+        if( this.attacker.getDistanceSqToEntity(jack) < 1.0F ) {
+            EntityItem item = (EntityItem) jack;
+            this.attacker.pickupUpgrade(item);
+            if( item.getEntityItem().stackSize < 1 ) {
+                item.setDead();
+            }
         }
-    }
-
-    protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-        return this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width;
     }
 }

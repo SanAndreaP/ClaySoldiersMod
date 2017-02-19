@@ -39,6 +39,7 @@ public class EntityAISoldierUpgradeItem
         this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
         this.tgtSelector = entity -> entity != null && entity.isEntityAlive() && !entity.cannotPickup() && UpgradeRegistry.INSTANCE.getUpgrade(entity.getEntityItem()) != null
                            && this.taskOwner.canEntityBeSeen(entity) && !this.taskOwner.hasUpgrade(entity.getEntityItem());
+        this.setMutexBits(1);
     }
 
     @Override
@@ -56,11 +57,11 @@ public class EntityAISoldierUpgradeItem
 
     @Override
     public boolean continueExecuting() {
-        return false;
+        return this.taskOwner.followingEntity == null;
     }
 
     public void startExecuting() {
-        this.taskOwner.getNavigator().setPath(this.taskOwner.getNavigator().getPathToEntityLiving(this.target), 1.0F);
+        this.taskOwner.followingEntity = target;
         super.startExecuting();
     }
 

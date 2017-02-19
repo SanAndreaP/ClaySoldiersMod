@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.Team;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackMelee;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierPickupUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierUpgradeItem;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
@@ -49,6 +50,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,6 +64,7 @@ import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
 
 public class EntityClaySoldier
         extends EntityCreature
@@ -77,6 +80,8 @@ public class EntityClaySoldier
     private final Map<HashItemStack, IUpgradeInst> upgradeItemMap;
 
     private ItemStack doll;
+
+    public Entity followingEntity;
 
     public EntityClaySoldier(World world) {
         super(world);
@@ -132,13 +137,14 @@ public class EntityClaySoldier
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISoldierAttackMelee(this, 1.0D));
+        this.tasks.addTask(1, new EntityAISoldierPickupUpgrade(this, 1.0D));
+        this.tasks.addTask(2, new EntityAISoldierAttackMelee(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(2, new EntityAISoldierAttackableTarget(this));
         this.targetTasks.addTask(1, new EntityAISoldierUpgradeItem(this));
+        this.targetTasks.addTask(2, new EntityAISoldierAttackableTarget(this));
     }
 
     @Override
@@ -226,6 +232,8 @@ public class EntityClaySoldier
         this.upgradeItemMap.remove(hashStack);
         this.upgradeSyncList.remove(inst);
         this.upgradeFuncMap.forEach((key, val) -> {if( Arrays.asList(upgrade.getFunctionCalls()).contains(key) ) { val.remove(upgrade.getPriority(), inst); }});
+
+        this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
     }
 
     @Override
@@ -262,13 +270,16 @@ public class EntityClaySoldier
 
         EntityLivingBase trevor = ((EntityLivingBase) entityIn);
 
-        float attackDmg = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        MutableFloat attackDmg = new MutableFloat((float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+        DamageSource dmgSrc = DamageSource.causeMobDamage(this);
         int i = 0;
 
-        attackDmg += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), trevor.getCreatureAttribute());
-        i += EnchantmentHelper.getKnockbackModifier(this);
+//        attackDmg += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), trevor.getCreatureAttribute());
+//        i += EnchantmentHelper.getKnockbackModifier(this);
 
-        boolean attackSuccess = trevor.attackEntityFrom(DamageSource.causeMobDamage(this), attackDmg);
+        this.callUpgradeFunc(IUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this, upg, trevor, dmgSrc, attackDmg));
+
+        boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg.floatValue());
 
         if( attackSuccess ) {
             if( i > 0 ) {
@@ -291,6 +302,8 @@ public class EntityClaySoldier
                     trevor.setFire(2 * (int)additDifficulty);
                 }
             }
+
+            this.callUpgradeFunc(IUpgrade.EnumFunctionCalls.ON_ATTACK_SUCCESS, upg -> upg.getUpgrade().onAttackSuccess(this, upg, trevor));
         }
 
         return attackSuccess;
@@ -308,10 +321,7 @@ public class EntityClaySoldier
 //        this.navigator.clearPathEntity();
 //        this.cloakHelper.onUpdate(this.posX, this.posY, this.posZ);
 
-        Map<Integer, Queue<IUpgradeInst>> upgCalls = this.upgradeFuncMap.get(IUpgrade.EnumFunctionCalls.ON_TICK);
-        List<Integer> pririties = new ArrayList<>(upgCalls.keySet());
-        Collections.sort(pririties);
-        pririties.forEach(val -> upgCalls.get(val).forEach(upg -> upg.getUpgrade().onTick(this, upg)));
+        this.callUpgradeFunc(IUpgrade.EnumFunctionCalls.ON_TICK, upg -> upg.getUpgrade().onTick(this, upg));
 
         if( !this.canMove() ) {
             this.motionX = 0.0F;
@@ -543,10 +553,14 @@ public class EntityClaySoldier
         return enumMap;
     }
 
-    public void pickupUpgrade(EntityItem item) {
+    public boolean pickupUpgrade(EntityItem item) {
+        if( item.getEntityItem().stackSize < 1 ) {
+            return false;
+        }
+
         IUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(item.getEntityItem());
         if( upg == null ) {
-            return;
+            return false;
         }
 
         IUpgradeInst upgInst = new SoldierUpgrade(upg, item.getEntityItem().copy().splitStack(1));
@@ -562,5 +576,15 @@ public class EntityClaySoldier
             Queue<IUpgradeInst> upgList = this.upgradeFuncMap.get(func).computeIfAbsent(upg.getPriority(), k -> new ConcurrentLinkedQueue<>());
             upgList.add(upgInst);
         });
+
+        this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F);
+        return true;
+    }
+
+    private void callUpgradeFunc(IUpgrade.EnumFunctionCalls funcCall, final Consumer<IUpgradeInst> forEach) {
+        Map<Integer, Queue<IUpgradeInst>> upgCalls = this.upgradeFuncMap.get(funcCall);
+        List<Integer> pririties = new ArrayList<>(upgCalls.keySet());
+        Collections.sort(pririties);
+        pririties.forEach(val -> upgCalls.get(val).forEach(forEach));
     }
 }
