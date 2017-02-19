@@ -36,21 +36,25 @@ public class DyedSoldierRecipeWrapper
     }
 
     @Override
+    @Deprecated
     public List getInputs() {
         return this.input;
     }
 
     @Override
+    @Deprecated
     public List<ItemStack> getOutputs() {
         return ImmutableList.of(this.output);
     }
 
     @Override
+    @Deprecated
     public List<FluidStack> getFluidInputs() {
         return ImmutableList.of();
     }
 
     @Override
+    @Deprecated
     public List<FluidStack> getFluidOutputs() {
         return ImmutableList.of();
     }
@@ -61,6 +65,7 @@ public class DyedSoldierRecipeWrapper
     }
 
     @Override
+    @Deprecated
     public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
     }

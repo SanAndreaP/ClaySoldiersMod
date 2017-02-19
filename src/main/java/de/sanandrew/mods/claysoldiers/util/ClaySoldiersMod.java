@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -46,7 +47,6 @@ public class ClaySoldiersMod
 
         loadPlugins(event.getAsmData());
 
-
         network = NetworkRegistry.INSTANCE.newSimpleChannel(CsmConstants.CHANNEL);
 
         PLUGINS.forEach(plugin -> plugin.registerTeams(TeamRegistry.INSTANCE));
@@ -59,6 +59,8 @@ public class ClaySoldiersMod
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
+
+        PLUGINS.forEach(plugin -> plugin.registerUpgrades(UpgradeRegistry.INSTANCE));
 
         CraftingRecipes.initialize();
     }

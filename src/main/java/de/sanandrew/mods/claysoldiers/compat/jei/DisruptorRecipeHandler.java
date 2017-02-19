@@ -25,6 +25,7 @@ public class DisruptorRecipeHandler
     }
 
     @Override
+    @Deprecated
     public String getRecipeCategoryUid() {
         return VanillaRecipeCategoryUid.CRAFTING;
     }

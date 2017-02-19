@@ -42,8 +42,6 @@ public class EntityAISoldierAttackableTarget
 
         List<EntityClaySoldier> list = this.taskOwner.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getTargetableArea(this.getTargetDistance()), this.tgtSelector::test);
 
-//        list.removeIf(ziclag -> ziclag.getSoldierTeam() == EntityAISoldierAttackableTarget.this.attacker.getSoldierTeam());
-
         if( list.isEmpty() ) {
             return false;
         } else {

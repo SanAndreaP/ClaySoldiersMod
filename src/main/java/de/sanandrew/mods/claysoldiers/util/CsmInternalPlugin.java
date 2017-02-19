@@ -9,7 +9,9 @@ package de.sanandrew.mods.claysoldiers.util;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
+import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
 
 import java.util.UUID;
 
@@ -20,5 +22,10 @@ public class CsmInternalPlugin
     @Override
     public void registerTeams(ITeamRegistry registry) {
         TeamRegistry.initialize(registry);
+    }
+
+    @Override
+    public void registerUpgrades(IUpgradeRegistry registry) {
+        UpgradeRegistry.initialize(registry);
     }
 }

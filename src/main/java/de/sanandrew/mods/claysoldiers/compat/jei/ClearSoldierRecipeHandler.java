@@ -31,6 +31,7 @@ public class ClearSoldierRecipeHandler
     }
 
     @Override
+    @Deprecated
     public String getRecipeCategoryUid() {
         return VanillaRecipeCategoryUid.CRAFTING;
     }

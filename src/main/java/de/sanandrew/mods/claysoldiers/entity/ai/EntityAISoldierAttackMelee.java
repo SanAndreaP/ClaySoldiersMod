@@ -47,17 +47,10 @@ public class EntityAISoldierAttackMelee
         } else if( !entitylivingbase.isEntityAlive() ) {
             return false;
         } else {
-//            if( MiscUtils.RNG.randomInt(25) == 0 ) {
-////                this.attacker.setAttackTarget(null);
-////                this.attacker.getNavigator().clearPathEntity();
-//                return false;
-//            }
-
             this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
             if( this.entityPathEntity == null ) {
-                Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.5D);
+                Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
                 this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.xCoord, this.targetY + vec.yCoord, this.targetZ + vec.zCoord);
-//                System.out.println("fuck");
             }
             return this.entityPathEntity != null;
         }

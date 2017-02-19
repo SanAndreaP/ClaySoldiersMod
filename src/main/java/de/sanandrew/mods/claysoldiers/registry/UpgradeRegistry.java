@@ -10,6 +10,8 @@ import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.IUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeStick;
+import de.sanandrew.mods.claysoldiers.util.HashItemStack;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.item.ItemStack;
@@ -78,7 +80,7 @@ public final class UpgradeRegistry
     @Nullable
     @Override
     public IUpgrade getUpgrade(ItemStack stack) {
-        return this.stackUpgradeMap.get(new HashItemStack(stack));
+        return MiscUtils.defIfNull(this.stackUpgradeMap.get(new HashItemStack(stack)), this.stackUpgradeMap.get(new HashItemStack(stack, true)));
     }
 
     @Override
@@ -86,26 +88,9 @@ public final class UpgradeRegistry
         return ImmutableList.copyOf(this.upgrades);
     }
 
-    private static class HashItemStack
-    {
-        private final ItemStack heldStack;
-
-        public HashItemStack(ItemStack stack) {
-            this.heldStack = stack;
-        }
-
-        @Override
-        public int hashCode() {
-            return this.hashCode(this.heldStack);
-        }
-
-        public int hashCode(ItemStack stack) {
-            return 911 * stack.getItem().hashCode() ^ 401 * stack.getItemDamage() ^ 521 * (MiscUtils.defIfNull(stack.getTagCompound(), 1).hashCode());
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return obj instanceof ItemStack ? this.hashCode() == this.hashCode((ItemStack) obj) : obj instanceof HashItemStack ? this.hashCode() == obj.hashCode() : this == obj;
-        }
+    public static void initialize(IUpgradeRegistry registry) {
+        registry.registerUpgrade(MH_STICK, new UpgradeStick());
     }
+
+    public static final UUID MH_STICK = UUID.fromString("31F0A3DB-F1A7-4418-9EA6-A9D0C900EB41");
 }

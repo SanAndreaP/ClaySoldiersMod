@@ -14,5 +14,5 @@ public interface IUpgradeInst
 
     void setNbtData(NBTTagCompound compound);
 
-    void destroy();
+    IUpgrade getUpgrade();
 }

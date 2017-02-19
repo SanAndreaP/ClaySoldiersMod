@@ -28,6 +28,7 @@ public class DyedSoldierRecipeHandler
     }
 
     @Override
+    @Deprecated
     public String getRecipeCategoryUid() {
         return VanillaRecipeCategoryUid.CRAFTING;
     }

@@ -7,8 +7,11 @@
 package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
+import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeRegistry;
 
 public interface ICsmPlugin
 {
     void registerTeams(ITeamRegistry registry);
+
+    void registerUpgrades(IUpgradeRegistry registry);
 }

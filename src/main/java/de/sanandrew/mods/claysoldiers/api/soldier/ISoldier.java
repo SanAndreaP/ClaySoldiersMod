@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.api.soldier;
 
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.item.ItemStack;
 
 public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 {
@@ -29,4 +30,10 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
     void setRareTextureId(byte id);
 
     void setUniqueTextureId(byte id);
+
+    void destroyUpgrade(IUpgrade upgrade);
+
+    boolean hasUpgrade(ItemStack stack);
+
+    boolean hasUpgrade(IUpgrade upgrade);
 }
