@@ -231,8 +231,13 @@ public class EntityClaySoldier
 
         this.upgradeItemMap.remove(hashStack);
         this.upgradeSyncList.remove(inst);
-        this.upgradeFuncMap.forEach((key, val) -> {if( Arrays.asList(upgrade.getFunctionCalls()).contains(key) ) { val.remove(upgrade.getPriority(), inst); }});
+        this.upgradeFuncMap.forEach((key, val) -> {
+            if( Arrays.asList(upgrade.getFunctionCalls()).contains(key) ) {
+                val.get(upgrade.getPriority()).remove(inst);
+            }
+        });
 
+        //TODO: spawn particles
         this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
     }
 
@@ -427,6 +432,8 @@ public class EntityClaySoldier
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
+
+        //TODO: spawn particles
 
         if( !this.world.isRemote ) {
 //            if( damageSource.isFireDamage() && this.dollItem != null ) {
