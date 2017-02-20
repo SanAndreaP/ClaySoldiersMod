@@ -39,11 +39,12 @@ public class EntityAISoldierUpgradeItem
         this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
         this.tgtSelector = entity -> entity != null && entity.isEntityAlive() && !entity.cannotPickup() && UpgradeRegistry.INSTANCE.getUpgrade(entity.getEntityItem()) != null
                            && this.taskOwner.canEntityBeSeen(entity) && !this.taskOwner.hasUpgrade(entity.getEntityItem());
-        this.setMutexBits(1);
+        this.setMutexBits(2);
     }
 
     @Override
     public boolean shouldExecute() {
+        this.target = null;
         List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(), this.tgtSelector::test);
 
         if( list.isEmpty() ) {
@@ -57,7 +58,7 @@ public class EntityAISoldierUpgradeItem
 
     @Override
     public boolean continueExecuting() {
-        return this.taskOwner.followingEntity == null;
+        return this.taskOwner.followingEntity == null && this.target != null;
     }
 
     public void startExecuting() {

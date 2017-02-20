@@ -30,16 +30,14 @@ public class EntityAISoldierPickupUpgrade
     public EntityAISoldierPickupUpgrade(EntityClaySoldier soldier, double speedIn) {
         this.attacker = soldier;
         this.speedTowardsTarget = speedIn;
-        this.setMutexBits(3);
+        this.setMutexBits(1);
     }
 
     @Override
     public boolean shouldExecute() {
         Entity item = this.attacker.followingEntity;
 
-        if( !(item instanceof EntityItem) ) {
-            return false;
-        } else if( !item.isEntityAlive() ) {
+        if( !(item instanceof EntityItem) || !item.isEntityAlive() ) {
             return false;
         } else {
             this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(item);
@@ -53,12 +51,15 @@ public class EntityAISoldierPickupUpgrade
 
     @Override
     public boolean continueExecuting() {
-        return this.attacker.followingEntity instanceof EntityItem && (this.attacker.followingEntity.isEntityAlive() && (!this.attacker.getNavigator().noPath()));
+        return this.entityPathEntity != null && this.attacker.followingEntity instanceof EntityItem && this.attacker.followingEntity.isEntityAlive()
+                && !this.attacker.getNavigator().noPath();
     }
 
     @Override
     public void startExecuting() {
-        this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
+        if( this.entityPathEntity != null ) {
+            this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
+        }
     }
 
     @Override
@@ -69,7 +70,8 @@ public class EntityAISoldierPickupUpgrade
     @Override
     public void updateTask() {
         Entity jack = this.attacker.followingEntity;
-        if( !(jack instanceof EntityItem) ) {
+        if( !(jack instanceof EntityItem) || !jack.isEntityAlive() ) {
+            this.entityPathEntity = null;
             return;
         }
 
@@ -85,7 +87,7 @@ public class EntityAISoldierPickupUpgrade
             this.targetZ = jack.posZ;
         }
 
-        if( this.attacker.getDistanceSqToEntity(jack) < 1.0F ) {
+        if( tgtDist < 1.0F ) {
             EntityItem item = (EntityItem) jack;
             this.attacker.pickupUpgrade(item);
             if( item.getEntityItem().stackSize < 1 ) {

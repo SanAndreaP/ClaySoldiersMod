@@ -22,6 +22,8 @@ public interface IUpgrade
 
     default boolean syncData() { return true; }
 
+    default boolean checkPickupable(ItemStack stack) { return true; }
+
     default ItemStack onPickup(ISoldier<?> soldier, ItemStack stack, IUpgradeInst upgInstance) { return null; }
 
     default void onTick(ISoldier<?> soldier, IUpgradeInst upgInstance) { }

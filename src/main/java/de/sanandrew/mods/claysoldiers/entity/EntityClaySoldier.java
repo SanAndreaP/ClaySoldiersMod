@@ -561,6 +561,9 @@ public class EntityClaySoldier
     }
 
     public boolean pickupUpgrade(EntityItem item) {
+        this.followingEntity = null;
+        this.navigator.clearPathEntity();
+
         if( item.getEntityItem().stackSize < 1 ) {
             return false;
         }

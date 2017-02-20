@@ -24,7 +24,7 @@ public class UpgradeStick
                                                                                     EnumFunctionCalls.ON_ATTACK,
                                                                                     EnumFunctionCalls.ON_ATTACK_SUCCESS,
                                                                                     EnumFunctionCalls.ON_DEATH};
-    private static final byte MAX_USAGES = 1;
+    private static final byte MAX_USAGES = 20;
 
     @Override
     public ItemStack getItem() {
