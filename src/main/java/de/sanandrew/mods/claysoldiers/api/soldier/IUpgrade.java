@@ -34,7 +34,7 @@ public interface IUpgrade
 
     default void onDestroyed(ISoldier<?> soldier, IUpgradeInst upgInstance) { }
 
-    default void onAttack(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity target, DamageSource dmgSource, MutableFloat damage) { }
+    default void onAttack(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity target, DamageSource dmgSource, float damage) { }
 
     default void onAttackSuccess(ISoldier<?> soldier, IUpgradeInst upgInstance, Entity target) { }
 

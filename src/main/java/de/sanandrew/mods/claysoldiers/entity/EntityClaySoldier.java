@@ -275,7 +275,7 @@ public class EntityClaySoldier
 
         EntityLivingBase trevor = ((EntityLivingBase) entityIn);
 
-        MutableFloat attackDmg = new MutableFloat((float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+        float attackDmg = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
         DamageSource dmgSrc = DamageSource.causeMobDamage(this);
         int i = 0;
 
@@ -284,7 +284,7 @@ public class EntityClaySoldier
 
         this.callUpgradeFunc(IUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this, upg, trevor, dmgSrc, attackDmg));
 
-        boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg.floatValue());
+        boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg);
 
         if( attackSuccess ) {
             if( i > 0 ) {
