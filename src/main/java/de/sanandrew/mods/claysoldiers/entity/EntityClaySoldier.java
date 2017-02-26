@@ -20,6 +20,8 @@ import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.claysoldiers.util.HashItemStack;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -35,6 +37,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -50,7 +53,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -112,6 +114,8 @@ public class EntityClaySoldier
         this(world, team);
 
         this.doll = doll;
+
+        this.setLeftHanded(MiscUtils.RNG.randomInt(100) < 10);
     }
 
     public EntityClaySoldier(World world, @Nonnull Team team) {
@@ -226,7 +230,7 @@ public class EntityClaySoldier
 
     @Override
     public void destroyUpgrade(IUpgrade upgrade) {
-        HashItemStack hashStack = new HashItemStack(upgrade.getItem());
+        HashItemStack hashStack = new HashItemStack(upgrade.getStack());
         IUpgradeInst inst = this.upgradeItemMap.get(hashStack);
 
         this.upgradeItemMap.remove(hashStack);
@@ -239,6 +243,13 @@ public class EntityClaySoldier
 
         //TODO: spawn particles
         this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
+        ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
+                                            Item.getIdFromItem(upgrade.getStack().getItem()));
+    }
+
+    @Override
+    public boolean addUpgrade(IUpgrade upgrade, ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -255,7 +266,7 @@ public class EntityClaySoldier
 
     @Override
     public boolean hasUpgrade(IUpgrade upgrade) {
-        return this.hasUpgrade(upgrade.getItem());
+        return this.hasUpgrade(upgrade.getStack());
     }
 
     @Override
@@ -433,8 +444,6 @@ public class EntityClaySoldier
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
 
-        //TODO: spawn particles
-
         if( !this.world.isRemote ) {
 //            if( damageSource.isFireDamage() && this.dollItem != null ) {
 //                ItemStack brickItem = new ItemStack(RegistryItems.dollBrick, this.dollItem.stackSize);
@@ -469,6 +478,9 @@ public class EntityClaySoldier
 //            for( SoldierEffectInst eff : this.p_effects.values() ) {
 //                eff.getEffect().onSoldierDeath(this, eff, damageSource);
 //            }
+        } else {
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.TEAM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
+                                                this.getSoldierTeam().getId());
         }
     }
 
@@ -580,7 +592,7 @@ public class EntityClaySoldier
             upg.onPickup(this, item.getEntityItem(), upgInst);
         }
 
-        this.upgradeItemMap.put(new HashItemStack(upg.getItem()), upgInst);
+        this.upgradeItemMap.put(new HashItemStack(upg.getStack()), upgInst);
         this.upgradeSyncList.add(upgInst);
         funcCalls.forEach(func -> {
             Queue<IUpgradeInst> upgList = this.upgradeFuncMap.get(func).computeIfAbsent(upg.getPriority(), k -> new ConcurrentLinkedQueue<>());

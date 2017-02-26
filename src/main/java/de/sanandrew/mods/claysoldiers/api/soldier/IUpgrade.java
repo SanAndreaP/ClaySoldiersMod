@@ -14,7 +14,7 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 public interface IUpgrade
 {
-    ItemStack getItem();
+    ItemStack getStack();
 
     EnumFunctionCalls[] getFunctionCalls();
 

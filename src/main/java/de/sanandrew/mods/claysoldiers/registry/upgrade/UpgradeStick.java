@@ -31,7 +31,7 @@ public class UpgradeStick
     private static final byte MAX_USAGES = 20;
 
     @Override
-    public ItemStack getItem() {
+    public ItemStack getStack() {
         return UPG_ITEM;
     }
 

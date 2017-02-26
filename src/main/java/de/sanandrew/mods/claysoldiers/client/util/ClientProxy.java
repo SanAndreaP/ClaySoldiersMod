@@ -6,11 +6,13 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.util;
 
+import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -37,5 +39,10 @@ public class ClientProxy
         ModelRegistry.registerModelsInit();
 
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorSoldier(), ItemRegistry.doll_soldier);
+    }
+
+    @Override
+    public void spawnParticle(EnumParticle particle, int dim, double x, double y, double z, Object... additData) {
+        ParticleHandler.spawn(particle, dim, x, y, z, additData);
     }
 }

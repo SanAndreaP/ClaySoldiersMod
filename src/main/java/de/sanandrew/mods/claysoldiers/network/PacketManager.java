@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network;
 
+import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.sanlib.lib.network.AbstractMessage;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public final class PacketManager
 {
     public static void initialize() {
-        registerMessage(ClaySoldiersMod.network, PacketUpdateTargets.class, 0, Side.CLIENT);
+        registerMessage(ClaySoldiersMod.network, PacketParticle.class, 0, Side.CLIENT);
     }
 
     public static void sendToAllAround(IMessage message, int dim, double x, double y, double z, double range) {

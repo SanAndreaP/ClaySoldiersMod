@@ -33,6 +33,8 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void destroyUpgrade(IUpgrade upgrade);
 
+    boolean addUpgrade(IUpgrade upgrade, ItemStack stack);
+
     boolean hasUpgrade(ItemStack stack);
 
     boolean hasUpgrade(IUpgrade upgrade);

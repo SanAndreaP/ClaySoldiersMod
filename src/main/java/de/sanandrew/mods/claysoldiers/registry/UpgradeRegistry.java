@@ -47,7 +47,7 @@ public final class UpgradeRegistry
 
         }
 
-        ItemStack upgItem = upgradeInst.getItem();
+        ItemStack upgItem = upgradeInst.getStack();
         if( !ItemStackUtils.isValid(upgItem) ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Upgrade item is invalid for ID %s!", id));
             return false;
