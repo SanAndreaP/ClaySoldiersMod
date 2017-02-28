@@ -52,7 +52,10 @@ public class EntityAISoldierUpgradeItem
 
     @Override
     public boolean shouldExecute() {
-        this.target = null;
+        if( this.taskOwner.followingEntity != null ) {
+            return false;
+        }
+
         List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(), this.tgtSelector::test);
 
         if( list.isEmpty() ) {
@@ -65,13 +68,18 @@ public class EntityAISoldierUpgradeItem
     }
 
     @Override
-    public boolean continueExecuting() {
-        return this.taskOwner.followingEntity == null && this.target != null;
+    public void resetTask() {
+        this.target = null;
     }
 
-    public void startExecuting() {
+    @Override
+    public boolean continueExecuting() {
+        return this.taskOwner.followingEntity == null;
+    }
+
+    @Override
+    public void updateTask() {
         this.taskOwner.followingEntity = this.target;
-        super.startExecuting();
     }
 
     private AxisAlignedBB getTargetableArea() {

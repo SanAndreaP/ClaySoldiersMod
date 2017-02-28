@@ -51,7 +51,7 @@ public class EntityAISoldierPickupUpgrade
 
     @Override
     public boolean continueExecuting() {
-        return this.attacker.followingEntity instanceof EntityItem && this.attacker.followingEntity.isEntityAlive();
+        return this.attacker.followingEntity instanceof EntityItem && this.attacker.followingEntity.isEntityAlive() && this.attacker.hasPath();
     }
 
     @Override
@@ -64,6 +64,7 @@ public class EntityAISoldierPickupUpgrade
     @Override
     public void resetTask() {
         this.attacker.getNavigator().clearPathEntity();
+        this.entityPathEntity = null;
     }
 
     @Override

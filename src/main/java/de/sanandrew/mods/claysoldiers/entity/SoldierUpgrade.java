@@ -32,7 +32,7 @@ public class SoldierUpgrade
     @Override
     public void setNbtData(NBTTagCompound compound) {
         this.nbt.getKeySet().forEach(this.nbt::removeTag);
-        nbt.merge(this.nbt);
+        this.nbt.merge(compound);
     }
 
     @Override

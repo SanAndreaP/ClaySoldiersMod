@@ -38,13 +38,16 @@ public class PacketSyncUpgrades
     public void handleClientMessage(PacketSyncUpgrades pkt, EntityPlayer player) {
         Entity entity = player.world.getEntityByID(pkt.soldierId);
         if( entity instanceof EntityClaySoldier ) {
-            EntityClaySoldier soldier = (EntityClaySoldier) entity;
-            for( ISoldierUpgrade upg : pkt.upgrades ) {
-                if( upg != null && pkt.add ) {
-                    soldier.addUpgrade(upg, upg.getStack());
-                } else {
-                    soldier.destroyUpgrade(upg);
-                }
+            pkt.applyUpgrades((EntityClaySoldier) entity);
+        }
+    }
+
+    public void applyUpgrades(EntityClaySoldier soldier) {
+        for( ISoldierUpgrade upg : this.upgrades ) {
+            if( upg != null && this.add ) {
+                soldier.addUpgrade(upg, upg.getStack());
+            } else {
+                soldier.destroyUpgrade(upg);
             }
         }
     }

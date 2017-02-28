@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,7 +50,7 @@ public class LayerSoldierHeldItem
         offHand:
         for( int priority : priorities ) {
             for( ISoldierRenderer renderer : this.renderer.renderHooks.get(priority) ) {
-                if( renderHeldItem(soldier, EnumHandSide.RIGHT, renderer) ) {
+                if( renderHeldItem(soldier, EnumHandSide.LEFT, renderer) ) {
                     break offHand;
                 }
             }

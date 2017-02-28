@@ -14,6 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,6 +24,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderHookMainHandItem
         implements ISoldierRenderer
 {
+    private static final ItemStack STICK = new ItemStack(Items.STICK);
+    private static final ItemStack ARROW = new ItemStack(Items.ARROW);
+
     private final int priority;
 
     public RenderHookMainHandItem(int priority) {
@@ -35,7 +40,7 @@ public class RenderHookMainHandItem
 
     @Override
     public boolean doHandRendererSetup(ISoldier soldier, EnumHandSide handSide) {
-        return (handSide == EnumHandSide.LEFT && soldier.getEntity().isLeftHanded()) || handSide == EnumHandSide.RIGHT;
+        return handSide == soldier.getEntity().getPrimaryHand();
     }
 
     @Override
@@ -50,7 +55,7 @@ public class RenderHookMainHandItem
                 if( upg != null && soldier.hasUpgrade(upg) ) {
                     ItemCameraTransforms.TransformType transformType = handSide == EnumHandSide.RIGHT ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
                                                                                                       : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-                    Minecraft.getMinecraft().getItemRenderer().renderItemSide(soldier.getEntity(), upg.getStack(), transformType, handSide == EnumHandSide.LEFT);
+                    Minecraft.getMinecraft().getItemRenderer().renderItemSide(soldier.getEntity(), STICK, transformType, handSide == EnumHandSide.LEFT);
                     return true;
                 }
             } break;
@@ -59,7 +64,7 @@ public class RenderHookMainHandItem
                 if( upg != null && soldier.hasUpgrade(upg) ) {
                     ItemCameraTransforms.TransformType transformType = handSide == EnumHandSide.RIGHT ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
                             : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-                    Minecraft.getMinecraft().getItemRenderer().renderItemSide(soldier.getEntity(), upg.getStack(), transformType, handSide == EnumHandSide.LEFT);
+                    Minecraft.getMinecraft().getItemRenderer().renderItemSide(soldier.getEntity(), ARROW, transformType, handSide == EnumHandSide.LEFT);
                     return true;
                 }
             } break;

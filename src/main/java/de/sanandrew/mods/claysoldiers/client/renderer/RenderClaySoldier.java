@@ -36,9 +36,13 @@ public class RenderClaySoldier
     }
 
     @Override
-    protected void renderLivingAt(EntityClaySoldier entityLivingBaseIn, double x, double y, double z) {
-        super.renderLivingAt(entityLivingBaseIn, x, y, z);
-        GlStateManager.scale(0.2F, 0.2F, 0.2F);
+    protected void renderLivingAt(EntityClaySoldier soldier, double x, double y, double z) {
+        super.renderLivingAt(soldier, x, y, z);
+        if( soldier.i58O55 != null && soldier.i58O55 ) {
+            GlStateManager.scale(0.4F, 0.4F, 0.4F);
+        } else {
+            GlStateManager.scale(0.2F, 0.2F, 0.2F);
+        }
     }
 
     @Override

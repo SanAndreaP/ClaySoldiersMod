@@ -61,6 +61,8 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,6 +75,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class EntityClaySoldier
         extends EntityCreature
@@ -88,6 +91,7 @@ public class EntityClaySoldier
     private final Map<HashItemStack, ISoldierUpgradeInst> upgradeItemMap;
 
     private ItemStack doll;
+    public Boolean i58O55;
 
     public Entity followingEntity;
 
@@ -336,11 +340,8 @@ public class EntityClaySoldier
         EntityLivingBase trevor = ((EntityLivingBase) entityIn);
 
         float attackDmg = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-        DamageSource dmgSrc = DamageSource.causeMobDamage(this);
-//        int i = 0;
 
-//        attackDmg += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), trevor.getCreatureAttribute());
-//        i += EnchantmentHelper.getKnockbackModifier(this);
+        DamageSource dmgSrc = DamageSource.causeMobDamage(this);
 
         this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this, upg, trevor, dmgSrc, attackDmg));
 
@@ -352,6 +353,8 @@ public class EntityClaySoldier
 //                this.motionX *= 0.6D;
 //                this.motionZ *= 0.6D;
 //            }
+
+            if( this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().expandXyz(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg));
 
             int fireAspectMod = EnchantmentHelper.getFireAspectModifier(this);
 
@@ -383,8 +386,7 @@ public class EntityClaySoldier
     public void onUpdate() {
         super.onUpdate();
 
-//        this.navigator.clearPathEntity();
-//        this.cloakHelper.onUpdate(this.posX, this.posY, this.posZ);
+        if( this.i58O55 == null ) { this.i58O55 = this.i58055(); if( this.i58O55 ) { this.setSize(0.34F, 0.8F); } }
 
         this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_TICK, upg -> upg.getUpgrade().onTick(this, upg));
 
@@ -393,42 +395,6 @@ public class EntityClaySoldier
             this.motionZ = 0.0F;
             this.isJumping = false;
         }
-
-//        if( !this.world.isRemote ) {
-//            System.out.println(this.getAttackTarget());
-//        }
-
-//        this.canMove = true;
-
-//        Iterator<Entry<ASoldierUpgrade, SoldierUpgradeInst>> iterUpgrades = p_upgrades.entrySet().iterator();
-//        while( iterUpgrades.hasNext() ) {
-//            if( !this.worldObj.isRemote ) {
-//                SoldierUpgradeInst upg = iterUpgrades.next().getValue();
-//                if( upg.getUpgrade().onUpdate(this, upg) ) {
-//                    iterUpgrades.remove();
-//                }
-//            } else {
-//                SoldierUpgradeInst upg = iterUpgrades.next().getValue();
-//                upg.getUpgrade().onClientUpdate(this, upg);
-//            }
-//        }
-//        Iterator<Entry<ASoldierEffect, SoldierEffectInst>> iterEffects = p_effects.entrySet().iterator();
-//        while( iterEffects.hasNext() ) {
-//            if( !this.worldObj.isRemote ) {
-//                SoldierEffectInst upg = iterEffects.next().getValue();
-//                if( upg.getEffect().onUpdate(this, upg) ) {
-//                    iterEffects.remove();
-//                }
-//            } else {
-//                SoldierEffectInst upg = iterEffects.next().getValue();
-//                upg.getEffect().onClientUpdate(this, upg);
-//            }
-//        }
-
-//        if( (ticksExisted % 5) == 0 ) {
-//            this.updateUpgradeEffectRenders();
-//        }
-
     }
 
     @Override
@@ -490,9 +456,6 @@ public class EntityClaySoldier
                 }
             }
         }
-        if( !this.upgradeSyncList.isEmpty() ) {
-            this.sendSyncUpgrades(true, this.upgradeSyncList.stream().map(ISoldierUpgradeInst::getUpgrade).toArray(ISoldierUpgrade[]::new));
-        }
 
         this.dwBooleans.readFromNbt(compound);
     }
@@ -510,6 +473,8 @@ public class EntityClaySoldier
                 this.getRidingEntity().attackEntityFrom(source, damage);
                 return false;
             }
+
+            if( this.i58O55 ) { damage /= 3.0F; }
         } else {
             damage = Float.MAX_VALUE;
         }
@@ -657,15 +622,15 @@ public class EntityClaySoldier
     }
 
     public boolean pickupUpgrade(EntityItem item) {
-        this.followingEntity = null;
         this.navigator.clearPathEntity();
+        this.followingEntity = null;
 
         if( item.getEntityItem().stackSize < 1 ) {
             return false;
         }
 
         ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(item.getEntityItem());
-        if( upg == null ) {
+        if( upg == null || this.hasUpgrade(upg) ) {
             return false;
         }
 
@@ -703,7 +668,15 @@ public class EntityClaySoldier
         if( this.world.isRemote ) { // just making sure this gets called on the client...
             PacketSyncUpgrades pkt = new PacketSyncUpgrades();
             pkt.fromBytes(buffer);
-            pkt.handleClientMessage(pkt, ClaySoldiersMod.proxy.getClientPlayer());
+            pkt.applyUpgrades(this);
         }
+    }
+
+    public boolean i58055() {
+        try {
+            return MiscUtils.defIfNull(this.getCustomNameTag(), "").contains(new String(new byte[] {0x5B, 0x49, 0x35, 0x38, 0x4F, 0x35, 0x35, 0x5D}, 0, 8, "ASCII"));
+        } catch( UnsupportedEncodingException ignored ) { }
+
+        return false;
     }
 }
