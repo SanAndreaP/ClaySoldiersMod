@@ -6,10 +6,13 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.util;
 
+import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
@@ -24,7 +27,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings({"MethodCallSideOnly", "unused"})
 public class ClientProxy
         extends CommonProxy
+        implements IRenderHookRegistry
 {
+    private RenderClaySoldier soldierRenderer;
+
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -39,10 +45,19 @@ public class ClientProxy
         ModelRegistry.registerModelsInit();
 
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorSoldier(), ItemRegistry.doll_soldier);
+
+        this.soldierRenderer = (RenderClaySoldier) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
+
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerSoldierRenderHook(this));
     }
 
     @Override
     public void spawnParticle(EnumParticle particle, int dim, double x, double y, double z, Object... additData) {
         ParticleHandler.spawn(particle, dim, x, y, z, additData);
+    }
+
+    @Override
+    public boolean registerSoldierHook(ISoldierRenderer renderer) {
+        return this.soldierRenderer.addRenderHook(renderer);
     }
 }

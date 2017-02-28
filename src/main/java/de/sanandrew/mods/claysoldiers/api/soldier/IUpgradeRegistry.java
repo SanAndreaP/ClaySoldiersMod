@@ -22,5 +22,8 @@ public interface IUpgradeRegistry
     @Nullable
     IUpgrade getUpgrade(ItemStack stack);
 
+    @Nullable
+    UUID getId(IUpgrade upgrade);
+
     List<IUpgrade> getUpgrades();
 }

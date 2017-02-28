@@ -6,7 +6,10 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer;
 
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
+import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeInst;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,12 +20,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 @SideOnly(Side.CLIENT)
 public class RenderClaySoldier
         extends RenderBiped<EntityClaySoldier>
 {
+    public Map<Integer, Queue<ISoldierRenderer>> renderHooks;
+
     public RenderClaySoldier(RenderManager manager) {
         super(manager, new ModelClaySoldier(), 0.1F);
+        this.renderHooks = new ConcurrentHashMap<>();
+
+        this.layerRenderers.add(new LayerSoldierHeldItem(this));
     }
 
     @Override
@@ -43,50 +56,13 @@ public class RenderClaySoldier
         return entity.getSoldierTeam().getNormalTexture(textureId);
     }
 
-    //    @Override
-//    public void doRender(EntityLiving entityLiving, double x, double y, double z, float yaw, float partTicks) {
-//        this.doRenderClayMan((EntityClayMan) entityLiving, x, y, z, yaw, partTicks);
-//    }
-//
-//    @Override
-//    protected ResourceLocation getEntityTexture(EntityLiving entityLiving) {
-//        return ((EntityClayMan) entityLiving).getTexture();
-//    }
-//
-//    @Override
-//    protected void renderEquippedItems(EntityLivingBase entityLivingBase, float partTicks) {
-//        super.renderEquippedItems(entityLivingBase, partTicks);
-//        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(((EntityClayMan) entityLivingBase), EnumRenderStage.EQUIPPED, this, 0.0D, 0.0D, 0.0D, 0.0F, partTicks));
-//    }
-//
-//    @Override
-//    protected void renderModel(EntityLivingBase entityLivingBase, float limbSwing, float limbSwingAmount, float rotFloat, float rotYaw, float rotPitch,
-//                               float partTicks) {
-//        GL11.glPushMatrix();
-//        super.renderModel(entityLivingBase, limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch, partTicks);
-//        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent.RenderModelEvent((EntityClayMan) entityLivingBase, this, limbSwing, limbSwingAmount, rotFloat, rotYaw,
-//                                                                               rotPitch, partTicks
-//                                       )
-//        );
-//        GL11.glPopMatrix();
-//    }
-//
-//    @Override
-//    protected void renderLivingAt(EntityLivingBase entityLivingBase, double x, double y, double z) {
-//        super.renderLivingAt(entityLivingBase, x, y, z);
-//        GL11.glScalef(0.2F, 0.2F, 0.2F);
-//        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent.RenderLivingEvent((EntityClayMan) entityLivingBase, this, x, y, z));
-//    }
-//
-//    public ItemRenderer getItemRenderer() {
-//        return this.renderManager.itemRenderer;
-//    }
-//
-//    private void doRenderClayMan(EntityClayMan clayMan, double x, double y, double z, float yaw, float partTicks) {
-//        GL11.glPushMatrix();
-//        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, EnumRenderStage.PRE, this, x, y, z, yaw, partTicks));
-//        super.doRender(clayMan, x, y, z, yaw, partTicks);
-//        ClaySoldiersMod.EVENT_BUS.post(new SoldierRenderEvent(clayMan, EnumRenderStage.POST, this, x, y, z, yaw, partTicks));
-//        GL11.glPopMatrix();
-//    }
+    public boolean addRenderHook(ISoldierRenderer renderer) {
+        if( renderer != null ) {
+            Queue<ISoldierRenderer> queue = this.renderHooks.computeIfAbsent(renderer.getPriority(), key -> new ConcurrentLinkedQueue<>());
+            queue.add(renderer);
+            return true;
+        }
+
+        return false;
+    }
 }

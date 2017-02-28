@@ -45,14 +45,13 @@ public class EntityAISoldierPickupUpgrade
                 Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
                 this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.xCoord, this.targetY + vec.yCoord, this.targetZ + vec.zCoord);
             }
-            return this.entityPathEntity != null;
+            return true;
         }
     }
 
     @Override
     public boolean continueExecuting() {
-        return this.entityPathEntity != null && this.attacker.followingEntity instanceof EntityItem && this.attacker.followingEntity.isEntityAlive()
-                && !this.attacker.getNavigator().noPath();
+        return this.attacker.followingEntity instanceof EntityItem && this.attacker.followingEntity.isEntityAlive();
     }
 
     @Override

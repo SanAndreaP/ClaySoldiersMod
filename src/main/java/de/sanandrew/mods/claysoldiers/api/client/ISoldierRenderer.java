@@ -4,20 +4,22 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api;
+package de.sanandrew.mods.claysoldiers.api.client;
 
-import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public interface ICsmPlugin
+@SideOnly(Side.CLIENT)
+public interface ISoldierRenderer
 {
-    void registerTeams(ITeamRegistry registry);
+    int getPriority();
 
-    void registerUpgrades(IUpgradeRegistry registry);
+    default boolean doHandRendererSetup(ISoldier soldier, EnumHandSide handSide) { return false; };
 
-    @SideOnly(Side.CLIENT)
-    void registerSoldierRenderHook(IRenderHookRegistry registry);
+    //
+    boolean onHandRender(ISoldier soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide);
 }

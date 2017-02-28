@@ -9,6 +9,8 @@ package de.sanandrew.mods.claysoldiers.api.soldier;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.item.ItemStack;
 
+import java.util.UUID;
+
 public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 {
     boolean canMove();
@@ -33,9 +35,11 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void destroyUpgrade(IUpgrade upgrade);
 
-    boolean addUpgrade(IUpgrade upgrade, ItemStack stack);
+    IUpgradeInst addUpgrade(IUpgrade upgrade, ItemStack stack);
 
     boolean hasUpgrade(ItemStack stack);
+
+    boolean hasUpgrade(UUID id);
 
     boolean hasUpgrade(IUpgrade upgrade);
 }

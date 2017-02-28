@@ -24,6 +24,8 @@ public interface IUpgrade
 
     default boolean checkPickupable(ItemStack stack) { return true; }
 
+    default void onAdded(ISoldier<?> soldier, ItemStack stack, IUpgradeInst upgInstance) { }
+
     default ItemStack onPickup(ISoldier<?> soldier, ItemStack stack, IUpgradeInst upgInstance) { return null; }
 
     default void onTick(ISoldier<?> soldier, IUpgradeInst upgInstance) { }

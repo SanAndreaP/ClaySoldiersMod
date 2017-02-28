@@ -16,8 +16,10 @@ import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierPickupUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierUpgradeItem;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncUpgrades;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
@@ -241,15 +243,45 @@ public class EntityClaySoldier
             }
         });
 
-        //TODO: spawn particles
-        this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
-        ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
-                                            Item.getIdFromItem(upgrade.getStack().getItem()));
+        if( !this.world.isRemote ) {
+            this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
+            if( upgrade.syncData() ) {
+                this.sendSyncUpgrades(false, upgrade);
+            }
+        }
+
+        if( this.world.isRemote || !upgrade.syncData() ) {
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
+                                                Item.getIdFromItem(upgrade.getStack().getItem()));
+        }
     }
 
     @Override
-    public boolean addUpgrade(IUpgrade upgrade, ItemStack stack) {
-        return false;
+    public IUpgradeInst addUpgrade(IUpgrade upgrade, ItemStack stack) {
+        if( upgrade == null ) {
+            return null;
+        }
+
+        IUpgradeInst upgInst = new SoldierUpgrade(upgrade, stack.copy().splitStack(1));
+
+        List<IUpgrade.EnumFunctionCalls> funcCalls = Arrays.asList(upgrade.getFunctionCalls());
+
+        this.upgradeItemMap.put(new HashItemStack(upgrade.getStack()), upgInst);
+        if( upgrade.syncData() ) {
+            this.upgradeSyncList.add(upgInst);
+        }
+        funcCalls.forEach(func -> {
+            Queue<IUpgradeInst> upgList = this.upgradeFuncMap.get(func).computeIfAbsent(upgrade.getPriority(), k -> new ConcurrentLinkedQueue<>());
+            upgList.add(upgInst);
+        });
+
+        upgrade.onAdded(this, stack, upgInst);
+
+        if( upgrade.syncData() && !this.world.isRemote ) {
+            this.sendSyncUpgrades(true, upgrade);
+        }
+
+        return upgInst;
     }
 
     @Override
@@ -267,6 +299,12 @@ public class EntityClaySoldier
     @Override
     public boolean hasUpgrade(IUpgrade upgrade) {
         return this.hasUpgrade(upgrade.getStack());
+    }
+
+    @Override
+    public boolean hasUpgrade(UUID id) {
+        IUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(id);
+        return upg != null && this.hasUpgrade(upg.getStack());
     }
 
     @Override
@@ -585,28 +623,24 @@ public class EntityClaySoldier
             return false;
         }
 
-        IUpgradeInst upgInst = new SoldierUpgrade(upg, item.getEntityItem().copy().splitStack(1));
-
-        List<IUpgrade.EnumFunctionCalls> funcCalls = Arrays.asList(upg.getFunctionCalls());
-        if( funcCalls.contains(IUpgrade.EnumFunctionCalls.ON_PICKUP) ) {
+        IUpgradeInst upgInst = this.addUpgrade(upg, item.getEntityItem());
+        if( upgInst != null ) {
             upg.onPickup(this, item.getEntityItem(), upgInst);
+
+            return true;
         }
 
-        this.upgradeItemMap.put(new HashItemStack(upg.getStack()), upgInst);
-        this.upgradeSyncList.add(upgInst);
-        funcCalls.forEach(func -> {
-            Queue<IUpgradeInst> upgList = this.upgradeFuncMap.get(func).computeIfAbsent(upg.getPriority(), k -> new ConcurrentLinkedQueue<>());
-            upgList.add(upgInst);
-        });
-
-        this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, (MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F);
-        return true;
+        return false;
     }
 
     private void callUpgradeFunc(IUpgrade.EnumFunctionCalls funcCall, final Consumer<IUpgradeInst> forEach) {
         Map<Integer, Queue<IUpgradeInst>> upgCalls = this.upgradeFuncMap.get(funcCall);
-        List<Integer> pririties = new ArrayList<>(upgCalls.keySet());
-        Collections.sort(pririties);
-        pririties.forEach(val -> upgCalls.get(val).forEach(forEach));
+        List<Integer> priorities = new ArrayList<>(upgCalls.keySet());
+        priorities.sort(null);
+        priorities.forEach(val -> upgCalls.get(val).forEach(forEach));
+    }
+
+    private void sendSyncUpgrades(boolean add, IUpgrade... upgrades) {
+        PacketManager.sendToAllAround(new PacketSyncUpgrades(this, add, upgrades), this.world.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0D);
     }
 }

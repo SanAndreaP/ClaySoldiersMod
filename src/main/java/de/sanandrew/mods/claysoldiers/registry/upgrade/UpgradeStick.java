@@ -16,8 +16,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import org.apache.commons.lang3.mutable.MutableFloat;
 
 import java.util.UUID;
 
@@ -25,8 +23,7 @@ public class UpgradeStick
         implements IUpgrade
 {
     private static final ItemStack UPG_ITEM = new ItemStack(Items.STICK, 1);
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_PICKUP,
-                                                                                    EnumFunctionCalls.ON_ATTACK_SUCCESS,
+    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_ATTACK_SUCCESS,
                                                                                     EnumFunctionCalls.ON_DEATH};
     private static final byte MAX_USAGES = 20;
 
@@ -46,10 +43,12 @@ public class UpgradeStick
     }
 
     @Override
-    public ItemStack onPickup(ISoldier<?> soldier, ItemStack stack, IUpgradeInst upgInstance) {
-        upgInstance.getNbtData().setByte("uses", MAX_USAGES);
-        soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(SOLDIER_STICK_DMG);
-        return stack.splitStack(1);
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, IUpgradeInst upgInstance) {
+        if( !soldier.getEntity().world.isRemote ) {
+            upgInstance.getNbtData().setByte("uses", MAX_USAGES);
+            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(SOLDIER_STICK_DMG);
+            stack.stackSize--;
+        }
     }
 
     @Override

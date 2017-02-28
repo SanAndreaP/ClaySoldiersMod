@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
+import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.network.PacketRegistry;
@@ -35,7 +36,7 @@ public class ClaySoldiersMod
     private static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.claysoldiers.client.util.ClientProxy";
     private static final String MOD_PROXY_COMMON = "de.sanandrew.mods.claysoldiers.util.CommonProxy";
 
-    private static final List<ICsmPlugin> PLUGINS = new ArrayList<>();
+    public static final List<ICsmPlugin> PLUGINS = new ArrayList<>();
 
     @Mod.Instance(CsmConstants.ID)
     public static ClaySoldiersMod instance;
@@ -51,7 +52,7 @@ public class ClaySoldiersMod
         PLUGINS.forEach(plugin -> plugin.registerTeams(TeamRegistry.INSTANCE));
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-        PacketRegistry.initialize();
+        PacketManager.initialize();
 
         proxy.preInit(event);
     }

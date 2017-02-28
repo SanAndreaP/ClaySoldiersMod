@@ -31,10 +31,12 @@ public final class UpgradeRegistry
 
     private final List<IUpgrade> upgrades;
     private final Map<UUID, IUpgrade> uuidUpgradeMap;
+    private final Map<IUpgrade, UUID> upgradeUuidMap;
     private final Map<HashItemStack, IUpgrade> stackUpgradeMap;
 
     private UpgradeRegistry() {
         this.uuidUpgradeMap = new HashMap<>();
+        this.upgradeUuidMap = new HashMap<>();
         this.stackUpgradeMap = new HashMap<>();
         this.upgrades = new ArrayList<>();
     }
@@ -58,6 +60,11 @@ public final class UpgradeRegistry
             return false;
         }
 
+        if( this.upgradeUuidMap.containsKey(upgradeInst) ) {
+            CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Upgrade instances for %s!", id));
+            return false;
+        }
+
         HashItemStack hStack = new HashItemStack(upgItem);
         if( this.stackUpgradeMap.containsKey(hStack) ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Upgrade Item %s for ID %s!", upgItem, id));
@@ -65,6 +72,7 @@ public final class UpgradeRegistry
         }
 
         this.uuidUpgradeMap.put(id, upgradeInst);
+        this.upgradeUuidMap.put(upgradeInst, id);
         this.stackUpgradeMap.put(hStack, upgradeInst);
         this.upgrades.add(upgradeInst);
 
@@ -75,6 +83,12 @@ public final class UpgradeRegistry
     @Override
     public IUpgrade getUpgrade(UUID id) {
         return this.uuidUpgradeMap.get(id);
+    }
+
+    @Nullable
+    @Override
+    public UUID getId(IUpgrade id) {
+        return this.upgradeUuidMap.get(id);
     }
 
     @Nullable
