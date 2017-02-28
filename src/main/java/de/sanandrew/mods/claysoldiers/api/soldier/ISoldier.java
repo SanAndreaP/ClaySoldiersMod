@@ -33,13 +33,13 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void setUniqueTextureId(byte id);
 
-    void destroyUpgrade(IUpgrade upgrade);
+    void destroyUpgrade(ISoldierUpgrade upgrade);
 
-    IUpgradeInst addUpgrade(IUpgrade upgrade, ItemStack stack);
+    ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, ItemStack stack);
 
     boolean hasUpgrade(ItemStack stack);
 
     boolean hasUpgrade(UUID id);
 
-    boolean hasUpgrade(IUpgrade upgrade);
+    boolean hasUpgrade(ISoldierUpgrade upgrade);
 }

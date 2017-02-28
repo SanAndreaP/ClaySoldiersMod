@@ -6,6 +6,8 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -37,8 +39,14 @@ public class EntityAISoldierUpgradeItem
         super();
         this.taskOwner = soldier;
         this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
-        this.tgtSelector = entity -> entity != null && entity.isEntityAlive() && !entity.cannotPickup() && UpgradeRegistry.INSTANCE.getUpgrade(entity.getEntityItem()) != null
-                           && this.taskOwner.canEntityBeSeen(entity) && !this.taskOwner.hasUpgrade(entity.getEntityItem());
+        this.tgtSelector = entity -> {
+            if( entity != null && entity.isEntityAlive() && !entity.cannotPickup() ) {
+                ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(entity.getEntityItem());
+                return upgrade != null && upgrade.checkPickupable(this.taskOwner, entity.getEntityItem()) && this.taskOwner.canEntityBeSeen(entity)
+                       && !this.taskOwner.hasUpgrade(entity.getEntityItem());
+            }
+            return false;
+        };
         this.setMutexBits(2);
     }
 
@@ -62,7 +70,7 @@ public class EntityAISoldierUpgradeItem
     }
 
     public void startExecuting() {
-        this.taskOwner.followingEntity = target;
+        this.taskOwner.followingEntity = this.target;
         super.startExecuting();
     }
 

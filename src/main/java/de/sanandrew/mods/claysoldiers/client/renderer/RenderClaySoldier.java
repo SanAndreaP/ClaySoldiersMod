@@ -7,15 +7,12 @@
 package de.sanandrew.mods.claysoldiers.client.renderer;
 
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
-import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeInst;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

@@ -54,4 +54,8 @@ public class CommonProxy
 
         PacketManager.sendToAllAround(new PacketParticle(particle, new Tuple(objList.toArray())), dim, x, y, z, 64.0D);
     }
+
+    public EntityPlayer getClientPlayer() {
+        return null;
+    }
 }

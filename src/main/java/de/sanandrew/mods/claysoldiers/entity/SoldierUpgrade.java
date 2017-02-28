@@ -6,19 +6,19 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.IUpgrade;
-import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgradeInst;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class SoldierUpgrade
-        implements IUpgradeInst
+        implements ISoldierUpgradeInst
 {
-    private final IUpgrade upgrade;
+    private final ISoldierUpgrade upgrade;
     private final NBTTagCompound nbt;
     public final ItemStack stack;
 
-    public SoldierUpgrade(IUpgrade upgrade, ItemStack stack) {
+    public SoldierUpgrade(ISoldierUpgrade upgrade, ItemStack stack) {
         this.upgrade = upgrade;
         this.nbt = new NBTTagCompound();
         this.stack = stack;
@@ -36,7 +36,12 @@ public class SoldierUpgrade
     }
 
     @Override
-    public IUpgrade getUpgrade() {
+    public ISoldierUpgrade getUpgrade() {
         return this.upgrade;
+    }
+
+    @Override
+    public ItemStack getSavedStack() {
+        return this.stack.copy();
     }
 }

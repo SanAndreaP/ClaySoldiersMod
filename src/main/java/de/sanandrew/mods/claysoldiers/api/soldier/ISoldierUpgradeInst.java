@@ -6,13 +6,16 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.soldier;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public interface IUpgradeInst
+public interface ISoldierUpgradeInst
 {
     NBTTagCompound getNbtData();
 
     void setNbtData(NBTTagCompound compound);
 
-    IUpgrade getUpgrade();
+    ISoldierUpgrade getUpgrade();
+
+    ItemStack getSavedStack();
 }

@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network.packet;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.IUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.network.AbstractMessage;
@@ -23,12 +23,12 @@ public class PacketSyncUpgrades
         extends AbstractMessage<PacketSyncUpgrades>
 {
     private int soldierId;
-    private IUpgrade[] upgrades;
+    private ISoldierUpgrade[] upgrades;
     private boolean add;
 
     public PacketSyncUpgrades() { }
 
-    public PacketSyncUpgrades(EntityClaySoldier soldier, boolean add, IUpgrade... upgrades) {
+    public PacketSyncUpgrades(EntityClaySoldier soldier, boolean add, ISoldierUpgrade... upgrades) {
         this.add = add;
         this.upgrades = upgrades;
         this.soldierId = soldier.getEntityId();
@@ -39,7 +39,7 @@ public class PacketSyncUpgrades
         Entity entity = player.world.getEntityByID(pkt.soldierId);
         if( entity instanceof EntityClaySoldier ) {
             EntityClaySoldier soldier = (EntityClaySoldier) entity;
-            for( IUpgrade upg : pkt.upgrades ) {
+            for( ISoldierUpgrade upg : pkt.upgrades ) {
                 if( upg != null && pkt.add ) {
                     soldier.addUpgrade(upg, upg.getStack());
                 } else {
@@ -56,7 +56,7 @@ public class PacketSyncUpgrades
     public void fromBytes(ByteBuf buf) {
         this.add = buf.readBoolean();
         this.soldierId = buf.readInt();
-        this.upgrades = new IUpgrade[buf.readInt()];
+        this.upgrades = new ISoldierUpgrade[buf.readInt()];
         for( int i = 0; i < this.upgrades.length; i++ ) {
             String idStr = ByteBufUtils.readUTF8String(buf);
             if( UuidUtils.isStringUuid(idStr) ) {
@@ -70,7 +70,7 @@ public class PacketSyncUpgrades
         buf.writeBoolean(this.add);
         buf.writeInt(this.soldierId);
         buf.writeInt(this.upgrades.length);
-        for( IUpgrade upg : upgrades ) {
+        for( ISoldierUpgrade upg : upgrades ) {
             UUID id = UpgradeRegistry.INSTANCE.getId(upg);
             ByteBufUtils.writeUTF8String(buf, MiscUtils.defIfNull(id, UuidUtils.EMPTY_UUID).toString());
         }

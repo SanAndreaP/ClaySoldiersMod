@@ -37,5 +37,6 @@ public class CsmInternalPlugin
     @SideOnly(Side.CLIENT)
     public void registerSoldierRenderHook(IRenderHookRegistry registry) {
         registry.registerSoldierHook(new RenderHookMainHandItem(0));
+        registry.registerSoldierHook(new RenderHookMainHandItem(1));
     }
 }

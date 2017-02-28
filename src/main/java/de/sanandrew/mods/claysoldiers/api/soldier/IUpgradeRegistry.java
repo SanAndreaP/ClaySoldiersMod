@@ -14,16 +14,16 @@ import java.util.UUID;
 
 public interface IUpgradeRegistry
 {
-    boolean registerUpgrade(UUID id, IUpgrade upgradeInst);
+    boolean registerUpgrade(UUID id, ISoldierUpgrade upgradeInst);
 
     @Nullable
-    IUpgrade getUpgrade(UUID id);
+    ISoldierUpgrade getUpgrade(UUID id);
 
     @Nullable
-    IUpgrade getUpgrade(ItemStack stack);
+    ISoldierUpgrade getUpgrade(ItemStack stack);
 
     @Nullable
-    UUID getId(IUpgrade upgrade);
+    UUID getId(ISoldierUpgrade upgrade);
 
-    List<IUpgrade> getUpgrades();
+    List<ISoldierUpgrade> getUpgrades();
 }

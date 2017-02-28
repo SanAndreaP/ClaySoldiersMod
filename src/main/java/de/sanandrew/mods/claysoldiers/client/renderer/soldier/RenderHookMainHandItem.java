@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.IUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -46,11 +46,21 @@ public class RenderHookMainHandItem
 
         switch( this.priority ) {
             case 0: {
-                IUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MH_STICK);
+                ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MH_STICK);
                 if( upg != null && soldier.hasUpgrade(upg) ) {
                     ItemCameraTransforms.TransformType transformType = handSide == EnumHandSide.RIGHT ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
                                                                                                       : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
                     Minecraft.getMinecraft().getItemRenderer().renderItemSide(soldier.getEntity(), upg.getStack(), transformType, handSide == EnumHandSide.LEFT);
+                    return true;
+                }
+            } break;
+            case 1: {
+                ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MC_FLINT);
+                if( upg != null && soldier.hasUpgrade(upg) ) {
+                    ItemCameraTransforms.TransformType transformType = handSide == EnumHandSide.RIGHT ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
+                            : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
+                    Minecraft.getMinecraft().getItemRenderer().renderItemSide(soldier.getEntity(), upg.getStack(), transformType, handSide == EnumHandSide.LEFT);
+                    return true;
                 }
             } break;
         }
