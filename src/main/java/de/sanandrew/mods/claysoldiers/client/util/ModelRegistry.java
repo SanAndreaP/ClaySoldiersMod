@@ -38,7 +38,8 @@ public final class ModelRegistry
 {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) throws Exception {
-//        setStandardModel(ItemRegistry.turret_control_unit);
+        setStandardModel(ItemRegistry.doll_brick_soldier);
+        setStandardModel(ItemRegistry.shear_blade);
 //        setStandardModel(ItemRegistry.turret_info);
 //        setStandardModel(ItemRegistry.assembly_upg_filter);
 //        setStandardModel(ItemRegistry.assembly_upg_auto);

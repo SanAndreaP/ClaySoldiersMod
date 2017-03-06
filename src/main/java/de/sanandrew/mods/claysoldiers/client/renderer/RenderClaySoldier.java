@@ -8,9 +8,11 @@ package de.sanandrew.mods.claysoldiers.client.renderer;
 
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerGoggles;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -21,18 +23,21 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @SideOnly(Side.CLIENT)
 public class RenderClaySoldier
         extends RenderBiped<EntityClaySoldier>
 {
-    public Map<Integer, Queue<ISoldierRenderer>> renderHooks;
+    public ConcurrentNavigableMap<Integer, Queue<ISoldierRenderer>> renderHooks;
 
     public RenderClaySoldier(RenderManager manager) {
         super(manager, new ModelClaySoldier(), 0.1F);
-        this.renderHooks = new ConcurrentHashMap<>();
+        this.renderHooks = new ConcurrentSkipListMap<>();
 
         this.layerRenderers.add(new LayerSoldierHeldItem(this));
+        this.layerRenderers.add(new LayerGoggles(this));
     }
 
     @Override
@@ -43,6 +48,13 @@ public class RenderClaySoldier
         } else {
             GlStateManager.scale(0.2F, 0.2F, 0.2F);
         }
+    }
+
+    @Override
+    protected void renderModel(EntityClaySoldier soldier, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        this.renderHooks.forEach((key, val) -> val.forEach(hook -> hook.renderModelPre(soldier, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor)));
+        super.renderModel(soldier, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+        this.renderHooks.forEach((key, val) -> val.forEach(hook -> hook.renderModelPost(soldier, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor)));
     }
 
     @Override

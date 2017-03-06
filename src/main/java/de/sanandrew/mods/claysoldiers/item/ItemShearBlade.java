@@ -4,15 +4,19 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.model;
+package de.sanandrew.mods.claysoldiers.item;
 
-import net.minecraft.client.model.ModelBiped;
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
+import net.minecraft.item.Item;
 
-public class ModelClaySoldier
-        extends ModelBiped
+public class ItemShearBlade
+        extends Item
 {
-    public ModelClaySoldier() {
-        super(0.0F, 0.0F, 64, 64);
-        this.bipedHeadwear.isHidden = true;
+    public ItemShearBlade() {
+        super();
+        this.setCreativeTab(CsmCreativeTabs.MISC);
+        this.setUnlocalizedName(CsmConstants.ID + ":shear_blade");
+        this.setMaxDamage(0);
     }
 }

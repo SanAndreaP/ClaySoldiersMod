@@ -38,11 +38,9 @@ public class ItemDisruptor
 {
     private static final IItemPropertyGetter DISRUPTOR_TEX = (stack, worldIn, entityIn) -> getType(stack).ordinal();
 
-    public static final DamageSource DISRUPT_DAMAGE = new DamageSource(CsmConstants.ID + ".disrupt").setDamageIsAbsolute();
-
     public ItemDisruptor() {
         super();
-        this.setCreativeTab(CsmCreativeTabs.DOLLS);
+        this.setCreativeTab(CsmCreativeTabs.MISC);
         this.setUnlocalizedName(CsmConstants.ID + ":disruptor");
         this.addPropertyOverride(new ResourceLocation("disruptorType"), DISRUPTOR_TEX);
         this.setHasSubtypes(true);

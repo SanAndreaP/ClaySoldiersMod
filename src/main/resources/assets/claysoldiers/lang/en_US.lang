@@ -44,7 +44,7 @@ item.claysoldiers:doll_soldier.coal.color=Coal
 item.claysoldiers:doll_soldier.redstone.name=Redstone Soldier
 item.claysoldiers:doll_soldier.redstone.color=Redstone
 
-item.claysoldiers:clayman_brick_doll.name=Brick Soldier Doll
+item.claysoldiers:doll_brick_soldier.name=Brick Soldier Doll
 
 item.claysoldiers:horsemount_doll.dirt.name=Dirt Horse
 item.claysoldiers:horsemount_doll.dirt.pegasus.name=Dirt Pegasus

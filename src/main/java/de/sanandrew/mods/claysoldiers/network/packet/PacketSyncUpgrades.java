@@ -6,32 +6,51 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.network.packet;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeEntry;
 import de.sanandrew.mods.sanlib.lib.network.AbstractMessage;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTSizeTracker;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PacketSyncUpgrades
         extends AbstractMessage<PacketSyncUpgrades>
 {
     private int soldierId;
-    private ISoldierUpgrade[] upgrades;
+    private UpgradeEntry[] upgrades;
     private boolean add;
+    private Map<UpgradeEntry, NBTTagCompound> upgradeNBT = new HashMap<>();
 
     public PacketSyncUpgrades() { }
 
-    public PacketSyncUpgrades(EntityClaySoldier soldier, boolean add, ISoldierUpgrade... upgrades) {
+    public PacketSyncUpgrades(EntityClaySoldier soldier, boolean add, UpgradeEntry... upgrades) {
         this.add = add;
         this.upgrades = upgrades;
         this.soldierId = soldier.getEntityId();
+        if( this.add ) {
+            Arrays.stream(this.upgrades).forEach(entry -> {
+                if( entry.upgrade.syncNbtData() ) {
+                    this.upgradeNBT.put(entry, soldier.getUpgradeInstance(entry).getNbtData());
+                }
+            });
+        }
     }
 
     @Override
@@ -43,11 +62,14 @@ public class PacketSyncUpgrades
     }
 
     public void applyUpgrades(EntityClaySoldier soldier) {
-        for( ISoldierUpgrade upg : this.upgrades ) {
+        for( UpgradeEntry upg : this.upgrades ) {
             if( upg != null && this.add ) {
-                soldier.addUpgrade(upg, upg.getStack());
+                ISoldierUpgradeInst inst = soldier.addUpgrade(upg.upgrade, upg.type, upg.upgrade.getStacks()[0]);
+                if( this.upgradeNBT.containsKey(upg) ) {
+                    inst.setNbtData(this.upgradeNBT.get(upg));
+                }
             } else {
-                soldier.destroyUpgrade(upg);
+                soldier.destroyUpgrade(upg.upgrade, upg.type, false);
             }
         }
     }
@@ -57,14 +79,23 @@ public class PacketSyncUpgrades
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        this.add = buf.readBoolean();
-        this.soldierId = buf.readInt();
-        this.upgrades = new ISoldierUpgrade[buf.readInt()];
-        for( int i = 0; i < this.upgrades.length; i++ ) {
-            String idStr = ByteBufUtils.readUTF8String(buf);
-            if( UuidUtils.isStringUuid(idStr) ) {
-                this.upgrades[i] = UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr));
+        try( ByteBufInputStream bis = new ByteBufInputStream(buf) ) {
+            this.add = buf.readBoolean();
+            this.soldierId = buf.readInt();
+            this.upgrades = new UpgradeEntry[buf.readInt()];
+            for( int i = 0; i < this.upgrades.length; i++ ) {
+                String idStr = ByteBufUtils.readUTF8String(buf);
+                if( UuidUtils.isStringUuid(idStr) ) {
+                    this.upgrades[i] = new UpgradeEntry(UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr)), EnumUpgradeType.VALUES[buf.readByte()]);
+                    if( this.add && this.upgrades[i].upgrade.syncNbtData() ) {
+                        NBTTagCompound newNbt = new NBTTagCompound();
+                        this.upgrades[i].upgrade.readSyncData(buf, newNbt);
+                        this.upgradeNBT.put(this.upgrades[i], newNbt);
+                    }
+                }
             }
+        } catch( IOException e ) {
+            e.printStackTrace();
         }
     }
 
@@ -73,9 +104,13 @@ public class PacketSyncUpgrades
         buf.writeBoolean(this.add);
         buf.writeInt(this.soldierId);
         buf.writeInt(this.upgrades.length);
-        for( ISoldierUpgrade upg : upgrades ) {
-            UUID id = UpgradeRegistry.INSTANCE.getId(upg);
+        for( UpgradeEntry upg :upgrades ) {
+            UUID id = UpgradeRegistry.INSTANCE.getId(upg.upgrade);
             ByteBufUtils.writeUTF8String(buf, MiscUtils.defIfNull(id, UuidUtils.EMPTY_UUID).toString());
+            buf.writeByte(upg.type.ordinal());
+            if( this.add && this.upgradeNBT.containsKey(upg) ) {
+                upg.upgrade.writeSyncData(buf, this.upgradeNBT.get(upg));
+            }
         }
     }
 }

@@ -60,7 +60,9 @@ public final class DataWatcherBooleans<T extends Entity>
 
     public enum Soldier {
         CAN_MOVE(0),
-        BREATHE_WATER(1);
+        BREATHE_WATER(1),
+        HAS_MAINHAND_UPG(2),
+        HAS_OFFHAND_UPG(3);
 
         public final int bit;
 

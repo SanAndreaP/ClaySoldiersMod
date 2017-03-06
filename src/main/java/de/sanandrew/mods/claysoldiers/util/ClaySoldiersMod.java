@@ -12,14 +12,14 @@ import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
-import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
-import de.sanandrew.mods.sanlib.network.PacketRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
@@ -37,6 +37,7 @@ public class ClaySoldiersMod
     private static final String MOD_PROXY_COMMON = "de.sanandrew.mods.claysoldiers.util.CommonProxy";
 
     public static final List<ICsmPlugin> PLUGINS = new ArrayList<>();
+    public static final EventBus EVENT_BUS = new EventBus();
 
     @Mod.Instance(CsmConstants.ID)
     public static ClaySoldiersMod instance;
@@ -49,7 +50,10 @@ public class ClaySoldiersMod
         network = NetworkRegistry.INSTANCE.newSimpleChannel(CsmConstants.CHANNEL);
 
         loadPlugins(event.getAsmData());
-        PLUGINS.forEach(plugin -> plugin.registerTeams(TeamRegistry.INSTANCE));
+        PLUGINS.forEach(plugin -> {
+            plugin.registerTeams(TeamRegistry.INSTANCE);
+            plugin.registerCsmEvents(EVENT_BUS);
+        });
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
         PacketManager.initialize();

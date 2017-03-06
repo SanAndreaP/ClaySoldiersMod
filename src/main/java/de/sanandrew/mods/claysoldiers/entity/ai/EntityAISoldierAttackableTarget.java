@@ -6,12 +6,17 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.Comparator;
 import java.util.List;
@@ -21,16 +26,25 @@ public class EntityAISoldierAttackableTarget
         extends EntityAITarget
 {
     private final EntityClaySoldier attacker;
-    private EntityClaySoldier targetSoldier;
-    private Comparator<Entity> nearestSorter;
+    private EntityLivingBase target;
 
-    private final Predicate<EntityClaySoldier> tgtSelector;
+    private final Predicate<EntityLivingBase> tgtSelector;
 
     public EntityAISoldierAttackableTarget(EntityClaySoldier soldier) {
         super(soldier, false, false);
         this.attacker = soldier;
-        this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
-        this.tgtSelector = entity -> entity != null && entity.isEntityAlive() && entity.getSoldierTeam() != this.attacker.getSoldierTeam() && entity.canEntityBeSeen(this.attacker);
+        this.tgtSelector = entity -> {
+            if( entity != null && entity.isEntityAlive() && entity.canEntityBeSeen(this.attacker) ) {
+                SoldierTargetEnemyEvent evt = new SoldierTargetEnemyEvent(this.attacker, entity);
+                if( !ClaySoldiersMod.EVENT_BUS.post(evt) ) {
+                    return evt.getResult() == Event.Result.ALLOW
+                           || (evt.getResult() != Event.Result.DENY && entity instanceof EntityClaySoldier
+                               && ((EntityClaySoldier)entity).getSoldierTeam() != this.attacker.getSoldierTeam());
+                }
+            }
+
+            return false;
+        };
         this.setMutexBits(1);
     }
 
@@ -41,19 +55,19 @@ public class EntityAISoldierAttackableTarget
             return false;
         }
 
-        List<EntityClaySoldier> list = this.taskOwner.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getTargetableArea(this.getTargetDistance()), this.tgtSelector::test);
+        List<EntityLivingBase> list = this.taskOwner.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getTargetableArea(this.getTargetDistance()), this.tgtSelector::test);
+
 
         if( list.isEmpty() ) {
             return false;
         } else {
-            list.sort(this.nearestSorter);
-            this.targetSoldier = list.get(MiscUtils.RNG.randomInt(list.size()));
+            this.target = list.get(MiscUtils.RNG.randomInt(list.size()));
             return true;
         }
     }
 
     public void startExecuting() {
-        this.attacker.setAttackTarget(this.targetSoldier);
+        this.attacker.setAttackTarget(this.target);
         super.startExecuting();
     }
 

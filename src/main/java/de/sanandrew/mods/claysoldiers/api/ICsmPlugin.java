@@ -8,15 +8,18 @@ package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.IUpgradeRegistry;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface ICsmPlugin
 {
-    void registerTeams(ITeamRegistry registry);
+    default void registerTeams(ITeamRegistry registry) { }
 
-    void registerUpgrades(IUpgradeRegistry registry);
+    default void registerUpgrades(IUpgradeRegistry registry) { }
+
+    default void registerCsmEvents(EventBus bus) { }
 
     @SideOnly(Side.CLIENT)
     void registerSoldierRenderHook(IRenderHookRegistry registry);

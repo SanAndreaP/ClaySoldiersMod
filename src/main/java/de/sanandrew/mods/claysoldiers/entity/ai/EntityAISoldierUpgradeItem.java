@@ -6,23 +6,16 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.util.math.AxisAlignedBB;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -31,19 +24,19 @@ public class EntityAISoldierUpgradeItem
 {
     private final EntityClaySoldier taskOwner;
     private EntityItem target;
-    private Comparator<Entity> nearestSorter;
 
     private final Predicate<EntityItem> tgtSelector;
 
     public EntityAISoldierUpgradeItem(EntityClaySoldier soldier) {
         super();
         this.taskOwner = soldier;
-        this.nearestSorter = new EntityAINearestAttackableTarget.Sorter(soldier);
         this.tgtSelector = entity -> {
             if( entity != null && entity.isEntityAlive() && !entity.cannotPickup() ) {
                 ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(entity.getEntityItem());
                 return upgrade != null && upgrade.checkPickupable(this.taskOwner, entity.getEntityItem()) && this.taskOwner.canEntityBeSeen(entity)
-                       && !this.taskOwner.hasUpgrade(entity.getEntityItem());
+                       && !this.taskOwner.hasUpgrade(entity.getEntityItem(), upgrade.getType(this.taskOwner))
+                       && (upgrade.getType(this.taskOwner) != EnumUpgradeType.MAIN_HAND || !this.taskOwner.hasMainHandUpgrade())
+                       && (upgrade.getType(this.taskOwner) != EnumUpgradeType.OFF_HAND || !this.taskOwner.hasOffHandUpgrade());
             }
             return false;
         };
@@ -53,6 +46,9 @@ public class EntityAISoldierUpgradeItem
     @Override
     public boolean shouldExecute() {
         if( this.taskOwner.followingEntity != null ) {
+            if( this.taskOwner.followingEntity instanceof EntityItem && !this.tgtSelector.test((EntityItem) this.taskOwner.followingEntity) ) {
+                this.taskOwner.followingEntity = null;
+            }
             return false;
         }
 
@@ -61,7 +57,6 @@ public class EntityAISoldierUpgradeItem
         if( list.isEmpty() ) {
             return false;
         } else {
-            list.sort(this.nearestSorter);
             this.target = list.get(MiscUtils.RNG.randomInt(list.size()));
             return true;
         }

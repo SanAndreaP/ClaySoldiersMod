@@ -20,6 +20,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 @SideOnly(Side.CLIENT)
 public class LayerSoldierHeldItem
@@ -34,25 +36,21 @@ public class LayerSoldierHeldItem
     public void doRenderLayer(EntityClaySoldier soldier, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GlStateManager.pushMatrix();
 
-        List<Integer> priorities = new ArrayList<>(this.renderer.renderHooks.keySet());
-        priorities.sort(null);
-        Collections.reverse(priorities);
+        boolean doMain = true;
+        boolean doOff = true;
+        for( Map.Entry<Integer, Queue<ISoldierRenderer>> entry : this.renderer.renderHooks.descendingMap().entrySet() ) {
+            for( ISoldierRenderer hook : entry.getValue() ) {
+                if( doMain && renderHeldItem(soldier, EnumHandSide.RIGHT, hook) ) {
+                    doMain = false;
+                }
 
-        mainHand:
-        for( int priority : priorities ) {
-            for( ISoldierRenderer renderer : this.renderer.renderHooks.get(priority) ) {
-                if( renderHeldItem(soldier, EnumHandSide.RIGHT, renderer) ) {
-                    break mainHand;
+                if( doOff && renderHeldItem(soldier, EnumHandSide.LEFT, hook) ) {
+                    doOff = false;
                 }
             }
-        }
 
-        offHand:
-        for( int priority : priorities ) {
-            for( ISoldierRenderer renderer : this.renderer.renderHooks.get(priority) ) {
-                if( renderHeldItem(soldier, EnumHandSide.LEFT, renderer) ) {
-                    break offHand;
-                }
+            if( !doMain && !doOff ) {
+                break;
             }
         }
 
@@ -71,7 +69,7 @@ public class LayerSoldierHeldItem
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
             boolean flag = handSide == EnumHandSide.LEFT;
-            GlStateManager.translate((float) (flag ? -1 : 1) / 16.0F, 0.125F, -0.5F);
+            GlStateManager.translate((flag ? -1 : 1) / 16.0F, 0.125F, -0.5F);
         }
 
         boolean ret = renderer.onHandRender(soldier, this.renderer, handSide);

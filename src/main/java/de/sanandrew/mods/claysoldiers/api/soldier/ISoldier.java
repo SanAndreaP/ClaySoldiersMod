@@ -6,6 +6,9 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.soldier;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.item.ItemStack;
 
@@ -33,13 +36,21 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void setUniqueTextureId(byte id);
 
-    void destroyUpgrade(ISoldierUpgrade upgrade);
+    void destroyUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, boolean silent);
 
-    ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, ItemStack stack);
+    ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, ItemStack stack);
 
-    boolean hasUpgrade(ItemStack stack);
+    ISoldierUpgradeInst getUpgradeInstance(UUID upgradeId, EnumUpgradeType type);
 
-    boolean hasUpgrade(UUID id);
+    ISoldierUpgradeInst getUpgradeInstance(ISoldierUpgrade upgrade, EnumUpgradeType type);
 
-    boolean hasUpgrade(ISoldierUpgrade upgrade);
+    boolean hasUpgrade(ItemStack stack, EnumUpgradeType type);
+
+    boolean hasUpgrade(UUID id, EnumUpgradeType type);
+
+    boolean hasUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type);
+
+    boolean hasMainHandUpgrade();
+
+    boolean hasOffHandUpgrade();
 }

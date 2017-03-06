@@ -4,15 +4,17 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.soldier;
+package de.sanandrew.mods.claysoldiers.client;
 
-public enum EnumUpgradeType
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+public class RenderWorldEventHandler
 {
-    MAIN_HAND,
-    OFF_HAND,
-    CORE,
-    BEHAVIOR,
-    MISC,
-    ENCHANTMENT,
+    public static float partTicks;
 
+    @SubscribeEvent
+    public void onRenderWorldLast(RenderWorldLastEvent event) {
+        partTicks = event.getPartialTicks();
+    }
 }

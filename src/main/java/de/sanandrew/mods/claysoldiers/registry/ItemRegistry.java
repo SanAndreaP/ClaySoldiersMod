@@ -9,7 +9,9 @@
 package de.sanandrew.mods.claysoldiers.registry;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.item.ItemBrickSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.item.ItemShearBlade;
 import de.sanandrew.mods.claysoldiers.item.ItemSoldier;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,12 +26,16 @@ public class ItemRegistry
 {
     public static final ItemSoldier doll_soldier = nilItem();
     public static final ItemDisruptor disruptor = nilItem();
+    public static final ItemBrickSoldier doll_brick_soldier = nilItem();
+    public static final ItemShearBlade shear_blade = nilItem();
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
             new ItemSoldier().setRegistryName(CsmConstants.ID, "doll_soldier"),
-            new ItemDisruptor().setRegistryName(CsmConstants.ID, "disruptor")
+            new ItemDisruptor().setRegistryName(CsmConstants.ID, "disruptor"),
+            new ItemBrickSoldier().setRegistryName(CsmConstants.ID, "doll_brick_soldier"),
+            new ItemShearBlade().setRegistryName(CsmConstants.ID, "shear_blade")
         );
     }
 

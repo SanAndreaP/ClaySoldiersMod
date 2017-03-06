@@ -9,6 +9,7 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -22,15 +23,13 @@ import java.util.List;
 
 public class CsmCreativeTabs
 {
-//    private static final Comparator<ItemStack> ITM_NAME_COMP = new ItemNameComparator();
-
     public static final CreativeTabs DOLLS = new CreativeTabs(CsmConstants.ID + ":dolls") {
         private ItemStack[] tabIcons;
 
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return Items.BLAZE_POWDER;
+            return ItemRegistry.doll_soldier;
         }
 
         @Override
@@ -44,25 +43,24 @@ public class CsmCreativeTabs
 
             return this.tabIcons[(int) (System.currentTimeMillis() / 4250) % this.tabIcons.length];
         }
+    };
+
+    public static final CreativeTabs MISC = new CreativeTabs(CsmConstants.ID + ":misc") {
+        private ItemStack clayDisruptor;
+
+        @Override
+        public Item getTabIconItem() {
+            return ItemRegistry.disruptor;
+        }
 
         @Override
         @SideOnly(Side.CLIENT)
-        public void displayAllRelevantItems(List<ItemStack> itmList) {
-            super.displayAllRelevantItems(itmList);
+        public ItemStack getIconItemStack() {
+            if( this.clayDisruptor == null ) {
+                this.clayDisruptor = ItemDisruptor.setType(new ItemStack(ItemRegistry.disruptor, 1), ItemDisruptor.DisruptorType.CLAY);
+            }
 
-//            Collections.sort(itmList, (itm1, itm2) -> {
-//                if( itm1 != null && itm1.getItem() == ItemRegistry.turret_placer ) {
-//                    return itm2 != null && itm2.getItem() == ItemRegistry.turret_placer ? 0 : -2;
-//                } else if( itm2 != null && itm2.getItem() == ItemRegistry.turret_placer ) {
-//                    return 2;
-//                } else if( itm1 != null && itm1.getItem() == ItemRegistry.turret_ammo ) {
-//                    return itm2 != null && itm2.getItem() == ItemRegistry.turret_ammo ? 0 : -1;
-//                } else if( itm2 != null && itm2.getItem() == ItemRegistry.turret_ammo ) {
-//                    return 1;
-//                }
-//
-//                return 0;
-//            });
+            return this.clayDisruptor;
         }
     };
 

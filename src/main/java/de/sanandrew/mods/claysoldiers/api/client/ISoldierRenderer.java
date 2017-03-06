@@ -21,5 +21,9 @@ public interface ISoldierRenderer
     default boolean doHandRendererSetup(ISoldier soldier, EnumHandSide handSide) { return false; };
 
     //
-    boolean onHandRender(ISoldier soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide);
+    default boolean onHandRender(ISoldier soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide) { return false; }
+
+    default void renderModelPre(ISoldier<?> entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) { }
+
+    default void renderModelPost(ISoldier<?> entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) { }
 }

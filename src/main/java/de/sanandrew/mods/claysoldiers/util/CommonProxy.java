@@ -7,11 +7,13 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.event.EntityFallEventHandler;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -28,6 +30,8 @@ public class CommonProxy
 
     public void preInit(FMLPreInitializationEvent event) {
         EntityRegistry.registerModEntity(EntityClaySoldier.class, "claySoldier", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
+
+        MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());
     }
 
     public void init(FMLInitializationEvent event) {

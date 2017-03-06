@@ -1,0 +1,19 @@
+{
+  "texture": "claysoldiers:textures/entities/wearables/goggles.png",
+  "cubes": [
+    {
+      "boxName": "goggleBand",
+      "sizeX": 8,
+      "sizeY": 8,
+      "sizeZ": 8,
+      "textureX": 0,
+      "textureY": 0,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -4.0,
+      "offsetY": -7.0,
+      "offsetZ": -4.0,
+      "scaling": "0.01"
+    }
+  ]
+}

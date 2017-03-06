@@ -6,8 +6,9 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -16,12 +17,14 @@ public class SoldierUpgrade
 {
     private final ISoldierUpgrade upgrade;
     private final NBTTagCompound nbt;
-    public final ItemStack stack;
+    private final ItemStack stack;
+    private final EnumUpgradeType type;
 
-    public SoldierUpgrade(ISoldierUpgrade upgrade, ItemStack stack) {
+    public SoldierUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, ItemStack stack) {
         this.upgrade = upgrade;
         this.nbt = new NBTTagCompound();
         this.stack = stack;
+        this.type = type;
     }
 
     @Override
@@ -38,6 +41,11 @@ public class SoldierUpgrade
     @Override
     public ISoldierUpgrade getUpgrade() {
         return this.upgrade;
+    }
+
+    @Override
+    public EnumUpgradeType getUpgradeType() {
+        return this.type;
     }
 
     @Override
