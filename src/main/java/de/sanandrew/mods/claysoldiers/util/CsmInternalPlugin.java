@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookMainHandItem;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookOffHandItem;
@@ -38,6 +39,12 @@ public class CsmInternalPlugin
     @Override
     public void registerCsmEvents(EventBus bus) {
         bus.register(new SoldierTargetEnemyEventHandler());
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerCsmClientEvents(EventBus bus) {
+        bus.register(new ClayModelRotationEventHandler());
     }
 
     @Override

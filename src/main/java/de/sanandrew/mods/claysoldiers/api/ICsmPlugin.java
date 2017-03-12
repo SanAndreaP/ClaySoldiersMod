@@ -22,5 +22,8 @@ public interface ICsmPlugin
     default void registerCsmEvents(EventBus bus) { }
 
     @SideOnly(Side.CLIENT)
+    default void registerCsmClientEvents(EventBus bus) { }
+
+    @SideOnly(Side.CLIENT)
     void registerSoldierRenderHook(IRenderHookRegistry registry);
 }

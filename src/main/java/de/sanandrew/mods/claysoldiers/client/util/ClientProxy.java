@@ -41,6 +41,10 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityClaySoldier.class, RenderClaySoldier::new);
 
         MinecraftForge.EVENT_BUS.register(new RenderWorldEventHandler());
+
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> {
+            plugin.registerCsmClientEvents(ClaySoldiersMod.EVENT_BUS);
+        });
     }
 
     @Override

@@ -34,7 +34,7 @@ public class ModelGoggleBand
 
     @Override
     public void onReload(IResourceManager iResourceManager, ModelJsonLoader modelJsonLoader) {
-        this.jsonLoader.load();
+        modelJsonLoader.load();
         this.goggles = modelJsonLoader.getBox("goggleBand");
     }
 
