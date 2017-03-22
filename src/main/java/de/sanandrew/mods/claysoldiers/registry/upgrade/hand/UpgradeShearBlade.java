@@ -11,13 +11,20 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.entity.ai.attributes.AttributeModifierRnd;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -28,6 +35,7 @@ public class UpgradeShearBlade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(ItemRegistry.shear_blade, 1) };
     private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_ATTACK_SUCCESS,
+                                                                                    EnumFunctionCalls.ON_TICK,
                                                                                     EnumFunctionCalls.ON_DEATH};
     private static final byte MAX_USAGES = 25;
 
@@ -58,7 +66,7 @@ public class UpgradeShearBlade
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
         if( !soldier.getEntity().world.isRemote ) {
             upgInstance.getNbtData().setByte("uses", MAX_USAGES);
-            AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? SOLDIER_BLADE_DMG_1 : SOLDIER_BLADE_DMG_2;
+            AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_DMG_1 : BLADE_DMG_2;
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(modifier);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.stackSize--;
@@ -66,15 +74,37 @@ public class UpgradeShearBlade
     }
 
     @Override
+    public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) {
+        EntityLivingBase attackTgt = soldier.getEntity().getAttackTarget();
+        if( !upgInstance.getNbtData().getBoolean("firstHit") ) {
+            if( attackTgt == null ) {
+                upgInstance.getNbtData().setBoolean("firstHit", true);
+                AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_FH_DMG_1 : BLADE_FH_DMG_2;
+                soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(modifier);
+            }
+        } else {
+            if( attackTgt instanceof EntityLiving && ((EntityLiving) attackTgt).getAttackTarget() == soldier ) {
+                this.resetFirstHit(soldier, upgInstance);
+            }
+        }
+    }
+
+    @Override
     public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target) {
-        byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
+        NBTTagCompound nbt = upgInstance.getNbtData();
+        if( nbt.getBoolean("firstHit") ) {
+            this.resetFirstHit(soldier, upgInstance);
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.CRITICAL, target.world.provider.getDimension(), target.posX, target.posY + target.getEyeHeight(), target.posZ);
+        }
+
+        byte uses = (byte) (nbt.getByte("uses") - 1);
         if( uses < 1 ) {
-            AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? SOLDIER_BLADE_DMG_1 : SOLDIER_BLADE_DMG_2;
+            AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_DMG_1 : BLADE_DMG_2;
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(modifier);
             soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
         } else {
-            upgInstance.getNbtData().setByte("uses", uses);
+            nbt.setByte("uses", uses);
         }
     }
 
@@ -85,17 +115,14 @@ public class UpgradeShearBlade
         }
     }
 
-    public static final AttributeModifier SOLDIER_BLADE_DMG_1 = new AttributeModifier(UUID.fromString("DA52E85C-40A0-4E0C-B719-1629A138B4E3"), CsmConstants.ID + ".blade_upg1", 1.0D, 1) {
-        @Override
-        public double getAmount() {
-            return 1.0D + MiscUtils.RNG.randomFloat() * 1.0D;
-        }
-    };
+    private void resetFirstHit(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) {
+        upgInstance.getNbtData().setBoolean("firstHit", false);
+        AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_FH_DMG_1 : BLADE_FH_DMG_2;
+        soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(modifier);
+    }
 
-    public static final AttributeModifier SOLDIER_BLADE_DMG_2 = new AttributeModifier(UUID.fromString("27D57300-80A0-4AFE-937C-9F5208AADB0D"), CsmConstants.ID + ".blade_upg2", 1.0D, 1) {
-        @Override
-        public double getAmount() {
-            return 1.0D + MiscUtils.RNG.randomFloat() * 1.0D;
-        }
-    };
+    public static final AttributeModifier BLADE_DMG_1 = new AttributeModifierRnd(UUID.fromString("DA52E85C-40A0-4E0C-B719-1629A138B4E3"), CsmConstants.ID + ".blade_upg1", 1.0D, 1.0D, 0);
+    public static final AttributeModifier BLADE_DMG_2 = new AttributeModifierRnd(UUID.fromString("27D57300-80A0-4AFE-937C-9F5208AADB0D"), CsmConstants.ID + ".blade_upg2", 1.0D, 1.0D, 0);
+    public static final AttributeModifier BLADE_FH_DMG_1 = new AttributeModifier(UUID.fromString("077D626C-FD32-4237-86ED-F49FB3B59F48"), CsmConstants.ID + ".blade_fh_upg1", 2.0D, 0);
+    public static final AttributeModifier BLADE_FH_DMG_2 = new AttributeModifier(UUID.fromString("560E9ABA-968A-42A9-8EE2-6980E0574B36"), CsmConstants.ID + ".blade_fh_upg2", 2.0D, 0);
 }

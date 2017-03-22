@@ -1,0 +1,4 @@
+{
+  "texture": "claysoldiers:textures/entities/wearables/rabbithide.png",
+  "parent": "claysoldiers:models/entity/leather.json"
+}

@@ -6,7 +6,7 @@ RIGHT HAND
 |x|Arrow,      20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
 |x|BlazeRod,   20 use, increases melee damage by 1-2 points, causes burn time on target
 | |Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
-|-|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
+|x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 | |GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 
 info: all weapons have increased reach while riding mounts, bone's reach bonus is slightly greater than mounted reach bonus
@@ -19,7 +19,7 @@ LEFT HAND
 | |FireCharge,   15 use,   thrown for 1-2 damage, causes burn time on hit
 | |Bowl,         20 use,   reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
                             info: no longer entirely blocks ranged attacks, only reduces damage from them
-|-|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
+|x|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 | |Emerald,      5-45 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
                             info: uses depend on the item given! emerald item gives 5 uses; emerald block gives 45 uses
 | |NetherQuartz, 4 use,    deals heavy knockback to all targets nearby if soldier takes too many hits
@@ -46,11 +46,10 @@ info: they now have idle particle effects
 ------------------
 Misc
 ------------------
-| |Leather,                20 use,  reduces incoming physical damage by half (when used with bowl, only receives 25% of original damage)
-                                     todo: incompatible with Rabbit Hide (MC 1.8)
-| |Rabbit Hide,            20 use,  reduces incoming physical damage by 12.5%, grants half the speed boost of sugar
-                                     todo: incompatible with Leather
-                                     todo: MC 1.8
+|x|Leather,                20 use,  reduces incoming physical damage by half (when used with bowl, only receives 25% of original damage)
+                                    incompatible with Rabbit Hide
+|x|Rabbit Hide,            20 use,  reduces incoming physical damage by 12.5%, grants half the speed boost of sugar
+                                    incompatible with Leather
 |x|Food,                   4 use,   heals soldier when below 25%
                                      info: make food in a bowl (rabbit stew and mushroom stew, even modded soups) drop bowl
                                      info: healed XP is hungerPoints * 0.5

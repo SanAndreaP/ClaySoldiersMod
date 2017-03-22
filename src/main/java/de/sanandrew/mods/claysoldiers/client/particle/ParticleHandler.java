@@ -9,8 +9,10 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
+import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleBreaking;
+import net.minecraft.client.particle.ParticleCrit;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,6 +29,7 @@ public final class ParticleHandler
     static {
         PARTICLES.put(EnumParticle.TEAM_BREAK, ParticleHandler::spawnTeamParticle);
         PARTICLES.put(EnumParticle.ITEM_BREAK, ParticleHandler::spawnItemParticle);
+        PARTICLES.put(EnumParticle.CRITICAL, ParticleHandler::spawnCriticalParticle);
     }
 
     public static void spawn(EnumParticle particle, int dim, double x, double y, double z, Object... additData) {
@@ -51,6 +54,13 @@ public final class ParticleHandler
             for( int i = 0; i < 20; i++ ) {
                 mc.effectRenderer.addEffect(bf.createParticle(0, mc.world, x, y, z, 0.0D, 0.0D, 0.0D, additData.<Integer>getValue(0)));
             }
+        }
+    }
+
+    private static void spawnCriticalParticle(int dim, double x, double y, double z, Tuple additData) {
+        ParticleCrit.Factory cf = new ParticleCrit.Factory();
+        for( int i = 0; i < 20; i++ ) {
+            mc.effectRenderer.addEffect(cf.createParticle(0, mc.world, x, y, z, MiscUtils.RNG.randomFloat() * 0.5D, 0.0D, MiscUtils.RNG.randomFloat() * 0.5D));
         }
     }
 }

@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.renderer;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerGoggles;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerLeatherArmor;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import net.minecraft.client.renderer.GlStateManager;
@@ -38,6 +39,7 @@ public class RenderClaySoldier
 
         this.layerRenderers.add(new LayerSoldierHeldItem(this));
         this.layerRenderers.add(new LayerGoggles(this));
+        this.layerRenderers.add(new LayerLeatherArmor(this));
     }
 
     @Override

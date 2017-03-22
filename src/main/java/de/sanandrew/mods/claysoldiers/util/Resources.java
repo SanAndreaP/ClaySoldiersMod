@@ -85,7 +85,9 @@ public enum Resources
     ENTITY_SOLDIER_UNIQ_REDSTONE_2("textures/entities/soldiers/unique/redstone2.png"),
     ENTITY_SOLDIER_UNIQ_COAL("textures/entities/soldiers/unique/coal.png"),
 
-    ENTITY_SOLDIER_GOGGLES("models/entity/goggles.json");
+    ENTITY_SOLDIER_GOGGLES("models/entity/goggles.json"),
+    ENTITY_SOLDIER_LEATHER_ARMOR("models/entity/leather.json"),
+    ENTITY_SOLDIER_RABBIT_HIDE("models/entity/rabbithide.json");
     //endregion
 
     public final ResourceLocation resource;

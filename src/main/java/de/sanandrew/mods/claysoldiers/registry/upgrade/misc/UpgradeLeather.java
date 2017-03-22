@@ -4,42 +4,46 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
+package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.Disruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.entity.ai.attributes.AttributeModifierRnd;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
-public class UpgradeStick
+public class UpgradeLeather
         implements ISoldierUpgrade
 {
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.STICK, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_ATTACK_SUCCESS,
-                                                                                    EnumFunctionCalls.ON_DEATH};
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.LEATHER, 1) };
+    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] {EnumFunctionCalls.ON_DEATH,
+                                                                                   EnumFunctionCalls.ON_DAMAGED};
     private static final byte MAX_USES = 20;
 
-    @Override
     @Nonnull
+    @Override
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
     }
 
-    @Override
     @Nonnull
+    @Override
     public EnumFunctionCalls[] getFunctionCalls() {
         return FUNC_CALLS;
     }
@@ -47,7 +51,7 @@ public class UpgradeStick
     @Nonnull
     @Override
     public EnumUpgradeType getType(ISoldier<?> checker) {
-        return EnumUpgradeType.MAIN_HAND;
+        return EnumUpgradeType.MISC;
     }
 
     @Override
@@ -56,24 +60,31 @@ public class UpgradeStick
     }
 
     @Override
+    public boolean checkPickupable(ISoldier<?> soldier, ItemStack stack) {
+        return !soldier.hasUpgrade(UpgradeRegistry.MC_RABBITHIDE, EnumUpgradeType.MISC);
+    }
+
+    @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
         if( !soldier.getEntity().world.isRemote ) {
             upgInstance.getNbtData().setByte("uses", MAX_USES);
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(ATTACK_DMG);
+            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_VALUE);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.stackSize--;
         }
     }
 
     @Override
-    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target) {
-        byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
-        if( uses < 1 ) {
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(ATTACK_DMG);
-            soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
-            soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
-        } else {
-            upgInstance.getNbtData().setByte("uses", uses);
+    public void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity attacker, DamageSource dmgSource, MutableFloat damage) {
+        if( !soldier.getEntity().world.isRemote ) {
+            byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
+            if( uses < 1 ) {
+                soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
+                soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_VALUE);
+                soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
+            } else if( !(dmgSource.getEntity() instanceof EntityPlayer) && dmgSource != Disruptable.DISRUPT_DAMAGE ) {
+                upgInstance.getNbtData().setByte("uses", uses);
+            }
         }
     }
 
@@ -84,5 +95,5 @@ public class UpgradeStick
         }
     }
 
-    public static final AttributeModifier ATTACK_DMG = new AttributeModifierRnd(UUID.fromString("7455374C-2247-4EE5-B163-19728E3C7B17"), CsmConstants.ID + ".stick_upg", 2.0D, 1.0D, 0);
+    public static final AttributeModifier ARMOR_VALUE = new AttributeModifier(UUID.fromString("F03D172D-55B2-4475-A3CB-5D9204EE6DE1"), CsmConstants.ID + ".leather_armor", 12.5D, 0);
 }

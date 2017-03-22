@@ -1,0 +1,46 @@
+{
+  "texture": "claysoldiers:textures/entities/wearables/leather.png",
+  "cubes": [
+    {
+      "boxName": "body",
+      "sizeX": 8,
+      "sizeY": 8,
+      "sizeZ": 4,
+      "textureX": 16,
+      "textureY": 16,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -4.0,
+      "offsetY": -0.0,
+      "offsetZ": -2.0,
+      "scaling": "0.5"
+    },{
+      "boxName": "leftArm",
+      "sizeX": 4,
+      "sizeY": 4,
+      "sizeZ": 4,
+      "textureX": 40,
+      "textureY": 16,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -1.0,
+      "offsetY": -2.0,
+      "offsetZ": -2.0,
+      "scaling": "0.5"
+    },{
+      "boxName": "rightArm",
+      "sizeX": 4,
+      "sizeY": 4,
+      "sizeZ": 4,
+      "textureX": 40,
+      "textureY": 16,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -3.0,
+      "offsetY": -2.0,
+      "offsetZ": -2.0,
+      "mirror": true,
+      "scaling": "0.5"
+    }
+  ]
+}

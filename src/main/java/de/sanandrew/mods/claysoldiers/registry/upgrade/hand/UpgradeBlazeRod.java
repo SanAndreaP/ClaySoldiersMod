@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.entity.ai.attributes.AttributeModifierRnd;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -58,7 +59,7 @@ public class UpgradeBlazeRod
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
         if( !soldier.getEntity().world.isRemote ) {
             upgInstance.getNbtData().setByte("uses", MAX_USAGES);
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(SOLDIER_STICK_DMG);
+            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(ATTACK_DMG);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.stackSize--;
         }
@@ -69,7 +70,7 @@ public class UpgradeBlazeRod
         byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
         target.setFire(3);
         if( uses < 1 ) {
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(SOLDIER_STICK_DMG);
+            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(ATTACK_DMG);
             soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
         } else {
@@ -84,10 +85,5 @@ public class UpgradeBlazeRod
         }
     }
 
-    public static final AttributeModifier SOLDIER_STICK_DMG = new AttributeModifier(UUID.fromString("BA1AC198-AAB5-404B-A6E6-CE6A7E893207"), CsmConstants.ID + ".blazerod_upg", 1.0D, 1) {
-        @Override
-        public double getAmount() {
-            return 1.0D + MiscUtils.RNG.randomFloat() * 1.0D;
-        }
-    };
+    public static final AttributeModifier ATTACK_DMG = new AttributeModifierRnd(UUID.fromString("BA1AC198-AAB5-404B-A6E6-CE6A7E893207"), CsmConstants.ID + ".blazerod_upg", 1.0D, 1.0D, 0);
 }

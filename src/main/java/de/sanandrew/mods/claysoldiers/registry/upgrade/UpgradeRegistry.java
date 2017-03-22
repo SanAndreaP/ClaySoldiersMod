@@ -20,6 +20,8 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFood;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGlowstone;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoggles;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLeather;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
 import de.sanandrew.mods.claysoldiers.util.HashItemStack;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -125,6 +127,8 @@ public final class UpgradeRegistry
         registry.registerUpgrade(MC_FEATHER, new UpgradeFeather());
         registry.registerUpgrade(MC_FOOD, new UpgradeFood());
         registry.registerUpgrade(MC_GLASS, new UpgradeGoggles());
+        registry.registerUpgrade(MC_LEATHER, new UpgradeLeather());
+        registry.registerUpgrade(MC_RABBITHIDE, new UpgradeRabbitHide());
     }
 
     public static final UUID MH_STICK = UUID.fromString("31F0A3DB-F1A7-4418-9EA6-A9D0C900EB41");
@@ -137,4 +141,6 @@ public final class UpgradeRegistry
     public static final UUID MC_FEATHER = UUID.fromString("453077F6-2930-49A1-A2EF-B1A9B0F8B55C");
     public static final UUID MC_FOOD = UUID.fromString("12A95822-000A-427A-9975-B492923162B7");
     public static final UUID MC_GLASS = UUID.fromString("F6C44798-5E23-4430-910E-E6CAE1305D58");
+    public static final UUID MC_LEATHER = UUID.fromString("D5A7486E-B9D9-4298-B134-2FDCCD569036");
+    public static final UUID MC_RABBITHIDE = UUID.fromString("ADD2D447-CDE2-43B1-AE9D-7EC301A9ECEA");
 }
