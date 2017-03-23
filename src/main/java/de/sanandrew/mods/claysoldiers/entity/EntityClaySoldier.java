@@ -170,7 +170,7 @@ public class EntityClaySoldier
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(20.0D);
     }
 
@@ -527,7 +527,6 @@ public class EntityClaySoldier
             if( this.doll != null ) {
                 if( damageSource.isFireDamage() ) {
                     ItemStack brickDoll = new ItemStack(ItemRegistry.doll_brick_soldier, 1);
-                    brickDoll.setTagCompound(this.doll.getTagCompound());
                     drops.add(brickDoll);
                 } else {
                     drops.add(this.doll);

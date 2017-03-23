@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
@@ -13,6 +14,8 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -23,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UpgradeGoggles
         implements ISoldierUpgrade
@@ -33,6 +37,7 @@ public class UpgradeGoggles
     static {
         List<ItemStack> itms = new ArrayList<>();
         itms.add(new ItemStack(Blocks.GLASS, 1));
+        itms.add(new ItemStack(Items.GLASS_BOTTLE, 1));
         itms.add(new ItemStack(Blocks.GLASS_PANE, 1));
         for( EnumDyeColor clr : EnumDyeColor.values() ) {
             itms.add(new ItemStack(Blocks.STAINED_GLASS, 1, clr.getMetadata()));
@@ -85,7 +90,7 @@ public class UpgradeGoggles
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
         if( !soldier.getEntity().world.isRemote ) {
-            if( ItemStackUtils.isBlock(stack, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) ) {
+            if( ItemStackUtils.isBlock(stack, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) || ItemStackUtils.isItem(stack, Items.GLASS_BOTTLE) ) {
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
                 stack.stackSize--;
             } else {
@@ -95,14 +100,18 @@ public class UpgradeGoggles
             if( ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) ) {
                 upgInstance.getNbtData().setByte("color", (byte) stack.getItemDamage());
             }
+
+            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(FOLLOW_RNG);
         }
     }
 
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) {
         ItemStack saved = upgInstance.getSavedStack();
-        if( ItemStackUtils.isBlock(saved, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(saved, Blocks.STAINED_GLASS_PANE) ) {
+        if( ItemStackUtils.isBlock(saved, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(saved, Blocks.STAINED_GLASS_PANE) || ItemStackUtils.isItem(saved, Items.GLASS_BOTTLE) ) {
             drops.add(saved);
         }
     }
+
+    private static final AttributeModifier FOLLOW_RNG = new AttributeModifier(UUID.fromString("B58968E4-6273-4BEA-93FC-B03120CE5C51"), CsmConstants.ID + ".goggle_upg", 16.0D, 0);
 }

@@ -95,5 +95,5 @@ public class UpgradeLeather
         }
     }
 
-    public static final AttributeModifier ARMOR_VALUE = new AttributeModifier(UUID.fromString("F03D172D-55B2-4475-A3CB-5D9204EE6DE1"), CsmConstants.ID + ".leather_armor", 12.5D, 0);
+    private static final AttributeModifier ARMOR_VALUE = new AttributeModifier(UUID.fromString("F03D172D-55B2-4475-A3CB-5D9204EE6DE1"), CsmConstants.ID + ".leather_armor", 12.5D, 0);
 }

@@ -72,7 +72,7 @@ public class DyedSoldierRecipe
         for( int i = 0, max = inv.getSizeInventory(); i < max; i++ ) {
             ItemStack invStack = inv.getStackInSlot(i);
 
-            if( invStack == null ) {
+            if( !ItemStackUtils.isValid(invStack) ) {
                 continue;
             }
 

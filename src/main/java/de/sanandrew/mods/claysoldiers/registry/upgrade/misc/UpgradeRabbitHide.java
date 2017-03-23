@@ -97,6 +97,6 @@ public class UpgradeRabbitHide
         }
     }
 
-    public static final AttributeModifier SPEED_BOOST = new AttributeModifier(UUID.fromString("0DA68028-B25B-47AA-A0FF-2D45FA8BCF1E"), CsmConstants.ID + ".rhide_speed", 0.1D, 0);
-    public static final AttributeModifier ARMOR_VALUE = new AttributeModifier(UUID.fromString("A801BBD1-4C82-45E4-96D0-ECC309D2837F"), CsmConstants.ID + ".rhide_armor", 6.25D, 0);
+    private static final AttributeModifier SPEED_BOOST = new AttributeModifier(UUID.fromString("0DA68028-B25B-47AA-A0FF-2D45FA8BCF1E"), CsmConstants.ID + ".rhide_speed", 0.075D, 0);
+    private static final AttributeModifier ARMOR_VALUE = new AttributeModifier(UUID.fromString("A801BBD1-4C82-45E4-96D0-ECC309D2837F"), CsmConstants.ID + ".rhide_armor", 6.25D, 0);
 }

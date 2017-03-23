@@ -22,6 +22,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGlowstone;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoggles;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSugar;
 import de.sanandrew.mods.claysoldiers.util.HashItemStack;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -121,6 +122,7 @@ public final class UpgradeRegistry
         registry.registerUpgrade(MH_ARROW, new UpgradeArrow());
         registry.registerUpgrade(MH_BLAZEROD, new UpgradeBlazeRod());
         registry.registerUpgrade(MOH_SHEARBLADE, new UpgradeShearBlade());
+
         registry.registerUpgrade(MC_FLINT, new UpgradeFlint());
         registry.registerUpgrade(MC_EGG, new UpgradeEgg());
         registry.registerUpgrade(MC_GLOWSTONE, new UpgradeGlowstone());
@@ -129,12 +131,14 @@ public final class UpgradeRegistry
         registry.registerUpgrade(MC_GLASS, new UpgradeGoggles());
         registry.registerUpgrade(MC_LEATHER, new UpgradeLeather());
         registry.registerUpgrade(MC_RABBITHIDE, new UpgradeRabbitHide());
+        registry.registerUpgrade(MC_SUGAR, new UpgradeSugar());
     }
 
     public static final UUID MH_STICK = UUID.fromString("31F0A3DB-F1A7-4418-9EA6-A9D0C900EB41");
     public static final UUID MH_ARROW = UUID.fromString("5CBFDDAB-B082-4DFF-A6DE-D207E068D9AD");
     public static final UUID MH_BLAZEROD = UUID.fromString("9EAF320D-1C8C-40F2-B8E4-6A4C18F9248E");
     public static final UUID MOH_SHEARBLADE = UUID.fromString("5CDCD4F9-1C94-485D-B043-2F9A779CF454");
+
     public static final UUID MC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
     public static final UUID MC_EGG = UUID.fromString("4613D60F-B53C-4E75-99CA-0E2176B6D58D");
     public static final UUID MC_GLOWSTONE = UUID.fromString("6D1D540B-84DC-4009-BF29-134089104A3C");
@@ -143,4 +147,5 @@ public final class UpgradeRegistry
     public static final UUID MC_GLASS = UUID.fromString("F6C44798-5E23-4430-910E-E6CAE1305D58");
     public static final UUID MC_LEATHER = UUID.fromString("D5A7486E-B9D9-4298-B134-2FDCCD569036");
     public static final UUID MC_RABBITHIDE = UUID.fromString("ADD2D447-CDE2-43B1-AE9D-7EC301A9ECEA");
+    public static final UUID MC_SUGAR = UUID.fromString("BF18CCDE-39A3-43D4-ABB1-322348AB0F0B");
 }

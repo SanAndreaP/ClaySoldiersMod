@@ -6,18 +6,12 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import org.lwjgl.Sys;
 
 public class EntityAISoldierAttackMelee
         extends EntityAIBase
@@ -82,7 +76,7 @@ public class EntityAISoldierAttackMelee
 
         if( this.attacker.getEntitySenses().canSee(jack)
                 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D
-                    || jack.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F)
+                    || jack.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 0.5D || this.attacker.getRNG().nextFloat() < 0.05F)
         ) {
             this.targetX = jack.posX;
             this.targetY = jack.getEntityBoundingBox().minY;
@@ -104,6 +98,6 @@ public class EntityAISoldierAttackMelee
     }
 
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-        return this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width;
+        return this.attacker.width * 1.5F * this.attacker.width * 1.5F + attackTarget.width;
     }
 }

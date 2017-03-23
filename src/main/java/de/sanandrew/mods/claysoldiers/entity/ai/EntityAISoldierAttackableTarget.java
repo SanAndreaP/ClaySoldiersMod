@@ -57,7 +57,6 @@ public class EntityAISoldierAttackableTarget
 
         List<EntityLivingBase> list = this.taskOwner.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getTargetableArea(this.getTargetDistance()), this.tgtSelector::test);
 
-
         if( list.isEmpty() ) {
             return false;
         } else {
