@@ -25,6 +25,7 @@ public class CraftingRecipes
         CraftingManager.getInstance().getRecipeList().add(new DyedSoldierRecipe());
         CraftingManager.getInstance().getRecipeList().add(new ClearSoldierRecipe());
         CraftingManager.getInstance().getRecipeList().add(new OtherSoldierRecipe());
+        CraftingManager.getInstance().getRecipeList().add(new BrickSoldierConvRecipe());
 
         CraftingManager.getInstance().addRecipe(TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.doll_soldier, 4), TeamRegistry.SOLDIER_CLAY),
                 "C", "S",

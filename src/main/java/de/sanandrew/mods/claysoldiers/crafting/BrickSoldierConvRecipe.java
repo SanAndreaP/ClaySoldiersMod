@@ -17,22 +17,30 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BrickSoldierConvRecipe
         implements IRecipe
 {
-    private int count;
+    private final List<Integer> remaining;
     private ItemStack resultItem;
-    private Team resultTeam;
+    private int itmCount;
 
-    //TODO: finish this up
+    public BrickSoldierConvRecipe() {
+        this.remaining = new ArrayList<>();
+    }
+
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
-        this.count = 0;
         this.resultItem = null;
-        this.resultTeam = null;
+        this.itmCount = 0;
+        this.remaining.clear();
 
+        Team resultTeam = TeamRegistry.INSTANCE.getTeam(TeamRegistry.SOLDIER_CLAY);
         boolean hasGhastTear = false;
+        boolean hasBrickDoll = false;
+
         for( int i = 0, max = inv.getSizeInventory(); i < max; i++ ) {
             ItemStack stack = inv.getStackInSlot(i);
 
@@ -41,22 +49,31 @@ public class BrickSoldierConvRecipe
             }
 
             if( ItemStackUtils.isItem(stack, ItemRegistry.doll_brick_soldier) ) {
-                this.count += stack.stackSize;
-            } else if( ItemStackUtils.isItem(stack, ItemRegistry.doll_soldier) ) {
-                this.resultTeam = TeamRegistry.INSTANCE.getTeam(stack);
-                if( this.resultTeam == TeamRegistry.NULL_TEAM ) {
+                if( !hasBrickDoll ) {
+                    hasBrickDoll = true;
+                } else {
                     return false;
                 }
+            } else if( ItemStackUtils.isItem(stack, ItemRegistry.doll_soldier) ) {
+                resultTeam = TeamRegistry.INSTANCE.getTeam(stack);
+                if( resultTeam == TeamRegistry.NULL_TEAM ) {
+                    return false;
+                }
+                this.remaining.add(i);
             } else if( ItemStackUtils.isItem(stack, Items.GHAST_TEAR) ) {
                 if( !hasGhastTear ) {
                     hasGhastTear = true;
+                    this.remaining.add(i);
                 } else {
                     return false;
                 }
             }
+
+            this.itmCount++;
         }
 
-        if( hasGhastTear && this.count > 0 ) {
+        if( hasGhastTear && hasBrickDoll ) {
+            this.resultItem = TeamRegistry.INSTANCE.getNewTeamStack(1, resultTeam);
             return true;
         } else {
             return false;
@@ -66,22 +83,29 @@ public class BrickSoldierConvRecipe
     @Nullable
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-        return null;
+        return this.resultItem.copy();
     }
 
     @Override
     public int getRecipeSize() {
-        return 0;
+        return Math.max(this.itmCount, 2);
     }
 
     @Nullable
     @Override
     public ItemStack getRecipeOutput() {
-        return null;
+        return this.resultItem;
     }
 
     @Override
     public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-        return new ItemStack[0];
+        ItemStack[] ret = new ItemStack[inv.getSizeInventory()];
+
+        this.remaining.forEach(id -> {
+            ret[id] = inv.getStackInSlot(id).copy();
+            ret[id].stackSize = 1;
+        });
+
+        return ret;
     }
 }

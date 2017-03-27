@@ -34,6 +34,8 @@ public class JeiPlugin extends BlankModPlugin {
         registry.addRecipes(ClearSoldierRecipeHandler.getRecipes());
         registry.addRecipeHandlers(new OtherSoldierRecipeHandler());
         registry.addRecipes(OtherSoldierRecipeHandler.getRecipes());
+        registry.addRecipeHandlers(new BrickSoldierRecipeHandler());
+        registry.addRecipes(BrickSoldierRecipeHandler.getRecipes());
     }
 
     @Override
