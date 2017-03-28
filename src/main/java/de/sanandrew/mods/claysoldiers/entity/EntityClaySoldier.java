@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.Team;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackMelee;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierPickupUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierUpgradeItem;
@@ -152,7 +152,7 @@ public class EntityClaySoldier
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISoldierPickupUpgrade(this, 1.0D));
-        this.tasks.addTask(2, new EntityAISoldierAttackMelee(this, 1.0D));
+        this.tasks.addTask(3, new EntityAISoldierAttack.Meelee(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -673,7 +673,7 @@ public class EntityClaySoldier
         return false;
     }
 
-    private void callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls funcCall, final Consumer<ISoldierUpgradeInst> forEach) {
+    public void callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls funcCall, final Consumer<ISoldierUpgradeInst> forEach) {
         this.upgradeFuncMap.get(funcCall).forEach((key, val) -> val.forEach(forEach));
     }
 

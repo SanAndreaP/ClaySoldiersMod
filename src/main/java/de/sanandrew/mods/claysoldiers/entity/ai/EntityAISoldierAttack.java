@@ -6,6 +6,8 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -13,10 +15,10 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAISoldierAttackMelee
+public abstract class EntityAISoldierAttack
         extends EntityAIBase
 {
-    protected EntityCreature attacker;
+    protected EntityClaySoldier attacker;
     protected int attackTick;
     double speedTowardsTarget;
     Path entityPathEntity;
@@ -24,7 +26,7 @@ public class EntityAISoldierAttackMelee
     private double targetY;
     private double targetZ;
 
-    public EntityAISoldierAttackMelee(EntityCreature creature, double speedIn) {
+    public EntityAISoldierAttack(EntityClaySoldier creature, double speedIn) {
         this.attacker = creature;
         this.speedTowardsTarget = speedIn;
         this.setMutexBits(3);
@@ -87,17 +89,47 @@ public class EntityAISoldierAttackMelee
         this.checkAndPerformAttack(jack, tgtDist);
     }
 
-    protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-        double d0 = this.getAttackReachSqr(entity);
-
-        if( dist <= d0 && this.attackTick <= 0 ) {
-            this.attackTick = 20;
-            this.attacker.swingArm(EnumHand.MAIN_HAND);
-            this.attacker.attackEntityAsMob(entity);
-        }
-    }
+    protected abstract void checkAndPerformAttack(EntityLivingBase entity, double dist);
 
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
         return this.attacker.width * 1.5F * this.attacker.width * 1.5F + attackTarget.width;
+    }
+
+    public static final class Meelee
+            extends EntityAISoldierAttack
+    {
+        public Meelee(EntityClaySoldier creature, double speedIn) {
+            super(creature, speedIn);
+        }
+
+        @Override
+        protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
+            double d0 = this.getAttackReachSqr(entity);
+
+            if( dist <= d0 && this.attackTick <= 0 ) {
+                this.attackTick = 20;
+                this.attacker.swingArm(EnumHand.MAIN_HAND);
+                this.attacker.attackEntityAsMob(entity);
+            }
+        }
+    }
+
+    public static final class Ranged
+            extends EntityAISoldierAttack
+    {
+        public Ranged(EntityClaySoldier creature, double speedIn) {
+            super(creature, speedIn);
+        }
+
+        @Override
+        protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
+            if( dist <= 6.0D && this.attackTick <= 0 ) {
+                this.attackTick = 20;
+                this.attacker.swingArm(EnumHand.MAIN_HAND);
+                this.attacker.getMoveHelper().strafe(-0.5F, 0.0F);
+
+                this.attacker.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this.attacker, upg, entity, null, 0.0F));
+            }
+        }
     }
 }
