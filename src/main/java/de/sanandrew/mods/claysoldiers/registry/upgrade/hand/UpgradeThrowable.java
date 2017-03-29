@@ -19,6 +19,7 @@ import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -89,4 +90,21 @@ public abstract class UpgradeThrowable
     public abstract ItemStack[] getStacks();
 
     protected abstract byte getMaxUses();
+
+    public static class Gravel
+            extends UpgradeThrowable
+    {
+        private static final ItemStack[] ITEMS = { new ItemStack(Blocks.GRAVEL, 1) };
+
+        @Nonnull
+        @Override
+        public ItemStack[] getStacks() {
+            return ITEMS;
+        }
+
+        @Override
+        protected byte getMaxUses() {
+            return 15;
+        }
+    }
 }

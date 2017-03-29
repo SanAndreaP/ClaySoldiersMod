@@ -15,6 +15,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBlazeRod;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeShearBlade;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeStick;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeEgg;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFood;
@@ -122,6 +123,7 @@ public final class UpgradeRegistry
         registry.registerUpgrade(MH_ARROW, new UpgradeArrow());
         registry.registerUpgrade(MH_BLAZEROD, new UpgradeBlazeRod());
         registry.registerUpgrade(MOH_SHEARBLADE, new UpgradeShearBlade());
+        registry.registerUpgrade(OH_GRAVEL, new UpgradeThrowable.Gravel());
 
         registry.registerUpgrade(MC_FLINT, new UpgradeFlint());
         registry.registerUpgrade(MC_EGG, new UpgradeEgg());
@@ -138,6 +140,7 @@ public final class UpgradeRegistry
     public static final UUID MH_ARROW = UUID.fromString("5CBFDDAB-B082-4DFF-A6DE-D207E068D9AD");
     public static final UUID MH_BLAZEROD = UUID.fromString("9EAF320D-1C8C-40F2-B8E4-6A4C18F9248E");
     public static final UUID MOH_SHEARBLADE = UUID.fromString("5CDCD4F9-1C94-485D-B043-2F9A779CF454");
+    public static final UUID OH_GRAVEL = UUID.fromString("4A0232D9-3BE0-48BC-9BDB-DFE3EE458628");
 
     public static final UUID MC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
     public static final UUID MC_EGG = UUID.fromString("4613D60F-B53C-4E75-99CA-0E2176B6D58D");
