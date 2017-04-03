@@ -10,12 +10,17 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.ItemStack;
 
 import java.util.UUID;
 
 public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 {
+    void setMoveForwardMultiplier(float fwd);
+
+    void removeTask(EntityAIBase task);
+
     boolean canMove();
 
     void setMovable(boolean move);

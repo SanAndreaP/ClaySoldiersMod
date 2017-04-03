@@ -13,7 +13,7 @@ info: all weapons have increased reach while riding mounts, bone's reach bonus i
 ------------------
 LEFT HAND
 ------------------
-| |Gravel,       15 use,   thrown for 2-3 points damage
+|x|Gravel,       15 use,   thrown for 2-3 points damage
 | |Snowball,     5-20 use, thrown for 0 damage, slows target on hit
                             info: uses depend on the item given! snowball gives 5; snow layer gives 10; snow block gives 20
 | |FireCharge,   15 use,   thrown for 1-2 damage, causes burn time on hit

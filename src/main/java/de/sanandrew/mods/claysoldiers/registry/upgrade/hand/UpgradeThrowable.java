@@ -6,27 +6,24 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
-import de.sanandrew.mods.claysoldiers.entity.ai.attributes.AttributeModifierRnd;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import de.sanandrew.mods.sanlib.lib.util.EntityUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class UpgradeThrowable
         implements ISoldierUpgrade
@@ -63,13 +60,23 @@ public abstract class UpgradeThrowable
     }
 
     @Override
-    public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) {
-        EntityUtils.getAisFromTaskList(soldier.getEntity().tasks.taskEntries, EntityAISoldierAttack.Ranged.class).forEach(task -> soldier.getEntity().tasks.removeTask(task));
+    public void onLoad(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, NBTTagCompound upgNbt) {
+        soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
     }
 
     @Override
-    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target) {
+    public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) {
+        EntityUtils.getAisFromTaskList(soldier.getEntity().tasks.taskEntries, EntityAISoldierAttack.Ranged.class).forEach(soldier::removeTask);
+        soldier.setMoveForwardMultiplier(1.0F);
+    }
+
+    @Override
+    public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target, DamageSource dmgSource, float damage) {
         byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
+
+        EntityProjectileGravel proj = new EntityProjectileGravel(soldier.getEntity().world, soldier.getEntity(), target);
+        soldier.getEntity().world.spawnEntityInWorld(proj);
+
         if( uses < 1 ) {
             soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);

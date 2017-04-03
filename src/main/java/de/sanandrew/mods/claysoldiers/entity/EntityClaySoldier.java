@@ -35,6 +35,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAIWander;
@@ -89,11 +90,14 @@ public class EntityClaySoldier
     private final Map<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> upgradeFuncMap;
     private final Queue<ISoldierUpgradeInst> upgradeSyncList;
     private final Map<UpgradeEntry, ISoldierUpgradeInst> upgradeMap;
+    private final Queue<EntityAIBase> removedTasks;
 
     private ItemStack doll;
     public Boolean i58O55;
 
     public Entity followingEntity;
+
+    public float forcedMoveForward;
 
     public EntityClaySoldier(World world) {
         super(world);
@@ -114,6 +118,9 @@ public class EntityClaySoldier
         this.upgradeFuncMap = initUpgFuncMap();
         this.upgradeSyncList = new ConcurrentLinkedQueue<>();
         this.upgradeMap = new ConcurrentHashMap<>();
+        this.removedTasks = new ConcurrentLinkedQueue<>();
+
+        this.forcedMoveForward = 1.0F;
 
         this.setMovable(true);
 
@@ -167,7 +174,7 @@ public class EntityClaySoldier
 
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
 
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
@@ -182,6 +189,26 @@ public class EntityClaySoldier
     @Override
     public boolean hasOffHandUpgrade() {
         return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.HAS_OFFHAND_UPG.bit);
+    }
+
+    @Override
+    public void setMoveForwardMultiplier(float fwd) {
+        this.forcedMoveForward = Math.min(1.0F, Math.max(-1.0F, fwd));
+    }
+
+    @Override
+    public void removeTask(EntityAIBase task) {
+        this.removedTasks.offer(task);
+    }
+
+    @Override
+    public void setMoveForward(float amount) {
+        super.setMoveForward(amount * this.forcedMoveForward);
+    }
+
+    @Override
+    public void setAIMoveSpeed(float speedIn) {
+        super.setAIMoveSpeed(speedIn * this.forcedMoveForward);
     }
 
     @Override
@@ -400,6 +427,10 @@ public class EntityClaySoldier
 
     @Override
     public void onUpdate() {
+        this.removedTasks.forEach(this.tasks::removeTask);
+        this.removedTasks.forEach(this.targetTasks::removeTask);
+        this.removedTasks.clear();
+
         super.onUpdate();
 
         if( this.i58O55 == null ) { this.i58O55 = this.i58055(); if( this.i58O55 ) { this.setSize(0.34F, 0.8F); } }
@@ -544,7 +575,7 @@ public class EntityClaySoldier
 //
                 drops.removeAll(Collections.<ItemStack>singleton(null));
                 for( ItemStack drop : drops ) {
-                    this.entityDropItem(drop, 0.0F);
+                    this.entityDropItem(drop, 0.5F);
                 }
 //            }
 

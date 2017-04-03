@@ -16,16 +16,20 @@ import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.UUID;
 
 @SideOnly(Side.CLIENT)
 public class RenderHookOffHandItem
         implements ISoldierRenderer
 {
     private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.shear_blade);
+    private static final ItemStack GRAVEL = new ItemStack(Blocks.GRAVEL);
 
     private final int priority;
 
@@ -51,16 +55,26 @@ public class RenderHookOffHandItem
 
         switch( this.priority ) {
             case 0: {
-                ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MOH_SHEARBLADE);
-                if( upg != null && soldier.hasUpgrade(upg, EnumUpgradeType.OFF_HAND) ) {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(0.0F, 0.2F, 0.0F);
-                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.0D, 0.0D, 0.0F, -90.0F, -135.0F, 0.75D);
-                    GlStateManager.popMatrix();
+                if( this.getUpgrade(UpgradeRegistry.MOH_SHEARBLADE, soldier) != null ) {
+                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.0D, 0.0F, -90.0F, -135.0F, 0.75D);
+                    return true;
+                }
+
+                if( this.getUpgrade(UpgradeRegistry.OH_GRAVEL, soldier) != null ) {
+                    RenderUtils.renderStackInWorld(GRAVEL, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                     return true;
                 }
             } break;
         }
         return false;
+    }
+
+    private ISoldierUpgrade getUpgrade(UUID upgId, ISoldier soldier) {
+        ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(upgId);
+        if( upg != null && soldier.hasUpgrade(upg, EnumUpgradeType.OFF_HAND) ) {
+            return upg;
+        }
+
+        return null;
     }
 }

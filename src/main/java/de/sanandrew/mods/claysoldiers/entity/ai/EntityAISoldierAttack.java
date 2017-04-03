@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -123,12 +124,17 @@ public abstract class EntityAISoldierAttack
 
         @Override
         protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-            if( dist <= 6.0D && this.attackTick <= 0 ) {
-                this.attackTick = 20;
-                this.attacker.swingArm(EnumHand.MAIN_HAND);
-                this.attacker.getMoveHelper().strafe(-0.5F, 0.0F);
+            if( dist <= 6.0D ) {
+                this.attacker.setMoveForwardMultiplier(-1.0F);
 
-                this.attacker.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this.attacker, upg, entity, null, 0.0F));
+                if( this.attackTick <= 0 ) {
+                    this.attackTick = 20;
+                    this.attacker.swingArm(EnumHand.MAIN_HAND);
+
+                    this.attacker.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this.attacker, upg, entity, null, 0.0F));
+                }
+            } else {
+                this.attacker.setMoveForwardMultiplier(1.0F);
             }
         }
     }
