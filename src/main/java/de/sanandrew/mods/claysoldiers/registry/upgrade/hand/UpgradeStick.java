@@ -56,9 +56,9 @@ public class UpgradeStick
     }
 
     @Override
-    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            upgInstance.getNbtData().setByte("uses", MAX_USES);
+            upgradeInst.getNbtData().setByte("uses", MAX_USES);
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(ATTACK_DMG);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.stackSize--;
@@ -66,21 +66,21 @@ public class UpgradeStick
     }
 
     @Override
-    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target) {
-        byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
+    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
+        byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
         if( uses < 1 ) {
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(ATTACK_DMG);
-            soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
+            soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
         } else {
-            upgInstance.getNbtData().setByte("uses", uses);
+            upgradeInst.getNbtData().setByte("uses", uses);
         }
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) {
-        if( upgInstance.getNbtData().getByte("uses") >= MAX_USES ) {
-            drops.add(upgInstance.getSavedStack());
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+        if( upgradeInst.getNbtData().getByte("uses") >= MAX_USES ) {
+            drops.add(upgradeInst.getSavedStack());
         }
     }
 

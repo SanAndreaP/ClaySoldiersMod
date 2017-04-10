@@ -4,7 +4,7 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.soldier.upgrade;
+package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public interface IUpgradeRegistry
 {
-    boolean registerUpgrade(UUID id, ISoldierUpgrade upgradeInst);
+    boolean registerUpgrade(UUID id, ISoldierUpgrade upgrade);
 
     @Nullable
     ISoldierUpgrade getUpgrade(UUID id);

@@ -8,7 +8,6 @@ package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.IUpgradeRegistry;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

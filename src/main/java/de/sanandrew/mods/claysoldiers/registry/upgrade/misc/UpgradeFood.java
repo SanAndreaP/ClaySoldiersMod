@@ -72,13 +72,13 @@ public class UpgradeFood
     }
 
     @Override
-    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             ItemFood itm = (ItemFood) stack.getItem();
 
-            upgInstance.getNbtData().setByte("uses", MAX_USES);
-            upgInstance.getNbtData().setFloat("restorePts", itm.getHealAmount(stack) * 0.5F);
-            upgInstance.getNbtData().setBoolean("hasBowl", itm instanceof ItemSoup);
+            upgradeInst.getNbtData().setByte("uses", MAX_USES);
+            upgradeInst.getNbtData().setFloat("restorePts", itm.getHealAmount(stack) * 0.5F);
+            upgradeInst.getNbtData().setBoolean("hasBowl", itm instanceof ItemSoup);
 
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.stackSize--;
@@ -87,33 +87,33 @@ public class UpgradeFood
     }
 
     @Override
-    public void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity attacker, DamageSource dmgSource, MutableFloat damage) {
+    public void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) {
         EntityCreature entity = soldier.getEntity();
         if( entity.getHealth() < soldier.getEntity().getMaxHealth() * 0.25F && !entity.world.isRemote && dmgSource != Disruptable.DISRUPT_DAMAGE ) {
-            byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
-            soldier.getEntity().heal(upgInstance.getNbtData().getFloat("restorePts"));
+            byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
+            soldier.getEntity().heal(upgradeInst.getNbtData().getFloat("restorePts"));
             if( uses < 1 ) {
-                soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), true);
-                if( upgInstance.getNbtData().getBoolean("hasBowl") ) {
+                soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), true);
+                if( upgradeInst.getNbtData().getBoolean("hasBowl") ) {
                     entity.entityDropItem(new ItemStack(Items.BOWL, 1), 0.0F);
                 }
             } else {
-                upgInstance.getNbtData().setByte("uses", uses);
+                upgradeInst.getNbtData().setByte("uses", uses);
             }
 
             entity.playSound(SoundEvents.ENTITY_PLAYER_BURP, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
 
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, entity.world.provider.getDimension(), entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ,
-                                                Item.getIdFromItem(upgInstance.getSavedStack().getItem()));
+                                                Item.getIdFromItem(upgradeInst.getSavedStack().getItem()));
         }
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) {
-        if( upgInstance.getNbtData().getByte("uses") >= MAX_USES ) {
-            drops.add(upgInstance.getSavedStack());
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+        if( upgradeInst.getNbtData().getByte("uses") >= MAX_USES ) {
+            drops.add(upgradeInst.getSavedStack());
 
-        } else if( upgInstance.getNbtData().getBoolean("hasBowl") ) {
+        } else if( upgradeInst.getNbtData().getBoolean("hasBowl") ) {
             drops.add(new ItemStack(Items.BOWL, 1));
         }
     }

@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade;
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBlazeRod;
@@ -44,53 +44,53 @@ public final class UpgradeRegistry
     public static final UpgradeRegistry INSTANCE = new UpgradeRegistry();
 
     private final List<ISoldierUpgrade> upgrades;
-    private final Map<UUID, ISoldierUpgrade> uuidUpgradeMap;
-    private final Map<ISoldierUpgrade, UUID> upgradeUuidMap;
-    private final Map<HashItemStack, ISoldierUpgrade> stackUpgradeMap;
+    private final Map<UUID, ISoldierUpgrade> idToUpgradeMap;
+    private final Map<ISoldierUpgrade, UUID> upgradeToIdMap;
+    private final Map<HashItemStack, ISoldierUpgrade> stackToUpgradeMap;
 
     private UpgradeRegistry() {
-        this.uuidUpgradeMap = new HashMap<>();
-        this.upgradeUuidMap = new HashMap<>();
-        this.stackUpgradeMap = new HashMap<>();
+        this.idToUpgradeMap = new HashMap<>();
+        this.upgradeToIdMap = new HashMap<>();
+        this.stackToUpgradeMap = new HashMap<>();
         this.upgrades = new ArrayList<>();
     }
 
     @Override
-    public boolean registerUpgrade(UUID id, ISoldierUpgrade upgradeInst) {
-        if( id == null || upgradeInst == null ) {
+    public boolean registerUpgrade(UUID id, ISoldierUpgrade upgrade) {
+        if( id == null || upgrade == null ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Upgrade ID and instance cannot be null nor empty for ID %s!", id));
             return false;
 
         }
 
-        ItemStack[] upgItems = upgradeInst.getStacks();
+        ItemStack[] upgItems = upgrade.getStacks();
         if( upgItems == null || upgItems.length < 1 || Arrays.stream(upgItems).anyMatch(itm -> !ItemStackUtils.isValid(itm)) ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Upgrade items are invalid for ID %s!", id));
             return false;
         }
 
-        if( this.uuidUpgradeMap.containsKey(id) ) {
+        if( this.idToUpgradeMap.containsKey(id) ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Upgrade ID %s!", id));
             return false;
         }
 
-        if( this.upgradeUuidMap.containsKey(upgradeInst) ) {
+        if( this.upgradeToIdMap.containsKey(upgrade) ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Upgrade instances for %s!", id));
             return false;
         }
 
         HashItemStack hStacks[] = Arrays.stream(upgItems).map(HashItemStack::new).toArray(HashItemStack[]::new);
-        for( HashItemStack existingItm : this.stackUpgradeMap.keySet() ) {
+        for( HashItemStack existingItm : this.stackToUpgradeMap.keySet() ) {
             if( Arrays.stream(hStacks).anyMatch(existingItm::equals) ) {
                 CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Upgrade Item %s for ID %s!", existingItm.getStack(), id));
                 return false;
             }
         }
 
-        this.uuidUpgradeMap.put(id, upgradeInst);
-        this.upgradeUuidMap.put(upgradeInst, id);
-        Arrays.stream(hStacks).forEach(stk -> stackUpgradeMap.put(stk, upgradeInst));
-        this.upgrades.add(upgradeInst);
+        this.idToUpgradeMap.put(id, upgrade);
+        this.upgradeToIdMap.put(upgrade, id);
+        Arrays.stream(hStacks).forEach(stk -> stackToUpgradeMap.put(stk, upgrade));
+        this.upgrades.add(upgrade);
 
         return true;
     }
@@ -98,19 +98,19 @@ public final class UpgradeRegistry
     @Nullable
     @Override
     public ISoldierUpgrade getUpgrade(UUID id) {
-        return this.uuidUpgradeMap.get(id);
+        return this.idToUpgradeMap.get(id);
     }
 
     @Nullable
     @Override
     public UUID getId(ISoldierUpgrade upgrade) {
-        return this.upgradeUuidMap.get(upgrade);
+        return this.upgradeToIdMap.get(upgrade);
     }
 
     @Nullable
     @Override
     public ISoldierUpgrade getUpgrade(ItemStack stack) {
-        return MiscUtils.defIfNull(this.stackUpgradeMap.get(new HashItemStack(stack)), this.stackUpgradeMap.get(new HashItemStack(stack, true)));
+        return MiscUtils.defIfNull(this.stackToUpgradeMap.get(new HashItemStack(stack)), this.stackToUpgradeMap.get(new HashItemStack(stack, true)));
     }
 
     @Override

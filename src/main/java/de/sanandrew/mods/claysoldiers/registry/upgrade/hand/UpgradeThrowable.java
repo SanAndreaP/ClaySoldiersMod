@@ -50,9 +50,9 @@ public abstract class UpgradeThrowable
     }
 
     @Override
-    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            upgInstance.getNbtData().setByte("uses", this.getMaxUses());
+            upgradeInst.getNbtData().setByte("uses", this.getMaxUses());
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
             stack.stackSize--;
@@ -60,35 +60,35 @@ public abstract class UpgradeThrowable
     }
 
     @Override
-    public void onLoad(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, NBTTagCompound upgNbt) {
+    public void onLoad(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, NBTTagCompound nbt) {
         soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
     }
 
     @Override
-    public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) {
+    public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
         EntityUtils.getAisFromTaskList(soldier.getEntity().tasks.taskEntries, EntityAISoldierAttack.Ranged.class).forEach(soldier::removeTask);
         soldier.setMoveForwardMultiplier(1.0F);
     }
 
     @Override
-    public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target, DamageSource dmgSource, float damage) {
-        byte uses = (byte) (upgInstance.getNbtData().getByte("uses") - 1);
+    public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, float damage) {
+        byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
 
         EntityProjectileGravel proj = new EntityProjectileGravel(soldier.getEntity().world, soldier.getEntity(), target);
         soldier.getEntity().world.spawnEntityInWorld(proj);
 
         if( uses < 1 ) {
-            soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
+            soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
         } else {
-            upgInstance.getNbtData().setByte("uses", uses);
+            upgradeInst.getNbtData().setByte("uses", uses);
         }
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) {
-        if( upgInstance.getNbtData().getByte("uses") >= this.getMaxUses() ) {
-            drops.add(upgInstance.getSavedStack());
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+        if( upgradeInst.getNbtData().getByte("uses") >= this.getMaxUses() ) {
+            drops.add(upgradeInst.getSavedStack());
         }
     }
 

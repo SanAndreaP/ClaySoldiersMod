@@ -8,6 +8,8 @@ package de.sanandrew.mods.claysoldiers.entity;
 
 import de.sanandrew.mods.claysoldiers.api.Disruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.Team;
@@ -91,6 +93,8 @@ public class EntityClaySoldier
     private final Queue<ISoldierUpgradeInst> upgradeSyncList;
     private final Map<UpgradeEntry, ISoldierUpgradeInst> upgradeMap;
     private final Queue<EntityAIBase> removedTasks;
+    private final Queue<ISoldierEffectInst> effectList;
+    private final Queue<ISoldierEffectInst> effectSyncList;
 
     private ItemStack doll;
     public Boolean i58O55;
@@ -119,6 +123,9 @@ public class EntityClaySoldier
         this.upgradeSyncList = new ConcurrentLinkedQueue<>();
         this.upgradeMap = new ConcurrentHashMap<>();
         this.removedTasks = new ConcurrentLinkedQueue<>();
+
+        this.effectList = new ConcurrentLinkedQueue<>();
+        this.effectSyncList = new ConcurrentLinkedQueue<>();
 
         this.forcedMoveForward = 1.0F;
 
@@ -181,6 +188,7 @@ public class EntityClaySoldier
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(20.0D);
     }
 
+    //region upgrades
     @Override
     public boolean hasMainHandUpgrade() {
         return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.HAS_MAINHAND_UPG.bit);
@@ -189,91 +197,6 @@ public class EntityClaySoldier
     @Override
     public boolean hasOffHandUpgrade() {
         return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.HAS_OFFHAND_UPG.bit);
-    }
-
-    @Override
-    public void setMoveForwardMultiplier(float fwd) {
-        this.forcedMoveForward = Math.min(1.0F, Math.max(-1.0F, fwd));
-    }
-
-    @Override
-    public void removeTask(EntityAIBase task) {
-        this.removedTasks.offer(task);
-    }
-
-    @Override
-    public void setMoveForward(float amount) {
-        super.setMoveForward(amount * this.forcedMoveForward);
-    }
-
-    @Override
-    public void setAIMoveSpeed(float speedIn) {
-        super.setAIMoveSpeed(speedIn * this.forcedMoveForward);
-    }
-
-    @Override
-    public boolean canMove() {
-        return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit);
-    }
-
-    @Override
-    public void setMovable(boolean move) {
-        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit, move);
-    }
-
-    @Override
-    public void setBreathableUnderwater(boolean breathable) {
-        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.BREATHE_WATER.bit, breathable);
-    }
-
-    @Override
-    public Team getSoldierTeam() {
-        return TeamRegistry.INSTANCE.getTeam(this.dataManager.get(TEAM_PARAM));
-    }
-
-    @Override
-    public EntityClaySoldier getEntity() {
-        return this;
-    }
-
-    @Override
-    public int getTextureType() {
-        return this.dataManager.get(TEXTURE_TYPE_PARAM);
-    }
-
-    @Override
-    public int getTextureId() {
-        return this.dataManager.get(TEXTURE_ID_PARAM);
-    }
-
-    @Override
-    public void setNormalTextureId(byte id) {
-        if( id < 0 || id >= this.getSoldierTeam().getNormalTextureIds().length ) {
-            return;
-        }
-
-        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x00);
-        this.dataManager.set(TEXTURE_ID_PARAM, id);
-    }
-
-    @Override
-    public void setRareTextureId(byte id) {
-        if( id < 0 || id >= this.getSoldierTeam().getRareTextureIds().length ) {
-            return;
-        }
-
-        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x01);
-        this.dataManager.set(TEXTURE_ID_PARAM, id);
-    }
-
-    @Override
-    public void setUniqueTextureId(byte id) {
-        if( id < 0 || id >= this.getSoldierTeam().getNormalTextureIds().length ) {
-            return;
-        }
-
-        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x02);
-        this.dataManager.set(TEXTURE_ID_PARAM, id);
     }
 
     @Override
@@ -306,7 +229,7 @@ public class EntityClaySoldier
         if( !silent ) {
             if( this.world.isRemote || !upgrade.syncData() ) {
                 ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
-                                                    Item.getIdFromItem(inst.getSavedStack().getItem()));
+                        Item.getIdFromItem(inst.getSavedStack().getItem()));
             }
         }
     }
@@ -365,6 +288,98 @@ public class EntityClaySoldier
         return this.hasUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(id), type);
     }
 
+    public boolean pickupUpgrade(EntityItem item) {
+        this.navigator.clearPathEntity();
+        this.followingEntity = null;
+
+        if( item.getEntityItem().stackSize < 1 ) {
+            return false;
+        }
+
+        ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(item.getEntityItem());
+        if( upg == null || this.hasUpgrade(upg, upg.getType(this)) ) {
+            return false;
+        }
+
+        ISoldierUpgradeInst upgInst = this.addUpgrade(upg, upg.getType(this), item.getEntityItem());
+        if( upgInst != null ) {
+            if( Arrays.asList(upg.getFunctionCalls()).contains(ISoldierUpgrade.EnumFunctionCalls.ON_PICKUP) ) {
+                upg.onPickup(this, item, upgInst);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls funcCall, final Consumer<ISoldierUpgradeInst> forEach) {
+        this.upgradeFuncMap.get(funcCall).forEach((key, val) -> val.forEach(forEach));
+    }
+
+    private void sendSyncUpgrades(boolean add, UpgradeEntry... upgrades) {
+        PacketManager.sendToAllAround(new PacketSyncUpgrades(this, add, upgrades), this.world.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0D);
+    }
+
+    @Override
+    public ISoldierUpgradeInst getUpgradeInstance(ISoldierUpgrade upgrade, EnumUpgradeType type) {
+        return getUpgradeInstance(new UpgradeEntry(upgrade, type));
+    }
+
+    @Override
+    public ISoldierUpgradeInst getUpgradeInstance(UUID upgradeId, EnumUpgradeType type) {
+        return getUpgradeInstance(new UpgradeEntry(UpgradeRegistry.INSTANCE.getUpgrade(upgradeId), type));
+    }
+
+    public ISoldierUpgradeInst getUpgradeInstance(UpgradeEntry entry) {
+        return this.upgradeMap.get(entry);
+    }
+
+    public void setMainhandUpg(boolean hasUpgrade) {
+        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_MAINHAND_UPG.bit, hasUpgrade);
+    }
+
+    public void setOffhandUpg(boolean hasUpgrade) {
+        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_OFFHAND_UPG.bit, hasUpgrade);
+    }
+    //endregion
+
+    //region ai and movement
+    @Override
+    public void setMoveForwardMultiplier(float fwd) {
+        this.forcedMoveForward = Math.min(1.0F, Math.max(-1.0F, fwd));
+    }
+
+    @Override
+    public void removeTask(EntityAIBase task) {
+        this.removedTasks.offer(task);
+    }
+
+    @Override
+    public void setMoveForward(float amount) {
+        super.setMoveForward(amount * this.forcedMoveForward);
+    }
+
+    @Override
+    public void setAIMoveSpeed(float speedIn) {
+        super.setAIMoveSpeed(speedIn * this.forcedMoveForward);
+    }
+
+    @Override
+    public boolean canMove() {
+        return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit);
+    }
+
+    @Override
+    public void setMovable(boolean move) {
+        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit, move);
+    }
+
+    @Override
+    public void setBreathableUnderwater(boolean breathable) {
+        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.BREATHE_WATER.bit, breathable);
+    }
+
     @Override
     public void moveEntity(double motionX, double motionY, double motionZ) {
         if( this.canMove() ) {
@@ -391,12 +406,6 @@ public class EntityClaySoldier
         boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg);
 
         if( attackSuccess ) {
-//            if( i > 0 ) {
-//                trevor.knockBack(this, i * 0.5F, MathHelper.sin(this.rotationYaw * 0.017453292F), (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-//                this.motionX *= 0.6D;
-//                this.motionZ *= 0.6D;
-//            }
-
             if( this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().expandXyz(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg));
 
             int fireAspectMod = EnchantmentHelper.getFireAspectModifier(this);
@@ -448,6 +457,71 @@ public class EntityClaySoldier
     public boolean canBreatheUnderwater() {
         return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.BREATHE_WATER.bit);
     }
+
+    @Override
+    public boolean canEntityBeSeen(Entity target) {
+        //        RayTraceResult res = RayTraceFixed.rayTraceSight(this, this.world, new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ),
+        //                                                         new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ));
+        //        return res == null;
+        return super.canEntityBeSeen(target);
+    }
+
+    @Override
+    public boolean canBePushed() {
+        return this.canMove();
+    }
+    //endregion
+
+    @Override
+    public Team getSoldierTeam() {
+        return TeamRegistry.INSTANCE.getTeam(this.dataManager.get(TEAM_PARAM));
+    }
+
+    @Override
+    public EntityClaySoldier getEntity() {
+        return this;
+    }
+
+    @Override
+    public int getTextureType() {
+        return this.dataManager.get(TEXTURE_TYPE_PARAM);
+    }
+
+    @Override
+    public int getTextureId() {
+        return this.dataManager.get(TEXTURE_ID_PARAM);
+    }
+
+    @Override
+    public void setNormalTextureId(byte id) {
+        if( id < 0 || id >= this.getSoldierTeam().getNormalTextureIds().length ) {
+            return;
+        }
+
+        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x00);
+        this.dataManager.set(TEXTURE_ID_PARAM, id);
+    }
+
+    @Override
+    public void setRareTextureId(byte id) {
+        if( id < 0 || id >= this.getSoldierTeam().getRareTextureIds().length ) {
+            return;
+        }
+
+        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x01);
+        this.dataManager.set(TEXTURE_ID_PARAM, id);
+    }
+
+    @Override
+    public void setUniqueTextureId(byte id) {
+        if( id < 0 || id >= this.getSoldierTeam().getNormalTextureIds().length ) {
+            return;
+        }
+
+        this.dataManager.set(TEXTURE_TYPE_PARAM, (byte) 0x02);
+        this.dataManager.set(TEXTURE_ID_PARAM, id);
+    }
+
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
@@ -547,12 +621,6 @@ public class EntityClaySoldier
         super.onDeath(damageSource);
 
         if( !this.world.isRemote ) {
-//            if( damageSource.isFireDamage() && this.doll != null ) {
-//                ItemStack brickItem = new ItemStack(RegistryItems.dollBrick, this.dollItem.stackSize);
-//                brickItem.setTagCompound(this.dollItem.getTagCompound());
-//                this.dollItem = brickItem;
-//            }
-
             ArrayList<ItemStack> drops = new ArrayList<>();
 
             if( this.doll != null ) {
@@ -578,14 +646,6 @@ public class EntityClaySoldier
                     this.entityDropItem(drop, 0.5F);
                 }
 //            }
-
-//            for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
-//                upg.getUpgrade().onSoldierDeath(this, upg, damageSource);
-//            }
-//
-//            for( SoldierEffectInst eff : this.p_effects.values() ) {
-//                eff.getEffect().onSoldierDeath(this, eff, damageSource);
-//            }
         } else {
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.TEAM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
                                                 this.getSoldierTeam().getId());
@@ -599,19 +659,6 @@ public class EntityClaySoldier
         }
 
         super.knockBack(par1Entity, par2, par3, par5);
-    }
-
-    @Override
-    public boolean canEntityBeSeen(Entity target) {
-//        RayTraceResult res = RayTraceFixed.rayTraceSight(this, this.world, new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ),
-//                                                         new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ));
-//        return res == null;
-        return super.canEntityBeSeen(target);
-    }
-
-    @Override
-    public boolean canBePushed() {
-        return this.canMove();
     }
 
     @Nullable
@@ -644,6 +691,7 @@ public class EntityClaySoldier
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean isInRangeToRenderDist(double distance) {
         double bbEdgeLength = this.getEntityBoundingBox().getAverageEdgeLength();
@@ -679,39 +727,6 @@ public class EntityClaySoldier
         return enumMap;
     }
 
-    public boolean pickupUpgrade(EntityItem item) {
-        this.navigator.clearPathEntity();
-        this.followingEntity = null;
-
-        if( item.getEntityItem().stackSize < 1 ) {
-            return false;
-        }
-
-        ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(item.getEntityItem());
-        if( upg == null || this.hasUpgrade(upg, upg.getType(this)) ) {
-            return false;
-        }
-
-        ISoldierUpgradeInst upgInst = this.addUpgrade(upg, upg.getType(this), item.getEntityItem());
-        if( upgInst != null ) {
-            if( Arrays.asList(upg.getFunctionCalls()).contains(ISoldierUpgrade.EnumFunctionCalls.ON_PICKUP) ) {
-                upg.onPickup(this, item, upgInst);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public void callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls funcCall, final Consumer<ISoldierUpgradeInst> forEach) {
-        this.upgradeFuncMap.get(funcCall).forEach((key, val) -> val.forEach(forEach));
-    }
-
-    private void sendSyncUpgrades(boolean add, UpgradeEntry... upgrades) {
-        PacketManager.sendToAllAround(new PacketSyncUpgrades(this, add, upgrades), this.world.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0D);
-    }
-
     @Override
     public void writeSpawnData(ByteBuf buffer) {
         PacketSyncUpgrades pkt = new PacketSyncUpgrades(this, true, this.upgradeSyncList.stream().map(entry -> new UpgradeEntry(entry.getUpgrade(), entry.getUpgradeType())).toArray(UpgradeEntry[]::new));
@@ -727,34 +742,12 @@ public class EntityClaySoldier
         }
     }
 
-    @Override
-    public ISoldierUpgradeInst getUpgradeInstance(ISoldierUpgrade upgrade, EnumUpgradeType type) {
-        return getUpgradeInstance(new UpgradeEntry(upgrade, type));
-    }
-
-    @Override
-    public ISoldierUpgradeInst getUpgradeInstance(UUID upgradeId, EnumUpgradeType type) {
-        return getUpgradeInstance(new UpgradeEntry(UpgradeRegistry.INSTANCE.getUpgrade(upgradeId), type));
-    }
-
-    public ISoldierUpgradeInst getUpgradeInstance(UpgradeEntry entry) {
-        return this.upgradeMap.get(entry);
-    }
-
     public boolean i58055() {
         try {
             return MiscUtils.defIfNull(this.getCustomNameTag(), "").contains(new String(new byte[] {0x5B, 0x49, 0x35, 0x38, 0x4F, 0x35, 0x35, 0x5D}, 0, 8, "ASCII"));
         } catch( UnsupportedEncodingException ignored ) { }
 
         return false;
-    }
-
-    public void setMainhandUpg(boolean hasUpgrade) {
-        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_MAINHAND_UPG.bit, hasUpgrade);
-    }
-
-    public void setOffhandUpg(boolean hasUpgrade) {
-        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_OFFHAND_UPG.bit, hasUpgrade);
     }
 
 }

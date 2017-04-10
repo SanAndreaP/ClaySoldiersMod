@@ -63,10 +63,10 @@ public class UpgradeShearBlade
     }
 
     @Override
-    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            upgInstance.getNbtData().setByte("uses", MAX_USAGES);
-            AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_DMG_1 : BLADE_DMG_2;
+            upgradeInst.getNbtData().setByte("uses", MAX_USAGES);
+            AttributeModifier modifier = upgradeInst.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_DMG_1 : BLADE_DMG_2;
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(modifier);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.stackSize--;
@@ -74,34 +74,34 @@ public class UpgradeShearBlade
     }
 
     @Override
-    public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) {
+    public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
         EntityLivingBase attackTgt = soldier.getEntity().getAttackTarget();
-        if( !upgInstance.getNbtData().getBoolean("firstHit") ) {
+        if( !upgradeInst.getNbtData().getBoolean("firstHit") ) {
             if( attackTgt == null ) {
-                upgInstance.getNbtData().setBoolean("firstHit", true);
-                AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_FH_DMG_1 : BLADE_FH_DMG_2;
+                upgradeInst.getNbtData().setBoolean("firstHit", true);
+                AttributeModifier modifier = upgradeInst.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_FH_DMG_1 : BLADE_FH_DMG_2;
                 soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(modifier);
             }
         } else {
             if( attackTgt instanceof EntityLiving && ((EntityLiving) attackTgt).getAttackTarget() == soldier ) {
-                this.resetFirstHit(soldier, upgInstance);
+                this.resetFirstHit(soldier, upgradeInst);
             }
         }
     }
 
     @Override
-    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target) {
-        NBTTagCompound nbt = upgInstance.getNbtData();
+    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
+        NBTTagCompound nbt = upgradeInst.getNbtData();
         if( nbt.getBoolean("firstHit") ) {
-            this.resetFirstHit(soldier, upgInstance);
+            this.resetFirstHit(soldier, upgradeInst);
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.CRITICAL, target.world.provider.getDimension(), target.posX, target.posY + target.getEyeHeight(), target.posZ);
         }
 
         byte uses = (byte) (nbt.getByte("uses") - 1);
         if( uses < 1 ) {
-            AttributeModifier modifier = upgInstance.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_DMG_1 : BLADE_DMG_2;
+            AttributeModifier modifier = upgradeInst.getUpgradeType() == EnumUpgradeType.MAIN_HAND ? BLADE_DMG_1 : BLADE_DMG_2;
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(modifier);
-            soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), false);
+            soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
         } else {
             nbt.setByte("uses", uses);
@@ -109,9 +109,9 @@ public class UpgradeShearBlade
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) {
-        if( upgInstance.getNbtData().getByte("uses") >= MAX_USAGES ) {
-            drops.add(upgInstance.getSavedStack());
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+        if( upgradeInst.getNbtData().getByte("uses") >= MAX_USAGES ) {
+            drops.add(upgradeInst.getSavedStack());
         }
     }
 

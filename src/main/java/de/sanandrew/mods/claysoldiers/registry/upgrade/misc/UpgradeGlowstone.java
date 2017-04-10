@@ -48,7 +48,7 @@ public class UpgradeGlowstone
     }
 
     @Override
-    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             if( ItemStackUtils.isItem(stack, Items.GLOWSTONE_DUST) ) {
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -60,9 +60,9 @@ public class UpgradeGlowstone
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) {
-        if( ItemStackUtils.isItem(upgInstance.getSavedStack(), Items.GLOWSTONE_DUST) ) {
-            drops.add(upgInstance.getSavedStack());
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+        if( ItemStackUtils.isItem(upgradeInst.getSavedStack(), Items.GLOWSTONE_DUST) ) {
+            drops.add(upgradeInst.getSavedStack());
         }
     }
 }

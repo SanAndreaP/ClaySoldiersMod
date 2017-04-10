@@ -46,11 +46,11 @@ public class UpgradeArrow
     }
 
     @Override
-    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MH_STICK), EnumUpgradeType.MAIN_HAND, new ItemStack(Items.STICK, 1));
             soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MC_FLINT), EnumUpgradeType.ENHANCEMENT, new ItemStack(Items.FLINT, 1));
-            soldier.destroyUpgrade(upgInstance.getUpgrade(), upgInstance.getUpgradeType(), true);
+            soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), true);
             soldier.getEntity().entityDropItem(new ItemStack(Items.FEATHER, 1), 0.0F);
             soldier.getEntity().entityDropItem(new ItemStack(Items.FLINT, 1), 0.0F);
             stack.stackSize--;

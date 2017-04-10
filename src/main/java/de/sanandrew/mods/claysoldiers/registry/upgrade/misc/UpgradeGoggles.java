@@ -88,7 +88,7 @@ public class UpgradeGoggles
     }
 
     @Override
-    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) {
+    public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             if( ItemStackUtils.isBlock(stack, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) || ItemStackUtils.isItem(stack, Items.GLASS_BOTTLE) ) {
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -98,7 +98,7 @@ public class UpgradeGoggles
             }
 
             if( ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) ) {
-                upgInstance.getNbtData().setByte("color", (byte) stack.getItemDamage());
+                upgradeInst.getNbtData().setByte("color", (byte) stack.getItemDamage());
             }
 
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(FOLLOW_RNG);
@@ -106,8 +106,8 @@ public class UpgradeGoggles
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) {
-        ItemStack saved = upgInstance.getSavedStack();
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+        ItemStack saved = upgradeInst.getSavedStack();
         if( ItemStackUtils.isBlock(saved, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(saved, Blocks.STAINED_GLASS_PANE) || ItemStackUtils.isItem(saved, Items.GLASS_BOTTLE) ) {
             drops.add(saved);
         }

@@ -41,27 +41,27 @@ public interface ISoldierUpgrade
 
     default boolean checkPickupable(ISoldier<?> soldier, ItemStack stack) { return true; }
 
-    default void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgInstance) { }
+    default void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) { }
 
-    default ItemStack onPickup(ISoldier<?> soldier, EntityItem item, ISoldierUpgradeInst upgInstance) { return null; }
+    default ItemStack onPickup(ISoldier<?> soldier, EntityItem item, ISoldierUpgradeInst upgradeInst) { return null; }
 
-    default void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) { }
+    default void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) { }
 
-    default void onLoad(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, NBTTagCompound upgNbt) { }
+    default void onLoad(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, NBTTagCompound nbt) { }
 
-    default void onSave(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, NBTTagCompound upgNbt) { }
+    default void onSave(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, NBTTagCompound nbt) { }
 
-    default void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance) { }
+    default void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) { }
 
-    default void onUpgradeDestroyed(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgrade destroyed) { }
+    default void onUpgradeDestroyed(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgrade destroyedUpgInst) { }
 
-    default void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target, DamageSource dmgSource, float damage) { }
+    default void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, float damage) { }
 
-    default void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity target) { }
+    default void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) { }
 
-    default void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, Entity attacker, DamageSource dmgSource, MutableFloat damage) { }
+    default void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) { }
 
-    default void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgInstance, List<ItemStack> drops) { }
+    default void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) { }
 
     enum EnumFunctionCalls {
         ON_PICKUP,
