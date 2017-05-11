@@ -93,6 +93,7 @@ public class EntityClaySoldier
     private final Queue<ISoldierUpgradeInst> upgradeSyncList;
     private final Map<UpgradeEntry, ISoldierUpgradeInst> upgradeMap;
     private final Queue<EntityAIBase> removedTasks;
+    private final Map<ISoldierEffect, ISoldierEffectInst> effectMap;
     private final Queue<ISoldierEffectInst> effectList;
     private final Queue<ISoldierEffectInst> effectSyncList;
 
@@ -126,6 +127,7 @@ public class EntityClaySoldier
 
         this.effectList = new ConcurrentLinkedQueue<>();
         this.effectSyncList = new ConcurrentLinkedQueue<>();
+        this.effectMap = new ConcurrentHashMap<>();
 
         this.forcedMoveForward = 1.0F;
 
@@ -341,6 +343,54 @@ public class EntityClaySoldier
 
     public void setOffhandUpg(boolean hasUpgrade) {
         this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_OFFHAND_UPG.bit, hasUpgrade);
+    }
+
+    private static EnumMap<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> initUpgFuncMap() {
+        EnumMap<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> enumMap = new EnumMap<>(ISoldierUpgrade.EnumFunctionCalls.class);
+        Arrays.asList(ISoldierUpgrade.EnumFunctionCalls.VALUES).forEach(val -> enumMap.put(val, new ConcurrentSkipListMap<>()));
+
+        return enumMap;
+    }
+    //endregion
+
+    //region effects
+
+    public void expireEffect(ISoldierEffect effect) {
+        ISoldierEffectInst inst = this.effectMap.get(effect);
+
+        this.effectMap.remove(effect);
+        this.effectSyncList.remove(inst);
+        this.effectList.remove(inst);
+
+        effect.onExpired(this, inst);
+
+        if( !this.world.isRemote ) {
+            if( effect.syncData() ) {
+                this.sendSyncEffects(false, effect);
+            }
+        }
+    }
+
+    public ISoldierEffectInst addEffect(ISoldierEffect effect, int duration) {
+        if( effect == null ) {
+            return null;
+        }
+
+        ISoldierUpgradeInst upgInst = new SoldierEffect(effect, type, stack.copy().splitStack(1));
+
+        addUpgradeInternal(upgInst);
+
+        effect.onAdded(this, stack, upgInst);
+
+        if( effect.syncData() && !this.world.isRemote ) {
+            this.sendSyncUpgrades(true, new UpgradeEntry(effect, type));
+        }
+
+        return upgInst;
+    }
+
+    private void sendSyncEffects(boolean add, ISoldierEffect... upgrades) {
+//        PacketManager.sendToAllAround(new PacketSyncUpgrades(this, add, upgrades), this.world.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0D);
     }
     //endregion
 
@@ -718,13 +768,6 @@ public class EntityClaySoldier
     @Override
     public DisruptType getDisruptType() {
         return DisruptType.SOLDIER;
-    }
-
-    private static EnumMap<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> initUpgFuncMap() {
-        EnumMap<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> enumMap = new EnumMap<>(ISoldierUpgrade.EnumFunctionCalls.class);
-        Arrays.asList(ISoldierUpgrade.EnumFunctionCalls.VALUES).forEach(val -> enumMap.put(val, new ConcurrentSkipListMap<>()));
-
-        return enumMap;
     }
 
     @Override

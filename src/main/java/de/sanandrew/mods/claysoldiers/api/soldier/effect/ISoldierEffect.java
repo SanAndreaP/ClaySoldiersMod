@@ -12,8 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface ISoldierEffect
 {
-    int getDuration();
-
     default boolean syncData() { return false; }
 
     default boolean syncNbtData() { return false; }

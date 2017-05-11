@@ -19,10 +19,10 @@ public class SoldierEffect
     private final NBTTagCompound nbt;
     private int duration;
 
-    public SoldierEffect(ISoldierEffect effect) {
+    public SoldierEffect(ISoldierEffect effect, int duration) {
         this.effect = effect;
         this.nbt = new NBTTagCompound();
-        this.duration = effect.getDuration();
+        this.duration = duration;
     }
 
     @Override

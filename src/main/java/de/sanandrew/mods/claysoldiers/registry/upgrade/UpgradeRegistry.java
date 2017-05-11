@@ -60,7 +60,6 @@ public final class UpgradeRegistry
         if( id == null || upgrade == null ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Upgrade ID and instance cannot be null nor empty for ID %s!", id));
             return false;
-
         }
 
         ItemStack[] upgItems = upgrade.getStacks();
