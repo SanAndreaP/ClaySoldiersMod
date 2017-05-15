@@ -6,6 +6,8 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.soldier;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -17,6 +19,16 @@ import java.util.UUID;
 
 public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 {
+    void expireEffect(ISoldierEffect effect);
+
+    ISoldierEffectInst addEffect(ISoldierEffect effect, int duration);
+
+    int getEffectDurationLeft(ISoldierEffect effect);
+
+    ISoldierEffectInst getEffectInstance(UUID upgradeId);
+
+    ISoldierEffectInst getEffectInstance(ISoldierEffect entry);
+
     void setMoveForwardMultiplier(float fwd);
 
     void removeTask(EntityAIBase task);

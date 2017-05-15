@@ -21,9 +21,11 @@ import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierUpgradeItem;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncEffects;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncUpgrades;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeEntry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
@@ -244,7 +246,7 @@ public class EntityClaySoldier
 
         ISoldierUpgradeInst upgInst = new SoldierUpgrade(upgrade, type, stack.copy().splitStack(1));
 
-        addUpgradeInternal(upgInst);
+        this.addUpgradeInternal(upgInst);
 
         upgrade.onAdded(this, stack, upgInst);
 
@@ -355,6 +357,7 @@ public class EntityClaySoldier
 
     //region effects
 
+    @Override
     public void expireEffect(ISoldierEffect effect) {
         ISoldierEffectInst inst = this.effectMap.get(effect);
 
@@ -371,26 +374,53 @@ public class EntityClaySoldier
         }
     }
 
+    @Override
     public ISoldierEffectInst addEffect(ISoldierEffect effect, int duration) {
         if( effect == null ) {
             return null;
         }
 
-        ISoldierUpgradeInst upgInst = new SoldierEffect(effect, type, stack.copy().splitStack(1));
+        ISoldierEffectInst effInst = new SoldierEffect(effect, duration);
 
-        addUpgradeInternal(upgInst);
+        this.addEffectInternal(effInst);
 
-        effect.onAdded(this, stack, upgInst);
+        effect.onAdded(this, effInst);
 
         if( effect.syncData() && !this.world.isRemote ) {
-            this.sendSyncUpgrades(true, new UpgradeEntry(effect, type));
+            this.sendSyncEffects(true, effect);
         }
 
-        return upgInst;
+        return effInst;
     }
 
-    private void sendSyncEffects(boolean add, ISoldierEffect... upgrades) {
-//        PacketManager.sendToAllAround(new PacketSyncUpgrades(this, add, upgrades), this.world.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0D);
+    private void addEffectInternal(ISoldierEffectInst instance) {
+        ISoldierEffect effect = instance.getEffect();
+
+        this.effectMap.put(effect, instance);
+        if( effect.syncData() ) {
+            this.effectSyncList.add(instance);
+        }
+
+        this.effectList.add(instance);
+    }
+
+    private void sendSyncEffects(boolean add, ISoldierEffect... effects) {
+        PacketManager.sendToAllAround(new PacketSyncEffects(this, add, effects), this.world.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0D);
+    }
+
+    @Override
+    public int getEffectDurationLeft(ISoldierEffect effect) {
+        return this.effectMap.containsKey(effect) ? this.effectMap.get(effect).getDurationLeft() : -1;
+    }
+
+    @Override
+    public ISoldierEffectInst getEffectInstance(UUID upgradeId) {
+        return getEffectInstance(EffectRegistry.INSTANCE.getEffect(upgradeId));
+    }
+
+    @Override
+    public ISoldierEffectInst getEffectInstance(ISoldierEffect entry) {
+        return this.effectMap.get(entry);
     }
     //endregion
 
