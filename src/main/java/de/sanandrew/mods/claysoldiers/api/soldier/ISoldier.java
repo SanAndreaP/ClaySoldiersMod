@@ -23,9 +23,15 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     ISoldierEffectInst addEffect(ISoldierEffect effect, int duration);
 
+    boolean hasEffect(UUID effectId);
+
+    boolean hasEffect(ISoldierEffect effect);
+
     int getEffectDurationLeft(ISoldierEffect effect);
 
-    ISoldierEffectInst getEffectInstance(UUID upgradeId);
+    int getEffectDurationLeft(UUID effectId);
+
+    ISoldierEffectInst getEffectInstance(UUID effectId);
 
     ISoldierEffectInst getEffectInstance(ISoldierEffect entry);
 

@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerGoggles;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerLeatherArmor;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderBiped;
@@ -37,9 +38,7 @@ public class RenderClaySoldier
         super(manager, new ModelClaySoldier(), 0.1F);
         this.renderHooks = new ConcurrentSkipListMap<>();
 
-        this.layerRenderers.add(new LayerSoldierHeldItem(this));
-        this.layerRenderers.add(new LayerGoggles(this));
-        this.layerRenderers.add(new LayerLeatherArmor(this));
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerSoldierRenderLayer(this));
     }
 
     @Override

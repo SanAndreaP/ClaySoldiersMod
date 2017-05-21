@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBlazeRod;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeSpeckledMelon;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeShearBlade;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeStick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeThrowable;
@@ -22,6 +23,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFood;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGlowstone;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoggles;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLeather;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSugar;
 import de.sanandrew.mods.claysoldiers.util.HashItemStack;
@@ -123,6 +125,9 @@ public final class UpgradeRegistry
         registry.registerUpgrade(MH_BLAZEROD, new UpgradeBlazeRod());
         registry.registerUpgrade(MOH_SHEARBLADE, new UpgradeShearBlade());
         registry.registerUpgrade(OH_GRAVEL, new UpgradeThrowable.Gravel());
+        registry.registerUpgrade(OH_SNOW, new UpgradeThrowable.Snow());
+        registry.registerUpgrade(OH_FIRECHARGE, new UpgradeThrowable.Firecharge());
+        registry.registerUpgrade(MH_SPECKLEDMELON, new UpgradeSpeckledMelon());
 
         registry.registerUpgrade(MC_FLINT, new UpgradeFlint());
         registry.registerUpgrade(MC_EGG, new UpgradeEgg());
@@ -133,13 +138,17 @@ public final class UpgradeRegistry
         registry.registerUpgrade(MC_LEATHER, new UpgradeLeather());
         registry.registerUpgrade(MC_RABBITHIDE, new UpgradeRabbitHide());
         registry.registerUpgrade(MC_SUGAR, new UpgradeSugar());
+        registry.registerUpgrade(MC_MAGMACREAM, new UpgradeMagmaCream());
     }
 
     public static final UUID MH_STICK = UUID.fromString("31F0A3DB-F1A7-4418-9EA6-A9D0C900EB41");
     public static final UUID MH_ARROW = UUID.fromString("5CBFDDAB-B082-4DFF-A6DE-D207E068D9AD");
     public static final UUID MH_BLAZEROD = UUID.fromString("9EAF320D-1C8C-40F2-B8E4-6A4C18F9248E");
+    public static final UUID MH_SPECKLEDMELON = UUID.fromString("062F5085-A46F-4CEA-8642-076D8A15A20B");
     public static final UUID MOH_SHEARBLADE = UUID.fromString("5CDCD4F9-1C94-485D-B043-2F9A779CF454");
     public static final UUID OH_GRAVEL = UUID.fromString("4A0232D9-3BE0-48BC-9BDB-DFE3EE458628");
+    public static final UUID OH_SNOW = UUID.fromString("8F5DA9C0-9613-4816-B96A-8B6089B1140D");
+    public static final UUID OH_FIRECHARGE = UUID.fromString("77F625B6-8C1D-405A-9EF5-50C25BFF7C03");
 
     public static final UUID MC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
     public static final UUID MC_EGG = UUID.fromString("4613D60F-B53C-4E75-99CA-0E2176B6D58D");
@@ -150,4 +159,5 @@ public final class UpgradeRegistry
     public static final UUID MC_LEATHER = UUID.fromString("D5A7486E-B9D9-4298-B134-2FDCCD569036");
     public static final UUID MC_RABBITHIDE = UUID.fromString("ADD2D447-CDE2-43B1-AE9D-7EC301A9ECEA");
     public static final UUID MC_SUGAR = UUID.fromString("BF18CCDE-39A3-43D4-ABB1-322348AB0F0B");
+    public static final UUID MC_MAGMACREAM = UUID.fromString("BACE82A7-4E3F-4EB1-81E3-730CF937D6AD");
 }

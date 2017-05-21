@@ -42,11 +42,6 @@ public final class EffectRegistry
 
         }
 
-        if( effect.getDuration() < 1 ) {
-            CsmConstants.LOG.log(Level.WARN, String.format("Duration of Effect ID %s cannot be less than 1!", id));
-            return false;
-        }
-
         if( this.idToEffectMap.containsKey(id) ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Effect ID %s!", id));
             return false;
@@ -80,4 +75,10 @@ public final class EffectRegistry
     public List<ISoldierEffect> getEffects() {
         return ImmutableList.copyOf(this.effects);
     }
+
+    public static void initialize(IEffectRegistry registry) {
+        registry.registerEffect(TIME_BOMB, new EffectTimeBomb());
+    }
+
+    public static final UUID TIME_BOMB = UUID.fromString("710095EE-7E5F-4A6C-92E6-5214660810FD");
 }

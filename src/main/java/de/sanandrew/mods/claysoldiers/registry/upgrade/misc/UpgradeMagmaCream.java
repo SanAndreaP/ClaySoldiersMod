@@ -7,12 +7,11 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
+import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -21,13 +20,15 @@ import net.minecraft.util.DamageSource;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class UpgradeGlowstone
+public class UpgradeMagmaCream
         implements ISoldierUpgrade
 {
-    private static final ItemStack[] UPG_ITEMS = new ItemStack[] { new ItemStack(Items.GLOWSTONE_DUST, 1), new ItemStack(Blocks.GLOWSTONE, 1) };
+    public static final int MAX_TIME_DETONATION = 40;
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.MAGMA_CREAM, 1) };
     private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH };
 
     @Override
+    @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
     }
@@ -44,6 +45,11 @@ public class UpgradeGlowstone
     }
 
     @Override
+    public boolean checkPickupable(ISoldier<?> soldier, ItemStack stack) {
+        return true; //TODO make incompatible with fireworks and gunpowder
+    }
+
+    @Override
     public boolean syncData() {
         return true;
     }
@@ -51,18 +57,16 @@ public class UpgradeGlowstone
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            if( ItemStackUtils.isItem(stack, Items.GLOWSTONE_DUST) ) {
-                soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-                stack.stackSize--;
-            } else {
-                soldier.getEntity().playSound(SoundEvents.BLOCK_GLASS_BREAK, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            }
+            soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
+            stack.stackSize--;
         }
     }
 
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
-        if( ItemStackUtils.isItem(upgradeInst.getSavedStack(), Items.GLOWSTONE_DUST) ) {
+        if( dmgSource.getEntity() instanceof ISoldier && !dmgSource.isFireDamage() && !dmgSource.isProjectile() ) {
+            ((ISoldier) dmgSource.getEntity()).addEffect(EffectRegistry.INSTANCE.getEffect(EffectRegistry.TIME_BOMB), MAX_TIME_DETONATION);
+        } else {
             drops.add(upgradeInst.getSavedStack());
         }
     }

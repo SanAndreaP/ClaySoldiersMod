@@ -61,7 +61,7 @@ public interface ISoldierUpgrade
 
     default void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) { }
 
-    default void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) { }
+    default void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) { }
 
     enum EnumFunctionCalls {
         ON_PICKUP,

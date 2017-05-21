@@ -356,7 +356,6 @@ public class EntityClaySoldier
     //endregion
 
     //region effects
-
     @Override
     public void expireEffect(ISoldierEffect effect) {
         ISoldierEffectInst inst = this.effectMap.get(effect);
@@ -369,7 +368,7 @@ public class EntityClaySoldier
 
         if( !this.world.isRemote ) {
             if( effect.syncData() ) {
-                this.sendSyncEffects(false, effect);
+                this.sendSyncEffects(false, inst);
             }
         }
     }
@@ -387,7 +386,7 @@ public class EntityClaySoldier
         effect.onAdded(this, effInst);
 
         if( effect.syncData() && !this.world.isRemote ) {
-            this.sendSyncEffects(true, effect);
+            this.sendSyncEffects(true, effInst);
         }
 
         return effInst;
@@ -404,8 +403,18 @@ public class EntityClaySoldier
         this.effectList.add(instance);
     }
 
-    private void sendSyncEffects(boolean add, ISoldierEffect... effects) {
+    private void sendSyncEffects(boolean add, ISoldierEffectInst... effects) {
         PacketManager.sendToAllAround(new PacketSyncEffects(this, add, effects), this.world.provider.getDimension(), this.posX, this.posY, this.posZ, 64.0D);
+    }
+
+    @Override
+    public boolean hasEffect(UUID effectId) {
+        return this.hasEffect(EffectRegistry.INSTANCE.getEffect(effectId));
+    }
+
+    @Override
+    public boolean hasEffect(ISoldierEffect effect) {
+        return this.effectMap.containsKey(effect);
     }
 
     @Override
@@ -414,8 +423,13 @@ public class EntityClaySoldier
     }
 
     @Override
-    public ISoldierEffectInst getEffectInstance(UUID upgradeId) {
-        return getEffectInstance(EffectRegistry.INSTANCE.getEffect(upgradeId));
+    public int getEffectDurationLeft(UUID effectId) {
+        return this.getEffectDurationLeft(EffectRegistry.INSTANCE.getEffect(effectId));
+    }
+
+    @Override
+    public ISoldierEffectInst getEffectInstance(UUID effectId) {
+        return getEffectInstance(EffectRegistry.INSTANCE.getEffect(effectId));
     }
 
     @Override
@@ -526,6 +540,18 @@ public class EntityClaySoldier
 
         this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_TICK, upg -> upg.getUpgrade().onTick(this, upg));
 
+        this.effectMap.forEach((effect, inst) -> {
+            if( inst.getDurationLeft() > 0 ) {
+                inst.decreaseDuration(1);
+            }
+
+            effect.onTick(this, inst);
+
+            if( !this.world.isRemote && inst.getDurationLeft() == 0 ) {
+                this.expireEffect(effect);
+            }
+        });
+
         if( !this.canMove() ) {
             this.motionX = 0.0F;
             this.motionZ = 0.0F;
@@ -616,16 +642,27 @@ public class EntityClaySoldier
         }
 
         NBTTagList upgrades = new NBTTagList();
-        this.upgradeMap.forEach((key, val) -> {
+        this.upgradeMap.forEach((upgEntry, upgInst) -> {
             NBTTagCompound upgNbt = new NBTTagCompound();
-            upgNbt.setString("upg_id", MiscUtils.defIfNull(UpgradeRegistry.INSTANCE.getId(val.getUpgrade()), UuidUtils.EMPTY_UUID).toString());
-            upgNbt.setByte("upg_type", (byte) val.getUpgradeType().ordinal());
-            upgNbt.setTag("upg_nbt", val.getNbtData());
-            ItemStackUtils.writeStackToTag(val.getSavedStack(), upgNbt, "upg_item");
-            val.getUpgrade().onSave(this, val, upgNbt);
+            upgNbt.setString("upg_id", MiscUtils.defIfNull(UpgradeRegistry.INSTANCE.getId(upgEntry.upgrade), UuidUtils.EMPTY_UUID).toString());
+            upgNbt.setByte("upg_type", (byte) upgEntry.type.ordinal());
+            upgNbt.setTag("upg_nbt", upgInst.getNbtData());
+            ItemStackUtils.writeStackToTag(upgInst.getSavedStack(), upgNbt, "upg_item");
+            upgEntry.upgrade.onSave(this, upgInst, upgNbt);
             upgrades.appendTag(upgNbt);
         });
         compound.setTag("soldier_upgrades", upgrades);
+
+        NBTTagList effects = new NBTTagList();
+        this.effectMap.forEach((effect, effInst) -> {
+            NBTTagCompound effNbt = new NBTTagCompound();
+            effNbt.setString("eff_id", MiscUtils.defIfNull(EffectRegistry.INSTANCE.getId(effect), UuidUtils.EMPTY_UUID).toString());
+            effNbt.setInteger("eff_duration", effInst.getDurationLeft());
+            effNbt.setTag("eff_nbt", effInst.getNbtData());
+            effect.onSave(this, effInst, effNbt);
+            effects.appendTag(effNbt);
+        });
+        compound.setTag("soldier_effects", effects);
 
         this.dwBooleans.writeToNbt(compound);
     }
@@ -660,6 +697,21 @@ public class EntityClaySoldier
             }
         }
 
+        NBTTagList effects = compound.getTagList("soldier_effects", Constants.NBT.TAG_COMPOUND);
+        for( int i = 0, max = effects.tagCount(); i < max; i++ ) {
+            NBTTagCompound effectNbt = effects.getCompoundTagAt(i);
+            String idStr = effectNbt.getString("eff_id");
+            if( UuidUtils.isStringUuid(idStr) ) {
+                ISoldierEffect effect = EffectRegistry.INSTANCE.getEffect(UUID.fromString(idStr));
+                if( effect != null ) {
+                    ISoldierEffectInst effInst = new SoldierEffect(effect, effectNbt.getInteger("eff_duration"));
+                    effInst.setNbtData(effectNbt.getCompoundTag("eff_nbt"));
+                    effect.onLoad(this, effInst, effectNbt);
+                    this.addEffectInternal(effInst);
+                }
+            }
+        }
+
         this.dwBooleans.readFromNbt(compound);
     }
 
@@ -686,14 +738,18 @@ public class EntityClaySoldier
             damage = Float.MAX_VALUE;
         }
 
-        if( srcEntity instanceof EntityClaySoldier ) {
-            if( Objects.equals(srcEntity, this.getAttackTarget()) ) {
-                this.getNavigator().clearPathEntity();
+        if( super.attackEntityFrom(source, damage) ) {
+            if( srcEntity instanceof EntityClaySoldier ) {
+                if( Objects.equals(srcEntity, this.getAttackTarget()) ) {
+                    this.getNavigator().clearPathEntity();
+                }
+                this.setAttackTarget((EntityClaySoldier) srcEntity);
             }
-            this.setAttackTarget((EntityClaySoldier) srcEntity);
+
+            return true;
         }
 
-        return super.attackEntityFrom(source, damage);
+        return false;
     }
 
     @Override
@@ -719,7 +775,7 @@ public class EntityClaySoldier
 //                for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
 //                    upg.getUpgrade().onItemDrop(this, upg, drops);
 //                }
-                this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DEATH, inst -> inst.getUpgrade().onDeath(this, inst, drops));
+                this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DEATH, inst -> inst.getUpgrade().onDeath(this, inst, damageSource, drops));
 //
                 drops.removeAll(Collections.<ItemStack>singleton(null));
                 for( ItemStack drop : drops ) {
@@ -802,16 +858,23 @@ public class EntityClaySoldier
 
     @Override
     public void writeSpawnData(ByteBuf buffer) {
-        PacketSyncUpgrades pkt = new PacketSyncUpgrades(this, true, this.upgradeSyncList.stream().map(entry -> new UpgradeEntry(entry.getUpgrade(), entry.getUpgradeType())).toArray(UpgradeEntry[]::new));
-        pkt.toBytes(buffer);
+        PacketSyncUpgrades pktu = new PacketSyncUpgrades(this, true, this.upgradeSyncList.stream().map(entry -> new UpgradeEntry(entry.getUpgrade(), entry.getUpgradeType())).toArray(UpgradeEntry[]::new));
+        pktu.toBytes(buffer);
+
+        PacketSyncEffects pkte = new PacketSyncEffects(this, true, this.effectSyncList.stream().toArray(ISoldierEffectInst[]::new));
+        pkte.toBytes(buffer);
     }
 
     @Override
     public void readSpawnData(ByteBuf buffer) {
         if( this.world.isRemote ) { // just making sure this gets called on the client...
-            PacketSyncUpgrades pkt = new PacketSyncUpgrades();
-            pkt.fromBytes(buffer);
-            pkt.applyUpgrades(this);
+            PacketSyncUpgrades pktu = new PacketSyncUpgrades();
+            pktu.fromBytes(buffer);
+            pktu.applyUpgrades(this);
+
+            PacketSyncEffects pkte = new PacketSyncEffects();
+            pkte.fromBytes(buffer);
+            pkte.applyEffects(this);
         }
     }
 

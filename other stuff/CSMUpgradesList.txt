@@ -14,9 +14,9 @@ info: all weapons have increased reach while riding mounts, bone's reach bonus i
 LEFT HAND
 ------------------
 |x|Gravel,       15 use,   thrown for 2-3 points damage
-| |Snowball,     5-20 use, thrown for 0 damage, slows target on hit
+|x|Snowball,     5-20 use, thrown for 0 damage, slows target on hit
                             info: uses depend on the item given! snowball gives 5; snow layer gives 10; snow block gives 20
-| |FireCharge,   15 use,   thrown for 1-2 damage, causes burn time on hit
+|x|FireCharge,   15 use,   thrown for 1-2 damage, causes burn time on hit
 | |Bowl,         20 use,   reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
                             info: no longer entirely blocks ranged attacks, only reduces damage from them
 |x|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
@@ -57,7 +57,7 @@ Misc
 |x|Glowstone,              inf use, makes soldier glow, block gives to infinite soldiers
 | |Gunpowder,              1 use,   soldier explodes on death
                                      info: incompatible with magmacream/firework star
-| |MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
+|x|MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
                                      info: incompatible with gunpowder/fireworkstar
 |x|Sugar,                  inf use, makes soldier move faster, incompatible with diamond
 | |Clay,                   4 use,   revives fallen soldiers of own color

@@ -25,4 +25,8 @@ public interface ISoldierEffect
     default void onTick(ISoldier<?> soldier, ISoldierEffectInst effectInst) { }
 
     default void onExpired(ISoldier<?> soldier, ISoldierEffectInst effectInst) { }
+
+    default void onLoad(ISoldier<?> soldier, ISoldierEffectInst effectInst, NBTTagCompound nbt) { }
+
+    default void onSave(ISoldier<?> soldier, ISoldierEffectInst effectInst, NBTTagCompound nbt) { }
 }

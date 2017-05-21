@@ -7,7 +7,9 @@
 package de.sanandrew.mods.claysoldiers.client.renderer.projectile;
 
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityClayProjectile;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.GlStateManager;
@@ -44,9 +46,24 @@ public class RenderProjectile<T extends EntityClayProjectile>
     public static class Gravel
             extends RenderProjectile<EntityProjectileGravel>
     {
-
         public Gravel(RenderManager renderManager) {
             super(renderManager, Blocks.GRAVEL);
+        }
+    }
+
+    public static class Snow
+            extends RenderProjectile<EntityProjectileSnow>
+    {
+        public Snow(RenderManager renderManager) {
+            super(renderManager, Blocks.SNOW);
+        }
+    }
+
+    public static class Firecharge
+            extends RenderProjectile<EntityProjectileFirecharge>
+    {
+        public Firecharge(RenderManager renderManager) {
+            super(renderManager, Blocks.MAGMA);
         }
     }
 }

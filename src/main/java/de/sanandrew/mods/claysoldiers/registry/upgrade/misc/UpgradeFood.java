@@ -109,7 +109,7 @@ public class UpgradeFood
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
         if( upgradeInst.getNbtData().getByte("uses") >= MAX_USES ) {
             drops.add(upgradeInst.getSavedStack());
 

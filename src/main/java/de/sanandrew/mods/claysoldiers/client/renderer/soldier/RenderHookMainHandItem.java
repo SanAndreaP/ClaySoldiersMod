@@ -43,38 +43,31 @@ public class RenderHookMainHandItem
     }
 
     @Override
-    public boolean doHandRendererSetup(ISoldier soldier, EnumHandSide handSide) {
+    public boolean doHandRendererSetup(ISoldier<?> soldier, EnumHandSide handSide) {
         return handSide == soldier.getEntity().getPrimaryHand();
     }
 
     @Override
-    public boolean onHandRender(ISoldier soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide) {
+    public boolean onHandRender(ISoldier<?> soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide) {
         if( !this.doHandRendererSetup(soldier, handSide) ) {
             return false;
         }
 
         switch( this.priority ) {
             case 0: {
-                ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MH_STICK);
-                if( upg != null && soldier.hasUpgrade(upg, EnumUpgradeType.MAIN_HAND) ) {
+                if( soldier.hasUpgrade(UpgradeRegistry.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0.0F, 0.2F, 0.1F);
                     RenderUtils.renderStackInWorld(STICK, 0.0D, 0.0D, 0.0D, 0.0F, 90.0F, -125.0F, 0.75D);
                     GlStateManager.popMatrix();
                     return true;
-                }
-
-                upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MH_BLAZEROD);
-                if( upg != null && soldier.hasUpgrade(upg, EnumUpgradeType.MAIN_HAND) ) {
+                } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0.0F, 0.2F, 0.1F);
                     RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.0D, 0.0D, 0.0F, 90.0F, -125.0F, 0.75D);
                     GlStateManager.popMatrix();
                     return true;
-                }
-
-                upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MOH_SHEARBLADE);
-                if( upg != null && soldier.hasUpgrade(upg, EnumUpgradeType.MAIN_HAND) ) {
+                } else if( soldier.hasUpgrade(UpgradeRegistry.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0.0F, 0.2F, 0.0F);
                     RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.0D, 0.0D, 0.0F, -90.0F, -135.0F, 0.75D);

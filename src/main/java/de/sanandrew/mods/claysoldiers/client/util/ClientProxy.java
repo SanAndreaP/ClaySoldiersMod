@@ -14,7 +14,9 @@ import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.projectile.RenderProjectile;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
@@ -42,6 +44,8 @@ public class ClientProxy
 
         RenderingRegistry.registerEntityRenderingHandler(EntityClaySoldier.class, RenderClaySoldier::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileGravel.class, RenderProjectile.Gravel::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileSnow.class, RenderProjectile.Snow::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileFirecharge.class, RenderProjectile.Firecharge::new);
 
         MinecraftForge.EVENT_BUS.register(new RenderWorldEventHandler());
 

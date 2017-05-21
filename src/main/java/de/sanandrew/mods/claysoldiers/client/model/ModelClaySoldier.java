@@ -15,7 +15,11 @@ public class ModelClaySoldier
         extends ModelBiped
 {
     public ModelClaySoldier() {
-        super(0.0F, 0.0F, 64, 64);
+        this(0.0F);
+    }
+
+    public ModelClaySoldier(float scale) {
+        super(scale, 0.0F, 64, 64);
         this.bipedHeadwear.isHidden = true;
     }
 

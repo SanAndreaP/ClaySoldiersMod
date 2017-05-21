@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.event;
 
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
@@ -18,8 +19,15 @@ public final class SoldierTargetEnemyEventHandler
 {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onTargeting(SoldierTargetEnemyEvent evt) {
-        if( evt.target instanceof EntityClaySoldier && ((EntityClaySoldier) evt.target).hasUpgrade(UpgradeRegistry.MC_EGG, EnumUpgradeType.MISC) ) {
-            evt.setResult(Event.Result.DENY);
+        if( evt.target instanceof ISoldier ) {
+            ISoldier tgtSoldier = (ISoldier) evt.target;
+            if( tgtSoldier.hasUpgrade(UpgradeRegistry.MC_EGG, EnumUpgradeType.MISC) ) {
+                evt.setResult(Event.Result.DENY);
+            }
+
+            if(  evt.attacker.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
+                evt.setResult(evt.attacker.getSoldierTeam() == tgtSoldier.getSoldierTeam() ? Event.Result.ALLOW : Event.Result.DENY);
+            }
         }
     }
 

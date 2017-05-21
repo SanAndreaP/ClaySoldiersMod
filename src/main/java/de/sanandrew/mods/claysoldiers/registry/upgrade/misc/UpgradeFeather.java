@@ -14,6 +14,7 @@ import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -64,7 +65,7 @@ public class UpgradeFeather
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
         drops.add(upgradeInst.getSavedStack());
     }
 }

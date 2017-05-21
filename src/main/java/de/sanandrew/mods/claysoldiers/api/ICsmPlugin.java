@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,10 +19,15 @@ public interface ICsmPlugin
 
     default void registerUpgrades(IUpgradeRegistry registry) { }
 
+    default void registerEffects(IEffectRegistry registry) { }
+
     default void registerCsmEvents(EventBus bus) { }
 
     @SideOnly(Side.CLIENT)
     default void registerCsmClientEvents(EventBus bus) { }
+
+    @SideOnly(Side.CLIENT)
+    default void registerSoldierRenderLayer(RenderBiped<?> renderer) { }
 
     @SideOnly(Side.CLIENT)
     void registerSoldierRenderHook(IRenderHookRegistry registry);

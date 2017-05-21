@@ -7,11 +7,9 @@
 package de.sanandrew.mods.claysoldiers.network.packet;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeEntry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.sanlib.lib.network.AbstractMessage;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
@@ -33,14 +31,17 @@ public class PacketSyncEffects
 {
     private int soldierId;
     private ISoldierEffect[] effects;
+    private Integer[] durations;
     private boolean add;
     private Map<ISoldierEffect, NBTTagCompound> effectNBT = new HashMap<>();
 
     public PacketSyncEffects() { }
 
-    public PacketSyncEffects(EntityClaySoldier soldier, boolean add, ISoldierEffect... effects) {
+    public PacketSyncEffects(EntityClaySoldier soldier, boolean add, ISoldierEffectInst... effects) {
         this.add = add;
-        this.effects = effects;
+        this.effects = Arrays.stream(effects).map(ISoldierEffectInst::getEffect).toArray(ISoldierEffect[]::new);
+        this.durations = Arrays.stream(effects).map(ISoldierEffectInst::getDurationLeft).toArray(Integer[]::new);
+
         this.soldierId = soldier.getEntityId();
         if( this.add ) {
             Arrays.stream(this.effects).forEach(entry -> {
@@ -55,19 +56,21 @@ public class PacketSyncEffects
     public void handleClientMessage(PacketSyncEffects pkt, EntityPlayer player) {
         Entity entity = player.world.getEntityByID(pkt.soldierId);
         if( entity instanceof EntityClaySoldier ) {
-            pkt.applyUpgrades((EntityClaySoldier) entity);
+            pkt.applyEffects((EntityClaySoldier) entity);
         }
     }
 
-    public void applyUpgrades(EntityClaySoldier soldier) {
-        for( ISoldierEffect eff : this.effects ) {
+    public void applyEffects(EntityClaySoldier soldier) {
+        for( int i = 0, max = this.effects.length; i < max; i++ ) {
+            ISoldierEffect eff = this.effects[i];
+            int duration = this.durations[i];
             if( eff != null && this.add ) {
-                ISoldierUpgradeInst inst = soldier.addUpgrade(eff., eff.type, eff.upgrade.getStacks()[0]);
+                ISoldierEffectInst inst = soldier.addEffect(eff, duration);
                 if( this.effectNBT.containsKey(eff) ) {
                     inst.setNbtData(this.effectNBT.get(eff));
                 }
             } else {
-                soldier.destroyUpgrade(eff.upgrade, eff.type, false);
+                soldier.expireEffect(eff);
             }
         }
     }
@@ -77,23 +80,23 @@ public class PacketSyncEffects
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        try( ByteBufInputStream bis = new ByteBufInputStream(buf) ) {
-            this.add = buf.readBoolean();
-            this.soldierId = buf.readInt();
-            this.effects = new UpgradeEntry[buf.readInt()];
-            for( int i = 0; i < this.effects.length; i++ ) {
-                String idStr = ByteBufUtils.readUTF8String(buf);
-                if( UuidUtils.isStringUuid(idStr) ) {
-                    this.effects[i] = new UpgradeEntry(UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr)), EnumUpgradeType.VALUES[buf.readByte()]);
-                    if( this.add && this.effects[i].upgrade.syncNbtData() ) {
-                        NBTTagCompound newNbt = new NBTTagCompound();
-                        this.effects[i].upgrade.readSyncData(buf, newNbt);
-                        this.effectNBT.put(this.effects[i], newNbt);
-                    }
+        this.add = buf.readBoolean();
+        this.soldierId = buf.readInt();
+        this.effects = new ISoldierEffect[buf.readInt()];
+        this.durations = new Integer[this.effects.length];
+
+        for( int i = 0, max = this.effects.length; i < max; i++ ) {
+            String idStr = ByteBufUtils.readUTF8String(buf);
+            if( UuidUtils.isStringUuid(idStr) ) {
+                this.effects[i] = EffectRegistry.INSTANCE.getEffect(UUID.fromString(idStr));
+                this.durations[i] = buf.readInt();
+
+                if( this.add && this.effects[i].syncNbtData() ) {
+                    NBTTagCompound newNbt = new NBTTagCompound();
+                    this.effects[i].readSyncData(buf, newNbt);
+                    this.effectNBT.put(this.effects[i], newNbt);
                 }
             }
-        } catch( IOException e ) {
-            e.printStackTrace();
         }
     }
 
@@ -102,12 +105,17 @@ public class PacketSyncEffects
         buf.writeBoolean(this.add);
         buf.writeInt(this.soldierId);
         buf.writeInt(this.effects.length);
-        for( UpgradeEntry upg : effects ) {
-            UUID id = UpgradeRegistry.INSTANCE.getId(upg.upgrade);
+
+        for( int i = 0, max = this.effects.length; i < max; i++ ) {
+            ISoldierEffect eff = this.effects[i];
+            int duration = this.durations[i];
+            UUID id = EffectRegistry.INSTANCE.getId(eff);
+
             ByteBufUtils.writeUTF8String(buf, MiscUtils.defIfNull(id, UuidUtils.EMPTY_UUID).toString());
-            buf.writeByte(upg.type.ordinal());
-            if( this.add && this.effectNBT.containsKey(upg) ) {
-                upg.upgrade.writeSyncData(buf, this.effectNBT.get(upg));
+            buf.writeInt(duration);
+
+            if( this.add && this.effectNBT.containsKey(eff) ) {
+                eff.writeSyncData(buf, this.effectNBT.get(eff));
             }
         }
     }

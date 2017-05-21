@@ -79,23 +79,19 @@ public class PacketSyncUpgrades
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        try( ByteBufInputStream bis = new ByteBufInputStream(buf) ) {
-            this.add = buf.readBoolean();
-            this.soldierId = buf.readInt();
-            this.upgrades = new UpgradeEntry[buf.readInt()];
-            for( int i = 0; i < this.upgrades.length; i++ ) {
-                String idStr = ByteBufUtils.readUTF8String(buf);
-                if( UuidUtils.isStringUuid(idStr) ) {
-                    this.upgrades[i] = new UpgradeEntry(UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr)), EnumUpgradeType.VALUES[buf.readByte()]);
-                    if( this.add && this.upgrades[i].upgrade.syncNbtData() ) {
-                        NBTTagCompound newNbt = new NBTTagCompound();
-                        this.upgrades[i].upgrade.readSyncData(buf, newNbt);
-                        this.upgradeNBT.put(this.upgrades[i], newNbt);
-                    }
+        this.add = buf.readBoolean();
+        this.soldierId = buf.readInt();
+        this.upgrades = new UpgradeEntry[buf.readInt()];
+        for( int i = 0; i < this.upgrades.length; i++ ) {
+            String idStr = ByteBufUtils.readUTF8String(buf);
+            if( UuidUtils.isStringUuid(idStr) ) {
+                this.upgrades[i] = new UpgradeEntry(UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr)), EnumUpgradeType.VALUES[buf.readByte()]);
+                if( this.add && this.upgrades[i].upgrade.syncNbtData() ) {
+                    NBTTagCompound newNbt = new NBTTagCompound();
+                    this.upgrades[i].upgrade.readSyncData(buf, newNbt);
+                    this.upgradeNBT.put(this.upgrades[i], newNbt);
                 }
             }
-        } catch( IOException e ) {
-            e.printStackTrace();
         }
     }
 

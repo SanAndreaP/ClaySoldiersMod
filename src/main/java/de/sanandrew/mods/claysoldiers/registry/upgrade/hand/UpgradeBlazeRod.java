@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -79,7 +80,7 @@ public class UpgradeBlazeRod
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
         if( upgradeInst.getNbtData().getByte("uses") >= MAX_USAGES ) {
             drops.add(upgradeInst.getSavedStack());
         }
