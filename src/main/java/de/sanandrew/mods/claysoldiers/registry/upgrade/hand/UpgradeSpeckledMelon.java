@@ -12,14 +12,19 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.entity.ai.attributes.AttributeModifierRnd;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -29,7 +34,8 @@ public class UpgradeSpeckledMelon
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.SPECKLED_MELON, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_ATTACK };
+    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_ATTACK,
+                                                                                    EnumFunctionCalls.ON_DAMAGED };
     private static final byte MAX_USES = 20;
 
     @Override
@@ -73,6 +79,16 @@ public class UpgradeSpeckledMelon
         } else {
             upgradeInst.getNbtData().setByte("uses", uses);
         }
+
+        if( target instanceof EntityLivingBase ) {
+            ((EntityLivingBase) target).heal(15.0F);
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.HEARTS, target.world.provider.getDimension(), target.posX, target.posY, target.posZ);
+        }
+    }
+
+    @Override
+    public void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) {
+
     }
 
     //    @Override

@@ -13,6 +13,7 @@ import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleBreaking;
 import net.minecraft.client.particle.ParticleCrit;
+import net.minecraft.client.particle.ParticleHeart;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,6 +31,7 @@ public final class ParticleHandler
         PARTICLES.put(EnumParticle.TEAM_BREAK, ParticleHandler::spawnTeamParticle);
         PARTICLES.put(EnumParticle.ITEM_BREAK, ParticleHandler::spawnItemParticle);
         PARTICLES.put(EnumParticle.CRITICAL, ParticleHandler::spawnCriticalParticle);
+        PARTICLES.put(EnumParticle.HEARTS, ParticleHandler::spawnHealingParticle);
     }
 
     public static void spawn(EnumParticle particle, int dim, double x, double y, double z, Object... additData) {
@@ -60,6 +62,13 @@ public final class ParticleHandler
     private static void spawnCriticalParticle(int dim, double x, double y, double z, Tuple additData) {
         ParticleCrit.Factory cf = new ParticleCrit.Factory();
         for( int i = 0; i < 20; i++ ) {
+            mc.effectRenderer.addEffect(cf.createParticle(0, mc.world, x, y, z, MiscUtils.RNG.randomFloat() * 0.5D, 0.0D, MiscUtils.RNG.randomFloat() * 0.5D));
+        }
+    }
+
+    private static void spawnHealingParticle(int dim, double x, double y, double z, Tuple additData) {
+        ParticleHeart.Factory cf = new ParticleHeart.Factory();
+        for( int i = 0; i < 5; i++ ) {
             mc.effectRenderer.addEffect(cf.createParticle(0, mc.world, x, y, z, MiscUtils.RNG.randomFloat() * 0.5D, 0.0D, MiscUtils.RNG.randomFloat() * 0.5D));
         }
     }

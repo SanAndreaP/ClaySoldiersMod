@@ -18,21 +18,23 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class SoldierTargetEnemyEventHandler
 {
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onTargeting(SoldierTargetEnemyEvent evt) {
+    public void onTargetingHigh(SoldierTargetEnemyEvent evt) {
         if( evt.target instanceof ISoldier ) {
             ISoldier tgtSoldier = (ISoldier) evt.target;
             if( tgtSoldier.hasUpgrade(UpgradeRegistry.MC_EGG, EnumUpgradeType.MISC) ) {
                 evt.setResult(Event.Result.DENY);
             }
 
-            if(  evt.attacker.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
-                evt.setResult(evt.attacker.getSoldierTeam() == tgtSoldier.getSoldierTeam() ? Event.Result.ALLOW : Event.Result.DENY);
+            if( evt.attacker.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
+                evt.setResult(evt.attacker.getSoldierTeam() == tgtSoldier.getSoldierTeam() && evt.target.getHealth() < evt.target.getMaxHealth() * 0.25F
+                              ? Event.Result.ALLOW
+                              : Event.Result.DENY);
             }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onTargeting2(SoldierTargetEnemyEvent evt) {
+    public void onTargetingNormal(SoldierTargetEnemyEvent evt) {
         if( evt.attacker.hasUpgrade(UpgradeRegistry.MC_GLASS, EnumUpgradeType.MISC) ) {
             evt.setResult(Event.Result.DEFAULT);
         }

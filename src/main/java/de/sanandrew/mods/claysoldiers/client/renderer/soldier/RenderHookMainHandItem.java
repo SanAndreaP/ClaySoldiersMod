@@ -30,6 +30,7 @@ public class RenderHookMainHandItem
     private static final ItemStack ARROW = new ItemStack(Items.ARROW);
     private static final ItemStack BLAZEROD = new ItemStack(Items.BLAZE_ROD);
     private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.shear_blade);
+    private static final ItemStack SPECLEDMELON = new ItemStack(Items.SPECKLED_MELON);
 
     private final int priority;
 
@@ -56,22 +57,16 @@ public class RenderHookMainHandItem
         switch( this.priority ) {
             case 0: {
                 if( soldier.hasUpgrade(UpgradeRegistry.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(0.0F, 0.2F, 0.1F);
-                    RenderUtils.renderStackInWorld(STICK, 0.0D, 0.0D, 0.0D, 0.0F, 90.0F, -125.0F, 0.75D);
-                    GlStateManager.popMatrix();
+                    this.renderItem(STICK, -125.0F);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(0.0F, 0.2F, 0.1F);
-                    RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.0D, 0.0D, 0.0F, 90.0F, -125.0F, 0.75D);
-                    GlStateManager.popMatrix();
+                    this.renderItem(BLAZEROD, -125.0F);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(0.0F, 0.2F, 0.0F);
-                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.0D, 0.0D, 0.0F, -90.0F, -135.0F, 0.75D);
-                    GlStateManager.popMatrix();
+                    this.renderItem(SHEARBLADE, -135.0F);
+                    return true;
+                } else if( soldier.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
+                    this.renderItem(SPECLEDMELON, -90.0F);
                     return true;
                 }
             } break;
@@ -87,5 +82,12 @@ public class RenderHookMainHandItem
             } break;
         }
         return false;
+    }
+
+    private void renderItem(ItemStack stack, float rotation) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.0F, 0.2F, 0.1F);
+        RenderUtils.renderStackInWorld(stack, 0.0D, 0.0D, 0.0D, 0.0F, 90.0F, rotation, 0.75D);
+        GlStateManager.popMatrix();
     }
 }

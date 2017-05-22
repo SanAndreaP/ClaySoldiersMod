@@ -11,6 +11,8 @@ import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirechar
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
 import de.sanandrew.mods.claysoldiers.event.EntityFallEventHandler;
+import de.sanandrew.mods.claysoldiers.event.LivingAttackEventHandler;
+import de.sanandrew.mods.claysoldiers.event.LivingSetAttackTargetEventHandler;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
@@ -39,6 +41,8 @@ public class CommonProxy
         EntityRegistry.registerModEntity(EntityProjectileFirecharge.class, "fireProjectile", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
 
         MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());
+        MinecraftForge.EVENT_BUS.register(new LivingAttackEventHandler());
+        MinecraftForge.EVENT_BUS.register(new LivingSetAttackTargetEventHandler());
     }
 
     public void init(FMLInitializationEvent event) {
