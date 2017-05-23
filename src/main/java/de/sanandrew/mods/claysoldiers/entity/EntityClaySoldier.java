@@ -184,6 +184,7 @@ public class EntityClaySoldier
         super.applyEntityAttributes();
 
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getAttributeMap().registerAttribute(CsmMobAttributes.KB_RESISTANCE);
 
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
@@ -746,6 +747,9 @@ public class EntityClaySoldier
                 this.setAttackTarget((EntityClaySoldier) srcEntity);
             }
 
+            final float fnlDamage = damage;
+            this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DAMAGED_SUCCESS, inst -> inst.getUpgrade().onDamagedSuccess(this, inst, srcEntity, source, fnlDamage));
+
             return true;
         }
 
@@ -789,12 +793,14 @@ public class EntityClaySoldier
     }
 
     @Override
-    public void knockBack(Entity par1Entity, float par2, double par3, double par5) {
+    public void knockBack(Entity entityIn, float strength, double xRatio, double zRatio) {
         if( !this.canMove() ) {
             return;
         }
 
-        super.knockBack(par1Entity, par2, par3, par5);
+        strength *= 1.0D - this.getEntityAttribute(CsmMobAttributes.KB_RESISTANCE).getAttributeValue();
+
+        super.knockBack(entityIn, strength, xRatio, zRatio);
     }
 
     @Nullable

@@ -61,6 +61,8 @@ public interface ISoldierUpgrade
 
     default void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) { }
 
+    default void onDamagedSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, float damage) { }
+
     default void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) { }
 
     enum EnumFunctionCalls {
@@ -70,7 +72,8 @@ public interface ISoldierUpgrade
         ON_ATTACK,
         ON_DAMAGED,
         ON_DEATH,
-        ON_ATTACK_SUCCESS;
+        ON_ATTACK_SUCCESS,
+        ON_DAMAGED_SUCCESS;
 
         public static final EnumFunctionCalls[] VALUES = values();
     }

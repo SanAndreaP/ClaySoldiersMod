@@ -5,7 +5,8 @@ public enum EnumParticle
     TEAM_BREAK,
     ITEM_BREAK,
     CRITICAL,
-    HEARTS;
+    HEARTS,
+    SHOCKWAVE;
 
     public static final EnumParticle[] VALUES = values();
 }

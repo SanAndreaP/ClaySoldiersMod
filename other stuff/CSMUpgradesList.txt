@@ -7,7 +7,7 @@ RIGHT HAND
 |x|BlazeRod,   20 use, increases melee damage by 1-2 points, causes burn time on target
 | |Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
-| |GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
+|x|GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 
 info: all weapons have increased reach while riding mounts, bone's reach bonus is slightly greater than mounted reach bonus
 ------------------
@@ -22,14 +22,14 @@ LEFT HAND
 |x|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 | |Emerald,      5-45 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
                             info: uses depend on the item given! emerald item gives 5 uses; emerald block gives 45 uses
-| |NetherQuartz, 4 use,    deals heavy knockback to all targets nearby if soldier takes too many hits
-                            todo: should knockback after 10 hits?
-                            todo: what kind of rendering?
+|x|NetherQuartz, 4 use,    deals heavy knockback to all targets nearby if soldier takes too many hits
 ------------------
 Core
 ------------------
-| |IronIngot,   makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
-| |Brick,       makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
+|-|IronIngot,   makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
+                TODO: rendering
+|-|Brick,       makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
+                TODO: rendering
 | |String,      makes soldier resist all damage from one explosion
 | |Cactus,      75% chance to negate burn time, halves total burn time otherwise
 | |NetherBrick, gives burn time to any soldier that attacks nether brick user with unarmed attacks

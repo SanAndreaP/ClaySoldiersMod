@@ -31,6 +31,7 @@ public class RenderHookOffHandItem
     private static final ItemStack GRAVEL = new ItemStack(Blocks.GRAVEL);
     private static final ItemStack SNOW = new ItemStack(Blocks.SNOW);
     private static final ItemStack MAGMA = new ItemStack(Blocks.MAGMA);
+    private static final ItemStack QUARTZ = new ItemStack(Blocks.QUARTZ_ORE);
 
     private final int priority;
 
@@ -67,6 +68,9 @@ public class RenderHookOffHandItem
                     return true;
                 } else if( this.getUpgrade(UpgradeRegistry.OH_FIRECHARGE, soldier) != null ) {
                     RenderUtils.renderStackInWorld(MAGMA, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
+                    return true;
+                } else if( this.getUpgrade(UpgradeRegistry.OH_QUARTZ, soldier) != null ) {
+                    RenderUtils.renderStackInWorld(QUARTZ, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                     return true;
                 }
             } break;
