@@ -9,7 +9,7 @@
 package de.sanandrew.mods.claysoldiers.client.util;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
@@ -134,20 +134,20 @@ public final class ModelRegistry
         }
 
         static final class Soldier
-                extends MeshDefUUID<Team>
+                extends MeshDefUUID<ITeam>
         {
             Soldier() {
-                for( Team info : TeamRegistry.INSTANCE.getTeams() ) {
+                for( ITeam info : TeamRegistry.INSTANCE.getTeams() ) {
                     ModelResourceLocation modelRes = new ModelResourceLocation(info.getItemModel(), "inventory");
                     this.modelRes.put(info.getId(), modelRes);
                 }
             }
 
             @Override
-            public Team getType(ItemStack stack) { return TeamRegistry.INSTANCE.getTeam(stack); }
+            public ITeam getType(ItemStack stack) { return TeamRegistry.INSTANCE.getTeam(stack); }
 
             @Override
-            public UUID getId(Team type) { return type.getId(); }
+            public UUID getId(ITeam type) { return type.getId(); }
         }
     }
 }

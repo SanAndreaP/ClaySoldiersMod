@@ -7,7 +7,8 @@
 package de.sanandrew.mods.claysoldiers.client.util;
 
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
-import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.RenderWorldEventHandler;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
@@ -36,7 +37,7 @@ public class ClientProxy
         extends CommonProxy
         implements IRenderHookRegistry
 {
-    private RenderClaySoldier soldierRenderer;
+    private ISoldierRender soldierRenderer;
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -62,7 +63,7 @@ public class ClientProxy
 
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorSoldier(), ItemRegistry.doll_soldier);
 
-        this.soldierRenderer = (RenderClaySoldier) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
+        this.soldierRenderer = (ISoldierRender) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
 
         ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerSoldierRenderHook(this));
     }
@@ -73,7 +74,7 @@ public class ClientProxy
     }
 
     @Override
-    public boolean registerSoldierHook(ISoldierRenderer renderer) {
+    public boolean registerSoldierHook(ISoldierRenderHook renderer) {
         return this.soldierRenderer.addRenderHook(renderer);
     }
 

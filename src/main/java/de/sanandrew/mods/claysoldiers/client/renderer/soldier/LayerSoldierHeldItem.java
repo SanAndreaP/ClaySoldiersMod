@@ -6,20 +6,15 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -38,8 +33,8 @@ public class LayerSoldierHeldItem
 
         boolean doMain = true;
         boolean doOff = true;
-        for( Map.Entry<Integer, Queue<ISoldierRenderer>> entry : this.renderer.renderHooks.descendingMap().entrySet() ) {
-            for( ISoldierRenderer hook : entry.getValue() ) {
+        for( Map.Entry<Integer, Queue<ISoldierRenderHook>> entry : this.renderer.renderHooks.descendingMap().entrySet() ) {
+            for( ISoldierRenderHook hook : entry.getValue() ) {
                 if( doMain && renderHeldItem(soldier, EnumHandSide.RIGHT, hook) ) {
                     doMain = false;
                 }
@@ -57,7 +52,7 @@ public class LayerSoldierHeldItem
         GlStateManager.popMatrix();
     }
 
-    private boolean renderHeldItem(EntityClaySoldier soldier, EnumHandSide handSide, ISoldierRenderer renderer) {
+    private boolean renderHeldItem(EntityClaySoldier soldier, EnumHandSide handSide, ISoldierRenderHook renderer) {
         GlStateManager.pushMatrix();
 
         if( renderer.doHandRendererSetup(soldier, handSide) ) {
@@ -65,7 +60,7 @@ public class LayerSoldierHeldItem
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
 
-            ((ModelBiped) this.renderer.getMainModel()).postRenderArm(0.0625F, handSide);
+            this.renderer.getSoldierModel().postRenderArm(0.0625F, handSide);
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
             boolean flag = handSide == EnumHandSide.LEFT;

@@ -14,7 +14,6 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -47,7 +46,7 @@ public class LayerMagmaCreamCharge
             GlStateManager.color(0.5F * (1.0F - durationPerc), 0.5F * durationPerc, 0.0F, 1.0F);
             GlStateManager.disableLighting();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-            this.chargedModel.setModelAttributes(this.renderer.getMainModel());
+            this.chargedModel.setModelAttributes(this.renderer.getSoldierModel());
             this.chargedModel.render(soldier, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             GlStateManager.matrixMode(GL11.GL_TEXTURE);
             GlStateManager.loadIdentity();

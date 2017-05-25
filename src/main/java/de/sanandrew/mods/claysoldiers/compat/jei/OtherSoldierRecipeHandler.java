@@ -7,15 +7,13 @@
 package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import com.google.common.collect.ImmutableList;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
-import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.crafting.OtherSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +70,7 @@ public class OtherSoldierRecipeHandler
             this.ingredients = new ArrayList<>();
 
             List<ItemStack> ingredList = new ArrayList<>();
-            for( Team teamInst : TeamRegistry.INSTANCE.getTeams() ) {
+            for( ITeam teamInst : TeamRegistry.INSTANCE.getTeams() ) {
                 ingredList.add(TeamRegistry.INSTANCE.getNewTeamStack(1, teamInst.getId()));
             }
 

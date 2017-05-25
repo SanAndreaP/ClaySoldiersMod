@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
-import de.sanandrew.mods.claysoldiers.api.Disruptable;
+import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
@@ -89,7 +89,7 @@ public class UpgradeFood
     @Override
     public void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) {
         EntityCreature entity = soldier.getEntity();
-        if( entity.getHealth() < soldier.getEntity().getMaxHealth() * 0.25F && !entity.world.isRemote && dmgSource != Disruptable.DISRUPT_DAMAGE ) {
+        if( entity.getHealth() < soldier.getEntity().getMaxHealth() * 0.25F && !entity.world.isRemote && dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
             byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
             soldier.getEntity().heal(upgradeInst.getNbtData().getFloat("restorePts"));
             if( uses < 1 ) {

@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.RenderWorldEventHandler;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderHookBody
-        implements ISoldierRenderer
+        implements ISoldierRenderHook
 {
     private static final ItemStack FEATHER = new ItemStack(Items.FEATHER);
 

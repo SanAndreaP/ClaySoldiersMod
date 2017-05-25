@@ -6,7 +6,8 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -14,8 +15,6 @@ import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
@@ -24,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderHookMainHandItem
-        implements ISoldierRenderer
+        implements ISoldierRenderHook
 {
     private static final ItemStack STICK = new ItemStack(Items.STICK);
     private static final ItemStack ARROW = new ItemStack(Items.ARROW);
@@ -49,7 +48,7 @@ public class RenderHookMainHandItem
     }
 
     @Override
-    public boolean onHandRender(ISoldier<?> soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide) {
+    public boolean onHandRender(ISoldier<?> soldier, ISoldierRender<?, ?> renderer, EnumHandSide handSide) {
         if( !this.doHandRendererSetup(soldier, handSide) ) {
             return false;
         }

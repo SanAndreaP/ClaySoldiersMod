@@ -7,11 +7,10 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.Disruptable;
+import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -30,7 +28,6 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class ItemDisruptor
@@ -77,8 +74,8 @@ public class ItemDisruptor
         if( lastTimeMillis + 2_000 < currTimeMillis ) {
             if( !worldIn.isRemote ) {
                 AxisAlignedBB aabb = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 64.0D, 64.0D, 64.0D).offset(playerIn.posX, playerIn.posY, playerIn.posZ).offset(-32.0D, -32.0D, -32.0D);
-                worldIn.getEntitiesWithinAABB(EntityCreature.class, aabb).stream().filter(entity -> entity instanceof Disruptable).map(entity -> (Disruptable) entity)
-                       .collect(Collectors.toList()).forEach(Disruptable::disrupt);
+                worldIn.getEntitiesWithinAABB(EntityCreature.class, aabb).stream().filter(entity -> entity instanceof IDisruptable).map(entity -> (IDisruptable) entity)
+                       .collect(Collectors.toList()).forEach(IDisruptable::disrupt);
                 nbt.setLong("lastActivated", currTimeMillis);
                 if( itemStackIn.isItemStackDamageable() ) {
                     itemStackIn.damageItem(1, playerIn);

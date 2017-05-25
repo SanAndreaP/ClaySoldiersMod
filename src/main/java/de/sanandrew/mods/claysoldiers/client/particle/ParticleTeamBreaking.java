@@ -6,13 +6,11 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.particle;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.sanlib.lib.client.ColorObj;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.IParticleFactory;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleBreaking;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -21,13 +19,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.UUID;
-
 @SideOnly(Side.CLIENT)
 public class ParticleTeamBreaking
         extends ParticleBreaking
 {
-    protected ParticleTeamBreaking(World worldIn, double posXIn, double posYIn, double posZIn, Team sldTeam) {
+    protected ParticleTeamBreaking(World worldIn, double posXIn, double posYIn, double posZIn, ITeam sldTeam) {
         super(worldIn, posXIn, posYIn, posZIn, ItemRegistry.doll_soldier);
 
         ItemStack teamStack = TeamRegistry.INSTANCE.getNewTeamStack(1, sldTeam);

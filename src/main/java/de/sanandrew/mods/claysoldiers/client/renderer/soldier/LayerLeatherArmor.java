@@ -6,62 +6,58 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.client.model.ModelGoggleBand;
 import de.sanandrew.mods.claysoldiers.client.model.ModelLeatherArmor;
-import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.util.Resources;
-import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.EntityCreature;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 @SideOnly(Side.CLIENT)
 public class LayerLeatherArmor
-        implements LayerRenderer<EntityClaySoldier>
+        implements LayerRenderer<EntityCreature>
 {
     private final ModelLeatherArmor modelLeatherArmor;
     private final ModelLeatherArmor modelRabbitHide;
-    private final RenderClaySoldier renderer;
+    private final ISoldierRender renderer;
 
-    public LayerLeatherArmor(RenderClaySoldier renderer) {
+    public LayerLeatherArmor(ISoldierRender renderer) {
         this.renderer = renderer;
         this.modelLeatherArmor = new ModelLeatherArmor(Resources.ENTITY_SOLDIER_LEATHER_ARMOR.resource);
         this.modelRabbitHide = new ModelLeatherArmor(Resources.ENTITY_SOLDIER_RABBIT_HIDE.resource);
     }
 
     @Override
-    public void doRenderLayer(EntityClaySoldier soldier, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void doRenderLayer(EntityCreature creature, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        assert creature instanceof ISoldier;
+        ISoldier soldier = (ISoldier) creature;
+
         ISoldierUpgradeInst instL = soldier.getUpgradeInstance(UpgradeRegistry.MC_LEATHER, EnumUpgradeType.MISC);
         ISoldierUpgradeInst instR = soldier.getUpgradeInstance(UpgradeRegistry.MC_RABBITHIDE, EnumUpgradeType.MISC);
         ModelLeatherArmor model = instL != null ? this.modelLeatherArmor : instR != null ? this.modelRabbitHide : null;
         if( model != null ) {
             if( model.texture != null ) {
-                this.renderer.bindTexture(model.texture);
+                this.renderer.bindSoldierTexture(model.texture);
             }
 
             GlStateManager.pushMatrix();
-            this.renderer.modelBipedMain.bipedBody.postRender(scale);
+            this.renderer.getSoldierModel().bipedBody.postRender(scale);
             model.renderBody(scale);
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();
-            this.renderer.modelBipedMain.bipedLeftArm.postRender(scale);
+            this.renderer.getSoldierModel().bipedLeftArm.postRender(scale);
             model.renderLeftArm(scale);
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();
-            this.renderer.modelBipedMain.bipedRightArm.postRender(scale);
+            this.renderer.getSoldierModel().bipedRightArm.postRender(scale);
             model.renderRightArm(scale);
             GlStateManager.popMatrix();
         }

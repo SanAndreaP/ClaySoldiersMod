@@ -7,20 +7,16 @@
 package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import com.google.common.collect.ImmutableList;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
-import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class ClearSoldierRecipeHandler
         implements IRecipeHandler<ClearSoldierRecipeHandler.JeiClearSoldierRecipe>
@@ -72,11 +68,11 @@ public class ClearSoldierRecipeHandler
 
             this.ingredients.add(ImmutableList.of(new ItemStack(Items.WATER_BUCKET, 1)));
 
-            List<Team> teamList = TeamRegistry.INSTANCE.getTeams();
+            List<ITeam> teamList = TeamRegistry.INSTANCE.getTeams();
             for( int i = 0; i < count; i++ ) {
                 List<ItemStack> ingredList = new ArrayList<>();
 
-                for( Team team : teamList ) {
+                for( ITeam team : teamList ) {
                     ingredList.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
                 }
 

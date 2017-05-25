@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 
-public interface Disruptable
+public interface IDisruptable
 {
     DamageSource DISRUPT_DAMAGE = new DamageSource(CsmConstants.ID + ".disrupt").setDamageIsAbsolute();
 

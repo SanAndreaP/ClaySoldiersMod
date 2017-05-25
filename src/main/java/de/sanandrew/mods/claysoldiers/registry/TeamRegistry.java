@@ -8,8 +8,8 @@ package de.sanandrew.mods.claysoldiers.registry;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -31,8 +31,8 @@ public final class TeamRegistry
 {
     public static final TeamRegistry INSTANCE = new TeamRegistry();
 
-    private final Map<UUID, Team> teamFromUUID;
-    private final ArrayList<Team> teams;
+    private final Map<UUID, ITeam> teamFromUUID;
+    private final ArrayList<ITeam> teams;
 
     private TeamRegistry() {
         this.teamFromUUID = new HashMap<>();
@@ -40,7 +40,7 @@ public final class TeamRegistry
     }
 
     @Override
-    public Team registerTeam(UUID id, String name, ResourceLocation itemModel, int itemColor, ResourceLocation[] normalTextures, ResourceLocation[] rareTextures, ResourceLocation[] uniqueTextures) {
+    public ITeam registerTeam(UUID id, String name, ResourceLocation itemModel, int itemColor, ResourceLocation[] normalTextures, ResourceLocation[] rareTextures, ResourceLocation[] uniqueTextures) {
         if( id == null || name == null || itemModel == null || normalTextures == null || normalTextures.length < 1 ) {
             CsmConstants.LOG.log(Level.WARN, String.format("Team ID, name, item model and normal texture cannot be null nor empty for ID %s with name %s!", id, name));
             return null;
@@ -56,7 +56,7 @@ public final class TeamRegistry
             return null;
         }
 
-        Team newTeam = new TeamStandard(id, name, itemModel, itemColor, normalTextures, rareTextures, uniqueTextures);
+        ITeam newTeam = new TeamStandard(id, name, itemModel, itemColor, normalTextures, rareTextures, uniqueTextures);
         this.teamFromUUID.put(id, newTeam);
         this.teams.add(newTeam);
 
@@ -64,7 +64,7 @@ public final class TeamRegistry
     }
 
     @Override
-    public boolean registerTeam(Team team) {
+    public boolean registerTeam(ITeam team) {
         if( team == null ) {
             CsmConstants.LOG.log(Level.WARN, "Team instance cannot be null!");
             return false;
@@ -95,18 +95,18 @@ public final class TeamRegistry
     }
 
     @Override
-    public Team getTeam(UUID id) {
+    public ITeam getTeam(UUID id) {
         return MiscUtils.defIfNull(this.teamFromUUID.get(id), NULL_TEAM);
     }
 
     @Override
-    public List<Team> getTeams() {
+    public List<ITeam> getTeams() {
         return ImmutableList.copyOf(this.teams);
     }
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public Team getTeam(ItemStack stack) {
+    public ITeam getTeam(ItemStack stack) {
         if( ItemStackUtils.isItem(stack, ItemRegistry.doll_soldier) ) {
             NBTTagCompound nbt = stack.getSubCompound("dollSoldier", false);
             if( nbt != null && nbt.hasKey("team", Constants.NBT.TAG_STRING) ) {
@@ -122,7 +122,7 @@ public final class TeamRegistry
     }
 
     @Override
-    public ItemStack setTeam(ItemStack stack, Team team) {
+    public ItemStack setTeam(ItemStack stack, ITeam team) {
         if( team != null && ItemStackUtils.isItem(stack, ItemRegistry.doll_soldier) ) {
             stack.getSubCompound("dollSoldier", true).setString("team", team.getId().toString());
         }
@@ -131,7 +131,7 @@ public final class TeamRegistry
     }
 
     @Override
-    public ItemStack getNewTeamStack(int count, Team team) {
+    public ItemStack getNewTeamStack(int count, ITeam team) {
         return setTeam(new ItemStack(ItemRegistry.doll_soldier, count), team);
     }
 
@@ -140,7 +140,7 @@ public final class TeamRegistry
         return setTeam(new ItemStack(ItemRegistry.doll_soldier, count), team);
     }
 
-    public static final Team NULL_TEAM = new Team()
+    public static final ITeam NULL_TEAM = new ITeam()
     {
         @Override public UUID getId() { return UuidUtils.EMPTY_UUID; }
         @Override public String getName() { return "null"; }

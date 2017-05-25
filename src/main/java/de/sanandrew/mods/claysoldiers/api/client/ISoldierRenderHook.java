@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.client;
 
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.entity.EntityCreature;
@@ -14,14 +15,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public interface ISoldierRenderer
+public interface ISoldierRenderHook
 {
     int getPriority();
 
     default boolean doHandRendererSetup(ISoldier<?> soldier, EnumHandSide handSide) { return false; };
 
     //
-    default boolean onHandRender(ISoldier<?> soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide) { return false; }
+    default boolean onHandRender(ISoldier<?> soldier, ISoldierRender<?, ?> renderer, EnumHandSide handSide) { return false; }
 
     default void renderModelPre(ISoldier<?> soldier, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) { }
 

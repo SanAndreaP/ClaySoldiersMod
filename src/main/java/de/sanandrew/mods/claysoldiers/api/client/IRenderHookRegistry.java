@@ -12,5 +12,5 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public interface IRenderHookRegistry
 {
-    boolean registerSoldierHook(ISoldierRenderer renderer);
+    boolean registerSoldierHook(ISoldierRenderHook renderer);
 }

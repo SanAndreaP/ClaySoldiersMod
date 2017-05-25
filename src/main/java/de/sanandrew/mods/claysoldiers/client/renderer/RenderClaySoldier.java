@@ -6,24 +6,20 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer;
 
-import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
-import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerGoggles;
-import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerLeatherArmor;
-import de.sanandrew.mods.claysoldiers.client.renderer.soldier.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -31,8 +27,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @SideOnly(Side.CLIENT)
 public class RenderClaySoldier
         extends RenderBiped<EntityClaySoldier>
+        implements ISoldierRender<EntityClaySoldier, RenderClaySoldier>
 {
-    public ConcurrentNavigableMap<Integer, Queue<ISoldierRenderer>> renderHooks;
+    public ConcurrentNavigableMap<Integer, Queue<ISoldierRenderHook>> renderHooks;
 
     public RenderClaySoldier(RenderManager manager) {
         super(manager, new ModelClaySoldier(), 0.1F);
@@ -70,13 +67,29 @@ public class RenderClaySoldier
         return entity.getSoldierTeam().getNormalTexture(textureId);
     }
 
-    public boolean addRenderHook(ISoldierRenderer renderer) {
+    @Override
+    public boolean addRenderHook(ISoldierRenderHook renderer) {
         if( renderer != null ) {
-            Queue<ISoldierRenderer> queue = this.renderHooks.computeIfAbsent(renderer.getPriority(), key -> new ConcurrentLinkedQueue<>());
+            Queue<ISoldierRenderHook> queue = this.renderHooks.computeIfAbsent(renderer.getPriority(), key -> new ConcurrentLinkedQueue<>());
             queue.add(renderer);
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public ModelBiped getSoldierModel() {
+        return this.modelBipedMain;
+    }
+
+    @Override
+    public void bindSoldierTexture(ResourceLocation location) {
+        this.bindTexture(location);
+    }
+
+    @Override
+    public RenderClaySoldier getRender() {
+        return this;
     }
 }

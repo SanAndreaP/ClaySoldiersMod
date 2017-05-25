@@ -45,7 +45,7 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void setBreathableUnderwater(boolean breathable);
 
-    Team getSoldierTeam();
+    ITeam getSoldierTeam();
 
     T getEntity();
 

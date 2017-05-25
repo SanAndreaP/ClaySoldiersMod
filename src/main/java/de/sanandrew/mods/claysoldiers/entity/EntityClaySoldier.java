@@ -6,13 +6,13 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity;
 
-import de.sanandrew.mods.claysoldiers.api.Disruptable;
+import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
@@ -84,7 +84,7 @@ import java.util.function.Consumer;
 
 public class EntityClaySoldier
         extends EntityCreature
-        implements Disruptable, ISoldier<EntityClaySoldier>, IEntityAdditionalSpawnData
+        implements IDisruptable, ISoldier<EntityClaySoldier>, IEntityAdditionalSpawnData
 {
     private static final DataParameter<UUID> TEAM_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializerUUID.INSTANCE);
     private static final DataParameter<Byte> TEXTURE_TYPE_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializers.BYTE);
@@ -138,7 +138,7 @@ public class EntityClaySoldier
         ((PathNavigateGround) this.getNavigator()).setCanSwim(true);
     }
 
-    public EntityClaySoldier(World world, @Nonnull Team team, @Nullable ItemStack doll) {
+    public EntityClaySoldier(World world, @Nonnull ITeam team, @Nullable ItemStack doll) {
         this(world, team);
 
         this.doll = doll;
@@ -146,7 +146,7 @@ public class EntityClaySoldier
         this.setLeftHanded(MiscUtils.RNG.randomInt(100) < 10);
     }
 
-    public EntityClaySoldier(World world, @Nonnull Team team) {
+    public EntityClaySoldier(World world, @Nonnull ITeam team) {
         this(world);
 
         this.dataManager.set(TEAM_PARAM, team.getId());
@@ -580,7 +580,7 @@ public class EntityClaySoldier
     //endregion
 
     @Override
-    public Team getSoldierTeam() {
+    public ITeam getSoldierTeam() {
         return TeamRegistry.INSTANCE.getTeam(this.dataManager.get(TEAM_PARAM));
     }
 
@@ -724,7 +724,7 @@ public class EntityClaySoldier
         this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DAMAGED, inst -> inst.getUpgrade().onDamaged(this, inst, srcEntity, source, dmgMutable));
         damage = dmgMutable.floatValue();
 
-        if( !(srcEntity instanceof EntityPlayer) && !Objects.equals(source, Disruptable.DISRUPT_DAMAGE) ) {
+        if( !(srcEntity instanceof EntityPlayer) && !Objects.equals(source, IDisruptable.DISRUPT_DAMAGE) ) {
             if( this.getRidingEntity() != null && MiscUtils.RNG.randomInt(4) == 0 ) {
                 this.getRidingEntity().attackEntityFrom(source, damage);
                 return false;
@@ -854,7 +854,7 @@ public class EntityClaySoldier
 
     @Override
     public void disrupt() {
-        this.attackEntityFrom(Disruptable.DISRUPT_DAMAGE, Float.MAX_VALUE);
+        this.attackEntityFrom(IDisruptable.DISRUPT_DAMAGE, Float.MAX_VALUE);
     }
 
     @Override

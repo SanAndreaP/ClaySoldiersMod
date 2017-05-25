@@ -6,15 +6,14 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderer;
+import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
@@ -25,7 +24,7 @@ import java.util.UUID;
 
 @SideOnly(Side.CLIENT)
 public class RenderHookOffHandItem
-        implements ISoldierRenderer
+        implements ISoldierRenderHook
 {
     private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.shear_blade);
     private static final ItemStack GRAVEL = new ItemStack(Blocks.GRAVEL);
@@ -50,7 +49,7 @@ public class RenderHookOffHandItem
     }
 
     @Override
-    public boolean onHandRender(ISoldier<?> soldier, RenderBiped<? extends EntityCreature> renderer, EnumHandSide handSide) {
+    public boolean onHandRender(ISoldier<?> soldier, ISoldierRender<?, ?> renderer, EnumHandSide handSide) {
         if( !this.doHandRendererSetup(soldier, handSide) ) {
             return false;
         }

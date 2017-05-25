@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
@@ -119,7 +119,7 @@ public class ItemSoldier
         }
     }
 
-    public static EntityClaySoldier[] spawnSoldiers(World world, Team team, final int count, double x, double y, double z, ItemStack dollStack) {
+    public static EntityClaySoldier[] spawnSoldiers(World world, ITeam team, final int count, double x, double y, double z, ItemStack dollStack) {
         if( team != TeamRegistry.NULL_TEAM ) {
             EntityClaySoldier[] soldiers = new EntityClaySoldier[count];
 

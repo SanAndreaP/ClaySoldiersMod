@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.compat.jei;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import mezz.jei.api.recipe.IRecipeHandler;
@@ -73,11 +73,11 @@ public class DyedSoldierRecipeHandler
 
             this.ingredients.add(OreDictionary.getOres(dyeColor));
 
-            List<Team> teamList = TeamRegistry.INSTANCE.getTeams();
+            List<ITeam> teamList = TeamRegistry.INSTANCE.getTeams();
             for( int i = 0; i < count; i++ ) {
                 List<ItemStack> ingredList = new ArrayList<>();
 
-                for( Team teamInst : teamList ) {
+                for( ITeam teamInst : teamList ) {
                     ingredList.add(TeamRegistry.INSTANCE.getNewTeamStack(1, teamInst.getId()));
                 }
 

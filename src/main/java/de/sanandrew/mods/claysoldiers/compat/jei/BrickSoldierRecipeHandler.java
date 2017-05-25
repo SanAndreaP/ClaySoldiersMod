@@ -7,8 +7,7 @@
 package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import com.google.common.collect.ImmutableList;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
-import de.sanandrew.mods.claysoldiers.crafting.OtherSoldierRecipe;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import mezz.jei.api.recipe.IRecipeHandler;
@@ -19,7 +18,6 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class BrickSoldierRecipeHandler
         implements IRecipeHandler<BrickSoldierRecipeHandler.JeiBrickSoldierRecipe>
@@ -64,7 +62,7 @@ public class BrickSoldierRecipeHandler
         final ItemStack result;
         final List<List<ItemStack>> ingredients;
 
-        JeiBrickSoldierRecipe(Team team) {
+        JeiBrickSoldierRecipe(ITeam team) {
             this.ingredients = new ArrayList<>();
 
             this.ingredients.add(ImmutableList.of(new ItemStack(Items.GHAST_TEAR, 1)));

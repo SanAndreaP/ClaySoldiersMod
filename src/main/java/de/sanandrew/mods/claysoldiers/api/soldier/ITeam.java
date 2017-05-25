@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
-public interface Team
+public interface ITeam
 {
     /**
      * gets the unique ID for that team.

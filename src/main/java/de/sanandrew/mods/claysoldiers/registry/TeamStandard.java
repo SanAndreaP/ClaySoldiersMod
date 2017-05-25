@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.Team;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Level;
@@ -19,7 +19,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class TeamStandard
-        implements Team
+        implements ITeam
 {
     private final UUID id;
     private final String name;
