@@ -15,10 +15,13 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentNavigableMap;
@@ -79,6 +82,11 @@ public class RenderClaySoldier
     }
 
     @Override
+    public boolean addRenderLayer(LayerRenderer<? extends EntityLivingBase> layer) {
+        return this.addLayer(layer);
+    }
+
+    @Override
     public ModelBiped getSoldierModel() {
         return this.modelBipedMain;
     }
@@ -91,5 +99,15 @@ public class RenderClaySoldier
     @Override
     public RenderClaySoldier getRender() {
         return this;
+    }
+
+    @Override
+    public Map<Integer, Queue<ISoldierRenderHook>> getRenderHookDesc() {
+        return this.renderHooks.descendingMap();
+    }
+
+    @Override
+    public Map<Integer, Queue<ISoldierRenderHook>> getRenderHookAsc() {
+        return new ConcurrentSkipListMap<>(this.renderHooks);
     }
 }

@@ -4,7 +4,7 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
+package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
@@ -25,9 +25,9 @@ public class LayerLeatherArmor
 {
     private final ModelLeatherArmor modelLeatherArmor;
     private final ModelLeatherArmor modelRabbitHide;
-    private final ISoldierRender renderer;
+    private final ISoldierRender<?, ?> renderer;
 
-    public LayerLeatherArmor(ISoldierRender renderer) {
+    public LayerLeatherArmor(ISoldierRender<?, ?> renderer) {
         this.renderer = renderer;
         this.modelLeatherArmor = new ModelLeatherArmor(Resources.ENTITY_SOLDIER_LEATHER_ARMOR.resource);
         this.modelRabbitHide = new ModelLeatherArmor(Resources.ENTITY_SOLDIER_RABBIT_HIDE.resource);
@@ -35,7 +35,7 @@ public class LayerLeatherArmor
 
     @Override
     public void doRenderLayer(EntityCreature creature, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        assert creature instanceof ISoldier;
+        if( !(creature instanceof ISoldier) ) { return; }
         ISoldier soldier = (ISoldier) creature;
 
         ISoldierUpgradeInst instL = soldier.getUpgradeInstance(UpgradeRegistry.MC_LEATHER, EnumUpgradeType.MISC);

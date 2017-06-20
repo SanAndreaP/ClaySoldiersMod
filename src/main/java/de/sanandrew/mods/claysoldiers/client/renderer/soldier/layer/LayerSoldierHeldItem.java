@@ -4,36 +4,43 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
+package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentNavigableMap;
 
 @SideOnly(Side.CLIENT)
 public class LayerSoldierHeldItem
-        implements LayerRenderer<EntityClaySoldier>
+        implements LayerRenderer<EntityCreature>
 {
-    private RenderClaySoldier renderer;
+    private ISoldierRender<?, ?> renderer;
 
-    public LayerSoldierHeldItem(RenderClaySoldier renderer) {
+    public LayerSoldierHeldItem(ISoldierRender<?, ?> renderer) {
         this.renderer = renderer;
     }
 
-    public void doRenderLayer(EntityClaySoldier soldier, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void doRenderLayer(EntityCreature creature, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        if( !(creature instanceof ISoldier) ) { return; }
+        ISoldier soldier = (ISoldier) creature;
+
         GlStateManager.pushMatrix();
 
         boolean doMain = true;
         boolean doOff = true;
-        for( Map.Entry<Integer, Queue<ISoldierRenderHook>> entry : this.renderer.renderHooks.descendingMap().entrySet() ) {
+        for( Map.Entry<Integer, Queue<ISoldierRenderHook>> entry : this.renderer.getRenderHookDesc().entrySet() ) {
             for( ISoldierRenderHook hook : entry.getValue() ) {
                 if( doMain && renderHeldItem(soldier, EnumHandSide.RIGHT, hook) ) {
                     doMain = false;
@@ -52,11 +59,11 @@ public class LayerSoldierHeldItem
         GlStateManager.popMatrix();
     }
 
-    private boolean renderHeldItem(EntityClaySoldier soldier, EnumHandSide handSide, ISoldierRenderHook renderer) {
+    private boolean renderHeldItem(ISoldier soldier, EnumHandSide handSide, ISoldierRenderHook renderer) {
         GlStateManager.pushMatrix();
 
         if( renderer.doHandRendererSetup(soldier, handSide) ) {
-            if (soldier.isSneaking()) {
+            if (soldier.getEntity().isSneaking()) {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
 

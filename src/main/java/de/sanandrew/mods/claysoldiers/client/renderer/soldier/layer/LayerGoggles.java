@@ -4,8 +4,10 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
+package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 
+import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.client.model.ModelGoggleBand;
@@ -20,6 +22,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
@@ -32,12 +35,12 @@ import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class LayerGoggles
-        implements LayerRenderer<EntityClaySoldier>
+        implements LayerRenderer<EntityCreature>
 {
     private final ModelGoggleBand model;
-    private final RenderClaySoldier renderer;
+    private final ISoldierRender<?, ?> renderer;
 
-    public LayerGoggles(RenderClaySoldier renderer) {
+    public LayerGoggles(ISoldierRender<?, ?> renderer) {
         this.renderer = renderer;
         this.model = new ModelGoggleBand();
     }
@@ -46,14 +49,17 @@ public class LayerGoggles
     private static final Map<EnumDyeColor, ItemStack> GLASS_STAINED = new EnumMap<>(EnumDyeColor.class);
 
     @Override
-    public void doRenderLayer(EntityClaySoldier soldier, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void doRenderLayer(EntityCreature creature, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        if( !(creature instanceof ISoldier) ) { return; }
+        ISoldier soldier = (ISoldier) creature;
+
         ISoldierUpgradeInst inst = soldier.getUpgradeInstance(UpgradeRegistry.MC_GLASS, EnumUpgradeType.MISC);
         if( inst != null ) {
             GlStateManager.pushMatrix();
-            this.renderer.modelBipedMain.bipedHead.postRender(scale);
+            this.renderer.getSoldierModel().bipedHead.postRender(scale);
 
             if( this.model.texture != null ) {
-                this.renderer.bindTexture(this.model.texture);
+                this.renderer.bindSoldierTexture(this.model.texture);
                 this.model.render(scale);
             }
 
