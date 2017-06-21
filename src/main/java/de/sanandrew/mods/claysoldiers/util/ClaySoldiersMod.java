@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
+import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
@@ -70,6 +71,8 @@ public class ClaySoldiersMod
         PLUGINS.forEach(plugin -> plugin.registerEffects(EffectRegistry.INSTANCE));
 
         CraftingRecipes.initialize();
+
+        DataSerializerUUID.initialize();
     }
 
     @Mod.EventHandler

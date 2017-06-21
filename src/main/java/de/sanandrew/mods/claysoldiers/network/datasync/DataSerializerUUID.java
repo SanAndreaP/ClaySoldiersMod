@@ -36,7 +36,7 @@ public class DataSerializerUUID
         return new DataParameter<>(id, this);
     }
 
-    static {
+    public static void initialize() {
         DataSerializers.registerSerializer(INSTANCE);
     }
 }
