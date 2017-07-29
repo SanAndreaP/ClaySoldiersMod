@@ -1,24 +1,23 @@
-Make sure you check following things before you open a new issue:
 
-[ ] Check that you use Java 8
-[ ] Check that you use the latest MinecraftForge version available for your version of Minecraft
-[ ] Check that you use the Minecraft version supported by the mod
+[ Please replace text in [] with the answer from the above question! ]
 
+Do you use Java 8?
+[Yes/No]
 
-Put the answers below the following questions:
- -What version of Minecraft do you use?
+What version of Minecraft do you use?
+[Minecraft Version Number]
+
+What version of MinecraftForge do you use?
+[Forge Version Number]
+
+What version of SanLib do you use?
+[SanLib Version Number]
  
- 
- -What version of MinecraftForge do you use?
+What is the issue / bug you have encountered? Give us a short description.
+[Description]
 
-
- -What version of SanLib do you use?
- 
- 
- -What is the issue / bug you have encountered? Give us a short description.
-
-
- -How can it be reproduced?
-
+How can it be reproduced?
+[Steps]
 
 Please post your log file (either in /logs/fml-client-latest.log or /logs/latest.log) on https://gist.github.com and provide the link:
+[Link to log file]
