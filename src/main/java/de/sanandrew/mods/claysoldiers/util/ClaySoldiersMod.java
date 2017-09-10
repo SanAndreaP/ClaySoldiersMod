@@ -70,8 +70,6 @@ public class ClaySoldiersMod
         PLUGINS.forEach(plugin -> plugin.registerUpgrades(UpgradeRegistry.INSTANCE));
         PLUGINS.forEach(plugin -> plugin.registerEffects(EffectRegistry.INSTANCE));
 
-        CraftingRecipes.initialize();
-
         DataSerializerUUID.initialize();
     }
 

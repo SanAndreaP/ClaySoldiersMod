@@ -26,7 +26,7 @@ import java.util.UUID;
 public class RenderHookOffHandItem
         implements ISoldierRenderHook
 {
-    private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.shear_blade);
+    private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.SHEAR_BLADE);
     private static final ItemStack GRAVEL = new ItemStack(Blocks.GRAVEL);
     private static final ItemStack SNOW = new ItemStack(Blocks.SNOW);
     private static final ItemStack MAGMA = new ItemStack(Blocks.MAGMA);

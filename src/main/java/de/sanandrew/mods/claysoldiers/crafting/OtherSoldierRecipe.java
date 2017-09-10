@@ -18,9 +18,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,8 @@ public class OtherSoldierRecipe
         extends IForgeRegistryEntry.Impl<IRecipe>
         implements IRecipe
 {
-    private ItemStack resultItem;
+    @Nonnull
+    private ItemStack resultItem = ItemStack.EMPTY;
 
     public static final UUID[] TEAMS = {
             TeamRegistry.SOLDIER_MELON,
@@ -56,13 +57,13 @@ public class OtherSoldierRecipe
 
         List<Integer> dollIndices = new ArrayList<>();
 
-        this.resultItem = null;
+        this.resultItem = ItemStack.EMPTY;
 
         invLoop:
         for( int i = 0, max = inv.getSizeInventory(); i < max; i++ ) {
             ItemStack invStack = inv.getStackInSlot(i);
 
-            if( invStack == null ) {
+            if( !ItemStackUtils.isValid(invStack) ) {
                 continue;
             }
 
@@ -76,7 +77,7 @@ public class OtherSoldierRecipe
                 }
             }
 
-            if( ItemStackUtils.isItem(invStack, ItemRegistry.doll_soldier) && dollIndices.size() < 4 ) {
+            if( ItemStackUtils.isItem(invStack, ItemRegistry.DOLL_SOLDIER) && dollIndices.size() < 4 ) {
                 dollIndices.add(i);
             } else if( ItemStackUtils.isValid(invStack) ) {
                 return false;
@@ -92,7 +93,7 @@ public class OtherSoldierRecipe
             return false;
         }
 
-        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.doll_soldier, 4), TEAMS[itmId]);
+        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.DOLL_SOLDIER, 4), TEAMS[itmId]);
         return true;
     }
 
@@ -123,5 +124,10 @@ public class OtherSoldierRecipe
         }
 
         return invStacks;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return true;
     }
 }

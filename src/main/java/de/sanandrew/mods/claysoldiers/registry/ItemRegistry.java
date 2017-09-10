@@ -8,7 +8,6 @@
  */
 package de.sanandrew.mods.claysoldiers.registry;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemBrickSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.item.ItemShearBlade;
@@ -17,30 +16,22 @@ import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@SuppressWarnings("ConstantNamingConvention")
 @Mod.EventBusSubscriber
-@GameRegistry.ObjectHolder(CsmConstants.ID)
 public class ItemRegistry
 {
-    public static final ItemSoldier doll_soldier = nilItem();
-    public static final ItemDisruptor disruptor = nilItem();
-    public static final ItemBrickSoldier doll_brick_soldier = nilItem();
-    public static final ItemShearBlade shear_blade = nilItem();
+    public static final ItemSoldier DOLL_SOLDIER = new ItemSoldier();
+    public static final ItemDisruptor DISRUPTOR = new ItemDisruptor();
+    public static final ItemBrickSoldier DOLL_BRICK_SOLDIER = new ItemBrickSoldier();
+    public static final ItemShearBlade SHEAR_BLADE = new ItemShearBlade();
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
-            new ItemSoldier().setRegistryName(CsmConstants.ID, "doll_soldier"),
-            new ItemDisruptor().setRegistryName(CsmConstants.ID, "disruptor"),
-            new ItemBrickSoldier().setRegistryName(CsmConstants.ID, "doll_brick_soldier"),
-            new ItemShearBlade().setRegistryName(CsmConstants.ID, "shear_blade")
+                DOLL_SOLDIER,
+                DISRUPTOR,
+                DOLL_BRICK_SOLDIER,
+                SHEAR_BLADE
         );
-    }
-
-    /** prevents IDE from thinking the item fields are null */
-    private static <T> T nilItem() {
-        return null;
     }
 }

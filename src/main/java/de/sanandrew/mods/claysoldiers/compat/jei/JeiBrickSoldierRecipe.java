@@ -25,7 +25,7 @@ class JeiBrickSoldierRecipe
         this.ingredients = new ArrayList<>();
 
         this.ingredients.add(ImmutableList.of(new ItemStack(Items.GHAST_TEAR, 1)));
-        this.ingredients.add(ImmutableList.of(new ItemStack(ItemRegistry.doll_brick_soldier, 1)));
+        this.ingredients.add(ImmutableList.of(new ItemStack(ItemRegistry.DOLL_BRICK_SOLDIER, 1)));
 
         if( team != TeamRegistry.NULL_TEAM ) {
             this.result = TeamRegistry.INSTANCE.getNewTeamStack(1, team);

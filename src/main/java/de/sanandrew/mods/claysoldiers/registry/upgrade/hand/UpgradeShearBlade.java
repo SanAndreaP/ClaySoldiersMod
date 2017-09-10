@@ -33,7 +33,7 @@ import java.util.UUID;
 public class UpgradeShearBlade
         implements ISoldierUpgrade
 {
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(ItemRegistry.shear_blade, 1) };
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(ItemRegistry.SHEAR_BLADE, 1) };
     private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_ATTACK_SUCCESS,
                                                                                     EnumFunctionCalls.ON_TICK,
                                                                                     EnumFunctionCalls.ON_DEATH};

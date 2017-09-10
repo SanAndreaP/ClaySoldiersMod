@@ -28,7 +28,7 @@ public class RenderHookMainHandItem
     private static final ItemStack STICK = new ItemStack(Items.STICK);
     private static final ItemStack ARROW = new ItemStack(Items.ARROW);
     private static final ItemStack BLAZEROD = new ItemStack(Items.BLAZE_ROD);
-    private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.shear_blade);
+    private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.SHEAR_BLADE);
     private static final ItemStack SPECLEDMELON = new ItemStack(Items.SPECKLED_MELON);
 
     private final int priority;

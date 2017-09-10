@@ -46,8 +46,8 @@ public class ItemSoldier
         this.setUnlocalizedName(CsmConstants.ID + ":doll_soldier");
         this.addPropertyOverride(new ResourceLocation("soldierTeamId"), SOLDIER_TEX_ID);
         this.setMaxDamage(0);
-        this.setHasSubtypes(true);
         this.maxStackSize = 16;
+        this.setRegistryName(CsmConstants.ID, "doll_soldier");
     }
 
     @Override

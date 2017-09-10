@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C",
+    "S"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "result": {
+    "item": "claysoldiers:doll_soldier",
+    "count": 4,
+    "nbt": {
+      "dollSoldier": {
+        "team": "ca383b5d-ddaf-4523-9001-5a5685ef5fba"
+      }
+    }
+  }
+}

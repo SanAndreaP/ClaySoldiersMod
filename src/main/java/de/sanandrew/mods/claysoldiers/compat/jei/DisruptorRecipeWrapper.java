@@ -19,7 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
@@ -33,7 +32,7 @@ public class DisruptorRecipeWrapper
     private final ItemStack output;
 
     public DisruptorRecipeWrapper(ItemDisruptor.DisruptorType type) {
-        this.output = ItemDisruptor.setType(new ItemStack(ItemRegistry.disruptor, 1), type);
+        this.output = ItemDisruptor.setType(new ItemStack(ItemRegistry.DISRUPTOR, 1), type);
         this.input = new ArrayList<>();
         this.input.add(ImmutableList.of());
         this.input.add(OreDictionary.getOres("stickWood"));

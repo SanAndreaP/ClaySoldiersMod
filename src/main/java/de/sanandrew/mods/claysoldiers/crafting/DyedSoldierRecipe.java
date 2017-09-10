@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.UUID;
@@ -26,7 +27,8 @@ public class DyedSoldierRecipe
         implements IRecipe
 {
     private int dyedCount;
-    private ItemStack resultItem;
+    @Nonnull
+    private ItemStack resultItem = ItemStack.EMPTY;
 
     public static final UUID[] TEAMS = {
             TeamRegistry.SOLDIER_BLACK,
@@ -69,7 +71,7 @@ public class DyedSoldierRecipe
     public boolean matches(InventoryCrafting inv, World worldIn) {
         int dyeId = -1;
         this.dyedCount = 0;
-        this.resultItem = null;
+        this.resultItem = ItemStack.EMPTY;
 
         invLoop:
         for( int i = 0, max = inv.getSizeInventory(); i < max; i++ ) {
@@ -92,7 +94,7 @@ public class DyedSoldierRecipe
                 }
             }
 
-            if( ItemStackUtils.isItem(invStack, ItemRegistry.doll_soldier) ) {
+            if( ItemStackUtils.isItem(invStack, ItemRegistry.DOLL_SOLDIER) ) {
                 this.dyedCount++;
             } else if( ItemStackUtils.isValid(invStack) ) {
                 return false;
@@ -103,7 +105,7 @@ public class DyedSoldierRecipe
             return false;
         }
 
-        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.doll_soldier, dyedCount), TEAMS[dyeId]);
+        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.DOLL_SOLDIER, dyedCount), TEAMS[dyeId]);
         return true;
     }
 
@@ -134,5 +136,10 @@ public class DyedSoldierRecipe
         }
 
         return invStacks;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return true;
     }
 }

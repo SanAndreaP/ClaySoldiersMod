@@ -17,6 +17,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ClearSoldierRecipe
@@ -24,18 +25,19 @@ class ClearSoldierRecipe
         implements IRecipe
 {
     private int dyedCount;
-    private ItemStack resultItem;
+    @Nonnull
+    private ItemStack resultItem = ItemStack.EMPTY;
 
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
         boolean hasBucket = false;
         this.dyedCount = 0;
-        this.resultItem = null;
+        this.resultItem = ItemStack.EMPTY;
 
         for( int i = 0, max = inv.getSizeInventory(); i < max; i++ ) {
             ItemStack invStack = inv.getStackInSlot(i);
 
-            if( invStack == null ) {
+            if( !ItemStackUtils.isValid(invStack) ) {
                 continue;
             }
 
@@ -46,7 +48,7 @@ class ClearSoldierRecipe
                 }
             }
 
-            if( ItemStackUtils.isItem(invStack, ItemRegistry.doll_soldier) ) {
+            if( ItemStackUtils.isItem(invStack, ItemRegistry.DOLL_SOLDIER) ) {
                 this.dyedCount++;
             } else if( ItemStackUtils.isValid(invStack) ) {
                 return false;
@@ -57,7 +59,7 @@ class ClearSoldierRecipe
             return false;
         }
 
-        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.doll_soldier, dyedCount), TeamRegistry.SOLDIER_CLAY);
+        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.DOLL_SOLDIER, dyedCount), TeamRegistry.SOLDIER_CLAY);
         return true;
     }
 
@@ -88,5 +90,10 @@ class ClearSoldierRecipe
         }
 
         return invStacks;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return true;
     }
 }

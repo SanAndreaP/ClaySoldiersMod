@@ -19,5 +19,6 @@ public class ItemBrickSoldier
         this.setUnlocalizedName(CsmConstants.ID + ":doll_brick_soldier");
         this.setMaxDamage(0);
         this.maxStackSize = 16;
+        this.setRegistryName(CsmConstants.ID, "doll_brick_soldier");
     }
 }

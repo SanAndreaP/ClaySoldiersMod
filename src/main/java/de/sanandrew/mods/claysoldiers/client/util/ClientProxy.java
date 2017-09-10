@@ -59,7 +59,7 @@ public class ClientProxy
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorSoldier(), ItemRegistry.doll_soldier);
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorSoldier(), ItemRegistry.DOLL_SOLDIER);
 
         this.soldierRenderer = (ISoldierRender) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
 

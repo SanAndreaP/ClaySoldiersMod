@@ -20,19 +20,20 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
 
 //TODO: make it a proper 3x3 recipe
 class DisruptorRecipe
         extends IForgeRegistryEntry.Impl<IRecipe>
         implements IRecipe
 {
+    @Nonnull
     private final ItemStack result;
     private ItemStack[] coreItems;
 
     public DisruptorRecipe(ItemDisruptor.DisruptorType type) {
-        this.result = ItemDisruptor.setType(new ItemStack(ItemRegistry.disruptor, 1), type);
+        this.result = ItemDisruptor.setType(new ItemStack(ItemRegistry.DISRUPTOR, 1), type);
 
         switch (type) {
             case CLAY:
@@ -106,5 +107,10 @@ class DisruptorRecipe
         }
 
         return invStacks;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return true;
     }
 }

@@ -14,7 +14,6 @@ import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -38,10 +37,10 @@ public final class ModelRegistry
 {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) throws Exception {
-        setStandardModel(ItemRegistry.doll_brick_soldier);
-        setStandardModel(ItemRegistry.shear_blade);
-        setCustomMeshModel(ItemRegistry.doll_soldier, new MeshDefUUID.Soldier());
-        setCustomMeshModel(ItemRegistry.disruptor, new MeshDefDisruptor());
+        setStandardModel(ItemRegistry.DOLL_BRICK_SOLDIER);
+        setStandardModel(ItemRegistry.SHEAR_BLADE);
+        setCustomMeshModel(ItemRegistry.DOLL_SOLDIER, new MeshDefUUID.Soldier());
+        setCustomMeshModel(ItemRegistry.DISRUPTOR, new MeshDefDisruptor());
     }
 
     private static void setStandardModel(Item item) {

@@ -45,7 +45,7 @@ public class JeiPlugin
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.disruptor, itemStack -> ItemDisruptor.getType(itemStack).name());
-        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.doll_soldier, itemStack -> TeamRegistry.INSTANCE.getTeam(itemStack).toString());
+        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DISRUPTOR, itemStack -> ItemDisruptor.getType(itemStack).name());
+        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_SOLDIER, itemStack -> TeamRegistry.INSTANCE.getTeam(itemStack).toString());
     }
 }

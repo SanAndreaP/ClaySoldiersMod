@@ -18,6 +18,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +27,14 @@ public class BrickSoldierConvRecipe
         extends IForgeRegistryEntry.Impl<IRecipe>
         implements IRecipe
 {
-    private final List<Integer> remaining;
-    private ItemStack resultItem;
+    private final List<Integer> remaining = new ArrayList<>();
     private int itmCount;
-
-    public BrickSoldierConvRecipe() {
-        this.remaining = new ArrayList<>();
-    }
+    @Nonnull
+    private ItemStack resultItem = ItemStack.EMPTY;
 
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
-        this.resultItem = null;
+        this.resultItem = ItemStack.EMPTY;
         this.itmCount = 0;
         this.remaining.clear();
 
@@ -51,13 +49,13 @@ public class BrickSoldierConvRecipe
                 continue;
             }
 
-            if( ItemStackUtils.isItem(stack, ItemRegistry.doll_brick_soldier) ) {
+            if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER) ) {
                 if( !hasBrickDoll ) {
                     hasBrickDoll = true;
                 } else {
                     return false;
                 }
-            } else if( ItemStackUtils.isItem(stack, ItemRegistry.doll_soldier) ) {
+            } else if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_SOLDIER) ) {
                 resultTeam = TeamRegistry.INSTANCE.getTeam(stack);
                 if( resultTeam == TeamRegistry.NULL_TEAM ) {
                     return false;
@@ -110,5 +108,10 @@ public class BrickSoldierConvRecipe
         });
 
         return ret;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return true;
     }
 }

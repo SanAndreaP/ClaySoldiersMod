@@ -40,8 +40,8 @@ public class ItemDisruptor
         this.setCreativeTab(CsmCreativeTabs.MISC);
         this.setUnlocalizedName(CsmConstants.ID + ":disruptor");
         this.addPropertyOverride(new ResourceLocation("disruptorType"), DISRUPTOR_TEX);
-        this.setHasSubtypes(true);
         this.maxStackSize = 1;
+        this.setRegistryName(CsmConstants.ID, "disruptor");
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ItemDisruptor
 
     @SuppressWarnings("ConstantConditions")
     public static DisruptorType getType(ItemStack stack) {
-        if( ItemStackUtils.isItem(stack, ItemRegistry.disruptor) ) {
+        if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
             NBTTagCompound nbt = stack.getSubCompound("disruptor");
             if( nbt != null && nbt.hasKey("type", Constants.NBT.TAG_BYTE) ) {
                 byte type = nbt.getByte("type");
@@ -106,7 +106,7 @@ public class ItemDisruptor
     }
 
     public static ItemStack setType(ItemStack stack, DisruptorType type) {
-        if( ItemStackUtils.isItem(stack, ItemRegistry.disruptor) ) {
+        if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
             NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
             nbt.setByte("type", (byte) type.ordinal());
         }

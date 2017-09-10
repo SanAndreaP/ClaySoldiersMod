@@ -12,7 +12,6 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,7 +27,7 @@ public class CsmCreativeTabs
         public ItemStack getTabIconItem() {
             if( this.tabIcons == null ) {
                 NonNullList<ItemStack> subItms = NonNullList.create();
-                ItemRegistry.doll_soldier.getSubItems(this, subItms);
+                ItemRegistry.DOLL_SOLDIER.getSubItems(this, subItms);
                 this.tabIcons = subItms.toArray(new ItemStack[subItms.size()]);
             }
 
@@ -48,7 +47,7 @@ public class CsmCreativeTabs
         @Override
         public ItemStack getTabIconItem() {
             if( this.clayDisruptor == null ) {
-                this.clayDisruptor = ItemDisruptor.setType(new ItemStack(ItemRegistry.disruptor, 1), ItemDisruptor.DisruptorType.CLAY);
+                this.clayDisruptor = ItemDisruptor.setType(new ItemStack(ItemRegistry.DISRUPTOR, 1), ItemDisruptor.DisruptorType.CLAY);
             }
 
             return this.clayDisruptor;

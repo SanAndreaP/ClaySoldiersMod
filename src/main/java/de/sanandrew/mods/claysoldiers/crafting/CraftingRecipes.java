@@ -19,12 +19,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.UUID;
-
 @Mod.EventBusSubscriber
 public class CraftingRecipes
 {
-    public static void initialize() {
 //        CraftingManager.getRecipeList().add(new DisruptorRecipe(ItemDisruptor.DisruptorType.CLAY));
 //        CraftingManager.getInstance().getRecipeList().add(new DisruptorRecipe(ItemDisruptor.DisruptorType.HARDENED));
 //        CraftingManager.getInstance().getRecipeList().add(new DisruptorRecipe(ItemDisruptor.DisruptorType.OBSIDIAN));
@@ -34,11 +31,6 @@ public class CraftingRecipes
 //        CraftingManager.getInstance().getRecipeList().add(new OtherSoldierRecipe());
 //        CraftingManager.getInstance().getRecipeList().add(new BrickSoldierConvRecipe());
 //
-//        CraftingManager.getInstance().addRecipe(TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.doll_soldier, 4), TeamRegistry.SOLDIER_CLAY),
-//                "C", "S",
-//                'C', Blocks.CLAY,
-//                'S', Blocks.SOUL_SAND);
-    }
 
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {

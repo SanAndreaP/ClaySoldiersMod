@@ -766,7 +766,7 @@ public class EntityClaySoldier
 
             if( this.doll != null ) {
                 if( damageSource.isFireDamage() ) {
-                    ItemStack brickDoll = new ItemStack(ItemRegistry.doll_brick_soldier, 1);
+                    ItemStack brickDoll = new ItemStack(ItemRegistry.DOLL_BRICK_SOLDIER, 1);
                     drops.add(brickDoll);
                 } else {
                     drops.add(this.doll);

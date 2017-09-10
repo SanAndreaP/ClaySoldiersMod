@@ -24,7 +24,7 @@ public class ParticleTeamBreaking
         extends ParticleBreaking
 {
     protected ParticleTeamBreaking(World worldIn, double posXIn, double posYIn, double posZIn, ITeam sldTeam) {
-        super(worldIn, posXIn, posYIn, posZIn, ItemRegistry.doll_soldier);
+        super(worldIn, posXIn, posYIn, posZIn, ItemRegistry.DOLL_SOLDIER);
 
         ItemStack teamStack = TeamRegistry.INSTANCE.getNewTeamStack(1, sldTeam);
         ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
