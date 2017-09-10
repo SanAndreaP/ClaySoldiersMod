@@ -32,9 +32,9 @@ public class EntityAISoldierUpgradeItem
         this.taskOwner = soldier;
         this.tgtSelector = entity -> {
             if( entity != null && entity.isEntityAlive() && !entity.cannotPickup() ) {
-                ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(entity.getEntityItem());
-                return upgrade != null && upgrade.checkPickupable(this.taskOwner, entity.getEntityItem()) && this.taskOwner.canEntityBeSeen(entity)
-                       && !this.taskOwner.hasUpgrade(entity.getEntityItem(), upgrade.getType(this.taskOwner))
+                ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(entity.getItem());
+                return upgrade != null && upgrade.checkPickupable(this.taskOwner, entity.getItem()) && this.taskOwner.canEntityBeSeen(entity)
+                       && !this.taskOwner.hasUpgrade(entity.getItem(), upgrade.getType(this.taskOwner))
                        && (upgrade.getType(this.taskOwner) != EnumUpgradeType.MAIN_HAND || !this.taskOwner.hasMainHandUpgrade())
                        && (upgrade.getType(this.taskOwner) != EnumUpgradeType.OFF_HAND || !this.taskOwner.hasOffHandUpgrade());
             }
@@ -68,7 +68,7 @@ public class EntityAISoldierUpgradeItem
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return this.taskOwner.followingEntity == null;
     }
 
@@ -79,6 +79,6 @@ public class EntityAISoldierUpgradeItem
 
     private AxisAlignedBB getTargetableArea() {
         double targetDistance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
-        return this.taskOwner.getEntityBoundingBox().expand(targetDistance, targetDistance, targetDistance);
+        return this.taskOwner.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
     }
 }

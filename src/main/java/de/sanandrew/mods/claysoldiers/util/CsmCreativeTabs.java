@@ -12,14 +12,11 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CsmCreativeTabs
 {
@@ -28,20 +25,20 @@ public class CsmCreativeTabs
 
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
-            return ItemRegistry.doll_soldier;
+        public ItemStack getTabIconItem() {
+            if( this.tabIcons == null ) {
+                NonNullList<ItemStack> subItms = NonNullList.create();
+                ItemRegistry.doll_soldier.getSubItems(this, subItms);
+                this.tabIcons = subItms.toArray(new ItemStack[subItms.size()]);
+            }
+
+            return this.tabIcons[(int) (System.currentTimeMillis() / 4250) % this.tabIcons.length];
         }
 
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack getIconItemStack() {
-            if( this.tabIcons == null ) {
-                List<ItemStack> subItms = new ArrayList<>();
-                ItemRegistry.doll_soldier.getSubItems(ItemRegistry.doll_soldier, this, subItms);
-                this.tabIcons = subItms.toArray(new ItemStack[subItms.size()]);
-            }
-
-            return this.tabIcons[(int) (System.currentTimeMillis() / 4250) % this.tabIcons.length];
+            return this.getTabIconItem();
         }
     };
 
@@ -49,18 +46,18 @@ public class CsmCreativeTabs
         private ItemStack clayDisruptor;
 
         @Override
-        public Item getTabIconItem() {
-            return ItemRegistry.disruptor;
-        }
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        public ItemStack getIconItemStack() {
+        public ItemStack getTabIconItem() {
             if( this.clayDisruptor == null ) {
                 this.clayDisruptor = ItemDisruptor.setType(new ItemStack(ItemRegistry.disruptor, 1), ItemDisruptor.DisruptorType.CLAY);
             }
 
             return this.clayDisruptor;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public ItemStack getIconItemStack() {
+            return this.getTabIconItem();
         }
     };
 

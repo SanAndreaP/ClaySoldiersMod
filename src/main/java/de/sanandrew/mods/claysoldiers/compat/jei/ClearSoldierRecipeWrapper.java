@@ -8,22 +8,22 @@ package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import com.google.common.collect.ImmutableList;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapperFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ClearSoldierRecipeWrapper
-        implements ICraftingRecipeWrapper
+        implements IRecipeWrapper
 {
     private final List<List<ItemStack>> input;
     private final ItemStack output;
 
 
-    public ClearSoldierRecipeWrapper(ClearSoldierRecipeHandler.JeiClearSoldierRecipe type) {
+    public ClearSoldierRecipeWrapper(JeiClearSoldierRecipe type) {
         this.input = type.ingredients;
         this.output = type.result;
     }
@@ -35,37 +35,7 @@ public class ClearSoldierRecipeWrapper
     }
 
     @Override
-    @Deprecated
-    public List getInputs() {
-        return this.input;
-    }
-
-    @Override
-    @Deprecated
-    public List<ItemStack> getOutputs() {
-        return ImmutableList.of(this.output);
-    }
-
-    @Override
-    @Deprecated
-    public List<FluidStack> getFluidInputs() {
-        return ImmutableList.of();
-    }
-
-    @Override
-    @Deprecated
-    public List<FluidStack> getFluidOutputs() {
-        return ImmutableList.of();
-    }
-
-    @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
     }
 
@@ -78,5 +48,14 @@ public class ClearSoldierRecipeWrapper
     @Override
     public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         return false;
+    }
+
+    public static class Factory
+            implements IRecipeWrapperFactory<JeiClearSoldierRecipe>
+    {
+        @Override
+        public IRecipeWrapper getRecipeWrapper(JeiClearSoldierRecipe recipe) {
+            return new ClearSoldierRecipeWrapper(recipe);
+        }
     }
 }

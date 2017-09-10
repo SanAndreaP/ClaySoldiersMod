@@ -14,13 +14,16 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BrickSoldierConvRecipe
+        extends IForgeRegistryEntry.Impl<IRecipe>
         implements IRecipe
 {
     private final List<Integer> remaining;
@@ -87,8 +90,8 @@ public class BrickSoldierConvRecipe
     }
 
     @Override
-    public int getRecipeSize() {
-        return Math.max(this.itmCount, 2);
+    public boolean canFit(int width, int height) {
+        return width + height >= Math.max(this.itmCount, 2);
     }
 
     @Nullable
@@ -98,12 +101,12 @@ public class BrickSoldierConvRecipe
     }
 
     @Override
-    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-        ItemStack[] ret = new ItemStack[inv.getSizeInventory()];
+    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+        NonNullList<ItemStack> ret = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
         this.remaining.forEach(id -> {
-            ret[id] = inv.getStackInSlot(id).copy();
-            ret[id].stackSize = 1;
+            ret.set(id, inv.getStackInSlot(id).copy());
+            ret.get(id).setCount(1);
         });
 
         return ret;

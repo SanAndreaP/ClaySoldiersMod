@@ -65,7 +65,7 @@ public abstract class LeftHandUpgrade implements IUpgradeItem {
                 0.2F,
                 ((entity.getEntity().getRNG().nextFloat() - entity.getEntity().getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F
         );
-        item.getEntityItem().stackSize--;
+        item.getEntityItem().setCount(.getCount() - 1);
         if( item.getEntityItem().stackSize <= 0 ) {
             entity.getEntity().onItemPickup(item, 1);
             item.setDead();

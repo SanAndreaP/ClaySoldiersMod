@@ -38,6 +38,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -99,6 +100,7 @@ public class EntityClaySoldier
     private final Queue<ISoldierEffectInst> effectList;
     private final Queue<ISoldierEffectInst> effectSyncList;
 
+    @Nonnull
     private ItemStack doll;
     public Boolean i58O55;
 
@@ -138,7 +140,7 @@ public class EntityClaySoldier
         ((PathNavigateGround) this.getNavigator()).setCanSwim(true);
     }
 
-    public EntityClaySoldier(World world, @Nonnull ITeam team, @Nullable ItemStack doll) {
+    public EntityClaySoldier(World world, @Nonnull ITeam team, @Nonnull ItemStack doll) {
         this(world, team);
 
         this.doll = doll;
@@ -240,7 +242,7 @@ public class EntityClaySoldier
     }
 
     @Override
-    public ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, ItemStack stack) {
+    public ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, @Nonnull ItemStack stack) {
         if( upgrade == null ) {
             return null;
         }
@@ -279,7 +281,7 @@ public class EntityClaySoldier
     }
 
     @Override
-    public boolean hasUpgrade(ItemStack stack, EnumUpgradeType type) {
+    public boolean hasUpgrade(@Nonnull ItemStack stack, EnumUpgradeType type) {
         return hasUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(stack), type);
     }
 
@@ -296,17 +298,18 @@ public class EntityClaySoldier
     public boolean pickupUpgrade(EntityItem item) {
         this.navigator.clearPathEntity();
         this.followingEntity = null;
+        ItemStack stack = item.getItem();
 
-        if( item.getEntityItem().stackSize < 1 ) {
+        if( stack.getCount() < 1 ) {
             return false;
         }
 
-        ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(item.getEntityItem());
+        ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(stack);
         if( upg == null || this.hasUpgrade(upg, upg.getType(this)) ) {
             return false;
         }
 
-        ISoldierUpgradeInst upgInst = this.addUpgrade(upg, upg.getType(this), item.getEntityItem());
+        ISoldierUpgradeInst upgInst = this.addUpgrade(upg, upg.getType(this), stack);
         if( upgInst != null ) {
             if( Arrays.asList(upg.getFunctionCalls()).contains(ISoldierUpgrade.EnumFunctionCalls.ON_PICKUP) ) {
                 upg.onPickup(this, item, upgInst);
@@ -476,11 +479,11 @@ public class EntityClaySoldier
     }
 
     @Override
-    public void moveEntity(double motionX, double motionY, double motionZ) {
+    public void move(MoverType type, double motionX, double motionY, double motionZ) {
         if( this.canMove() ) {
-            super.moveEntity(motionX, motionY, motionZ);
+            super.move(type, motionX, motionY, motionZ);
         } else {
-            super.moveEntity(0.0D, motionY > 0.0D ? motionY / 2.0D : motionY, 0.0D);
+            super.move(type, 0.0D, motionY > 0.0D ? motionY / 2.0D : motionY, 0.0D);
         }
     }
 
@@ -501,7 +504,7 @@ public class EntityClaySoldier
         boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg);
 
         if( attackSuccess ) {
-            if( this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().expandXyz(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg));
+            if( this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().grow(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg));
 
             int fireAspectMod = EnchantmentHelper.getFireAspectModifier(this);
 
@@ -638,9 +641,7 @@ public class EntityClaySoldier
         compound.setByte("soldier_texture_type", this.dataManager.get(TEXTURE_TYPE_PARAM));
         compound.setByte("soldier_texture_id", this.dataManager.get(TEXTURE_ID_PARAM));
 
-        if( this.doll != null ) {
-            ItemStackUtils.writeStackToTag(this.doll, compound, "soldier_doll");
-        }
+        ItemStackUtils.writeStackToTag(this.doll, compound, "soldier_doll");
 
         NBTTagList upgrades = new NBTTagList();
         this.upgradeMap.forEach((upgEntry, upgInst) -> {
@@ -678,7 +679,7 @@ public class EntityClaySoldier
         this.dataManager.set(TEXTURE_ID_PARAM, compound.getByte("soldier_texture_id"));
 
         if( compound.hasKey("soldier_doll", Constants.NBT.TAG_COMPOUND) ) {
-            this.doll = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("soldier_doll"));
+            this.doll = new ItemStack(compound.getCompoundTag("soldier_doll"));
         }
 
         NBTTagList upgrades = compound.getTagList("soldier_upgrades", Constants.NBT.TAG_COMPOUND);
@@ -687,7 +688,7 @@ public class EntityClaySoldier
             String idStr = upgNbt.getString("upg_id");
             byte type = upgNbt.getByte("upg_type");
             if( UuidUtils.isStringUuid(idStr) ) {
-                ItemStack upgStack = ItemStack.loadItemStackFromNBT(upgNbt.getCompoundTag("upg_item"));
+                ItemStack upgStack = new ItemStack(upgNbt.getCompoundTag("upg_item"));
                 ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr));
                 if( upgrade != null && ItemStackUtils.isValid(upgStack) ) {
                     ISoldierUpgradeInst upgInst = new SoldierUpgrade(upgrade, EnumUpgradeType.VALUES[type], upgStack);
@@ -718,7 +719,7 @@ public class EntityClaySoldier
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        Entity srcEntity = source.getEntity();
+        Entity srcEntity = source.getTrueSource();
 
         MutableFloat dmgMutable = new MutableFloat(damage);
         this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DAMAGED, inst -> inst.getUpgrade().onDamaged(this, inst, srcEntity, source, dmgMutable));
@@ -732,7 +733,7 @@ public class EntityClaySoldier
 
             if( this.i58O55 ) { damage /= 3.0F; }
 
-            if( source == DamageSource.fall ) {
+            if( source == DamageSource.FALL ) {
                 damage *= 4.0F;
             }
         } else {
@@ -809,9 +810,8 @@ public class EntityClaySoldier
         return null;
     }
 
-
     @Override
-    protected SoundEvent getHurtSound() {
+    protected SoundEvent getHurtSound(DamageSource src) {
         return SoundEvents.BLOCK_GRAVEL_BREAK;//return ModConfig.useOldHurtSound ? "claysoldiers:mob.soldier.hurt" : "dig.gravel";
     }
 

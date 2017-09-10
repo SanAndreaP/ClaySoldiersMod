@@ -53,7 +53,7 @@ public class UpgradeArrow
             soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), true);
             soldier.getEntity().entityDropItem(new ItemStack(Items.FEATHER, 1), 0.0F);
             soldier.getEntity().entityDropItem(new ItemStack(Items.FLINT, 1), 0.0F);
-            stack.stackSize--;
+            stack.setCount(stack.getCount() - 1);
         }
     }
 }

@@ -68,7 +68,7 @@ public class UpgradeSpeckledMelon
         if( !soldier.getEntity().world.isRemote ) {
             upgradeInst.getNbtData().setByte("uses", MAX_USES);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            stack.stackSize--;
+            stack.setCount(stack.getCount() - 1);
         }
     }
 

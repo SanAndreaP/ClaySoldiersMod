@@ -36,6 +36,11 @@ public class DataSerializerUUID
         return new DataParameter<>(id, this);
     }
 
+    @Override
+    public UUID copyValue(UUID value) {
+        return value == null ? null : new UUID(value.getMostSignificantBits(), value.getLeastSignificantBits());
+    }
+
     public static void initialize() {
         DataSerializers.registerSerializer(INSTANCE);
     }

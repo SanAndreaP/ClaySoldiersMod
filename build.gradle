@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -22,7 +22,7 @@ idea {
     }
 }
 
-version = "1.10.2-3.0.0-alpha.2"
+version = "1.12-3.0.0-alpha.3"
 group = "de.sanandrew.mods"
 archivesBaseName = "ClaySoldiersMod"
 
@@ -32,20 +32,20 @@ compileJava {
 }
 
 minecraft {
-    version = "1.10.2-12.18.2.2099"
+    version = "1.12-14.21.1.2387"
     runDir = "run"
-    mappings = "snapshot_20161115"
+    mappings = "snapshot_20170716"
 }
 
 repositories {
-  maven {
-    url = "http://dvs1.progwml6.com/files/maven"
-  }
+    maven {
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
 }
 
 dependencies {
-  deobfCompile "mezz.jei:jei_1.10.2:3.14.2.401:api"
-  runtime "mezz.jei:jei_1.10.2:3.14.2.401"
+    deobfCompile "mezz.jei:jei_1.12:4.7.1.69:api"
+    runtime "mezz.jei:jei_1.12:4.7.1.69"
 }
 
 processResources {

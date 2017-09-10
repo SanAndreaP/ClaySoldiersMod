@@ -93,7 +93,7 @@ public class UpgradeGoggles
         if( !soldier.getEntity().world.isRemote ) {
             if( ItemStackUtils.isBlock(stack, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) || ItemStackUtils.isItem(stack, Items.GLASS_BOTTLE) ) {
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-                stack.stackSize--;
+                stack.setCount(stack.getCount() - 1);
             } else {
                 soldier.getEntity().playSound(SoundEvents.BLOCK_GLASS_BREAK, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             }

@@ -1890,7 +1890,7 @@ public class EntityClayMan_OLD extends EntityCreature /*, IEntityAdditionalSpawn
 	public void gotcha(EntityItem item) {
 		worldObj.playSoundAtEntity(item, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		if (item.getDataWatcher().getWatchableObjectItemStack(10) != null) {
-			item.getDataWatcher().getWatchableObjectItemStack(10).stackSize--;
+			item.getDataWatcher().getWatchableObjectItemStack(10).setCount(.getCount() - 1);
 			if (item.getDataWatcher().getWatchableObjectItemStack(10).stackSize <= 0) {
 				item.setDead();
 			}

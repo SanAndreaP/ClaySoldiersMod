@@ -16,8 +16,8 @@ public class LivingAttackEventHandler
 {
     @SubscribeEvent
     public void onLivingAttack(LivingAttackEvent event) {
-        if( event.getSource().getEntity() instanceof ISoldier ) {
-            ISoldier attacker = (ISoldier) event.getSource().getEntity();
+        if( event.getSource().getTrueSource() instanceof ISoldier ) {
+            ISoldier attacker = (ISoldier) event.getSource().getTrueSource();
             if( attacker.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
                 event.setCanceled(true);
             }

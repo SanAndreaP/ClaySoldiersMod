@@ -71,7 +71,7 @@ public class UpgradeRabbitHide
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(SPEED_BOOST);
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_VALUE);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            stack.stackSize--;
+            stack.setCount(stack.getCount() - 1);
         }
     }
 
@@ -84,7 +84,7 @@ public class UpgradeRabbitHide
                 soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(SPEED_BOOST);
                 soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_VALUE);
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
-            } else if( !(dmgSource.getEntity() instanceof EntityPlayer) && dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
+            } else if( !(dmgSource.getTrueSource() instanceof EntityPlayer) && dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
                 upgradeInst.getNbtData().setByte("uses", uses);
             }
         }

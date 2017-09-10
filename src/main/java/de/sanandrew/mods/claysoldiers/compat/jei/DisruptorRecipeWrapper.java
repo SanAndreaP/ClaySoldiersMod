@@ -12,6 +12,8 @@ import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapperFactory;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -76,37 +78,7 @@ public class DisruptorRecipeWrapper
     }
 
     @Override
-    @Deprecated
-    public List getInputs() {
-        return this.input;
-    }
-
-    @Override
-    @Deprecated
-    public List<ItemStack> getOutputs() {
-        return ImmutableList.of(this.output);
-    }
-
-    @Override
-    @Deprecated
-    public List<FluidStack> getFluidInputs() {
-        return ImmutableList.of();
-    }
-
-    @Override
-    @Deprecated
-    public List<FluidStack> getFluidOutputs() {
-        return ImmutableList.of();
-    }
-
-    @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
     }
 
@@ -119,5 +91,14 @@ public class DisruptorRecipeWrapper
     @Override
     public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
         return false;
+    }
+
+    public static class Factory
+            implements IRecipeWrapperFactory<ItemDisruptor.DisruptorType>
+    {
+        @Override
+        public IRecipeWrapper getRecipeWrapper(ItemDisruptor.DisruptorType recipe) {
+            return new DisruptorRecipeWrapper(recipe);
+        }
     }
 }

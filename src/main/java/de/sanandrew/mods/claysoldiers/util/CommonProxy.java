@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
@@ -16,6 +17,7 @@ import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -33,11 +35,15 @@ public class CommonProxy
     public static int entityCount = 0;
 
     public void preInit(FMLPreInitializationEvent event) {
-        EntityRegistry.registerModEntity(EntityClaySoldier.class, "claySoldier", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "claySoldier"), EntityClaySoldier.class, "claySoldier", entityCount++,
+                                         ClaySoldiersMod.instance, 64, 1, true);
 
-        EntityRegistry.registerModEntity(EntityProjectileGravel.class, "gravelProjectile", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityProjectileSnow.class, "snowProjectile", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(EntityProjectileFirecharge.class, "fireProjectile", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "gravelProjectile"), EntityProjectileGravel.class, "gravelProjectile", entityCount++,
+                                         ClaySoldiersMod.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "snowProjectile"), EntityProjectileSnow.class, "snowProjectile", entityCount++,
+                                         ClaySoldiersMod.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "fireProjectile"), EntityProjectileFirecharge.class, "fireProjectile", entityCount++,
+                                         ClaySoldiersMod.instance, 64, 1, true);
 
         MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());
         MinecraftForge.EVENT_BUS.register(new LivingAttackEventHandler());

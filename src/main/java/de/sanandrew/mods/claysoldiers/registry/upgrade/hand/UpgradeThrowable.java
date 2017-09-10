@@ -60,7 +60,7 @@ public abstract class UpgradeThrowable
             upgradeInst.getNbtData().setByte("uses", this.getMaxUses(stack));
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
-            stack.stackSize--;
+            stack.setCount(stack.getCount() - 1);
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class UpgradeThrowable
         byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
 
         Entity proj = this.createProjectile(soldier.getEntity().world, soldier.getEntity(), target);
-        soldier.getEntity().world.spawnEntityInWorld(proj);
+        soldier.getEntity().world.spawnEntity(proj);
 
         if( uses < 1 ) {
             soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);

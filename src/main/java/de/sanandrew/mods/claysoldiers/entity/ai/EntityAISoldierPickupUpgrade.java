@@ -43,14 +43,14 @@ public class EntityAISoldierPickupUpgrade
             this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(item);
             if( this.entityPathEntity == null ) {
                 Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
-                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.xCoord, this.targetY + vec.yCoord, this.targetZ + vec.zCoord);
+                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
             }
             return true;
         }
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return this.attacker.followingEntity instanceof EntityItem && this.attacker.followingEntity.isEntityAlive() && this.attacker.hasPath();
     }
 
@@ -79,7 +79,7 @@ public class EntityAISoldierPickupUpgrade
         double tgtDist = this.attacker.getDistanceSq(jack.posX, jack.getEntityBoundingBox().minY, jack.posZ);
 
         if( this.attacker.getEntitySenses().canSee(jack)
-                && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D
+                && ((this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D)
                     || jack.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F)
         ) {
             this.targetX = jack.posX;
@@ -90,7 +90,7 @@ public class EntityAISoldierPickupUpgrade
         if( tgtDist < 1.0F ) {
             EntityItem item = (EntityItem) jack;
             this.attacker.pickupUpgrade(item);
-            if( item.getEntityItem().stackSize < 1 ) {
+            if( item.getItem().getCount() < 1 ) {
                 item.setDead();
             }
         }

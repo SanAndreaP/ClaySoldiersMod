@@ -15,8 +15,11 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class OtherSoldierRecipe
+        extends IForgeRegistryEntry.Impl<IRecipe>
         implements IRecipe
 {
     private ItemStack resultItem;
@@ -99,8 +103,8 @@ public class OtherSoldierRecipe
     }
 
     @Override
-    public int getRecipeSize() {
-        return 9;
+    public boolean canFit(int width, int height) {
+        return width + height >= 9;
     }
 
     @Nullable
@@ -110,12 +114,12 @@ public class OtherSoldierRecipe
     }
 
     @Override
-    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-        ItemStack[] invStacks = new ItemStack[inv.getSizeInventory()];
+    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+        NonNullList<ItemStack> invStacks = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
-        for( int i = 0; i < invStacks.length; i++ ) {
+        for( int i = 0, max = invStacks.size(); i < max; i++ ) {
             ItemStack itemstack = inv.getStackInSlot(i);
-            invStacks[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
+            invStacks.set(i, ForgeHooks.getContainerItem(itemstack));
         }
 
         return invStacks;

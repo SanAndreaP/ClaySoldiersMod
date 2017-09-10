@@ -11,31 +11,36 @@ package de.sanandrew.mods.claysoldiers.compat.jei;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
-import mezz.jei.api.BlankModPlugin;
+import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
+
 @JEIPlugin
 @SideOnly(Side.CLIENT)
-public class JeiPlugin extends BlankModPlugin {
-    public JeiPlugin() {}
+public class JeiPlugin
+    implements IModPlugin
+{
+    public JeiPlugin() { }
 
     @Override
     public void register(IModRegistry registry) {
-        registry.addRecipeHandlers(new DisruptorRecipeHandler());
-        registry.addRecipes(DisruptorRecipeHandler.getRecipeList());
+        registry.handleRecipes(ItemDisruptor.DisruptorType.class, new DisruptorRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.handleRecipes(JeiDyedSoldierRecipe.class, new DyedSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.handleRecipes(JeiClearSoldierRecipe.class, new ClearSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.handleRecipes(JeiOtherSoldierRecipe.class, new OtherSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.handleRecipes(JeiBrickSoldierRecipe.class, new BrickSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
 
-        registry.addRecipeHandlers(new DyedSoldierRecipeHandler());
-        registry.addRecipes(DyedSoldierRecipeHandler.getRecipes());
-        registry.addRecipeHandlers(new ClearSoldierRecipeHandler());
-        registry.addRecipes(ClearSoldierRecipeHandler.getRecipes());
-        registry.addRecipeHandlers(new OtherSoldierRecipeHandler());
-        registry.addRecipes(OtherSoldierRecipeHandler.getRecipes());
-        registry.addRecipeHandlers(new BrickSoldierRecipeHandler());
-        registry.addRecipes(BrickSoldierRecipeHandler.getRecipes());
+        registry.addRecipes(Arrays.asList(ItemDisruptor.DisruptorType.VALUES), VanillaRecipeCategoryUid.CRAFTING);
+        registry.addRecipes(JeiDyedSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.addRecipes(JeiClearSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.addRecipes(JeiOtherSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.addRecipes(JeiBrickSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
     }
 
     @Override

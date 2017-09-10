@@ -70,7 +70,7 @@ public class HashItemStack
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         NBTTagCompound nbt = CompressedStreamTools.read(in, NBTSizeTracker.INFINITE);
-        this.heldStack = ItemStack.loadItemStackFromNBT(nbt);
+        this.heldStack = new ItemStack(nbt);
     }
 
     private void readObjectNoData() throws ObjectStreamException {

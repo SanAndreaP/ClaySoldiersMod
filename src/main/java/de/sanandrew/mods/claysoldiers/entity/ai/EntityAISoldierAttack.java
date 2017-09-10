@@ -8,8 +8,6 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -45,14 +43,14 @@ public abstract class EntityAISoldierAttack
             this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
             if( this.entityPathEntity == null ) {
                 Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
-                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.xCoord, this.targetY + vec.yCoord, this.targetZ + vec.zCoord);
+                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
             }
             return this.entityPathEntity != null;
         }
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
         return entitylivingbase != null && (entitylivingbase.isEntityAlive() && (!this.attacker.getNavigator().noPath()));
     }

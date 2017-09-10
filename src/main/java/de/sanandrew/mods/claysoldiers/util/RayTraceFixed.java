@@ -27,7 +27,7 @@ public final class RayTraceFixed
     @Nullable
     private static RayTraceResult collisionRayTrace(IBlockState blockState, Entity e, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
         List<AxisAlignedBB> collisionBBs = new ArrayList<>();
-        blockState.addCollisionBoxToList(worldIn, pos, blockState.getBoundingBox(worldIn, pos).offset(pos), collisionBBs, e);
+        blockState.addCollisionBoxToList(worldIn, pos, blockState.getBoundingBox(worldIn, pos).offset(pos), collisionBBs, e, true);
         for( AxisAlignedBB aabb : collisionBBs ) {
             RayTraceResult res = rayTrace(pos, start, end, aabb.offset(-pos.getX(), -pos.getY(), -pos.getZ()));
             if( res != null ) {
@@ -47,14 +47,14 @@ public final class RayTraceFixed
 
     @Nullable
     public static RayTraceResult rayTraceSight(Entity e, World world, Vec3d fromVec, Vec3d toVec) {
-        if( !Double.isNaN(fromVec.xCoord) && !Double.isNaN(fromVec.yCoord) && !Double.isNaN(fromVec.zCoord) ) {
-            if( !Double.isNaN(toVec.xCoord) && !Double.isNaN(toVec.yCoord) && !Double.isNaN(toVec.zCoord) ) {
-                int bBlockX = MathHelper.floor_double(toVec.xCoord);
-                int bBlockY = MathHelper.floor_double(toVec.yCoord);
-                int bBlockZ = MathHelper.floor_double(toVec.zCoord);
-                int eBlockX = MathHelper.floor_double(fromVec.xCoord);
-                int eBlockY = MathHelper.floor_double(fromVec.yCoord);
-                int eBlockZ = MathHelper.floor_double(fromVec.zCoord);
+        if( !Double.isNaN(fromVec.x) && !Double.isNaN(fromVec.y) && !Double.isNaN(fromVec.z) ) {
+            if( !Double.isNaN(toVec.x) && !Double.isNaN(toVec.y) && !Double.isNaN(toVec.z) ) {
+                int bBlockX = MathHelper.floor(toVec.x);
+                int bBlockY = MathHelper.floor(toVec.y);
+                int bBlockZ = MathHelper.floor(toVec.z);
+                int eBlockX = MathHelper.floor(fromVec.x);
+                int eBlockY = MathHelper.floor(fromVec.y);
+                int eBlockZ = MathHelper.floor(fromVec.z);
                 BlockPos endBlockPos = new BlockPos(eBlockX, eBlockY, eBlockZ);
                 IBlockState endBlockState = world.getBlockState(endBlockPos);
 
@@ -69,7 +69,7 @@ public final class RayTraceFixed
                 int k1 = 200;
 
                 while( k1-- >= 0 ) {
-                    if( Double.isNaN(fromVec.xCoord) || Double.isNaN(fromVec.yCoord) || Double.isNaN(fromVec.zCoord) ) {
+                    if( Double.isNaN(fromVec.x) || Double.isNaN(fromVec.y) || Double.isNaN(fromVec.z) ) {
                         return null;
                     }
 
@@ -111,20 +111,20 @@ public final class RayTraceFixed
                     double d3 = 999.0D;
                     double d4 = 999.0D;
                     double d5 = 999.0D;
-                    double d6 = toVec.xCoord - fromVec.xCoord;
-                    double d7 = toVec.yCoord - fromVec.yCoord;
-                    double d8 = toVec.zCoord - fromVec.zCoord;
+                    double d6 = toVec.x - fromVec.x;
+                    double d7 = toVec.y - fromVec.y;
+                    double d8 = toVec.z - fromVec.z;
 
                     if( flag2 ) {
-                        d3 = (d0 - fromVec.xCoord) / d6;
+                        d3 = (d0 - fromVec.x) / d6;
                     }
 
                     if( flag ) {
-                        d4 = (d1 - fromVec.yCoord) / d7;
+                        d4 = (d1 - fromVec.y) / d7;
                     }
 
                     if( flag1 ) {
-                        d5 = (d2 - fromVec.zCoord) / d8;
+                        d5 = (d2 - fromVec.z) / d8;
                     }
 
                     if( d3 == -0.0D ) {
@@ -143,18 +143,18 @@ public final class RayTraceFixed
 
                     if( d3 < d4 && d3 < d5 ) {
                         enumfacing = bBlockX > eBlockX ? EnumFacing.WEST : EnumFacing.EAST;
-                        fromVec = new Vec3d(d0, fromVec.yCoord + d7 * d3, fromVec.zCoord + d8 * d3);
+                        fromVec = new Vec3d(d0, fromVec.y + d7 * d3, fromVec.z + d8 * d3);
                     } else if( d4 < d5 ) {
                         enumfacing = bBlockY > eBlockY ? EnumFacing.DOWN : EnumFacing.UP;
-                        fromVec = new Vec3d(fromVec.xCoord + d6 * d4, d1, fromVec.zCoord + d8 * d4);
+                        fromVec = new Vec3d(fromVec.x + d6 * d4, d1, fromVec.z + d8 * d4);
                     } else {
                         enumfacing = bBlockZ > eBlockZ ? EnumFacing.NORTH : EnumFacing.SOUTH;
-                        fromVec = new Vec3d(fromVec.xCoord + d6 * d5, fromVec.yCoord + d7 * d5, d2);
+                        fromVec = new Vec3d(fromVec.x + d6 * d5, fromVec.y + d7 * d5, d2);
                     }
 
-                    eBlockX = MathHelper.floor_double(fromVec.xCoord) - (enumfacing == EnumFacing.EAST ? 1 : 0);
-                    eBlockY = MathHelper.floor_double(fromVec.yCoord) - (enumfacing == EnumFacing.UP ? 1 : 0);
-                    eBlockZ = MathHelper.floor_double(fromVec.zCoord) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
+                    eBlockX = MathHelper.floor(fromVec.x) - (enumfacing == EnumFacing.EAST ? 1 : 0);
+                    eBlockY = MathHelper.floor(fromVec.y) - (enumfacing == EnumFacing.UP ? 1 : 0);
+                    eBlockZ = MathHelper.floor(fromVec.z) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
                     endBlockPos = new BlockPos(eBlockX, eBlockY, eBlockZ);
                     IBlockState iblockstate1 = world.getBlockState(endBlockPos);
                     Block block1 = iblockstate1.getBlock();

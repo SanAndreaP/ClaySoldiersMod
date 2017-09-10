@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
@@ -88,7 +89,7 @@ public class RenderClaySoldier
 
     @Override
     public ModelBiped getSoldierModel() {
-        return this.modelBipedMain;
+        return (ModelClaySoldier) this.mainModel;
     }
 
     @Override

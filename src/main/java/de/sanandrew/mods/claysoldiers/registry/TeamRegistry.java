@@ -108,7 +108,7 @@ public final class TeamRegistry
     @SuppressWarnings("ConstantConditions")
     public ITeam getTeam(ItemStack stack) {
         if( ItemStackUtils.isItem(stack, ItemRegistry.doll_soldier) ) {
-            NBTTagCompound nbt = stack.getSubCompound("dollSoldier", false);
+            NBTTagCompound nbt = stack.getSubCompound("dollSoldier");
             if( nbt != null && nbt.hasKey("team", Constants.NBT.TAG_STRING) ) {
                 try {
                     return this.getTeam(UUID.fromString(nbt.getString("team")));
@@ -124,7 +124,7 @@ public final class TeamRegistry
     @Override
     public ItemStack setTeam(ItemStack stack, ITeam team) {
         if( team != null && ItemStackUtils.isItem(stack, ItemRegistry.doll_soldier) ) {
-            stack.getSubCompound("dollSoldier", true).setString("team", team.getId().toString());
+            stack.getOrCreateSubCompound("dollSoldier").setString("team", team.getId().toString());
         }
 
         return stack;

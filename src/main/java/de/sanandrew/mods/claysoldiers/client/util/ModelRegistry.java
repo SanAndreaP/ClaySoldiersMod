@@ -40,23 +40,8 @@ public final class ModelRegistry
     public static void registerModels(ModelRegistryEvent event) throws Exception {
         setStandardModel(ItemRegistry.doll_brick_soldier);
         setStandardModel(ItemRegistry.shear_blade);
-//        setStandardModel(ItemRegistry.turret_info);
-//        setStandardModel(ItemRegistry.assembly_upg_filter);
-//        setStandardModel(ItemRegistry.assembly_upg_auto);
-//        setStandardModel(ItemRegistry.assembly_upg_speed);
-//        setStandardModel(BlockRegistry.electrolyte_generator);
-//        setStandardModel(BlockRegistry.turret_assembly);
-//
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurretAssembly.class, new RenderTurretAssembly());
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityElectrolyteGenerator.class, new RenderElectrolyteGenerator());
-    }
-
-    public static void registerModelsInit() {
         setCustomMeshModel(ItemRegistry.doll_soldier, new MeshDefUUID.Soldier());
         setCustomMeshModel(ItemRegistry.disruptor, new MeshDefDisruptor());
-//        setCustomMeshModel(ItemRegistry.turret_ammo, new MeshDefUUID.Ammo());
-//        setCustomMeshModel(ItemRegistry.turret_upgrade, new MeshDefUUID.Upgrade());
-//        setCustomMeshModel(ItemRegistry.repair_kit, new MeshDefUUID.Repkit());
     }
 
     private static void setStandardModel(Item item) {
@@ -70,8 +55,8 @@ public final class ModelRegistry
         }
     }
 
-    private static void setCustomMeshModel(Item item, MeshDef mesher) {
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, mesher.getMeshDef());
+    private static void setCustomMeshModel(Item item, MeshDef<?> mesher) {
+        ModelLoader.setCustomMeshDefinition(item, mesher.getMeshDef());
         ModelBakery.registerItemVariants(item, mesher.getResLocations());
     }
 

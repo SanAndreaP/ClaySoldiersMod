@@ -26,6 +26,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -51,8 +52,10 @@ public class ItemSoldier
 
     @Override
     @SuppressWarnings("unchecked")
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        list.addAll(TeamRegistry.INSTANCE.getTeams().stream().map(team -> TeamRegistry.INSTANCE.setTeam(new ItemStack(this, 1), team)).collect(Collectors.toList()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if( this.isInCreativeTab(tab) ) {
+            list.addAll(TeamRegistry.INSTANCE.getTeams().stream().map(team -> TeamRegistry.INSTANCE.setTeam(new ItemStack(this, 1), team)).collect(Collectors.toList()));
+        }
     }
 
     @Override
@@ -61,7 +64,8 @@ public class ItemSoldier
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = player.getHeldItem(hand);
         if( world.isRemote ) {
             return EnumActionResult.SUCCESS;
         } else if( !player.canPlayerEdit(pos.offset(facing), facing, stack) ) {
@@ -92,7 +96,7 @@ public class ItemSoldier
                 yShift = 0.5D;
             }
 
-            EntityClaySoldier[] soldiers = spawnSoldiers(world, TeamRegistry.INSTANCE.getTeam(stack), player.isSneaking() ? 1 : stack.stackSize,
+            EntityClaySoldier[] soldiers = spawnSoldiers(world, TeamRegistry.INSTANCE.getTeam(stack), player.isSneaking() ? 1 : stack.getCount(),
                                                          pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D, stack);
 
             for( EntityClaySoldier james : soldiers ) {
@@ -101,12 +105,12 @@ public class ItemSoldier
                         james.setCustomNameTag(stack.getDisplayName());
                     }
 
-                    --stack.stackSize;
+                    stack.setCount(stack.getCount() - 1);
                 }
             }
 
             if( hand != null && player.capabilities.isCreativeMode ) {
-                if( stack.stackSize < 1 ) {
+                if( stack.getCount() < 1 ) {
                     player.setHeldItem(hand, null);
                 } else {
                     player.setHeldItem(hand, stack.copy());
@@ -130,14 +134,14 @@ public class ItemSoldier
                 ItemStack newDollStack = null;
                 if( dollStack != null ) {
                     newDollStack = dollStack.copy();
-                    newDollStack.stackSize = 1;
+                    newDollStack.setCount(1);
                 }
                 EntityClaySoldier aleks = new EntityClaySoldier(world, team, newDollStack);
                 aleks.setLocationAndAngles(xs, y, zs, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
                 aleks.rotationYawHead = aleks.rotationYaw;
                 aleks.renderYawOffset = aleks.rotationYaw;
                 aleks.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(aleks)), null);
-                world.spawnEntityInWorld(aleks);
+                world.spawnEntity(aleks);
                 aleks.playLivingSound();
 
                 soldiers[i] = aleks;

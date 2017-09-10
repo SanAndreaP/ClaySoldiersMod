@@ -71,6 +71,6 @@ public class EntityAISoldierAttackableTarget
     }
 
     private AxisAlignedBB getTargetableArea(double targetDistance) {
-        return this.attacker.getEntityBoundingBox().expand(targetDistance, targetDistance, targetDistance);
+        return this.attacker.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
     }
 }

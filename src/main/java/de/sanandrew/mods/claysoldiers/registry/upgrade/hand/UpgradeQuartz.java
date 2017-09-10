@@ -63,7 +63,7 @@ public class UpgradeQuartz
             upgradeInst.getNbtData().setLong("cooldownTime", System.currentTimeMillis());
             upgradeInst.getNbtData().setInteger("hitsTaken", 0);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            stack.stackSize--;
+            stack.setCount(stack.getCount() - 1);
         }
     }
 
@@ -85,7 +85,7 @@ public class UpgradeQuartz
                     upgradeInst.getNbtData().setByte("uses", uses);
                 }
 
-                AxisAlignedBB surroundingBB = john.getEntityBoundingBox().expandXyz(1.0D);
+                AxisAlignedBB surroundingBB = john.getEntityBoundingBox().grow(1.0D);
                 Predicate<EntityCreature> entityChk = entity -> entity instanceof ISoldier && entity != john;
                 soldier.getEntity().world.getEntitiesWithinAABB(EntityCreature.class, surroundingBB, entityChk::test)
                                          .forEach(entity -> entity.knockBack(john, 0.5F, john.posX - entity.posX, john.posZ - entity.posZ));

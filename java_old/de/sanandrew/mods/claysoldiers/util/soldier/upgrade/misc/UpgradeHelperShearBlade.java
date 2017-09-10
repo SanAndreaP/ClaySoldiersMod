@@ -50,7 +50,7 @@ public class UpgradeHelperShearBlade
 
         if( upgrade != null ) {
             if( savedItem != stack ) {
-                stack.stackSize--;
+                stack.setCount(stack.getCount() - 1);
             }
 
             SoldierUpgradeInst newUpgrade = clayMan.addUpgrade(upgrade);

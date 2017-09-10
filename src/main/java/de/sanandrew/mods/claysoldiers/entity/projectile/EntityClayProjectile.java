@@ -15,6 +15,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -69,21 +70,21 @@ public abstract class EntityClayProjectile
         Vec3d targetVec = new Vec3d(target.posX - shooter.posX, (target.getEntityBoundingBox().minY + target.height / 1.4D) - y, target.posZ - shooter.posZ);
         this.setHeadingFromVec(targetVec.normalize());
 
-        this.motionY += this.getArc() * Math.sqrt(targetVec.xCoord * targetVec.xCoord + targetVec.zCoord * targetVec.zCoord) * 0.05;
+        this.motionY += this.getArc() * Math.sqrt(targetVec.x * targetVec.x + targetVec.z * targetVec.z) * 0.05;
     }
 
     private void setHeadingFromVec(Vec3d vector) {
         double scatterVal = getScatterValue();
         float initSpeed = getInitialSpeedMultiplier();
 
-        this.motionX = vector.xCoord * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
-        this.motionZ = vector.zCoord * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
-        this.motionY = vector.yCoord * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
+        this.motionX = vector.x * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
+        this.motionZ = vector.z * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
+        this.motionY = vector.y * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
 
-        float vecPlaneNormal = MathHelper.sqrt_double(vector.xCoord * vector.xCoord + vector.zCoord * vector.zCoord);
+        float vecPlaneNormal = MathHelper.sqrt(vector.x * vector.x + vector.z * vector.z);
 
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(vector.xCoord, vector.zCoord) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(vector.yCoord, vecPlaneNormal) * 180.0D / Math.PI);
+        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(vector.x, vector.z) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(vector.y, vecPlaneNormal) * 180.0D / Math.PI);
     }
 
     @Override
@@ -110,7 +111,7 @@ public abstract class EntityClayProjectile
         this.posX += this.motionX;
         this.posY += this.motionY;
         this.posZ += this.motionZ;
-        float f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
         this.rotationPitch = (float)(Math.atan2(this.motionY, f2) * 180.0D / Math.PI);
@@ -165,11 +166,11 @@ public abstract class EntityClayProjectile
         futurePosVec = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
         if( hitObj != null ) {
-            futurePosVec = new Vec3d(hitObj.hitVec.xCoord, hitObj.hitVec.yCoord, hitObj.hitVec.zCoord);
+            futurePosVec = new Vec3d(hitObj.hitVec.x, hitObj.hitVec.y, hitObj.hitVec.z);
         }
 
         Entity entity = null;
-        AxisAlignedBB checkBB = this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D);
+        AxisAlignedBB checkBB = this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D);
 
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, checkBB);
         double minDist = 0.0D;
@@ -178,7 +179,7 @@ public abstract class EntityClayProjectile
         for( Entity collidedEntity : list ) {
             if( collidedEntity.canBeCollidedWith() && collidedEntity != this.shooterCache ) {
                 collisionRange = 0.1F;
-                AxisAlignedBB collisionAABB = collidedEntity.getEntityBoundingBox().expand(collisionRange, collisionRange, collisionRange);
+                AxisAlignedBB collisionAABB = collidedEntity.getEntityBoundingBox().grow(collisionRange, collisionRange, collisionRange);
                 RayTraceResult interceptObj = collisionAABB.calculateIntercept(posVec, futurePosVec);
 
                 if( interceptObj != null ) {
@@ -265,7 +266,7 @@ public abstract class EntityClayProjectile
     public void knockBackEntity(EntityLivingBase living, double deltaX, double deltaZ) {
         if( this.rand.nextDouble() >= living.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue() ) {
             living.isAirBorne = true;
-            double normXZ = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ);
+            double normXZ = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
             double kbStrengthXZ = this.getKnockbackStrengthH();
             double kbStrengthY = this.getKnockbackStrengthV();
             living.motionX /= 2.0D;
@@ -282,7 +283,7 @@ public abstract class EntityClayProjectile
     }
 
     protected void processHit(@SuppressWarnings("UnusedParameters") RayTraceResult hitObj) {
-        this.setPosition(hitObj.hitVec.xCoord, hitObj.hitVec.yCoord, hitObj.hitVec.zCoord);
+        this.setPosition(hitObj.hitVec.x, hitObj.hitVec.y, hitObj.hitVec.z);
         this.playSound(this.getRicochetSound(), 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
         this.setDead();
     }
@@ -343,7 +344,7 @@ public abstract class EntityClayProjectile
 
     @Override
     public void setThrowableHeading(double x, double y, double z, float recoil, float randMulti) {
-        float vecNormal = MathHelper.sqrt_double(x * x + y * y + z * z);
+        float vecNormal = MathHelper.sqrt(x * x + y * y + z * z);
         x /= vecNormal;
         y /= vecNormal;
         z /= vecNormal;
@@ -356,7 +357,7 @@ public abstract class EntityClayProjectile
         this.motionX = x;
         this.motionY = y;
         this.motionZ = z;
-        float vecPlaneNormal = MathHelper.sqrt_double(x * x + z * z);
+        float vecPlaneNormal = MathHelper.sqrt(x * x + z * z);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(y, vecPlaneNormal) * 180.0D / Math.PI);
     }
@@ -389,8 +390,8 @@ public abstract class EntityClayProjectile
     }
 
     @Override
-    public void moveEntity(double x, double y, double z) {
-        super.moveEntity(x, y, z);
+    public void move(MoverType type, double x, double y, double z) {
+        super.move(type, x, y, z);
     }
 
     public abstract float getArc();

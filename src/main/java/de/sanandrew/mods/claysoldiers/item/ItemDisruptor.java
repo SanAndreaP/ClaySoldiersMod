@@ -21,13 +21,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemDisruptor
@@ -51,8 +51,11 @@ public class ItemDisruptor
 
     @Override
     @SuppressWarnings("unchecked")
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        list.addAll(Arrays.stream(DisruptorType.VALUES).filter(type -> !type.name.equals("null")).map(type -> ItemDisruptor.setType(new ItemStack(this, 1), type)).collect(Collectors.toList()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if( this.isInCreativeTab(tab) ) {
+            list.addAll(Arrays.stream(DisruptorType.VALUES).filter(type -> !type.name.equals("null")).map(type -> ItemDisruptor.setType(new ItemStack(this, 1), type))
+                              .collect(Collectors.toList()));
+        }
     }
 
     @Override
@@ -66,8 +69,9 @@ public class ItemDisruptor
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        NBTTagCompound nbt = itemStackIn.getSubCompound("disruptor", true);
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        ItemStack itemStackIn = playerIn.getHeldItem(hand);
+        NBTTagCompound nbt = itemStackIn.getOrCreateSubCompound("disruptor");
         long lastTimeMillis = nbt.getLong("lastActivated");
         long currTimeMillis = System.currentTimeMillis();
 
@@ -84,14 +88,14 @@ public class ItemDisruptor
 
             return ActionResult.newResult(EnumActionResult.SUCCESS, itemStackIn);
         } else {
-            return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
+            return super.onItemRightClick(worldIn, playerIn, hand);
         }
     }
 
     @SuppressWarnings("ConstantConditions")
     public static DisruptorType getType(ItemStack stack) {
         if( ItemStackUtils.isItem(stack, ItemRegistry.disruptor) ) {
-            NBTTagCompound nbt = stack.getSubCompound("disruptor", false);
+            NBTTagCompound nbt = stack.getSubCompound("disruptor");
             if( nbt != null && nbt.hasKey("type", Constants.NBT.TAG_BYTE) ) {
                 byte type = nbt.getByte("type");
                 return type >= 0 && type < DisruptorType.VALUES.length ? DisruptorType.VALUES[type] : DisruptorType.UNKNOWN;
@@ -103,7 +107,7 @@ public class ItemDisruptor
 
     public static ItemStack setType(ItemStack stack, DisruptorType type) {
         if( ItemStackUtils.isItem(stack, ItemRegistry.disruptor) ) {
-            NBTTagCompound nbt = stack.getSubCompound("disruptor", true);
+            NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
             nbt.setByte("type", (byte) type.ordinal());
         }
 

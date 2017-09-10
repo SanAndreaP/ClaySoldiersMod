@@ -9,7 +9,6 @@ package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.client.RenderWorldEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -56,7 +55,7 @@ public class RenderHookBody
         }
 
         if( soldier.hasUpgrade(UpgradeRegistry.MC_GLOWSTONE, EnumUpgradeType.MISC) ) {
-            int brightness = soldier.getEntity().getBrightnessForRender(RenderWorldEventHandler.partTicks);
+            int brightness = soldier.getEntity().getBrightnessForRender();
             int brightX = brightness % 65536;
             int brightY = brightness / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);

@@ -80,7 +80,7 @@ public class ItemDisruptor
                 }
             } else {
                 if( stack.attemptDamageItem(1, SAPUtils.RNG) ) {
-                    stack.stackSize--;
+                    stack.setCount(stack.getCount() - 1);
                 }
             }
         }
