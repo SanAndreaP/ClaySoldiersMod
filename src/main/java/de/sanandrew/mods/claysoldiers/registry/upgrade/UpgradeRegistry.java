@@ -13,8 +13,11 @@ import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeBrick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeIronIngot;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeIronBlock;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBlazeRod;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBone;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBowl;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeQuartz;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeSpeckledMelon;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeShearBlade;
@@ -125,6 +128,7 @@ public final class UpgradeRegistry
     public static void initialize(IUpgradeRegistry registry) {
         registry.registerUpgrade(MH_STICK, new UpgradeStick());
         registry.registerUpgrade(MH_ARROW, new UpgradeArrow());
+        registry.registerUpgrade(MH_BONE, new UpgradeBone());
         registry.registerUpgrade(MH_BLAZEROD, new UpgradeBlazeRod());
         registry.registerUpgrade(MOH_SHEARBLADE, new UpgradeShearBlade());
         registry.registerUpgrade(OH_GRAVEL, new UpgradeThrowable.Gravel());
@@ -132,8 +136,11 @@ public final class UpgradeRegistry
         registry.registerUpgrade(OH_FIRECHARGE, new UpgradeThrowable.Firecharge());
         registry.registerUpgrade(MH_SPECKLEDMELON, new UpgradeSpeckledMelon());
         registry.registerUpgrade(OH_QUARTZ, new UpgradeQuartz());
+        registry.registerUpgrade(OH_BOWL, new UpgradeBowl());
 
-        registry.registerUpgrade(MC_FLINT, new UpgradeFlint());
+        registry.registerUpgrade(EC_FLINT, new UpgradeFlint());
+        registry.registerUpgrade(EC_IRONBLOCK, new UpgradeIronBlock());
+
         registry.registerUpgrade(MC_EGG, new UpgradeEgg());
         registry.registerUpgrade(MC_GLOWSTONE, new UpgradeGlowstone());
         registry.registerUpgrade(MC_FEATHER, new UpgradeFeather());
@@ -150,6 +157,7 @@ public final class UpgradeRegistry
 
     public static final UUID MH_STICK = UUID.fromString("31F0A3DB-F1A7-4418-9EA6-A9D0C900EB41");
     public static final UUID MH_ARROW = UUID.fromString("5CBFDDAB-B082-4DFF-A6DE-D207E068D9AD");
+    public static final UUID MH_BONE = UUID.fromString("26CDF550-CE64-42FE-95DA-F36027B9EF08");
     public static final UUID MH_BLAZEROD = UUID.fromString("9EAF320D-1C8C-40F2-B8E4-6A4C18F9248E");
     public static final UUID MH_SPECKLEDMELON = UUID.fromString("062F5085-A46F-4CEA-8642-076D8A15A20B");
     public static final UUID MOH_SHEARBLADE = UUID.fromString("5CDCD4F9-1C94-485D-B043-2F9A779CF454");
@@ -157,8 +165,11 @@ public final class UpgradeRegistry
     public static final UUID OH_SNOW = UUID.fromString("8F5DA9C0-9613-4816-B96A-8B6089B1140D");
     public static final UUID OH_FIRECHARGE = UUID.fromString("77F625B6-8C1D-405A-9EF5-50C25BFF7C03");
     public static final UUID OH_QUARTZ = UUID.fromString("8751AE74-134C-44E1-9405-55ED05E3416E");
+    public static final UUID OH_BOWL = UUID.fromString("5FD5F54F-23C3-4D65-8D46-31F599F1E6CE");
 
-    public static final UUID MC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
+    public static final UUID EC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
+    public static final UUID EC_IRONBLOCK = UUID.fromString("05113D07-A86D-45EA-AC7F-52E34567197A");
+
     public static final UUID MC_EGG = UUID.fromString("4613D60F-B53C-4E75-99CA-0E2176B6D58D");
     public static final UUID MC_GLOWSTONE = UUID.fromString("6D1D540B-84DC-4009-BF29-134089104A3C");
     public static final UUID MC_FEATHER = UUID.fromString("453077F6-2930-49A1-A2EF-B1A9B0F8B55C");

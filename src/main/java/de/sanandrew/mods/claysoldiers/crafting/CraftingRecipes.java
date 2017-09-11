@@ -19,19 +19,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = CsmConstants.ID)
 public class CraftingRecipes
 {
-//        CraftingManager.getRecipeList().add(new DisruptorRecipe(ItemDisruptor.DisruptorType.CLAY));
-//        CraftingManager.getInstance().getRecipeList().add(new DisruptorRecipe(ItemDisruptor.DisruptorType.HARDENED));
-//        CraftingManager.getInstance().getRecipeList().add(new DisruptorRecipe(ItemDisruptor.DisruptorType.OBSIDIAN));
-//
-//        CraftingManager.getInstance().getRecipeList().add(new DyedSoldierRecipe());
-//        CraftingManager.getInstance().getRecipeList().add(new ClearSoldierRecipe());
-//        CraftingManager.getInstance().getRecipeList().add(new OtherSoldierRecipe());
-//        CraftingManager.getInstance().getRecipeList().add(new BrickSoldierConvRecipe());
-//
-
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         event.getRegistry()

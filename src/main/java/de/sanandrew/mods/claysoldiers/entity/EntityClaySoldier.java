@@ -17,7 +17,8 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierPickupUpgrade;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierUpgradeItem;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcMount;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcUpgradeItem;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
@@ -97,7 +98,6 @@ public class EntityClaySoldier
     private final Map<UpgradeEntry, ISoldierUpgradeInst> upgradeMap;
     private final Queue<EntityAIBase> removedTasks;
     private final Map<ISoldierEffect, ISoldierEffectInst> effectMap;
-    private final Queue<ISoldierEffectInst> effectList;
     private final Queue<ISoldierEffectInst> effectSyncList;
 
     @Nonnull
@@ -129,7 +129,6 @@ public class EntityClaySoldier
         this.upgradeMap = new ConcurrentHashMap<>();
         this.removedTasks = new ConcurrentLinkedQueue<>();
 
-        this.effectList = new ConcurrentLinkedQueue<>();
         this.effectSyncList = new ConcurrentLinkedQueue<>();
         this.effectMap = new ConcurrentHashMap<>();
 
@@ -177,7 +176,8 @@ public class EntityClaySoldier
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(1, new EntityAISoldierUpgradeItem(this));
+        this.targetTasks.addTask(1, new EntityAISoldierSrcUpgradeItem(this));
+        this.targetTasks.addTask(1, new EntityAISoldierSrcMount(this));
         this.targetTasks.addTask(2, new EntityAISoldierAttackableTarget(this));
     }
 
@@ -295,18 +295,18 @@ public class EntityClaySoldier
         return this.hasUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(id), type);
     }
 
-    public boolean pickupUpgrade(EntityItem item) {
+    public void pickupUpgrade(EntityItem item) {
         this.navigator.clearPathEntity();
         this.followingEntity = null;
         ItemStack stack = item.getItem();
 
         if( stack.getCount() < 1 ) {
-            return false;
+            return;
         }
 
         ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(stack);
         if( upg == null || this.hasUpgrade(upg, upg.getType(this)) ) {
-            return false;
+            return;
         }
 
         ISoldierUpgradeInst upgInst = this.addUpgrade(upg, upg.getType(this), stack);
@@ -314,11 +314,7 @@ public class EntityClaySoldier
             if( Arrays.asList(upg.getFunctionCalls()).contains(ISoldierUpgrade.EnumFunctionCalls.ON_PICKUP) ) {
                 upg.onPickup(this, item, upgInst);
             }
-
-            return true;
         }
-
-        return false;
     }
 
     public void callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls funcCall, final Consumer<ISoldierUpgradeInst> forEach) {
@@ -366,7 +362,6 @@ public class EntityClaySoldier
 
         this.effectMap.remove(effect);
         this.effectSyncList.remove(inst);
-        this.effectList.remove(inst);
 
         effect.onExpired(this, inst);
 
@@ -403,8 +398,6 @@ public class EntityClaySoldier
         if( effect.syncData() ) {
             this.effectSyncList.add(instance);
         }
-
-        this.effectList.add(instance);
     }
 
     private void sendSyncEffects(boolean add, ISoldierEffectInst... effects) {
@@ -867,7 +860,7 @@ public class EntityClaySoldier
         PacketSyncUpgrades pktu = new PacketSyncUpgrades(this, true, this.upgradeSyncList.stream().map(entry -> new UpgradeEntry(entry.getUpgrade(), entry.getUpgradeType())).toArray(UpgradeEntry[]::new));
         pktu.toBytes(buffer);
 
-        PacketSyncEffects pkte = new PacketSyncEffects(this, true, this.effectSyncList.stream().toArray(ISoldierEffectInst[]::new));
+        PacketSyncEffects pkte = new PacketSyncEffects(this, true, this.effectSyncList.toArray(new ISoldierEffectInst[0]));
         pkte.toBytes(buffer);
     }
 

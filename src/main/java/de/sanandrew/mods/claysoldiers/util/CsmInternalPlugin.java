@@ -77,6 +77,7 @@ public class CsmInternalPlugin
         registry.registerSoldierHook(new RenderHookMainHandItem(0));
         registry.registerSoldierHook(new RenderHookMainHandItem(1));
         registry.registerSoldierHook(new RenderHookOffHandItem(0));
+        registry.registerSoldierHook(new RenderHookOffHandItem(1));
         registry.registerSoldierHook(new RenderHookBody());
     }
 }

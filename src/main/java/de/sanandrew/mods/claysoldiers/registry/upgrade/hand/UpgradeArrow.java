@@ -41,15 +41,15 @@ public class UpgradeArrow
     }
 
     @Override
-    public boolean checkPickupable(ISoldier<?> soldier, ItemStack stack) {
-        return !soldier.hasUpgrade(UpgradeRegistry.MH_STICK, EnumUpgradeType.MAIN_HAND) && !soldier.hasUpgrade(UpgradeRegistry.MC_FLINT, EnumUpgradeType.MISC);
+    public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
+        return !soldier.hasUpgrade(UpgradeRegistry.MH_STICK, EnumUpgradeType.MAIN_HAND) && !soldier.hasUpgrade(UpgradeRegistry.EC_FLINT, EnumUpgradeType.MISC);
     }
 
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MH_STICK), EnumUpgradeType.MAIN_HAND, new ItemStack(Items.STICK, 1));
-            soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MC_FLINT), EnumUpgradeType.ENHANCEMENT, new ItemStack(Items.FLINT, 1));
+            soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.EC_FLINT), EnumUpgradeType.ENHANCEMENT, new ItemStack(Items.FLINT, 1));
             soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), true);
             soldier.getEntity().entityDropItem(new ItemStack(Items.FEATHER, 1), 0.0F);
             soldier.getEntity().entityDropItem(new ItemStack(Items.FLINT, 1), 0.0F);

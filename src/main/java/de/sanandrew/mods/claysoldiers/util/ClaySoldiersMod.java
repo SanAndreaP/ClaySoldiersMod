@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.IntFunction;
 
 @Mod(modid = CsmConstants.ID, version = CsmConstants.VERSION, name = CsmConstants.NAME, /*guiFactory = CsmConstants.GUI_FACTORY, */dependencies = CsmConstants.DEPENDENCIES)
 public class ClaySoldiersMod
@@ -81,7 +82,7 @@ public class ClaySoldiersMod
     private static void loadPlugins(ASMDataTable dataTable) {
         String annotationClassName = CsmPlugin.class.getCanonicalName();
         Set<ASMDataTable.ASMData> asmDatas = dataTable.getAll(annotationClassName);
-        for (ASMDataTable.ASMData asmData : asmDatas) {
+        for( ASMDataTable.ASMData asmData : asmDatas ) {
             try {
                 Class<?> asmClass = Class.forName(asmData.getClassName());
                 Class<? extends ICsmPlugin> asmInstanceClass = asmClass.asSubclass(ICsmPlugin.class);

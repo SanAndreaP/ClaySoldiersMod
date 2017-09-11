@@ -10,6 +10,7 @@ package de.sanandrew.mods.claysoldiers.client.util;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
+import de.sanandrew.mods.claysoldiers.item.EnumShieldTypes;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
@@ -41,10 +42,18 @@ public final class ModelRegistry
         setStandardModel(ItemRegistry.SHEAR_BLADE);
         setCustomMeshModel(ItemRegistry.DOLL_SOLDIER, new MeshDefUUID.Soldier());
         setCustomMeshModel(ItemRegistry.DISRUPTOR, new MeshDefDisruptor());
+
+        for( EnumShieldTypes type : EnumShieldTypes.VALUES ) {
+            setStandardModel(ItemRegistry.SOLDIER_SHIELD, type.damageVal, type.modelName);
+        }
     }
 
     private static void setStandardModel(Item item) {
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+    }
+
+    private static void setStandardModel(Item item, int meta, String model) {
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(CsmConstants.ID, model), "inventory"));
     }
 
     private static void setStandardModel(Block item) {

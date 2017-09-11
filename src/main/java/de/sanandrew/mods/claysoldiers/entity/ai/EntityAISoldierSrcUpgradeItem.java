@@ -19,7 +19,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class EntityAISoldierUpgradeItem
+public class EntityAISoldierSrcUpgradeItem
         extends EntityAIBase
 {
     private final EntityClaySoldier taskOwner;
@@ -27,13 +27,13 @@ public class EntityAISoldierUpgradeItem
 
     private final Predicate<EntityItem> tgtSelector;
 
-    public EntityAISoldierUpgradeItem(EntityClaySoldier soldier) {
+    public EntityAISoldierSrcUpgradeItem(EntityClaySoldier soldier) {
         super();
         this.taskOwner = soldier;
         this.tgtSelector = entity -> {
             if( entity != null && entity.isEntityAlive() && !entity.cannotPickup() ) {
                 ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(entity.getItem());
-                return upgrade != null && upgrade.checkPickupable(this.taskOwner, entity.getItem()) && this.taskOwner.canEntityBeSeen(entity)
+                return upgrade != null && upgrade.isApplicable(this.taskOwner, entity.getItem()) && this.taskOwner.canEntityBeSeen(entity)
                        && !this.taskOwner.hasUpgrade(entity.getItem(), upgrade.getType(this.taskOwner))
                        && (upgrade.getType(this.taskOwner) != EnumUpgradeType.MAIN_HAND || !this.taskOwner.hasMainHandUpgrade())
                        && (upgrade.getType(this.taskOwner) != EnumUpgradeType.OFF_HAND || !this.taskOwner.hasOffHandUpgrade());

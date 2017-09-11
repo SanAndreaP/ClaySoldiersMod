@@ -60,7 +60,7 @@ public class UpgradeLeather
     }
 
     @Override
-    public boolean checkPickupable(ISoldier<?> soldier, ItemStack stack) {
+    public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
         return !soldier.hasUpgrade(UpgradeRegistry.MC_RABBITHIDE, EnumUpgradeType.MISC);
     }
 

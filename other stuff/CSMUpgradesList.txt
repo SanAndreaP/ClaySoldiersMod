@@ -5,7 +5,8 @@ RIGHT HAND
 |x|Stick,      20 use, increases melee damage by 2-3 points
 |x|Arrow,      20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
 |x|BlazeRod,   20 use, increases melee damage by 1-2 points, causes burn time on target
-| |Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
+|-|Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
+                        TODO: make soldiers unridable
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 |x|GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 
@@ -17,7 +18,7 @@ LEFT HAND
 |x|Snowball,     5-20 use, thrown for 0 damage, slows target on hit
                             info: uses depend on the item given! snowball gives 5; snow layer gives 10; snow block gives 20
 |x|FireCharge,   15 use,   thrown for 1-2 damage, causes burn time on hit
-| |Bowl,         20 use,   reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
+|x|Bowl,         20 use,   reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
                             info: no longer entirely blocks ranged attacks, only reduces damage from them
 |x|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 | |Emerald,      5-45 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
@@ -65,7 +66,7 @@ Misc
 | |RedstoneDust,           4 use,   causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
                                      info: Redstone Block as infinite redstone supply
 | |Slimeball,              5 use,   causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
-                                     todo: (MC 1.8) info: Slimeblock as infinite slimeballs
+                                     info: Slimeblock as infinite slimeballs
                                      info: determine uses and implement them
 |x|Feather,                inf use, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing,
                                      info: no effect with iron ingot or while mounted
@@ -96,23 +97,21 @@ Misc
 | |FireworkStar,             1 use, soldier explodes on death in a firework effect
                                      info: incompatible with gunpowder/magmacream
 | |Rabbit Foot,            inf use, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
-                                     todo: MC 1.8
 | |Prismarine Crystals,    inf use, makes soldiers glitter, that's all.
-                                     todo: MC 1.8
 ------------------
 Enchantments
 ------------------
 |x|Flint,            req: stick,          boosts stick melee damage by 2 points (total bonus 4-5, same as arrow),
 | |Prismarine Shard, req: shear blade(s), boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
-                                           todo: MC 1.8
 | |Wool,             req: leather         reduces incoming physical damage by 1
                           rabbit hide
 | |Sugarcane,        req: gravel          boosts thrown weapon range, projectiles hone in on target, boosts emerald range,
                           snowball
                           firecharge
                           emerald
-| |IronBlock,        req: bowl            reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/
+|-|IronBlock,        req: bowl            reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/
                                            redmushroom/magmacream effects
+                                           TODO: negate effects of stuff
 | |Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
                           blaze powder
                           firecharge

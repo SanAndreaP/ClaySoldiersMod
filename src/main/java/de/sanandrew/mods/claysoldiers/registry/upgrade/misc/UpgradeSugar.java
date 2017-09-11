@@ -48,7 +48,7 @@ public class UpgradeSugar
     }
 
     @Override
-    public boolean checkPickupable(ISoldier<?> soldier, ItemStack stack) {
+    public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
         return true; //TODO: make incompatible with diamond
     }
 

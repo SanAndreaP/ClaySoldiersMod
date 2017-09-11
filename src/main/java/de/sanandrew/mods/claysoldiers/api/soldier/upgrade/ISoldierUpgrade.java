@@ -39,7 +39,7 @@ public interface ISoldierUpgrade
 
     default void readSyncData(ByteBuf buf, NBTTagCompound nbt) { }
 
-    default boolean checkPickupable(ISoldier<?> soldier, ItemStack stack) { return true; }
+    default boolean isApplicable(ISoldier<?> soldier, ItemStack stack) { return true; }
 
     default void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) { }
 

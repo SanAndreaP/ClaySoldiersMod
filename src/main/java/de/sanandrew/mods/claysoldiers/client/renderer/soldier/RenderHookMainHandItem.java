@@ -30,6 +30,7 @@ public class RenderHookMainHandItem
     private static final ItemStack BLAZEROD = new ItemStack(Items.BLAZE_ROD);
     private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.SHEAR_BLADE);
     private static final ItemStack SPECLEDMELON = new ItemStack(Items.SPECKLED_MELON);
+    private static final ItemStack BONE = new ItemStack(Items.BONE);
 
     private final int priority;
 
@@ -56,37 +57,29 @@ public class RenderHookMainHandItem
         switch( this.priority ) {
             case 0: {
                 if( soldier.hasUpgrade(UpgradeRegistry.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
-                    this.renderItem(STICK, -125.0F);
+                    RenderUtils.renderStackInWorld(STICK, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
-                    this.renderItem(BLAZEROD, -125.0F);
+                    RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
-                    this.renderItem(SHEARBLADE, -135.0F);
+                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -135.0F, 0.75D);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
-                    this.renderItem(SPECLEDMELON, -90.0F);
+                    RenderUtils.renderStackInWorld(SPECLEDMELON, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -90.0F, 0.75D);
+                    return true;
+                } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND) ) {
+                    RenderUtils.renderStackInWorld(BONE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
                     return true;
                 }
             } break;
             case 1: {
-                ISoldierUpgrade upg = UpgradeRegistry.INSTANCE.getUpgrade(UpgradeRegistry.MC_FLINT);
-                if( upg != null && soldier.hasUpgrade(upg, EnumUpgradeType.ENHANCEMENT) ) {
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(0.0F, 0.2F, 0.1F);
-                    RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.0D, 0.0D, 0.0F, 90.0F, -125.0F, 0.75D);
-                    GlStateManager.popMatrix();
+                if( soldier.hasUpgrade(UpgradeRegistry.EC_FLINT, EnumUpgradeType.ENHANCEMENT) ) {
+                    RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
                     return true;
                 }
             } break;
         }
         return false;
-    }
-
-    private void renderItem(ItemStack stack, float rotation) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0.0F, 0.2F, 0.1F);
-        RenderUtils.renderStackInWorld(stack, 0.0D, 0.0D, 0.0D, 0.0F, 90.0F, rotation, 0.75D);
-        GlStateManager.popMatrix();
     }
 }

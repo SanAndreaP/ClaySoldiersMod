@@ -6,8 +6,10 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -91,7 +93,8 @@ public abstract class EntityAISoldierAttack
     protected abstract void checkAndPerformAttack(EntityLivingBase entity, double dist);
 
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-        return this.attacker.width * 1.5F * this.attacker.width * 1.5F + attackTarget.width;
+        final double reach = this.attacker.width * 1.5F + (this.attacker.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
+        return reach * reach;
     }
 
     public static final class Meelee
