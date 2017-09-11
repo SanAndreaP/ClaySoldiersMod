@@ -10,7 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;

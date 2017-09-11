@@ -7,7 +7,8 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
@@ -43,6 +44,9 @@ public class CommonProxy
         EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "snowProjectile"), EntityProjectileSnow.class, "snowProjectile", entityCount++,
                                          ClaySoldiersMod.instance, 64, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "fireProjectile"), EntityProjectileFirecharge.class, "fireProjectile", entityCount++,
+                                         ClaySoldiersMod.instance, 64, 1, true);
+
+        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountHorse"), EntityClayHorse.class, "mountHorse", entityCount++,
                                          ClaySoldiersMod.instance, 64, 1, true);
 
         MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());

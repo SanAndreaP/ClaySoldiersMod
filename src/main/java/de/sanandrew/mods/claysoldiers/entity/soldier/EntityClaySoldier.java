@@ -4,7 +4,7 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
    *            (http://creativecommons.org/licenses/by-nc-sa/3.0/)
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.entity;
+package de.sanandrew.mods.claysoldiers.entity.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.entity.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierPickupUpgrade;
@@ -86,7 +87,7 @@ import java.util.function.Consumer;
 
 public class EntityClaySoldier
         extends EntityCreature
-        implements IDisruptable, ISoldier<EntityClaySoldier>, IEntityAdditionalSpawnData
+        implements ISoldier<EntityClaySoldier>, IEntityAdditionalSpawnData
 {
     private static final DataParameter<UUID> TEAM_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializerUUID.INSTANCE);
     private static final DataParameter<Byte> TEXTURE_TYPE_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializers.BYTE);
@@ -508,7 +509,7 @@ public class EntityClaySoldier
             this.applyEnchantments(this, trevor);
 
             float additDifficulty = this.world.getDifficultyForLocation(new BlockPos(this)).getAdditionalDifficulty();
-            if( this.getHeldItemMainhand() == null ) {
+            if( !ItemStackUtils.isValid(this.getHeldItemMainhand()) ) {
                 if( this.isBurning() && this.rand.nextFloat() < additDifficulty * 0.3F ) {
                     trevor.setFire(2 * (int)additDifficulty);
                 }
@@ -757,7 +758,7 @@ public class EntityClaySoldier
         if( !this.world.isRemote ) {
             ArrayList<ItemStack> drops = new ArrayList<>();
 
-            if( this.doll != null ) {
+            if( ItemStackUtils.isValid(this.doll) ) {
                 if( damageSource.isFireDamage() ) {
                     ItemStack brickDoll = new ItemStack(ItemRegistry.DOLL_BRICK_SOLDIER, 1);
                     drops.add(brickDoll);

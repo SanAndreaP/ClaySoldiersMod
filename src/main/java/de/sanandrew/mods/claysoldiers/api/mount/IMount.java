@@ -6,13 +6,13 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.mount;
 
+import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import net.minecraft.entity.EntityLivingBase;
 
 public interface IMount<T extends EntityLivingBase>
+        extends IDisruptable
 {
     IMount setSpawnedFromNexus();
-
-    int getType();
 
     void setSpecial();
 

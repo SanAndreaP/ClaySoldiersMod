@@ -4,14 +4,13 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.renderer;
+package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;

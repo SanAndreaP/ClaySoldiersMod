@@ -8,14 +8,12 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.List;

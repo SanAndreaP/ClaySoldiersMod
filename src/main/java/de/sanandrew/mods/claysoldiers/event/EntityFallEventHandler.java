@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.event;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

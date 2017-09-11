@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.soldier;
 
+import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import java.util.UUID;
 
 public interface ISoldier<T extends EntityCreature & ISoldier<T>>
+        extends IDisruptable
 {
     void expireEffect(ISoldierEffect effect);
 

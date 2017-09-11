@@ -9,8 +9,6 @@ package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityCreature;
@@ -20,7 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentNavigableMap;
 
 @SideOnly(Side.CLIENT)
 public class LayerSoldierHeldItem

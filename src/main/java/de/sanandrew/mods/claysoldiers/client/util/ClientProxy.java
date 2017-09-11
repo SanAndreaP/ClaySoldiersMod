@@ -11,10 +11,12 @@ import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.RenderWorldEventHandler;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
-import de.sanandrew.mods.claysoldiers.client.renderer.RenderClaySoldier;
+import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderClayHorse;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.projectile.RenderProjectile;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
@@ -47,6 +49,7 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileGravel.class, RenderProjectile.Gravel::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileSnow.class, RenderProjectile.Snow::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileFirecharge.class, RenderProjectile.Firecharge::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityClayHorse.class, RenderClayHorse::new);
 
         MinecraftForge.EVENT_BUS.register(new RenderWorldEventHandler());
 

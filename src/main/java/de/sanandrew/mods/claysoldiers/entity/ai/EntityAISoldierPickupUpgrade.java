@@ -6,16 +6,12 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
 public class EntityAISoldierPickupUpgrade
         extends EntityAIBase

@@ -22,6 +22,7 @@ public interface IDisruptable
 
     enum DisruptType {
         SOLDIER,
+        MOUNT,
         ALL
     }
 }

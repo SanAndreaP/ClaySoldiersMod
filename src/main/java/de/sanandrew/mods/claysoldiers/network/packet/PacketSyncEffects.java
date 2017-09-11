@@ -8,19 +8,17 @@ package de.sanandrew.mods.claysoldiers.network.packet;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.sanlib.lib.network.AbstractMessage;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

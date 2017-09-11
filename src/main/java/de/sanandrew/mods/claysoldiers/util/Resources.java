@@ -89,6 +89,8 @@ public enum Resources
     ENTITY_SOLDIER_LEATHER_ARMOR("models/entity/leather.json"),
     ENTITY_SOLDIER_RABBIT_HIDE("models/entity/rabbithide.json"),
 
+    ENTITY_CLAY_HORSE("models/entity/mount/horse.json"),
+
     LIGHTNING_OVERLAY("textures/entity/creeper/creeper_armor.png");
     //endregion
 

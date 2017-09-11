@@ -57,25 +57,25 @@ public class RenderHookMainHandItem
         switch( this.priority ) {
             case 0: {
                 if( soldier.hasUpgrade(UpgradeRegistry.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
-                    RenderUtils.renderStackInWorld(STICK, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(STICK, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
-                    RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
-                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -135.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(SPECLEDMELON, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -90.0F, 0.75D);
                     return true;
                 } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND) ) {
-                    RenderUtils.renderStackInWorld(BONE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(BONE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
                 }
             } break;
             case 1: {
                 if( soldier.hasUpgrade(UpgradeRegistry.EC_FLINT, EnumUpgradeType.ENHANCEMENT) ) {
-                    RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -125.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
                 }
             } break;

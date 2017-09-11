@@ -7,18 +7,15 @@
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
-import de.sanandrew.mods.claysoldiers.entity.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
