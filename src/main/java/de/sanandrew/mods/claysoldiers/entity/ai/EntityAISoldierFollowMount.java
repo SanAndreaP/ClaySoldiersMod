@@ -6,14 +6,14 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.mount.IMount;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAISoldierPickupUpgrade
+public class EntityAISoldierFollowMount
         extends EntityAIBase
 {
     protected EntityClaySoldier attacker;
@@ -23,7 +23,7 @@ public class EntityAISoldierPickupUpgrade
     private double targetY;
     private double targetZ;
 
-    public EntityAISoldierPickupUpgrade(EntityClaySoldier soldier, double speedIn) {
+    public EntityAISoldierFollowMount(EntityClaySoldier soldier, double speedIn) {
         this.attacker = soldier;
         this.speedTowardsTarget = speedIn;
         this.setMutexBits(1);
@@ -31,12 +31,12 @@ public class EntityAISoldierPickupUpgrade
 
     @Override
     public boolean shouldExecute() {
-        Entity item = this.attacker.followingEntity;
+        Entity mount = this.attacker.followingEntity;
 
-        if( !(item instanceof EntityItem) || !item.isEntityAlive() ) {
+        if( !this.isMountRidable(mount) || !mount.isEntityAlive() ) {
             return false;
         } else {
-            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(item);
+            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(mount);
             if( this.entityPathEntity == null ) {
                 Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
                 this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
@@ -47,7 +47,8 @@ public class EntityAISoldierPickupUpgrade
 
     @Override
     public boolean shouldContinueExecuting() {
-        return this.attacker.followingEntity instanceof EntityItem && this.attacker.followingEntity.isEntityAlive() && this.attacker.hasPath();
+        Entity jack = this.attacker.followingEntity;
+        return this.isMountRidable(jack) && jack.isEntityAlive() && this.attacker.hasPath();
     }
 
     @Override
@@ -66,7 +67,7 @@ public class EntityAISoldierPickupUpgrade
     @Override
     public void updateTask() {
         Entity jack = this.attacker.followingEntity;
-        if( !(jack instanceof EntityItem) || !jack.isEntityAlive() ) {
+        if( !this.isMountRidable(jack) || !jack.isEntityAlive() ) {
             this.entityPathEntity = null;
             return;
         }
@@ -84,11 +85,13 @@ public class EntityAISoldierPickupUpgrade
         }
 
         if( tgtDist < 1.0F ) {
-            EntityItem item = (EntityItem) jack;
-            this.attacker.pickupUpgrade(item);
-            if( item.getItem().getCount() < 1 ) {
-                item.setDead();
-            }
+            this.attacker.startRiding(jack);
+            this.attacker.getNavigator().clearPathEntity();
+            this.attacker.followingEntity = null;
         }
+    }
+
+    private boolean isMountRidable(Entity e) {
+        return e instanceof IMount && ((IMount) e).getMaxPassengers() > e.getPassengers().size();
     }
 }

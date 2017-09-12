@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.mount.IMount;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWander;
@@ -37,7 +38,7 @@ public class EntityClayHorse
         this.stepHeight = 0.1F;
         this.jumpMovementFactor = 0.2F;
 
-        this.setSize(0.35F, 0.7F);
+        this.setSize(0.35F, 0.5F);
     }
 
     public EntityClayHorse(World world, EnumClayHorseType type, ItemStack doll) {
@@ -79,6 +80,18 @@ public class EntityClayHorse
         this.type = EnumClayHorseType.VALUES[compound.getInteger("horseType")];
         this.textureId = compound.getInteger("textureId");
         this.doll = new ItemStack(compound.getCompoundTag("dollItem"));
+    }
+
+    @Override
+    public double getMountedYOffset() {
+        return this.height * 0.6D;
+    }
+
+    @Override
+    public float getAIMoveSpeed() {
+        return this.getPassengers().size() > 0 && this.getPassengers().get(0) instanceof EntityLivingBase
+                       ? ((EntityLivingBase) this.getPassengers().get(0)).getAIMoveSpeed()
+                       : super.getAIMoveSpeed();
     }
 
     @Override

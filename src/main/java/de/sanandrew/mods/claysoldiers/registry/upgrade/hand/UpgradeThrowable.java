@@ -72,7 +72,7 @@ public abstract class UpgradeThrowable
     @Override
     public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
         EntityUtils.getAisFromTaskList(soldier.getEntity().tasks.taskEntries, EntityAISoldierAttack.Ranged.class).forEach(soldier::removeTask);
-        soldier.setMoveForwardMultiplier(1.0F);
+        soldier.setMoveMultiplier(1.0F);
     }
 
     @Override

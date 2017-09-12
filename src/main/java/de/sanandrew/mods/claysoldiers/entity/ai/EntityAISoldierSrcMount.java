@@ -32,7 +32,7 @@ public class EntityAISoldierSrcMount
         this.taskOwner = soldier;
         this.tgtSelector = entity -> entity instanceof IMount && entity.isEntityAlive()
                                         && this.taskOwner.canEntityBeSeen(entity) && !this.taskOwner.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND)
-                                        && ((IMount) entity).getMaxPassengers() < entity.getPassengers().size();
+                                        && ((IMount) entity).getMaxPassengers() > entity.getPassengers().size();
         this.setMutexBits(2);
     }
 

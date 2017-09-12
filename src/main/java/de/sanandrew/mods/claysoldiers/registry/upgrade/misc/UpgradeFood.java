@@ -41,8 +41,15 @@ public class UpgradeFood
         List<ItemStack> foods = new ArrayList<>();
         Item.REGISTRY.forEach(itm -> {
             if( itm instanceof ItemFood ) {
-                for( int i = 0, max = itm.getHasSubtypes() ? itm.getMaxDamage() : 0; i <= max; i++ ) {
-                    foods.add(new ItemStack(itm, 1, i));
+                int i = 0;
+                int max = 0;
+                while( i <= max ) {
+                    ItemStack stack = new ItemStack(itm, 1, i);
+                    if( itm.getHasSubtypes() ) {
+                        max = itm.getMaxDamage(stack);
+                    }
+                    foods.add(stack);
+                    i++;
                 }
             }
         });

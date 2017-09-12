@@ -92,11 +92,6 @@ public abstract class EntityAISoldierAttack
 
     protected abstract void checkAndPerformAttack(EntityLivingBase entity, double dist);
 
-    protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-        final double reach = this.attacker.width * 1.5F + (this.attacker.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
-        return reach * reach;
-    }
-
     public static final class Meelee
             extends EntityAISoldierAttack
     {
@@ -106,13 +101,18 @@ public abstract class EntityAISoldierAttack
 
         @Override
         protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-            double d0 = this.getAttackReachSqr(entity);
+            double d0 = this.getAttackReachSqr();
 
             if( dist <= d0 && this.attackTick <= 0 ) {
                 this.attackTick = 20;
                 this.attacker.swingArm(EnumHand.MAIN_HAND);
                 this.attacker.attackEntityAsMob(entity);
             }
+        }
+
+        protected double getAttackReachSqr() {
+            final double reach = this.attacker.width * 2.0F + (this.attacker.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
+            return reach * reach;
         }
     }
 
@@ -126,7 +126,7 @@ public abstract class EntityAISoldierAttack
         @Override
         protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
             if( dist <= 6.0D ) {
-                this.attacker.setMoveForwardMultiplier(-1.0F);
+                this.attacker.setMoveMultiplier(-1.0F);
 
                 if( this.attackTick <= 0 ) {
                     this.attackTick = 20;
@@ -135,7 +135,7 @@ public abstract class EntityAISoldierAttack
                     this.attacker.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this.attacker, upg, entity, null, 0.0F));
                 }
             } else {
-                this.attacker.setMoveForwardMultiplier(1.0F);
+                this.attacker.setMoveMultiplier(1.0F);
             }
         }
     }

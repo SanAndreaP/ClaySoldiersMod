@@ -110,7 +110,7 @@ public class ItemSoldier
 
             if( hand != null && player.capabilities.isCreativeMode ) {
                 if( stack.getCount() < 1 ) {
-                    player.setHeldItem(hand, null);
+                    player.setHeldItem(hand, ItemStack.EMPTY);
                 } else {
                     player.setHeldItem(hand, stack.copy());
                 }

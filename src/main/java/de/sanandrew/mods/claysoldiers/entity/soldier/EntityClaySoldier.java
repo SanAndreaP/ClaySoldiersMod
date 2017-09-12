@@ -17,7 +17,8 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierPickupUpgrade;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowMount;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcMount;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcUpgradeItem;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
@@ -107,7 +108,7 @@ public class EntityClaySoldier
 
     public Entity followingEntity;
 
-    public float forcedMoveForward;
+    public float moveMulti;
 
     public EntityClaySoldier(World world) {
         super(world);
@@ -133,7 +134,7 @@ public class EntityClaySoldier
         this.effectSyncList = new ConcurrentLinkedQueue<>();
         this.effectMap = new ConcurrentHashMap<>();
 
-        this.forcedMoveForward = 1.0F;
+        this.moveMulti = 1.0F;
 
         this.setMovable(true);
 
@@ -171,7 +172,8 @@ public class EntityClaySoldier
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISoldierPickupUpgrade(this, 1.0D));
+        this.tasks.addTask(1, new EntityAISoldierFollowUpgrade(this, 1.0D));
+        this.tasks.addTask(1, new EntityAISoldierFollowMount(this, 1.0D));
         this.tasks.addTask(3, new EntityAISoldierAttack.Meelee(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
@@ -297,8 +299,6 @@ public class EntityClaySoldier
     }
 
     public void pickupUpgrade(EntityItem item) {
-        this.navigator.clearPathEntity();
-        this.followingEntity = null;
         ItemStack stack = item.getItem();
 
         if( stack.getCount() < 1 ) {
@@ -438,8 +438,8 @@ public class EntityClaySoldier
 
     //region ai and movement
     @Override
-    public void setMoveForwardMultiplier(float fwd) {
-        this.forcedMoveForward = Math.min(1.0F, Math.max(-1.0F, fwd));
+    public void setMoveMultiplier(float fwd) {
+        this.moveMulti = Math.min(1.0F, Math.max(-1.0F, fwd));
     }
 
     @Override
@@ -449,12 +449,12 @@ public class EntityClaySoldier
 
     @Override
     public void setMoveForward(float amount) {
-        super.setMoveForward(amount * this.forcedMoveForward);
+        super.setMoveForward(amount * this.moveMulti);
     }
 
     @Override
     public void setAIMoveSpeed(float speedIn) {
-        super.setAIMoveSpeed(speedIn * this.forcedMoveForward);
+        super.setAIMoveSpeed(speedIn * this.moveMulti);
     }
 
     @Override
