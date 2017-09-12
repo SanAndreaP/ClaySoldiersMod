@@ -33,7 +33,7 @@ public class EntityAISoldierFollowMount
     public boolean shouldExecute() {
         Entity mount = this.attacker.followingEntity;
 
-        if( !this.isMountRidable(mount) || !mount.isEntityAlive() ) {
+        if( this.attacker.getRidingEntity() != null || !this.isMountRidable(mount) || !mount.isEntityAlive() ) {
             return false;
         } else {
             this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(mount);
@@ -48,7 +48,7 @@ public class EntityAISoldierFollowMount
     @Override
     public boolean shouldContinueExecuting() {
         Entity jack = this.attacker.followingEntity;
-        return this.isMountRidable(jack) && jack.isEntityAlive() && this.attacker.hasPath();
+        return this.attacker.getRidingEntity() == null && this.isMountRidable(jack) && jack.isEntityAlive() && this.attacker.hasPath();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class EntityAISoldierFollowMount
     @Override
     public void updateTask() {
         Entity jack = this.attacker.followingEntity;
-        if( !this.isMountRidable(jack) || !jack.isEntityAlive() ) {
+        if( this.attacker.getRidingEntity() != null || !this.isMountRidable(jack) || !jack.isEntityAlive() ) {
             this.entityPathEntity = null;
             return;
         }

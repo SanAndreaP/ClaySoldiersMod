@@ -8,7 +8,10 @@ package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class ItemSoldierShield
         extends Item
@@ -22,4 +25,6 @@ public class ItemSoldierShield
         this.setRegistryName(CsmConstants.ID, "shield");
     }
 
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) { }
 }

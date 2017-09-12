@@ -11,6 +11,7 @@ package de.sanandrew.mods.claysoldiers.registry;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemBrickSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.item.ItemHorseMount;
 import de.sanandrew.mods.claysoldiers.item.ItemShearBlade;
 import de.sanandrew.mods.claysoldiers.item.ItemSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemSoldierShield;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ItemRegistry
 {
     public static final ItemSoldier DOLL_SOLDIER = new ItemSoldier();
+    public static final ItemHorseMount DOLL_HORSE = new ItemHorseMount();
     public static final ItemDisruptor DISRUPTOR = new ItemDisruptor();
     public static final ItemBrickSoldier DOLL_BRICK_SOLDIER = new ItemBrickSoldier();
     public static final ItemShearBlade SHEAR_BLADE = new ItemShearBlade();
@@ -32,6 +34,7 @@ public class ItemRegistry
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
                 DOLL_SOLDIER,
+                DOLL_HORSE,
                 DISRUPTOR,
                 DOLL_BRICK_SOLDIER,
                 SHEAR_BLADE,

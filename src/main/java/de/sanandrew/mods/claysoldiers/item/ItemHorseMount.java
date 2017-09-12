@@ -7,22 +7,20 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
-import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
+import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
-import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -31,57 +29,43 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class ItemSoldier
+public class ItemHorseMount
         extends Item
 {
-   public ItemSoldier() {
+    public ItemHorseMount() {
         super();
         this.setCreativeTab(CsmCreativeTabs.DOLLS);
-        this.setUnlocalizedName(CsmConstants.ID + ":doll_soldier");
+        this.setUnlocalizedName(CsmConstants.ID + ":doll_horse");
         this.setMaxDamage(0);
         this.maxStackSize = 16;
-        this.setRegistryName(CsmConstants.ID, "doll_soldier");
+        this.setRegistryName(CsmConstants.ID, "doll_horse");
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
         if( this.isInCreativeTab(tab) ) {
-            list.addAll(TeamRegistry.INSTANCE.getTeams().stream().map(team -> TeamRegistry.INSTANCE.setTeam(new ItemStack(this, 1), team)).collect(Collectors.toList()));
+            list.addAll(Arrays.stream(EnumClayHorseType.VALUES).filter(type -> type.visible).map(ItemHorseMount::getTypeStack).collect(Collectors.toList()));
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + '.' + TeamRegistry.INSTANCE.getTeam(stack).getName();
+        return super.getUnlocalizedName(stack) + '.' + getType(stack).name().toLowerCase();
     }
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        if( world.isRemote ) {
+        if( !player.canPlayerEdit(pos.offset(facing), facing, stack) ) {
+            return EnumActionResult.FAIL;
+        } else if( world.isRemote ) {
             return EnumActionResult.SUCCESS;
-        } else if( !player.canPlayerEdit(pos.offset(facing), facing, stack) ) {
-            return EnumActionResult.FAIL;
-        } else if( world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
-            if( !player.isSneaking() && !UuidUtils.areUuidsEqual(TeamRegistry.INSTANCE.getTeam(stack).getId(), TeamRegistry.SOLDIER_CLAY) ) {
-                IBlockState state = world.getBlockState(pos);
-                int level = state.getValue(BlockCauldron.LEVEL);
-                if( level > 0 ) {
-                    player.setHeldItem(hand, TeamRegistry.INSTANCE.setTeam(stack.copy(), TeamRegistry.SOLDIER_CLAY));
-                    player.inventoryContainer.detectAndSendChanges();
-
-                    player.addStat(StatList.CAULDRON_USED);
-                    Blocks.CAULDRON.setWaterLevel(world, pos, state, level - 1);
-
-                    return EnumActionResult.SUCCESS;
-                }
-            }
-
-            return EnumActionResult.FAIL;
         } else {
             IBlockState iblockstate = world.getBlockState(pos);
 
@@ -92,13 +76,13 @@ public class ItemSoldier
                 yShift = 0.5D;
             }
 
-            EntityClaySoldier[] soldiers = spawnSoldiers(world, TeamRegistry.INSTANCE.getTeam(stack), player.isSneaking() ? 1 : stack.getCount(),
-                                                         pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D, stack);
+            EntityClayHorse[] horses = spawnHorses(world, getType(stack), player.isSneaking() ? 1 : stack.getCount(),
+                                                   pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D, stack);
 
-            for( EntityClaySoldier james : soldiers ) {
-                if( james != null ) {
+            for( EntityClayHorse trevor : horses ) {
+                if( trevor != null ) {
                     if( stack.hasDisplayName() ) {
-                        james.setCustomNameTag(stack.getDisplayName());
+                        trevor.setCustomNameTag(stack.getDisplayName());
                     }
 
                     stack.setCount(stack.getCount() - 1);
@@ -119,9 +103,9 @@ public class ItemSoldier
         }
     }
 
-    public static EntityClaySoldier[] spawnSoldiers(World world, ITeam team, final int count, double x, double y, double z, ItemStack dollStack) {
-        if( team != TeamRegistry.NULL_TEAM ) {
-            EntityClaySoldier[] soldiers = new EntityClaySoldier[count];
+    public static EntityClayHorse[] spawnHorses(World world, EnumClayHorseType type, final int count, double x, double y, double z, ItemStack dollStack) {
+        if( type != EnumClayHorseType.UNKNOWN ) {
+            EntityClayHorse[] horses = new EntityClayHorse[count];
 
             for( int i = 0; i < count; i++ ) {
                 double xs = x - 0.1D + MiscUtils.RNG.randomFloat() * 0.02D;
@@ -132,7 +116,7 @@ public class ItemSoldier
                     newDollStack = dollStack.copy();
                     newDollStack.setCount(1);
                 }
-                EntityClaySoldier aleks = new EntityClaySoldier(world, team, newDollStack);
+                EntityClayHorse aleks = new EntityClayHorse(world, type, newDollStack);
                 aleks.setLocationAndAngles(xs, y, zs, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
                 aleks.rotationYawHead = aleks.rotationYaw;
                 aleks.renderYawOffset = aleks.rotationYaw;
@@ -140,12 +124,29 @@ public class ItemSoldier
                 world.spawnEntity(aleks);
                 aleks.playLivingSound();
 
-                soldiers[i] = aleks;
+                horses[i] = aleks;
             }
 
-            return soldiers;
+            return horses;
         } else {
-            return new EntityClaySoldier[0];
+            return new EntityClayHorse[0];
         }
+    }
+
+    public static EnumClayHorseType getType(ItemStack stack) {
+        if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_HORSE) ) {
+            NBTTagCompound nbt = stack.getSubCompound("dollHorse");
+            if( nbt != null && nbt.hasKey("type", Constants.NBT.TAG_INT) ) {
+                return EnumClayHorseType.VALUES[nbt.getInteger("type")];
+            }
+        }
+
+        return EnumClayHorseType.UNKNOWN;
+    }
+
+    public static ItemStack getTypeStack(EnumClayHorseType type) {
+        ItemStack stack = new ItemStack(ItemRegistry.DOLL_HORSE, 1);
+        stack.getOrCreateSubCompound("dollHorse").setInteger("type", type.ordinal());
+        return stack;
     }
 }

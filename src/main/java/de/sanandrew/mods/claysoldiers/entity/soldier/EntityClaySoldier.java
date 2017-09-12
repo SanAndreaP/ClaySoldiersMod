@@ -798,12 +798,6 @@ public class EntityClaySoldier
         super.knockBack(entityIn, strength, xRatio, zRatio);
     }
 
-    @Nullable
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return null;
-    }
-
     @Override
     protected SoundEvent getHurtSound(DamageSource src) {
         return SoundEvents.BLOCK_GRAVEL_BREAK;//return ModConfig.useOldHurtSound ? "claysoldiers:mob.soldier.hurt" : "dig.gravel";

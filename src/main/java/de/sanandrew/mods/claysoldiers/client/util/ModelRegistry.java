@@ -12,12 +12,17 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.item.EnumShieldTypes;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.item.ItemHorseMount;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
+import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -28,6 +33,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,6 +47,7 @@ public final class ModelRegistry
         setStandardModel(ItemRegistry.DOLL_BRICK_SOLDIER);
         setStandardModel(ItemRegistry.SHEAR_BLADE);
         setCustomMeshModel(ItemRegistry.DOLL_SOLDIER, new MeshDefUUID.Soldier());
+        setCustomMeshModel(ItemRegistry.DOLL_HORSE, new MeshDefOrdinal.Horse());
         setCustomMeshModel(ItemRegistry.DISRUPTOR, new MeshDefDisruptor());
 
         for( EnumShieldTypes type : EnumShieldTypes.VALUES ) {
@@ -49,7 +56,10 @@ public final class ModelRegistry
     }
 
     private static void setStandardModel(Item item) {
-        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+        ResourceLocation regName = item.getRegistryName();
+        if( regName != null ) {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(regName, "inventory"));
+        }
     }
 
     private static void setStandardModel(Item item, int meta, String model) {
@@ -58,7 +68,7 @@ public final class ModelRegistry
 
     private static void setStandardModel(Block item) {
         Item itm = Item.getItemFromBlock(item);
-        if( itm != null ) {
+        if( itm != Items.AIR ) {
             setStandardModel(itm);
         }
     }
@@ -111,7 +121,8 @@ public final class ModelRegistry
         @Override
         public ModelResourceLocation getModelLocation(ItemStack stack) {
             T type = getType(stack);
-            return type != null ? this.modelRes.get(getId(type)) : new ModelResourceLocation(stack.getItem().getRegistryName(), "inventory");
+            ResourceLocation regName = stack.getItem().getRegistryName();
+            return type != null ? this.modelRes.get(getId(type)) : regName != null ? new ModelResourceLocation(regName, "inventory") : null;
         }
 
         public abstract T getType(ItemStack stack);
@@ -141,6 +152,45 @@ public final class ModelRegistry
 
             @Override
             public UUID getId(ITeam type) { return type.getId(); }
+        }
+    }
+
+    private static abstract class MeshDefOrdinal<T extends Enum<T>>
+            implements ItemMeshDefinition, MeshDef
+    {
+        public final Map<Integer, ModelResourceLocation> modelRes = new HashMap<>();
+
+        @Override
+        public ModelResourceLocation getModelLocation(ItemStack stack) {
+            T type = getType(stack);
+            ResourceLocation regName = stack.getItem().getRegistryName();
+            return type != null ? this.modelRes.get(type.ordinal()) : regName != null ? new ModelResourceLocation(regName, "inventory") : null;
+        }
+
+        public abstract T getType(ItemStack stack);
+
+        public ResourceLocation[] getResLocations() {
+            return this.modelRes.values().toArray(new ModelResourceLocation[this.modelRes.size()]);
+        }
+
+        @Override
+        public ItemMeshDefinition getMeshDef() {
+            return this;
+        }
+
+        static final class Horse
+                extends MeshDefOrdinal<EnumClayHorseType>
+        {
+            Horse() {
+                Arrays.stream(EnumClayHorseType.VALUES).filter(type -> type.visible).forEach(type -> {
+                    ResourceLocation resLoc = new ResourceLocation(CsmConstants.ID, "mounts/" + MiscUtils.defIfNull(type.cstItemTexture, "horse"));
+                    ModelResourceLocation modelRes = new ModelResourceLocation(resLoc, "inventory");
+                    this.modelRes.put(type.ordinal(), modelRes);
+                });
+            }
+
+            @Override
+            public EnumClayHorseType getType(ItemStack stack) { return ItemHorseMount.getType(stack); }
         }
     }
 }

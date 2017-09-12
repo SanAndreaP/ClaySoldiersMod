@@ -8,6 +8,11 @@ package de.sanandrew.mods.claysoldiers.entity.mount;
 
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
+import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityCreature;
@@ -17,17 +22,20 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class EntityClayHorse
         extends EntityCreature
         implements IMount<EntityClayHorse>, IEntityAdditionalSpawnData
 {
-    private EnumClayHorseType type;
+    private EnumClayHorseType type = EnumClayHorseType.UNKNOWN;
     private int textureId = 0;
     @Nonnull
     private ItemStack doll = ItemStack.EMPTY;
@@ -89,9 +97,45 @@ public class EntityClayHorse
 
     @Override
     public float getAIMoveSpeed() {
-        return this.getPassengers().size() > 0 && this.getPassengers().get(0) instanceof EntityLivingBase
-                       ? ((EntityLivingBase) this.getPassengers().get(0)).getAIMoveSpeed()
-                       : super.getAIMoveSpeed();
+//        return this.getPassengers().size() > 0 && this.getPassengers().get(0) instanceof EntityLivingBase
+//                       ? ((EntityLivingBase) this.getPassengers().get(0)).getAIMoveSpeed()
+//                       : super.getAIMoveSpeed();
+        return super.getAIMoveSpeed() * this.type.movementSpeed;
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return this.type.canBreatheUnderwater;
+    }
+
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        super.onDeath(damageSource);
+
+        if( !this.world.isRemote ) {
+            ArrayList<ItemStack> drops = new ArrayList<>();
+
+            if( ItemStackUtils.isValid(this.doll) ) {
+                drops.add(this.doll);
+            }
+//            if( !this.nexusSpawn ) {
+//                if( this.dollItem != null ) {
+//                    drops.add(this.dollItem.copy());
+//                }
+
+//                for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
+//                    upg.getUpgrade().onItemDrop(this, upg, drops);
+//                }
+//
+            drops.removeAll(Collections.<ItemStack>singleton(null));
+            for( ItemStack drop : drops ) {
+                this.entityDropItem(drop, 0.5F);
+            }
+//            }
+        } else {
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.HORSE_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
+                                                this.type.ordinal());
+        }
     }
 
     @Override
@@ -142,6 +186,6 @@ public class EntityClayHorse
     }
 
     public ResourceLocation getTexture() {
-        return this.type.textures[this.textureId];
+        return this.textureId >= 0 && this.textureId < this.type.textures.length ? this.type.textures[this.textureId] : null;
     }
 }
