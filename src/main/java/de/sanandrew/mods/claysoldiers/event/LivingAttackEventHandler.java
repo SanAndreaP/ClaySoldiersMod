@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.event;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -18,7 +18,7 @@ public class LivingAttackEventHandler
     public void onLivingAttack(LivingAttackEvent event) {
         if( event.getSource().getTrueSource() instanceof ISoldier ) {
             ISoldier attacker = (ISoldier) event.getSource().getTrueSource();
-            if( attacker.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
+            if( attacker.hasUpgrade(Upgrades.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
                 event.setCanceled(true);
             }
         }

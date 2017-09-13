@@ -11,7 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.client.model.ModelGoggleBand;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -45,7 +45,7 @@ public class LayerGoggles
         if( !(creature instanceof ISoldier) ) { return; }
         ISoldier soldier = (ISoldier) creature;
 
-        ISoldierUpgradeInst inst = soldier.getUpgradeInstance(UpgradeRegistry.MC_GLASS, EnumUpgradeType.MISC);
+        ISoldierUpgradeInst inst = soldier.getUpgradeInstance(Upgrades.MC_GLASS, EnumUpgradeType.MISC);
         if( inst != null ) {
             GlStateManager.pushMatrix();
             this.renderer.getSoldierModel().bipedHead.postRender(scale);

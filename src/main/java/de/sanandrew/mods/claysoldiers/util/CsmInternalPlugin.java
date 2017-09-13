@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCrown;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGoggles;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerLeatherArmor;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerMagmaCreamCharge;
@@ -24,7 +25,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookOffHandI
 import de.sanandrew.mods.claysoldiers.event.SoldierTargetEnemyEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,7 +41,7 @@ public class CsmInternalPlugin
 
     @Override
     public void registerUpgrades(IUpgradeRegistry registry) {
-        UpgradeRegistry.initialize(registry);
+        Upgrades.initialize(registry);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class CsmInternalPlugin
         renderer.addRenderLayer(new LayerGoggles(renderer));
         renderer.addRenderLayer(new LayerLeatherArmor(renderer));
         renderer.addRenderLayer(new LayerMagmaCreamCharge(renderer));
+        renderer.addRenderLayer(new LayerCrown(renderer));
     }
 
     @Override

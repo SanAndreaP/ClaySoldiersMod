@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.entity.CsmMobAttributes;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -72,7 +72,7 @@ public class UpgradeIronIngot
             double zRatio = soldier.getEntity().posZ - target.posZ;
 
             double prevMotionX = mark.getEntity().motionX;
-            if( mark.hasUpgrade(UpgradeRegistry.CR_IRONINGOT, EnumUpgradeType.CORE) ) {
+            if( mark.hasUpgrade(Upgrades.CR_IRONINGOT, EnumUpgradeType.CORE) ) {
                 mark.getEntity().knockBack(soldier.getEntity(), 1.6F, xRatio, zRatio);
             } else {
                 mark.getEntity().knockBack(soldier.getEntity(), 0.8F, xRatio, zRatio);

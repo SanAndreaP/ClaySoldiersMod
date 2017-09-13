@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.particle;
 
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -34,6 +35,7 @@ public final class ParticleHandler
 
     static {
         PARTICLES.put(EnumParticle.TEAM_BREAK, ParticleHandler::spawnTeamParticle);
+        PARTICLES.put(EnumParticle.HORSE_BREAK, ParticleHandler::spawnHorseParticle);
         PARTICLES.put(EnumParticle.ITEM_BREAK, ParticleHandler::spawnItemParticle);
         PARTICLES.put(EnumParticle.CRITICAL, ParticleHandler::spawnCriticalParticle);
         PARTICLES.put(EnumParticle.HEARTS, ParticleHandler::spawnHealingParticle);
@@ -52,6 +54,14 @@ public final class ParticleHandler
         if( additData.checkValue(0, val -> val instanceof UUID) ) {
             for( int i = 0; i < 20; i++ ) {
                 mc.effectRenderer.addEffect(new ParticleTeamBreaking(mc.world, x, y, z, TeamRegistry.INSTANCE.getTeam(additData.<UUID>getValue(0))));
+            }
+        }
+    }
+
+    private static void spawnHorseParticle(int dim, double x, double y, double z, Tuple additData) {
+        if( additData.checkValue(0, val -> val instanceof Integer) ) {
+            for( int i = 0; i < 20; i++ ) {
+                mc.effectRenderer.addEffect(new ParticleHorseBreaking(mc.world, x, y, z, EnumClayHorseType.VALUES[additData.<Integer>getValue(0)]));
             }
         }
     }

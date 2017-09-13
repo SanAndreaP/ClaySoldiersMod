@@ -10,7 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.client.event.ClayModelRotationEvent;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,7 +23,7 @@ public class ClayModelRotationEventHandler
         if( event.model instanceof ModelClaySoldier && event.entity instanceof EntityClaySoldier ) {
             ModelClaySoldier model = (ModelClaySoldier) event.model;
             EntityClaySoldier soldier = (EntityClaySoldier) event.entity;
-            if( soldier.hasUpgrade(UpgradeRegistry.MC_FEATHER, EnumUpgradeType.MISC) && !soldier.onGround ) {
+            if( soldier.hasUpgrade(Upgrades.MC_FEATHER, EnumUpgradeType.MISC) && !soldier.onGround ) {
                 model.bipedLeftArm.rotateAngleX += Math.PI;
                 model.bipedRightArm.rotateAngleX += Math.PI;
             }

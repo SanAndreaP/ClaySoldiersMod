@@ -9,12 +9,10 @@ package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
@@ -56,25 +54,25 @@ public class RenderHookMainHandItem
 
         switch( this.priority ) {
             case 0: {
-                if( soldier.hasUpgrade(UpgradeRegistry.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
+                if( soldier.hasUpgrade(Upgrades.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(STICK, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(SPECLEDMELON, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -90.0F, 0.75D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(BONE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
                 }
             } break;
             case 1: {
-                if( soldier.hasUpgrade(UpgradeRegistry.EC_FLINT, EnumUpgradeType.ENHANCEMENT) ) {
+                if( soldier.hasUpgrade(Upgrades.EC_FLINT, EnumUpgradeType.ENHANCEMENT) ) {
                     RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                     return true;
                 }

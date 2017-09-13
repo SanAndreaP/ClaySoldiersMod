@@ -20,14 +20,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -52,9 +55,8 @@ public class EntityClayHorse
     public EntityClayHorse(World world, EnumClayHorseType type, ItemStack doll) {
         this(world);
 
-        this.type = type;
         this.doll = doll;
-        this.textureId = MiscUtils.RNG.randomInt(type.textures.length);
+        this.setType(type);
     }
 
     @Override
@@ -85,7 +87,7 @@ public class EntityClayHorse
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
 
-        this.type = EnumClayHorseType.VALUES[compound.getInteger("horseType")];
+        this.setType(EnumClayHorseType.VALUES[compound.getInteger("horseType")]);
         this.textureId = compound.getInteger("textureId");
         this.doll = new ItemStack(compound.getCompoundTag("dollItem"));
     }
@@ -97,15 +99,29 @@ public class EntityClayHorse
 
     @Override
     public float getAIMoveSpeed() {
-//        return this.getPassengers().size() > 0 && this.getPassengers().get(0) instanceof EntityLivingBase
-//                       ? ((EntityLivingBase) this.getPassengers().get(0)).getAIMoveSpeed()
-//                       : super.getAIMoveSpeed();
         return super.getAIMoveSpeed() * this.type.movementSpeed;
     }
 
     @Override
     public boolean canBreatheUnderwater() {
         return this.type.canBreatheUnderwater;
+    }
+
+    @Override
+    protected boolean canDespawn() {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.BLOCK_GRAVEL_STEP;
+    }
+
+    @Override
+    protected void onDeathUpdate() {
+        this.deathTime = 20;
+        this.setDead();
     }
 
     @Override
@@ -146,7 +162,7 @@ public class EntityClayHorse
 
     @Override
     public void readSpawnData(ByteBuf additionalData) {
-        this.type = EnumClayHorseType.VALUES[additionalData.readInt()];
+        this.setType(EnumClayHorseType.VALUES[additionalData.readInt()]);
         this.textureId = additionalData.readInt();
     }
 
@@ -157,12 +173,12 @@ public class EntityClayHorse
 
     @Override
     public void setSpecial() {
-
+        this.setType(EnumClayHorseType.NIGHTMARE);
     }
 
     @Override
     public boolean isSpecial() {
-        return false;
+        return this.type == EnumClayHorseType.NIGHTMARE;
     }
 
     @Override
@@ -187,5 +203,11 @@ public class EntityClayHorse
 
     public ResourceLocation getTexture() {
         return this.textureId >= 0 && this.textureId < this.type.textures.length ? this.type.textures[this.textureId] : null;
+    }
+
+    private void setType(EnumClayHorseType type) {
+        this.type = type;
+        this.textureId = MiscUtils.RNG.randomInt(this.type.textures.length);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.type.maxHealth);
     }
 }

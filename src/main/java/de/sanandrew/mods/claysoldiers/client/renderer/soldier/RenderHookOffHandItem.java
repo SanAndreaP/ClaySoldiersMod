@@ -11,7 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.init.Blocks;
@@ -58,28 +58,28 @@ public class RenderHookOffHandItem
 
         switch( this.priority ) {
             case 0: {
-                if( soldier.hasUpgrade(UpgradeRegistry.MOH_SHEARBLADE, EnumUpgradeType.OFF_HAND) ) {
+                if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.0D, 0.0F, -90.0F, -45.0F, 0.75D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.OH_GRAVEL, EnumUpgradeType.OFF_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.OH_GRAVEL, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(GRAVEL, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.OH_SNOW, EnumUpgradeType.OFF_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.OH_SNOW, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(SNOW, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.OH_FIRECHARGE, EnumUpgradeType.OFF_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.OH_FIRECHARGE, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(MAGMA, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.OH_QUARTZ, EnumUpgradeType.OFF_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.OH_QUARTZ, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(QUARTZ, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                     return true;
-                } else if( soldier.hasUpgrade(UpgradeRegistry.OH_BOWL, EnumUpgradeType.OFF_HAND) ) {
+                } else if( soldier.hasUpgrade(Upgrades.OH_BOWL, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(SHIELD_NRM, 0.0D, 0.2D, 0.0D, 90.0F, 0.0F, 0.0F, 0.75D);
                     return true;
                 }
             } break;
             case 1: {
-                if( soldier.hasUpgrade(UpgradeRegistry.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                if( soldier.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                     RenderUtils.renderStackInWorld(SHIELD_STD, 0.0D, 0.2D, 0.0D, 90.0F, 0.0F, 0.0F, 0.75D);
                     return true;
                 }

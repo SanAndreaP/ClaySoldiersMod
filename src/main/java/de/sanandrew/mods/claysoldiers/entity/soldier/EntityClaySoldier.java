@@ -17,8 +17,10 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowKing;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowMount;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowUpgrade;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcKing;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcMount;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcUpgradeItem;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
@@ -173,15 +175,17 @@ public class EntityClaySoldier
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISoldierFollowUpgrade(this, 1.0D));
-        this.tasks.addTask(1, new EntityAISoldierFollowMount(this, 1.0D));
-        this.tasks.addTask(3, new EntityAISoldierAttack.Meelee(this, 1.0D));
+        this.tasks.addTask(2, new EntityAISoldierFollowMount(this, 1.0D));
+        this.tasks.addTask(3, new EntityAISoldierFollowKing(this, 1.0D));
+        this.tasks.addTask(4, new EntityAISoldierAttack.Meelee(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
-        this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.tasks.addTask(6, new EntityAIWander(this, 0.5D));
+        this.tasks.addTask(7, new EntityAILookIdle(this));
 
         this.targetTasks.addTask(1, new EntityAISoldierSrcUpgradeItem(this));
-        this.targetTasks.addTask(1, new EntityAISoldierSrcMount(this));
-        this.targetTasks.addTask(2, new EntityAISoldierAttackableTarget(this));
+        this.targetTasks.addTask(2, new EntityAISoldierSrcMount(this));
+        this.targetTasks.addTask(3, new EntityAISoldierSrcKing(this));
+        this.targetTasks.addTask(4, new EntityAISoldierAttackableTarget(this));
     }
 
     @Override
@@ -531,6 +535,10 @@ public class EntityClaySoldier
         this.removedTasks.forEach(this.tasks::removeTask);
         this.removedTasks.forEach(this.targetTasks::removeTask);
         this.removedTasks.clear();
+
+        if( this.followingEntity != null && !this.followingEntity.isEntityAlive() ) {
+            this.followingEntity = null;
+        }
 
         super.onUpdate();
 

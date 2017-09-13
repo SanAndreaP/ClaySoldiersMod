@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -111,7 +111,7 @@ public abstract class EntityAISoldierAttack
         }
 
         protected double getAttackReachSqr() {
-            final double reach = this.attacker.width * 2.0F + (this.attacker.hasUpgrade(UpgradeRegistry.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
+            final double reach = this.attacker.width * 2.0F + (this.attacker.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
             return reach * reach;
         }
     }

@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -61,7 +61,7 @@ public class UpgradeRabbitHide
 
     @Override
     public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
-        return !soldier.hasUpgrade(UpgradeRegistry.MC_LEATHER, EnumUpgradeType.MISC);
+        return !soldier.hasUpgrade(Upgrades.MC_LEATHER, EnumUpgradeType.MISC);
     }
 
     @Override

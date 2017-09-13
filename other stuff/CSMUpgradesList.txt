@@ -5,8 +5,7 @@ RIGHT HAND
 |x|Stick,      20 use, increases melee damage by 2-3 points
 |x|Arrow,      20 use, increases melee damage by 4-5 points, drops feather, counts as stick upgraded with flint
 |x|BlazeRod,   20 use, increases melee damage by 1-2 points, causes burn time on target
-|-|Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
-                        TODO: make soldiers unridable
+|x|Bone,       30 use, increases melee damage by 3-4, increases melee range slightly, can not be equipped while riding mount, can not ride mount while equipped
 |x|ShearBlade, 25 use, increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
 |x|GoldMelon,  25 use, heals any ally below 25% hp by 15 points, soldier doesn't attack enemies while equipped with this
 
