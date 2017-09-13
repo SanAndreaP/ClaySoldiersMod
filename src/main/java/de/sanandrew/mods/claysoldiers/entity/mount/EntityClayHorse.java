@@ -114,6 +114,12 @@ public class EntityClayHorse
 
     @Nullable
     @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.BLOCK_GRAVEL_BREAK;
+    }
+
+    @Nullable
+    @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.BLOCK_GRAVEL_STEP;
     }

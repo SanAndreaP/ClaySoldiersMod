@@ -6,7 +6,6 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.api.mount.IMount;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
@@ -63,6 +62,7 @@ public class EntityAISoldierFollowKing
 
     @Override
     public void resetTask() {
+        this.executor.followingEntity = null;
         this.executor.getNavigator().clearPathEntity();
         this.entityPathEntity = null;
     }

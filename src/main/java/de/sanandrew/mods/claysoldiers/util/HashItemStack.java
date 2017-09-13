@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class HashItemStack
         implements Serializable
@@ -75,5 +76,10 @@ public class HashItemStack
 
     private void readObjectNoData() throws ObjectStreamException {
         throw new InvalidObjectException("This object cannot be empty!");
+    }
+
+    @Override
+    public String toString() {
+        return "HashItemStack -> " + Objects.toString(this.heldStack);
     }
 }

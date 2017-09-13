@@ -33,7 +33,7 @@ public class EntityAISoldierSrcMount
         this.tgtSelector = entity -> entity instanceof IMount && entity.isEntityAlive()
                                         && this.taskOwner.canEntityBeSeen(entity) && !this.taskOwner.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND)
                                         && ((IMount) entity).getMaxPassengers() > entity.getPassengers().size();
-        this.setMutexBits(2);
+        this.setMutexBits(1);
     }
 
     @Override
@@ -58,11 +58,6 @@ public class EntityAISoldierSrcMount
     @Override
     public void resetTask() {
         this.target = null;
-    }
-
-    @Override
-    public boolean shouldContinueExecuting() {
-        return this.taskOwner.followingEntity == null;
     }
 
     @Override

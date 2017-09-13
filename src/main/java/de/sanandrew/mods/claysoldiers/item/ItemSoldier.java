@@ -19,6 +19,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -76,6 +78,8 @@ public class ItemSoldier
 
                     player.addStat(StatList.CAULDRON_USED);
                     Blocks.CAULDRON.setWaterLevel(world, pos, state, level - 1);
+
+                    world.playSound(null, pos, SoundEvents.ENTITY_BOAT_PADDLE_WATER, SoundCategory.NEUTRAL, 1.0F, 1.0F);
 
                     return EnumActionResult.SUCCESS;
                 }
@@ -141,6 +145,9 @@ public class ItemSoldier
                 aleks.playLivingSound();
 
                 soldiers[i] = aleks;
+
+                float pitch = (MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.2F + 1.0F;
+                world.playSound(null, xs, y, zs, SoundEvents.BLOCK_GRAVEL_BREAK, SoundCategory.NEUTRAL, 1.0F, pitch);
             }
 
             return soldiers;

@@ -29,6 +29,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoldNugget;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRedMushroom;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSugar;
 
 import java.util.UUID;
@@ -60,6 +61,7 @@ public final class Upgrades
     public static final UUID MC_SUGAR = UUID.fromString("BF18CCDE-39A3-43D4-ABB1-322348AB0F0B");
     public static final UUID MC_MAGMACREAM = UUID.fromString("BACE82A7-4E3F-4EB1-81E3-730CF937D6AD");
     public static final UUID MC_GOLDNUGGET = UUID.fromString("4346F97A-6515-41EA-910A-A51866F39926");
+    public static final UUID MC_REDMUSHROOM = UUID.fromString("DA241BE1-DB72-4662-B730-5F0D69D2D211");
 
     public static final UUID CR_IRONINGOT = UUID.fromString("6426F05F-36C5-4F83-9D69-200CCBBA141D");
     public static final UUID CR_BRICK = UUID.fromString("00B12AB5-1E8D-43CA-A136-4BBB5E5970E0");
@@ -90,6 +92,7 @@ public final class Upgrades
         registry.registerUpgrade(MC_SUGAR, new UpgradeSugar());
         registry.registerUpgrade(MC_MAGMACREAM, new UpgradeMagmaCream());
         registry.registerUpgrade(MC_GOLDNUGGET, new UpgradeGoldNugget());
+        registry.registerUpgrade(MC_REDMUSHROOM, new UpgradeRedMushroom());
 
         registry.registerUpgrade(CR_IRONINGOT, new UpgradeIronIngot());
         registry.registerUpgrade(CR_BRICK, new UpgradeBrick());

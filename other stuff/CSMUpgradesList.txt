@@ -53,7 +53,7 @@ Misc
 |x|Food,                   4 use,   heals soldier when below 25%
                                      info: make food in a bowl (rabbit stew and mushroom stew, even modded soups) drop bowl
                                      info: healed XP is hungerPoints * 0.5
-| |GoldNugget,             inf use, gives soldier a crown, all of team follows the king
+|x|GoldNugget,             inf use, gives soldier a crown, all of team follows the king
 |x|Glowstone,              inf use, makes soldier glow, block gives to infinite soldiers
 | |Gunpowder,              1 use,   soldier explodes on death
                                      info: incompatible with magmacream/firework star

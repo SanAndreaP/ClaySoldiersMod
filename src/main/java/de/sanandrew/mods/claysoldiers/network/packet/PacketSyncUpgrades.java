@@ -58,13 +58,15 @@ public class PacketSyncUpgrades
 
     public void applyUpgrades(EntityClaySoldier soldier) {
         for( UpgradeEntry upg : this.upgrades ) {
-            if( upg != null && this.add ) {
-                ISoldierUpgradeInst inst = soldier.addUpgrade(upg.upgrade, upg.type, upg.upgrade.getStacks()[0]);
-                if( this.upgradeNBT.containsKey(upg) ) {
-                    inst.setNbtData(this.upgradeNBT.get(upg));
+            if( upg != null ) {
+                if (this.add) {
+                    ISoldierUpgradeInst inst = soldier.addUpgrade(upg.upgrade, upg.type, upg.upgrade.getStacks()[0].copy());
+                    if (this.upgradeNBT.containsKey(upg)) {
+                        inst.setNbtData(this.upgradeNBT.get(upg));
+                    }
+                } else {
+                    soldier.destroyUpgrade(upg.upgrade, upg.type, false);
                 }
-            } else {
-                soldier.destroyUpgrade(upg.upgrade, upg.type, false);
             }
         }
     }

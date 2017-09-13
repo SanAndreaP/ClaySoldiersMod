@@ -20,8 +20,6 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerLeather
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerMagmaCreamCharge;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
-import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookMainHandItem;
-import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookOffHandItem;
 import de.sanandrew.mods.claysoldiers.event.SoldierTargetEnemyEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
@@ -73,10 +71,6 @@ public class CsmInternalPlugin
     @Override
     @SideOnly(Side.CLIENT)
     public void registerSoldierRenderHook(IRenderHookRegistry registry) {
-        registry.registerSoldierHook(new RenderHookMainHandItem(0));
-        registry.registerSoldierHook(new RenderHookMainHandItem(1));
-        registry.registerSoldierHook(new RenderHookOffHandItem(0));
-        registry.registerSoldierHook(new RenderHookOffHandItem(1));
         registry.registerSoldierHook(new RenderHookBody());
     }
 }

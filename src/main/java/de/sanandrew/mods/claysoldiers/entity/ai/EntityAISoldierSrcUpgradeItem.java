@@ -40,7 +40,7 @@ public class EntityAISoldierSrcUpgradeItem
             }
             return false;
         };
-        this.setMutexBits(2);
+        this.setMutexBits(1);
     }
 
     @Override
@@ -65,11 +65,6 @@ public class EntityAISoldierSrcUpgradeItem
     @Override
     public void resetTask() {
         this.target = null;
-    }
-
-    @Override
-    public boolean shouldContinueExecuting() {
-        return this.taskOwner.followingEntity == null;
     }
 
     @Override

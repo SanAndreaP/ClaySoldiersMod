@@ -51,8 +51,10 @@ public class LayerCrown
             this.renderer.getSoldierModel().bipedHead.postRender(scale);
 
             if( this.model.texture != null ) {
+                GlStateManager.color(1.0F, 0.9F, 0.0F);
                 this.renderer.bindSoldierTexture(this.model.texture);
                 this.model.render(scale);
+                GlStateManager.color(1.0F, 1.0F, 1.0F);
             }
 
             GlStateManager.popMatrix();

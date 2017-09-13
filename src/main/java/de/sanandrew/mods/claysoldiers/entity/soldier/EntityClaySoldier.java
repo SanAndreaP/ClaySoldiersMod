@@ -175,17 +175,17 @@ public class EntityClaySoldier
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISoldierFollowUpgrade(this, 1.0D));
-        this.tasks.addTask(2, new EntityAISoldierFollowMount(this, 1.0D));
-        this.tasks.addTask(3, new EntityAISoldierFollowKing(this, 1.0D));
+        this.tasks.addTask(1, new EntityAISoldierFollowMount(this, 1.0D));
+        this.tasks.addTask(1, new EntityAISoldierFollowKing(this, 1.0D));
         this.tasks.addTask(4, new EntityAISoldierAttack.Meelee(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(6, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
 
+        this.targetTasks.addTask(1, new EntityAISoldierAttackableTarget(this));
         this.targetTasks.addTask(1, new EntityAISoldierSrcUpgradeItem(this));
-        this.targetTasks.addTask(2, new EntityAISoldierSrcMount(this));
-        this.targetTasks.addTask(3, new EntityAISoldierSrcKing(this));
-        this.targetTasks.addTask(4, new EntityAISoldierAttackableTarget(this));
+        this.targetTasks.addTask(1, new EntityAISoldierSrcMount(this));
+        this.targetTasks.addTask(2, new EntityAISoldierSrcKing(this));
     }
 
     @Override
