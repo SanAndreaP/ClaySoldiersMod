@@ -6,13 +6,14 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -21,11 +22,10 @@ import net.minecraft.util.DamageSource;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class UpgradeMagmaCream
+public class UpgradeGunpowder
         implements ISoldierUpgrade
 {
-    public static final int MAX_TIME_DETONATION = 40;
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.MAGMA_CREAM, 1) };
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.GUNPOWDER, 1) };
     private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH };
 
     @Override
@@ -47,7 +47,7 @@ public class UpgradeMagmaCream
 
     @Override
     public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
-        return !soldier.hasUpgrade(Upgrades.MC_GUNPOWDER, EnumUpgradeType.MISC) && !soldier.hasUpgrade(Upgrades.MC_FIREWORKSTAR, EnumUpgradeType.MISC);
+        return !soldier.hasUpgrade(Upgrades.MC_FIREWORKSTAR, EnumUpgradeType.MISC) && !soldier.hasUpgrade(Upgrades.MC_MAGMACREAM, EnumUpgradeType.MISC);
     }
 
     @Override
@@ -65,8 +65,9 @@ public class UpgradeMagmaCream
 
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
-        if( dmgSource.getTrueSource() instanceof ISoldier && !dmgSource.isFireDamage() && !dmgSource.isProjectile() ) {
-            ((ISoldier) dmgSource.getTrueSource()).addEffect(EffectRegistry.INSTANCE.getEffect(EffectRegistry.TIME_BOMB), MAX_TIME_DETONATION);
+        if( dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
+            EntityLivingBase soldierL = soldier.getEntity();
+            soldierL.world.createExplosion(soldierL, soldierL.posX, soldierL.posY, soldierL.posZ, 1.0F, false);
         } else {
             drops.add(upgradeInst.getSavedStack());
         }

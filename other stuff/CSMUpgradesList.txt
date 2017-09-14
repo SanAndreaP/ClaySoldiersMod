@@ -26,9 +26,9 @@ LEFT HAND
 ------------------
 Core
 ------------------
-|-|IronIngot,   makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
+|x|IronIngot,   makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
                 TODO: rendering
-|-|Brick,       makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
+|x|Brick,       makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
                 TODO: rendering
 | |String,      makes soldier resist all damage from one explosion
 | |Cactus,      75% chance to negate burn time, halves total burn time otherwise
@@ -55,7 +55,7 @@ Misc
                                      info: healed XP is hungerPoints * 0.5
 |x|GoldNugget,             inf use, gives soldier a crown, all of team follows the king
 |x|Glowstone,              inf use, makes soldier glow, block gives to infinite soldiers
-| |Gunpowder,              1 use,   soldier explodes on death
+|x|Gunpowder,              1 use,   soldier explodes on death
                                      info: incompatible with magmacream/firework star
 |x|MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
                                      info: incompatible with gunpowder/fireworkstar
@@ -81,8 +81,8 @@ Misc
 | |EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
                                      dies after 10 minutes of no fighting
 | |BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
-| |RedMushroom,            1 use,   applies poison to target
-| |BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
+|x|RedMushroom,            1 use,   applies poison to target
+|x|BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
 | |LillyPad,               inf use, soldier has pants and will float on water
                                      info: no effect when used with iron ingot
 |x|Egg,                    inf use, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
@@ -92,8 +92,8 @@ Misc
                                      incompatible with stone button
 | |StoneButton,            inf use, increases melee damage by 2 when no weapon is equipped
                                      incompatible with wood button
-| |MobHead,                inf use, gives the soldier a mask to wear
-| |FireworkStar,             1 use, soldier explodes on death in a firework effect
+|x|MobHead,                inf use, gives the soldier a mask to wear
+|x|FireworkStar,             1 use, soldier explodes on death in a firework effect
                                      info: incompatible with gunpowder/magmacream
 | |Rabbit Foot,            inf use, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
 | |Prismarine Crystals,    inf use, makes soldiers glitter, that's all.

@@ -88,7 +88,12 @@ public class RenderClaySoldier
 
     @Override
     public ModelBiped getSoldierModel() {
-        return (ModelClaySoldier) this.mainModel;
+        return (ModelBiped) this.mainModel;
+    }
+
+    @Override
+    public ModelBiped getNewSoldierModel(float scale) {
+        return new ModelClaySoldier(scale);
     }
 
     @Override

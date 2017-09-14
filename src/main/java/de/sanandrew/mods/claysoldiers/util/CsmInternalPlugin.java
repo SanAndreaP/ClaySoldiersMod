@@ -16,8 +16,10 @@ import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCrown;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGoggles;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGunpowder;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerLeatherArmor;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerMagmaCreamCharge;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSkull;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSoldierHeldItem;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
 import de.sanandrew.mods.claysoldiers.event.SoldierTargetEnemyEventHandler;
@@ -66,6 +68,8 @@ public class CsmInternalPlugin
         renderer.addRenderLayer(new LayerLeatherArmor(renderer));
         renderer.addRenderLayer(new LayerMagmaCreamCharge(renderer));
         renderer.addRenderLayer(new LayerCrown(renderer));
+        renderer.addRenderLayer(new LayerGunpowder(renderer));
+        renderer.addRenderLayer(new LayerSkull(renderer));
     }
 
     @Override

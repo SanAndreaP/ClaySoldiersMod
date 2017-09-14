@@ -35,7 +35,7 @@ public class ModelClayHorse
     private ModelJsonLoader<ModelClayHorse, ModelJsonLoader.ModelJson> jsonLoader;
 
     public ModelClayHorse() {
-        this.jsonLoader = ModelJsonLoader.create(this, Resources.ENTITY_CLAY_HORSE.resource, "head", "body", "leg1", "leg2", "leg3", "leg4", "tail");
+        this.jsonLoader = ModelJsonLoader.create(this, Resources.MODEL_CLAY_HORSE.resource, "head", "body", "leg1", "leg2", "leg3", "leg4", "tail");
     }
 
     @Override

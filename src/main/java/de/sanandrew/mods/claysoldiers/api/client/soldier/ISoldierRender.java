@@ -28,6 +28,8 @@ public interface ISoldierRender<T extends EntityLiving, U extends RenderBiped<T>
 
     ModelBiped getSoldierModel();
 
+    ModelBiped getNewSoldierModel(float scale);
+
     void bindSoldierTexture(ResourceLocation location);
 
     U getRender();

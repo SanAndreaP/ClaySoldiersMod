@@ -10,32 +10,10 @@ import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeBrick;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeIronIngot;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeIronBlock;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBlazeRod;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBone;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBowl;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeQuartz;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeSpeckledMelon;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeShearBlade;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeStick;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeThrowable;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeEgg;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFeather;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFood;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGlowstone;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoggles;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLeather;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSugar;
-import de.sanandrew.mods.claysoldiers.util.HashItemStack;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nullable;
@@ -54,7 +32,7 @@ public final class UpgradeRegistry
     private final List<ISoldierUpgrade> upgrades;
     private final Map<UUID, ISoldierUpgrade> idToUpgradeMap;
     private final Map<ISoldierUpgrade, UUID> upgradeToIdMap;
-    private final Map<HashItemStack, ISoldierUpgrade> stackToUpgradeMap;
+    private final Map<ItemStack, ISoldierUpgrade> stackToUpgradeMap;
 
     private UpgradeRegistry() {
         this.idToUpgradeMap = new HashMap<>();
@@ -86,17 +64,16 @@ public final class UpgradeRegistry
             return false;
         }
 
-        HashItemStack hStacks[] = Arrays.stream(upgItems).map(HashItemStack::new).toArray(HashItemStack[]::new);
-        for( HashItemStack existingItm : this.stackToUpgradeMap.keySet() ) {
-            if( Arrays.stream(hStacks).anyMatch(existingItm::equals) ) {
-                CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Upgrade Item %s for ID %s!", existingItm.getStack(), id));
+        for( ItemStack existingItm : this.stackToUpgradeMap.keySet() ) {
+            if( Arrays.stream(upgItems).anyMatch(itm -> ItemStackUtils.areEqualNbtFit(itm, existingItm, false, existingItm.getItemDamage() != OreDictionary.WILDCARD_VALUE)) ) {
+                CsmConstants.LOG.log(Level.WARN, String.format("Duplicate Upgrade Item %s for ID %s!", existingItm, id));
                 return false;
             }
         }
 
         this.idToUpgradeMap.put(id, upgrade);
         this.upgradeToIdMap.put(upgrade, id);
-        Arrays.stream(hStacks).forEach(stk -> stackToUpgradeMap.put(stk, upgrade));
+        Arrays.stream(upgItems).forEach(stk -> stackToUpgradeMap.put(stk.copy(), upgrade));
         this.upgrades.add(upgrade);
 
         return true;
@@ -117,12 +94,13 @@ public final class UpgradeRegistry
     @Nullable
     @Override
     public ISoldierUpgrade getUpgrade(ItemStack stack) {
-        return MiscUtils.defIfNull(this.stackToUpgradeMap.get(new HashItemStack(stack)), this.stackToUpgradeMap.get(new HashItemStack(stack, true)));
+        return this.stackToUpgradeMap.entrySet().stream()
+                                     .filter(entry -> ItemStackUtils.areEqualNbtFit(stack, entry.getKey(), false, entry.getKey().getItemDamage() != OreDictionary.WILDCARD_VALUE))
+                                     .map(Map.Entry::getValue).findFirst().orElse(null);
     }
 
     @Override
     public List<ISoldierUpgrade> getUpgrades() {
         return ImmutableList.copyOf(this.upgrades);
     }
-
 }

@@ -28,7 +28,7 @@ public class ModelGoggleBand
     public ResourceLocation texture;
 
     public ModelGoggleBand() {
-        this.jsonLoader = ModelJsonLoader.create(this, Resources.ENTITY_SOLDIER_GOGGLES.resource, "goggleBand");
+        this.jsonLoader = ModelJsonLoader.create(this, Resources.MODEL_WEARABLE_GOGGLES.resource, "goggleBand");
         this.jsonLoader.load();
     }
 

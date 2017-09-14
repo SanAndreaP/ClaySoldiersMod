@@ -28,7 +28,7 @@ public class ModelCrown
     public ResourceLocation texture;
 
     public ModelCrown() {
-        this.jsonLoader = ModelJsonLoader.create(this, Resources.ENTITY_SOLDIER_CROWN.resource, "crown");
+        this.jsonLoader = ModelJsonLoader.create(this, Resources.MODEL_SOLDIER_CROWN.resource, "crown");
         this.jsonLoader.load();
     }
 

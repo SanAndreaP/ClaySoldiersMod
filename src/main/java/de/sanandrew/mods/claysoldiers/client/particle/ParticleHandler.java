@@ -18,6 +18,7 @@ import net.minecraft.client.particle.ParticleBreaking;
 import net.minecraft.client.particle.ParticleCrit;
 import net.minecraft.client.particle.ParticleHeart;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,6 +41,7 @@ public final class ParticleHandler
         PARTICLES.put(EnumParticle.CRITICAL, ParticleHandler::spawnCriticalParticle);
         PARTICLES.put(EnumParticle.HEARTS, ParticleHandler::spawnHealingParticle);
         PARTICLES.put(EnumParticle.SHOCKWAVE, ParticleHandler::spawnShockwaveParticle);
+        PARTICLES.put(EnumParticle.FIREWORK, ParticleHandler::spawnFireworks);
     }
 
     public static void spawn(EnumParticle particle, int dim, double x, double y, double z, Object... additData) {
@@ -55,6 +57,12 @@ public final class ParticleHandler
             for( int i = 0; i < 20; i++ ) {
                 mc.effectRenderer.addEffect(new ParticleTeamBreaking(mc.world, x, y, z, TeamRegistry.INSTANCE.getTeam(additData.<UUID>getValue(0))));
             }
+        }
+    }
+
+    private static void spawnFireworks(int dim, double x, double y, double z, Tuple additData) {
+        if( additData.checkValue(0, val -> val instanceof NBTTagCompound) ) {
+            mc.world.makeFireworks(x, y, z, 0.0D, 0.0D, 0.0D, additData.getValue(0));
         }
     }
 
