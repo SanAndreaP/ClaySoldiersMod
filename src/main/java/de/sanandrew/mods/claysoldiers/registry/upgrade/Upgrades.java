@@ -21,6 +21,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeSpeckledMelon
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeStick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeBrownMushroom;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeConcretePowder;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeEgg;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFireworkStar;
@@ -31,6 +32,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoldNugget;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGunpowder;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradePaper;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRedMushroom;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSkull;
@@ -70,6 +72,8 @@ public final class Upgrades
     public static final UUID MC_FIREWORKSTAR = UUID.fromString("24C51CC1-D18F-412C-95A3-68C4C2F6CA12");
     public static final UUID MC_BROWNMUSHROOM = UUID.fromString("CE191A16-BD49-4F1E-BC37-940E82AAB2C9");
     public static final UUID MC_SKULL = UUID.fromString("4A2DBE3C-0323-4F96-A6EA-1A767C4C5C3B");
+    public static final UUID MC_PAPER = UUID.fromString("632F57F9-0C85-4E51-B2B0-C2B565764507");
+    public static final UUID MC_CONCRETEPOWDER = UUID.fromString("E78AA14E-4B9E-4AD3-A3A2-B15DCC4DFC0B");
 
     public static final UUID CR_IRONINGOT = UUID.fromString("6426F05F-36C5-4F83-9D69-200CCBBA141D");
     public static final UUID CR_BRICK = UUID.fromString("00B12AB5-1E8D-43CA-A136-4BBB5E5970E0");
@@ -105,6 +109,8 @@ public final class Upgrades
         registry.registerUpgrade(MC_FIREWORKSTAR, new UpgradeFireworkStar());
         registry.registerUpgrade(MC_BROWNMUSHROOM, new UpgradeBrownMushroom());
         registry.registerUpgrade(MC_SKULL, new UpgradeSkull());
+        registry.registerUpgrade(MC_PAPER, new UpgradePaper());
+        registry.registerUpgrade(MC_CONCRETEPOWDER, new UpgradeConcretePowder());
 
         registry.registerUpgrade(CR_IRONINGOT, new UpgradeIronIngot());
         registry.registerUpgrade(CR_BRICK, new UpgradeBrick());

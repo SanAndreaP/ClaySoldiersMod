@@ -66,6 +66,7 @@ public class RenderHookBody
             GlStateManager.pushMatrix();
             GlStateManager.translate(0.0F, -0.55F, 0.1F);
             RenderUtils.renderStackInWorld(FEATHER, 0.0D, 0.0D, 0.0D, 90.0F, 0.0F, 125.0F, 1.75D);
+            GlStateManager.enableRescaleNormal();
             GlStateManager.popMatrix();
         }
     }

@@ -86,6 +86,8 @@ public enum Resources
     ENTITY_SOLDIER_UNIQ_COAL("textures/entities/soldiers/unique/coal.png"),
 
     ENTITY_WEARABLE_GUNPOWDER("textures/entities/wearables/gunpowder.png"),
+    ENTITY_WEARABLE_CAPE_PAPER("textures/entities/wearables/cape_blank.png"),
+    ENTITY_WEARABLE_CAPE_DIAMOND("textures/entities/wearables/cape_diamond.png"),
 
     MODEL_WEARABLE_GOGGLES("models/entity/goggles.json"),
     MODEL_SOLDIER_CROWN("models/entity/crown.json"),

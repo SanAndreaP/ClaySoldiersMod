@@ -78,4 +78,10 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
     boolean hasMainHandUpgrade();
 
     boolean hasOffHandUpgrade();
+
+    double getChasingPosX(float partTicks);
+
+    double getChasingPosY(float partTicks);
+
+    double getChasingPosZ(float partTicks);
 }

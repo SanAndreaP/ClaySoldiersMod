@@ -112,6 +112,13 @@ public class EntityClaySoldier
 
     public float moveMulti;
 
+    private double prevChasingPosX;
+    private double prevChasingPosY;
+    private double prevChasingPosZ;
+    private double chasingPosX;
+    private double chasingPosY;
+    private double chasingPosZ;
+
     public EntityClaySoldier(World world) {
         super(world);
 
@@ -544,6 +551,8 @@ public class EntityClaySoldier
 
         if( this.i58O55 == null ) { this.i58O55 = this.i58055(); if( this.i58O55 ) { this.setSize(0.34F, 0.8F); } }
 
+        this.updateCape();
+
         this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_TICK, upg -> upg.getUpgrade().onTick(this, upg));
 
         this.effectMap.forEach((effect, inst) -> {
@@ -878,6 +887,64 @@ public class EntityClaySoldier
             pkte.fromBytes(buffer);
             pkte.applyEffects(this);
         }
+    }
+
+    @Override
+    public double getChasingPosX(float partTicks) {
+        return this.prevChasingPosX + (this.chasingPosX - this.prevChasingPosX) * partTicks;
+    }
+
+    @Override
+    public double getChasingPosY(float partTicks) {
+        return this.prevChasingPosY + (this.chasingPosY - this.prevChasingPosY) * partTicks;
+    }
+
+    @Override
+    public double getChasingPosZ(float partTicks) {
+        return this.prevChasingPosZ + (this.chasingPosZ - this.prevChasingPosZ) * partTicks;
+    }
+
+    private void updateCape() {
+        this.prevChasingPosX = this.chasingPosX;
+        this.prevChasingPosY = this.chasingPosY;
+        this.prevChasingPosZ = this.chasingPosZ;
+        double dX = this.posX - this.chasingPosX;
+        double dY = this.posY - this.chasingPosY;
+        double dZ = this.posZ - this.chasingPosZ;
+
+        if( dX > 10.0D ) {
+            this.chasingPosX = this.posX;
+            this.prevChasingPosX = this.chasingPosX;
+        }
+
+        if( dZ > 10.0D ) {
+            this.chasingPosZ = this.posZ;
+            this.prevChasingPosZ = this.chasingPosZ;
+        }
+
+        if( dY > 10.0D ) {
+            this.chasingPosY = this.posY;
+            this.prevChasingPosY = this.chasingPosY;
+        }
+
+        if( dX < -10.0D ) {
+            this.chasingPosX = this.posX;
+            this.prevChasingPosX = this.chasingPosX;
+        }
+
+        if( dZ < -10.0D ) {
+            this.chasingPosZ = this.posZ;
+            this.prevChasingPosZ = this.chasingPosZ;
+        }
+
+        if( dY < -10.0D ) {
+            this.chasingPosY = this.posY;
+            this.prevChasingPosY = this.chasingPosY;
+        }
+
+        this.chasingPosX += dX * 0.25D;
+        this.chasingPosZ += dZ * 0.25D;
+        this.chasingPosY += dY * 0.25D;
     }
 
     public boolean i58055() {

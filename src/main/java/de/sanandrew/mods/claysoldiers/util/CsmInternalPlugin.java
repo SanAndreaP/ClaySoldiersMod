@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCrown;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGoggles;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGunpowder;
@@ -70,6 +71,7 @@ public class CsmInternalPlugin
         renderer.addRenderLayer(new LayerCrown(renderer));
         renderer.addRenderLayer(new LayerGunpowder(renderer));
         renderer.addRenderLayer(new LayerSkull(renderer));
+        renderer.addRenderLayer(new LayerCape(renderer));
     }
 
     @Override
