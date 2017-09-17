@@ -25,11 +25,11 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public abstract class UpgradeThrowable
         implements ISoldierUpgrade
@@ -92,7 +92,7 @@ public abstract class UpgradeThrowable
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         if( upgradeInst.getNbtData().getByte("uses") >= this.getMaxUses(upgradeInst.getSavedStack()) ) {
             drops.add(upgradeInst.getSavedStack());
         }

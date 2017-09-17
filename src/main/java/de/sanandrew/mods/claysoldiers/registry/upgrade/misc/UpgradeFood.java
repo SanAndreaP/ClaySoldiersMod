@@ -23,6 +23,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
@@ -116,7 +117,7 @@ public class UpgradeFood
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         if( upgradeInst.getNbtData().getShort("uses") >= MAX_USES ) {
             drops.add(upgradeInst.getSavedStack());
 

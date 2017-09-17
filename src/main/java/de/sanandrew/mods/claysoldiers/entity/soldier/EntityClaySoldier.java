@@ -6,7 +6,9 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.soldier;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.event.SoldierDeathEvent;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
@@ -64,6 +66,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -522,7 +525,7 @@ public class EntityClaySoldier
         boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg.floatValue());
 
         if( attackSuccess ) {
-            if( this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().grow(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg.floatValue()));
+            if( this.i58O55 != null && this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().grow(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg.floatValue()));
 
             int fireAspectMod = EnchantmentHelper.getFireAspectModifier(this);
 
@@ -790,7 +793,7 @@ public class EntityClaySoldier
         super.onDeath(damageSource);
 
         if( !this.world.isRemote ) {
-            ArrayList<ItemStack> drops = new ArrayList<>();
+            NonNullList<ItemStack> drops = NonNullList.create();
 
             if( ItemStackUtils.isValid(this.doll) ) {
                 if( damageSource.isFireDamage() ) {
@@ -809,6 +812,9 @@ public class EntityClaySoldier
 //                    upg.getUpgrade().onItemDrop(this, upg, drops);
 //                }
                 this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DEATH, inst -> inst.getUpgrade().onDeath(this, inst, damageSource, drops));
+
+            SoldierDeathEvent event = new SoldierDeathEvent(this, damageSource, drops);
+            ClaySoldiersMod.EVENT_BUS.post(event);
 //
                 drops.removeAll(Collections.<ItemStack>singleton(null));
                 for( ItemStack drop : drops ) {
@@ -846,7 +852,6 @@ public class EntityClaySoldier
 
     @Override
     protected void onDeathUpdate() {
-        this.deathTime = 20;
         this.setDead();
     }
 

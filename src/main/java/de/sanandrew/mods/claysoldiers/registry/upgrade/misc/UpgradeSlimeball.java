@@ -10,11 +10,8 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.registry.effect.EffectRedstone;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectSlimeball;
-import de.sanandrew.mods.claysoldiers.registry.effect.EffectTimeBomb;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
@@ -23,9 +20,9 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class UpgradeSlimeball
         implements ISoldierUpgrade
@@ -88,7 +85,7 @@ public class UpgradeSlimeball
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         if( upgradeInst.getNbtData().getBoolean("isItem") && upgradeInst.getNbtData().getShort("uses") >= MAX_USES ) {
             drops.add(upgradeInst.getSavedStack());
         }

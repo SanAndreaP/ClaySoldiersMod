@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,7 +65,7 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void destroyUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, boolean silent);
 
-    ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, ItemStack stack);
+    ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, @Nonnull ItemStack stack);
 
     ISoldierUpgradeInst getUpgradeInstance(UUID upgradeId, EnumUpgradeType type);
 
@@ -72,7 +73,7 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     ISoldierUpgradeInst getUpgradeInstance(ISoldierUpgrade upgrade, EnumUpgradeType type);
 
-    boolean hasUpgrade(ItemStack stack, EnumUpgradeType type);
+    boolean hasUpgrade(@Nonnull ItemStack stack, EnumUpgradeType type);
 
     boolean hasUpgrade(UUID id, EnumUpgradeType type);
 

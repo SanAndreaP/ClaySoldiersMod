@@ -14,16 +14,14 @@ import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class UpgradeRedMushroom
         implements ISoldierUpgrade
@@ -70,7 +68,7 @@ public class UpgradeRedMushroom
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         drops.add(upgradeInst.getSavedStack());
     }
 }

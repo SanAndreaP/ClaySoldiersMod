@@ -27,6 +27,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeConcretePowde
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeDiamond;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeDiamondBlock;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeEgg;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeEnderPearl;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFireworkStar;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFood;
@@ -88,6 +89,7 @@ public final class Upgrades
     public static final UUID MC_SLIMEBALL = UUID.fromString("D1AE80A1-A010-475A-A84A-93F0C3AAC93D");
     public static final UUID MC_DIAMOND = UUID.fromString("1E133692-2D78-4BF1-AD47-0982F1D55779");
     public static final UUID MC_DIAMONDBLOCK = UUID.fromString("C96C691E-E9C1-4EA5-8F01-7FE5A7269E24");
+    public static final UUID MC_ENDERPEARL = UUID.fromString("EEF80CB3-FAF7-4544-BEB2-15833235CDC3");
 
     public static final UUID CR_IRONINGOT = UUID.fromString("6426F05F-36C5-4F83-9D69-200CCBBA141D");
     public static final UUID CR_BRICK = UUID.fromString("00B12AB5-1E8D-43CA-A136-4BBB5E5970E0");
@@ -132,6 +134,7 @@ public final class Upgrades
         registry.registerUpgrade(MC_SLIMEBALL, new UpgradeSlimeball());
         registry.registerUpgrade(MC_DIAMOND, new UpgradeDiamond());
         registry.registerUpgrade(MC_DIAMONDBLOCK, new UpgradeDiamondBlock());
+        registry.registerUpgrade(MC_ENDERPEARL, new UpgradeEnderPearl());
 
         registry.registerUpgrade(CR_IRONINGOT, new UpgradeIronIngot());
         registry.registerUpgrade(CR_BRICK, new UpgradeBrick());

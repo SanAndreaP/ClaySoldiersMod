@@ -16,9 +16,9 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class UpgradePaper
         implements ISoldierUpgrade
@@ -59,7 +59,7 @@ public class UpgradePaper
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         ItemStack stack = upgradeInst.getSavedStack();
         if( ItemStackUtils.isItem(stack, Items.PAPER) ) {
             drops.add(stack);

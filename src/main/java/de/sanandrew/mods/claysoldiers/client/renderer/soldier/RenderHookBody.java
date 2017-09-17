@@ -46,6 +46,10 @@ public class RenderHookBody
             int brightY = brightness / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
         }
+
+        if( soldier.hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC) ) {
+            GlStateManager.color(0.8F, 0.8F, 0.8F);
+        }
     }
 
     @Override

@@ -23,6 +23,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class UpgradeGoggles
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         ItemStack saved = upgradeInst.getSavedStack();
         if( ItemStackUtils.isBlock(saved, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(saved, Blocks.STAINED_GLASS_PANE) || ItemStackUtils.isItem(saved, Items.GLASS_BOTTLE) ) {
             drops.add(saved);

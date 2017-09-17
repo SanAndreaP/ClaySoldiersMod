@@ -31,16 +31,24 @@ public final class SoldierTargetEnemyEventHandler
                               : Event.Result.DENY);
             }
         }
-
-        if( event.attacker.hasEffect(Effects.BLINDING_REDSTONE) ) {
-            event.setResult(Event.Result.DENY);
-        }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onTargetingNormal(SoldierTargetEnemyEvent event) {
         if( event.attacker.hasUpgrade(Upgrades.MC_GLASS, EnumUpgradeType.MISC) ) {
             event.setResult(Event.Result.DEFAULT);
+        }
+
+        if( event.attacker.hasEffect(Effects.BLINDING_REDSTONE) ) {
+            event.setResult(Event.Result.DENY);
+        }
+
+        if( event.attacker.hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC) && event.target instanceof ISoldier ) {
+            if( !((ISoldier) event.target).hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC) ) {
+                event.setResult(Event.Result.ALLOW);
+            } else {
+                event.setResult(Event.Result.DENY);
+            }
         }
     }
 }

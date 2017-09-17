@@ -80,6 +80,7 @@ Misc
                                      info: incompatible with diamond
 | |EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
                                      dies after 10 minutes of no fighting
+                                     TODO: rendering, AI fixing
 | |BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
 |x|RedMushroom,            1 use,   applies poison to target
 |x|BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%

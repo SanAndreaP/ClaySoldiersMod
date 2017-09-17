@@ -17,9 +17,9 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class UpgradeGlowstone
         implements ISoldierUpgrade
@@ -61,7 +61,7 @@ public class UpgradeGlowstone
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         if( ItemStackUtils.isItem(upgradeInst.getSavedStack(), Items.GLOWSTONE_DUST) ) {
             drops.add(upgradeInst.getSavedStack());
         }

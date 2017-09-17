@@ -18,9 +18,9 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class UpgradeGunpowder
         implements ISoldierUpgrade
@@ -64,7 +64,7 @@ public class UpgradeGunpowder
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         if( dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
             EntityLivingBase soldierL = soldier.getEntity();
             soldierL.world.createExplosion(soldierL, soldierL.posX, soldierL.posY, soldierL.posZ, 1.0F, false);

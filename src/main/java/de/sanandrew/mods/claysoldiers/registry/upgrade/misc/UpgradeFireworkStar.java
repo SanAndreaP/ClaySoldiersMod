@@ -16,16 +16,15 @@ import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class UpgradeFireworkStar
         implements ISoldierUpgrade
@@ -64,7 +63,7 @@ public class UpgradeFireworkStar
     }
 
     @Override
-    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
+    public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         if( dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
             NBTTagCompound explosionNbt = upgradeInst.getSavedStack().getSubCompound("Explosion");
             if( explosionNbt != null ) {

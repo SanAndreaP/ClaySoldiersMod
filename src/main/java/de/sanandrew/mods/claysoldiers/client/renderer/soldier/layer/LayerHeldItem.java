@@ -150,7 +150,7 @@ public class LayerHeldItem
                 } else if( soldier.hasUpgrade(Upgrades.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
-                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(SPECLEDMELON, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -90.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ) {
@@ -161,7 +161,7 @@ public class LayerHeldItem
                 if( soldier.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                     RenderUtils.renderStackInWorld(SHIELD_STD, 0.0D, 0.2D, 0.0D, 90.0F, 0.0F, 0.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.OFF_HAND) ) {
-                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.0D, 0.0F, -90.0F, -45.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.0D, 0.0F, 90.0F, 135.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.OH_GRAVEL, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(GRAVEL, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                 } else if( soldier.hasUpgrade(Upgrades.OH_SNOW, EnumUpgradeType.OFF_HAND) ) {
