@@ -21,11 +21,16 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeSpeckledMelon
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeStick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeBrownMushroom;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeButton;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeClay;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeConcretePowder;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeDiamond;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeDiamondBlock;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeEgg;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFeather;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFireworkStar;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeFood;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGhastTear;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGlowstone;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoggles;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoldNugget;
@@ -35,7 +40,9 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradePaper;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRedMushroom;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRedstone;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSkull;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSlimeball;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSugar;
 
 import java.util.UUID;
@@ -74,6 +81,13 @@ public final class Upgrades
     public static final UUID MC_SKULL = UUID.fromString("4A2DBE3C-0323-4F96-A6EA-1A767C4C5C3B");
     public static final UUID MC_PAPER = UUID.fromString("632F57F9-0C85-4E51-B2B0-C2B565764507");
     public static final UUID MC_CONCRETEPOWDER = UUID.fromString("E78AA14E-4B9E-4AD3-A3A2-B15DCC4DFC0B");
+    public static final UUID MC_BUTTON = UUID.fromString("AC93C3F9-E332-4FDE-ABA2-A1F63A46FACC");
+    public static final UUID MC_CLAY = UUID.fromString("7BF219FE-2382-4DA9-BA6D-1C98CF35F0E6");
+    public static final UUID MC_GHASTTEAR = UUID.fromString("A8680ACB-9103-4204-B377-8DDD1F83A9EB");
+    public static final UUID MC_REDSTONE = UUID.fromString("2400DACC-9A48-40B6-BB27-5E6F53874702");
+    public static final UUID MC_SLIMEBALL = UUID.fromString("D1AE80A1-A010-475A-A84A-93F0C3AAC93D");
+    public static final UUID MC_DIAMOND = UUID.fromString("1E133692-2D78-4BF1-AD47-0982F1D55779");
+    public static final UUID MC_DIAMONDBLOCK = UUID.fromString("C96C691E-E9C1-4EA5-8F01-7FE5A7269E24");
 
     public static final UUID CR_IRONINGOT = UUID.fromString("6426F05F-36C5-4F83-9D69-200CCBBA141D");
     public static final UUID CR_BRICK = UUID.fromString("00B12AB5-1E8D-43CA-A136-4BBB5E5970E0");
@@ -111,6 +125,13 @@ public final class Upgrades
         registry.registerUpgrade(MC_SKULL, new UpgradeSkull());
         registry.registerUpgrade(MC_PAPER, new UpgradePaper());
         registry.registerUpgrade(MC_CONCRETEPOWDER, new UpgradeConcretePowder());
+        registry.registerUpgrade(MC_BUTTON, new UpgradeButton());
+        registry.registerUpgrade(MC_CLAY, new UpgradeClay());
+        registry.registerUpgrade(MC_GHASTTEAR, new UpgradeGhastTear());
+        registry.registerUpgrade(MC_REDSTONE, new UpgradeRedstone());
+        registry.registerUpgrade(MC_SLIMEBALL, new UpgradeSlimeball());
+        registry.registerUpgrade(MC_DIAMOND, new UpgradeDiamond());
+        registry.registerUpgrade(MC_DIAMONDBLOCK, new UpgradeDiamondBlock());
 
         registry.registerUpgrade(CR_IRONINGOT, new UpgradeIronIngot());
         registry.registerUpgrade(CR_BRICK, new UpgradeBrick());

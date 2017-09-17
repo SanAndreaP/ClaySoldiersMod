@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -60,7 +61,7 @@ public abstract class UpgradeThrowable
             upgradeInst.getNbtData().setByte("uses", this.getMaxUses(stack));
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
-            stack.setCount(stack.getCount() - 1);
+            stack.shrink(1);
         }
     }
 
@@ -76,7 +77,7 @@ public abstract class UpgradeThrowable
     }
 
     @Override
-    public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, float damage) {
+    public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, MutableFloat damage) {
         byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
 
         Entity proj = this.createProjectile(soldier.getEntity().world, soldier.getEntity(), target);

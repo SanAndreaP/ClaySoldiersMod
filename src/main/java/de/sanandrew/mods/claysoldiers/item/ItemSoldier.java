@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class ItemSoldier
         extends Item
 {
-   public ItemSoldier() {
+    public ItemSoldier() {
         super();
         this.setCreativeTab(CsmCreativeTabs.DOLLS);
         this.setUnlocalizedName(CsmConstants.ID + ":doll_soldier");
@@ -96,18 +96,7 @@ public class ItemSoldier
                 yShift = 0.5D;
             }
 
-            EntityClaySoldier[] soldiers = spawnSoldiers(world, TeamRegistry.INSTANCE.getTeam(stack), player.isSneaking() ? 1 : stack.getCount(),
-                                                         pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D, stack);
-
-            for( EntityClaySoldier james : soldiers ) {
-                if( james != null ) {
-                    if( stack.hasDisplayName() ) {
-                        james.setCustomNameTag(stack.getDisplayName());
-                    }
-
-                    stack.setCount(stack.getCount() - 1);
-                }
-            }
+            spawnSoldiers(world, player.isSneaking() ? 1 : stack.getCount(), pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D, stack);
 
             if( hand != null && player.capabilities.isCreativeMode ) {
                 if( stack.getCount() < 1 ) {
@@ -123,10 +112,9 @@ public class ItemSoldier
         }
     }
 
-    public static EntityClaySoldier[] spawnSoldiers(World world, ITeam team, final int count, double x, double y, double z, ItemStack dollStack) {
+    public static void spawnSoldiers(World world, int count, double x, double y, double z, ItemStack dollStack) {
+        ITeam team = TeamRegistry.INSTANCE.getTeam(dollStack);
         if( team != TeamRegistry.NULL_TEAM ) {
-            EntityClaySoldier[] soldiers = new EntityClaySoldier[count];
-
             for( int i = 0; i < count; i++ ) {
                 double xs = x - 0.1D + MiscUtils.RNG.randomFloat() * 0.02D;
                 double zs = z - 0.1D + MiscUtils.RNG.randomFloat() * 0.02D;
@@ -136,23 +124,23 @@ public class ItemSoldier
                     newDollStack = dollStack.copy();
                     newDollStack.setCount(1);
                 }
+
                 EntityClaySoldier aleks = new EntityClaySoldier(world, team, newDollStack);
                 aleks.setLocationAndAngles(xs, y, zs, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
                 aleks.rotationYawHead = aleks.rotationYaw;
                 aleks.renderYawOffset = aleks.rotationYaw;
                 aleks.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(aleks)), null);
                 world.spawnEntity(aleks);
-                aleks.playLivingSound();
 
-                soldiers[i] = aleks;
+                if( dollStack.hasDisplayName() ) {
+                    aleks.setCustomNameTag(dollStack.getDisplayName());
+                }
+
+                dollStack.shrink(1);
 
                 float pitch = (MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.2F + 1.0F;
                 world.playSound(null, xs, y, zs, SoundEvents.BLOCK_GRAVEL_BREAK, SoundCategory.NEUTRAL, 1.0F, pitch);
             }
-
-            return soldiers;
-        } else {
-            return new EntityClaySoldier[0];
         }
     }
 }

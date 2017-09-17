@@ -9,19 +9,24 @@ package de.sanandrew.mods.claysoldiers.registry.effect;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.util.EnumParticleTypes;
 
-public class EffectTimeBomb
+public class EffectSlimeball
         implements ISoldierEffect
 {
-    public static final EffectTimeBomb INSTANCE = new EffectTimeBomb();
+    public static final EffectSlimeball INSTANCE = new EffectSlimeball();
 
-    private EffectTimeBomb() { }
+    private EffectSlimeball() { }
+
+    @Override
+    public void onAdded(ISoldier<?> soldier, ISoldierEffectInst effectInst) {
+        soldier.setMovable(false);
+    }
 
     @Override
     public void onExpired(ISoldier<?> soldier, ISoldierEffectInst effectInst) {
-        if( !soldier.getEntity().world.isRemote ) {
-            soldier.getEntity().world.createExplosion(null, soldier.getEntity().posX, soldier.getEntity().posY, soldier.getEntity().posZ, 1.5F, false);
-        }
+        soldier.setMovable(true);
     }
 
     @Override

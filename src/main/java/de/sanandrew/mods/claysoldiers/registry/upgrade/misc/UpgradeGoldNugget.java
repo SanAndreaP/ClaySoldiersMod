@@ -61,7 +61,7 @@ public class UpgradeGoldNugget
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-        stack.setCount(stack.getCount() - 1);
+        stack.shrink(1);
     }
 
     @Override

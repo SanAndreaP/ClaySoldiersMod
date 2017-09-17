@@ -6,20 +6,27 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-public class EntityAISoldierSrcUpgradeItem
+public class EntityAISoldierSrcFallen
         extends EntityAIBase
 {
     private final EntityClaySoldier taskOwner;
@@ -27,19 +34,12 @@ public class EntityAISoldierSrcUpgradeItem
 
     private final Predicate<EntityItem> tgtSelector;
 
-    public EntityAISoldierSrcUpgradeItem(EntityClaySoldier soldier) {
+    public EntityAISoldierSrcFallen(EntityClaySoldier soldier) {
         super();
         this.taskOwner = soldier;
-        this.tgtSelector = entity -> {
-            if( entity != null && entity.isEntityAlive() && !entity.cannotPickup() ) {
-                ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(entity.getItem());
-                return upgrade != null && upgrade.isApplicable(this.taskOwner, entity.getItem()) && this.taskOwner.canEntityBeSeen(entity)
-                       && !this.taskOwner.hasUpgrade(entity.getItem(), upgrade.getType(this.taskOwner))
-                       && (upgrade.getType(this.taskOwner) != EnumUpgradeType.MAIN_HAND || !this.taskOwner.hasMainHandUpgrade())
-                       && (upgrade.getType(this.taskOwner) != EnumUpgradeType.OFF_HAND || !this.taskOwner.hasOffHandUpgrade());
-            }
-            return false;
-        };
+        this.tgtSelector = entity -> entity != null && entity.isEntityAlive() && !entity.cannotPickup()
+                                             && this.isValidItem(entity.getItem())
+                                             && this.taskOwner.canEntityBeSeen(entity);
         this.setMutexBits(1);
     }
 
@@ -74,5 +74,10 @@ public class EntityAISoldierSrcUpgradeItem
     private AxisAlignedBB getTargetableArea() {
         double targetDistance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
         return this.taskOwner.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
+    }
+
+    private boolean isValidItem(ItemStack stack) {
+        return (TeamRegistry.INSTANCE.getTeam(stack).getId().equals(this.taskOwner.getSoldierTeam().getId()) && this.taskOwner.hasUpgrade(Upgrades.MC_CLAY, EnumUpgradeType.MISC))
+                || (ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER) && this.taskOwner.hasUpgrade(Upgrades.MC_GHASTTEAR, EnumUpgradeType.MISC));
     }
 }

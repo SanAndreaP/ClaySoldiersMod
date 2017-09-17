@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.ItemStack;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ISoldier<T extends EntityCreature & ISoldier<T>>
@@ -67,6 +68,8 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     ISoldierUpgradeInst getUpgradeInstance(UUID upgradeId, EnumUpgradeType type);
 
+    long countUpgradesOfType(EnumUpgradeType type);
+
     ISoldierUpgradeInst getUpgradeInstance(ISoldierUpgrade upgrade, EnumUpgradeType type);
 
     boolean hasUpgrade(ItemStack stack, EnumUpgradeType type);
@@ -84,4 +87,6 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
     double getChasingPosY(float partTicks);
 
     double getChasingPosZ(float partTicks);
+
+    List<ISoldierUpgradeInst> getUpgradeInstanceList();
 }

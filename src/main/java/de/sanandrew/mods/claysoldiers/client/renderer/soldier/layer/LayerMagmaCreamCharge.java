@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
+import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.client.renderer.GlStateManager;
@@ -35,8 +35,8 @@ public class LayerMagmaCreamCharge
         if( !(creature instanceof ISoldier) ) { return; }
         ISoldier soldier = (ISoldier) creature;
 
-        if( soldier.hasEffect(EffectRegistry.TIME_BOMB) ) {
-            float durationPerc = soldier.getEffectDurationLeft(EffectRegistry.TIME_BOMB) / (float) UpgradeMagmaCream.MAX_TIME_DETONATION;
+        if( soldier.hasEffect(Effects.TIME_BOMB) ) {
+            float durationPerc = soldier.getEffectDurationLeft(Effects.TIME_BOMB) / (float) UpgradeMagmaCream.MAX_TIME_DETONATION;
             boolean isInvisible = soldier.getEntity().isInvisible();
             float ticks = soldier.getEntity().ticksExisted + partialTicks;
 

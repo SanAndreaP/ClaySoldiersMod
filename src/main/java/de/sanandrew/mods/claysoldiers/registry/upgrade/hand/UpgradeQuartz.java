@@ -31,7 +31,7 @@ public class UpgradeQuartz
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.QUARTZ, 1) };
     private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DAMAGED_SUCCESS,
                                                                                     EnumFunctionCalls.ON_DEATH };
-    private static final byte MAX_USES = 4;
+    private static final short MAX_USES = 4;
 
     @Override
     @Nonnull
@@ -59,11 +59,11 @@ public class UpgradeQuartz
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            upgradeInst.getNbtData().setByte("uses", MAX_USES);
+            upgradeInst.getNbtData().setShort("uses", MAX_USES);
             upgradeInst.getNbtData().setLong("cooldownTime", System.currentTimeMillis());
             upgradeInst.getNbtData().setInteger("hitsTaken", 0);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            stack.setCount(stack.getCount() - 1);
+            stack.shrink(1);
         }
     }
 
@@ -77,12 +77,12 @@ public class UpgradeQuartz
             if( hitsTaken >= 5 ) {
                 EntityCreature john = soldier.getEntity();
                 hitsTaken = 0;
-                byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
+                short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
                 if( uses < 1 ) {
                     soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
                     john.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
                 } else {
-                    upgradeInst.getNbtData().setByte("uses", uses);
+                    upgradeInst.getNbtData().setShort("uses", uses);
                 }
 
                 AxisAlignedBB surroundingBB = john.getEntityBoundingBox().grow(1.0D);
@@ -99,7 +99,7 @@ public class UpgradeQuartz
 
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
-        if( upgradeInst.getNbtData().getByte("uses") >= MAX_USES ) {
+        if( upgradeInst.getNbtData().getShort("uses") >= MAX_USES ) {
             drops.add(upgradeInst.getSavedStack());
         }
     }

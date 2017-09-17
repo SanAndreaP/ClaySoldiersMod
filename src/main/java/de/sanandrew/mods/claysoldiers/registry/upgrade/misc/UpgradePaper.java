@@ -53,7 +53,7 @@ public class UpgradePaper
         if( !soldier.getEntity().world.isRemote ) {
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             if( ItemStackUtils.isItem(stack, Items.PAPER) ) {
-                stack.setCount(stack.getCount() - 1);
+                stack.shrink(1);
             }
         }
     }

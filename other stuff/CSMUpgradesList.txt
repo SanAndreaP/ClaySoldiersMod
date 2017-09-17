@@ -60,11 +60,11 @@ Misc
 |x|MagmaCream,             1 use?,  places a 2 second time bomb on the soldier which deals the final attack if killed by melee hit,
                                      info: incompatible with gunpowder/fireworkstar
 |x|Sugar,                  inf use, makes soldier move faster, incompatible with diamond
-| |Clay,                   4 use,   revives fallen soldiers of own color
-| |GhastTear,              2 use,   revives brick dolls to own color
-| |RedstoneDust,           4 use,   causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
+|x|Clay,                   4 use,   revives fallen soldiers of own color
+|x|GhastTear,              2 use,   revives brick dolls to own color
+|x|RedstoneDust,           4 use,   causes target to entirely stop attacking for 3 seconds, applied by all thrown and melee attacks
                                      info: Redstone Block as infinite redstone supply
-| |Slimeball,              5 use,   causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
+|x|Slimeball,              5 use,   causes target to entirely stop moving for 3 seconds, applied by all thrown and melee attacks
                                      info: Slimeblock as infinite slimeballs
                                      info: determine uses and implement them
 |x|Feather,                inf use, soldier can not attack while falling, soldier's fall is slowed greatly and takes no damage on landing,
@@ -72,11 +72,11 @@ Misc
 |x|GlassBottle/Pane/Block, inf use, doubles vision range, soldier can see stealthed enemies
                                      info: bottles and panes give 1, block as infinite supply
                                      info: stained glass gives colored goggles
-| |Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
+|x|Paper/Book,             inf use, gives a plain cape, dyed paper and books give colored capes
                                      info: book as infinite supply
-| |Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
+|x|Diamond,                inf use, gives super crown and cape, doubles number of uses for all limited use items, grants sugar speed boost, multiplies hp by 10,
                                      info: incompatible with diamondblock
-| |DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
+|x|DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
                                      info: incompatible with diamond
 | |EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
                                      dies after 10 minutes of no fighting
@@ -88,9 +88,9 @@ Misc
 |x|Egg,                    inf use, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
                                      info: will be detected when others wearing glasses
 | |WheatSeed,              inf use, soldier can NOT be infected by any zombification
-| |WoodButton,             inf use, increases melee damage by 1 when no weapon is equipped
+|x|WoodButton,             inf use, increases melee damage by 1 when no weapon is equipped
                                      incompatible with stone button
-| |StoneButton,            inf use, increases melee damage by 2 when no weapon is equipped
+|x|StoneButton,            inf use, increases melee damage by 2 when no weapon is equipped
                                      incompatible with wood button
 |x|MobHead,                inf use, gives the soldier a mask to wear
 |x|FireworkStar,             1 use, soldier explodes on death in a firework effect

@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.entity.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
@@ -17,9 +18,11 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowFallen;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowKing;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowMount;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowUpgrade;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcFallen;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcKing;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcMount;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcUpgradeItem;
@@ -65,6 +68,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -87,6 +91,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class EntityClaySoldier
         extends EntityCreature
@@ -181,18 +186,20 @@ public class EntityClaySoldier
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISoldierFollowUpgrade(this, 1.0D));
-        this.tasks.addTask(1, new EntityAISoldierFollowMount(this, 1.0D));
-        this.tasks.addTask(1, new EntityAISoldierFollowKing(this, 1.0D));
+        this.tasks.addTask(1, new EntityAISoldierFollowFallen(this, 1.0D));
+        this.tasks.addTask(2, new EntityAISoldierFollowUpgrade(this, 1.0D));
+        this.tasks.addTask(2, new EntityAISoldierFollowMount(this, 1.0D));
+        this.tasks.addTask(3, new EntityAISoldierFollowKing(this, 1.0D));
         this.tasks.addTask(4, new EntityAISoldierAttack.Meelee(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(6, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(1, new EntityAISoldierAttackableTarget(this));
-        this.targetTasks.addTask(1, new EntityAISoldierSrcUpgradeItem(this));
-        this.targetTasks.addTask(1, new EntityAISoldierSrcMount(this));
-        this.targetTasks.addTask(2, new EntityAISoldierSrcKing(this));
+        this.targetTasks.addTask(1, new EntityAISoldierSrcFallen(this));
+        this.targetTasks.addTask(2, new EntityAISoldierAttackableTarget(this));
+        this.targetTasks.addTask(2, new EntityAISoldierSrcUpgradeItem(this));
+        this.targetTasks.addTask(2, new EntityAISoldierSrcMount(this));
+        this.targetTasks.addTask(3, new EntityAISoldierSrcKing(this));
     }
 
     @Override
@@ -267,6 +274,8 @@ public class EntityClaySoldier
 
         upgrade.onAdded(this, stack, upgInst);
 
+        this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_UPGRADE_ADDED, upgInstCl -> upgInstCl.getUpgrade().onUpgradeAdded(this, upgInstCl, upgInst));
+
         if( upgrade.syncData() && !this.world.isRemote ) {
             this.sendSyncUpgrades(true, new UpgradeEntry(upgrade, type));
         }
@@ -277,13 +286,12 @@ public class EntityClaySoldier
     private void addUpgradeInternal(ISoldierUpgradeInst instance) {
         ISoldierUpgrade upgrade = instance.getUpgrade();
         UpgradeEntry entry = new UpgradeEntry(upgrade, upgrade.getType(this));
-        List<ISoldierUpgrade.EnumFunctionCalls> funcCalls = Arrays.asList(upgrade.getFunctionCalls());
 
         this.upgradeMap.put(entry, instance);
         if( upgrade.syncData() ) {
             this.upgradeSyncList.add(instance);
         }
-        funcCalls.forEach(func -> {
+        Arrays.asList(upgrade.getFunctionCalls()).forEach(func -> {
             Queue<ISoldierUpgradeInst> upgList = this.upgradeFuncMap.get(func).computeIfAbsent(upgrade.getPriority(), k -> new ConcurrentLinkedQueue<>());
             upgList.add(instance);
         });
@@ -307,6 +315,11 @@ public class EntityClaySoldier
     @Override
     public boolean hasUpgrade(UUID id, EnumUpgradeType type) {
         return this.hasUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(id), type);
+    }
+
+    @Override
+    public long countUpgradesOfType(EnumUpgradeType type) {
+        return this.upgradeMap.entrySet().stream().filter(entry -> entry.getKey().type == type).count();
     }
 
     public void pickupUpgrade(EntityItem item) {
@@ -500,16 +513,16 @@ public class EntityClaySoldier
 
         EntityLivingBase trevor = ((EntityLivingBase) entityIn);
 
-        float attackDmg = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+        MutableFloat attackDmg = new MutableFloat(this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
 
         DamageSource dmgSrc = DamageSource.causeMobDamage(this);
 
         this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this, upg, trevor, dmgSrc, attackDmg));
 
-        boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg);
+        boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg.floatValue());
 
         if( attackSuccess ) {
-            if( this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().grow(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg));
+            if( this.i58O55 ) this.world.getEntitiesWithinAABB(EntityClaySoldier.class, this.getEntityBoundingBox().grow(1.0D), entity -> entity != null && entity != trevor && entity.getSoldierTeam() != this.getSoldierTeam()).forEach(entity -> entity.attackEntityFrom(dmgSrc, attackDmg.floatValue()));
 
             int fireAspectMod = EnchantmentHelper.getFireAspectModifier(this);
 
@@ -756,7 +769,11 @@ public class EntityClaySoldier
                 if( Objects.equals(srcEntity, this.getAttackTarget()) ) {
                     this.getNavigator().clearPathEntity();
                 }
-                this.setAttackTarget((EntityClaySoldier) srcEntity);
+
+                SoldierTargetEnemyEvent evt = new SoldierTargetEnemyEvent(this, (EntityLivingBase) srcEntity);
+                if( !ClaySoldiersMod.EVENT_BUS.post(evt) && evt.getResult() != Event.Result.DENY ) {
+                    this.setAttackTarget((EntityClaySoldier) srcEntity);
+                }
             }
 
             final float fnlDamage = damage;
@@ -902,6 +919,11 @@ public class EntityClaySoldier
     @Override
     public double getChasingPosZ(float partTicks) {
         return this.prevChasingPosZ + (this.chasingPosZ - this.prevChasingPosZ) * partTicks;
+    }
+
+    @Override
+    public List<ISoldierUpgradeInst> getUpgradeInstanceList() {
+        return this.upgradeMap.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
     private void updateCape() {

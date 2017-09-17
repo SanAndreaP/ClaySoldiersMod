@@ -47,8 +47,7 @@ public class EntityAISoldierFollowMount
 
     @Override
     public boolean shouldContinueExecuting() {
-        Entity jack = this.attacker.followingEntity;
-        return this.attacker.getRidingEntity() == null && this.isMountRidable(jack) && jack.isEntityAlive() && this.attacker.hasPath();
+        return this.attacker.hasPath() && super.shouldContinueExecuting();
     }
 
     @Override

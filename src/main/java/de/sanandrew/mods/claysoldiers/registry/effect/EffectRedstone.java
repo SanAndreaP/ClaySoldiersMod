@@ -9,18 +9,23 @@ package de.sanandrew.mods.claysoldiers.registry.effect;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumParticleTypes;
 
-public class EffectTimeBomb
+public class EffectRedstone
         implements ISoldierEffect
 {
-    public static final EffectTimeBomb INSTANCE = new EffectTimeBomb();
+    public static final EffectRedstone INSTANCE = new EffectRedstone();
 
-    private EffectTimeBomb() { }
+    private EffectRedstone() { }
 
     @Override
-    public void onExpired(ISoldier<?> soldier, ISoldierEffectInst effectInst) {
-        if( !soldier.getEntity().world.isRemote ) {
-            soldier.getEntity().world.createExplosion(null, soldier.getEntity().posX, soldier.getEntity().posY, soldier.getEntity().posZ, 1.5F, false);
+    public void onTick(ISoldier<?> soldier, ISoldierEffectInst effectInst) {
+        EntityCreature soldierL = soldier.getEntity();
+        if( soldierL.world.isRemote && soldierL.getRNG().nextInt(10) == 0 ) {
+            soldierL.world.spawnParticle(EnumParticleTypes.REDSTONE, soldierL.posX, soldierL.posY + soldierL.getEyeHeight(), soldierL.posZ, 0.0D, 0.0D, 0.0D);
         }
     }
 

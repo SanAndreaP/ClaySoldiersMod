@@ -46,12 +46,17 @@ public class LayerCrown
 
         ISoldier soldier = (ISoldier) creature;
 
-        if( soldier.hasUpgrade(Upgrades.MC_GOLDNUGGET, EnumUpgradeType.MISC) ) {
+        boolean hasDiamond = soldier.hasUpgrade(Upgrades.MC_DIAMOND, EnumUpgradeType.MISC) || soldier.hasUpgrade(Upgrades.MC_DIAMONDBLOCK, EnumUpgradeType.MISC);
+        if( hasDiamond || soldier.hasUpgrade(Upgrades.MC_GOLDNUGGET, EnumUpgradeType.MISC) ) {
             GlStateManager.pushMatrix();
             this.renderer.getSoldierModel().bipedHead.postRender(scale);
 
             if( this.model.texture != null ) {
-                GlStateManager.color(1.0F, 0.9F, 0.0F);
+                if( hasDiamond ) {
+                    GlStateManager.color(0.0F, 0.9F, 1.0F);
+                } else {
+                    GlStateManager.color(1.0F, 0.9F, 0.0F);
+                }
                 this.renderer.bindSoldierTexture(this.model.texture);
                 this.model.render(scale);
                 GlStateManager.color(1.0F, 1.0F, 1.0F);

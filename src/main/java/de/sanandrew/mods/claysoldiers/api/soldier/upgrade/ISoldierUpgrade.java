@@ -16,6 +16,7 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public interface ISoldierUpgrade
@@ -55,7 +56,9 @@ public interface ISoldierUpgrade
 
     default void onUpgradeDestroyed(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgrade destroyedUpgInst) { }
 
-    default void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, float damage) { }
+    default void onUpgradeAdded(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgradeInst addedUpgInst) { }
+
+    default void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, @Nullable MutableFloat damage) { }
 
     default void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) { }
 
@@ -73,7 +76,8 @@ public interface ISoldierUpgrade
         ON_DAMAGED,
         ON_DEATH,
         ON_ATTACK_SUCCESS,
-        ON_DAMAGED_SUCCESS;
+        ON_DAMAGED_SUCCESS,
+        ON_UPGRADE_ADDED;
 
         public static final EnumFunctionCalls[] VALUES = values();
     }

@@ -10,7 +10,9 @@ import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -29,7 +31,7 @@ import java.util.Map;
 import java.util.Queue;
 
 @SideOnly(Side.CLIENT)
-public class LayerSoldierHeldItem
+public class LayerHeldItem
         implements LayerRenderer<EntityCreature>
 {
     private static final boolean H_AS_EG_G = MiscUtils.RNG.randomInt(1_000_000) == 0;
@@ -47,10 +49,14 @@ public class LayerSoldierHeldItem
     private static final ItemStack SPECLEDMELON = new ItemStack(Items.SPECKLED_MELON);
     private static final ItemStack BONE = new ItemStack(Items.BONE);
     private static final ItemStack REDMUSHROOM = new ItemStack(Blocks.RED_MUSHROOM_BLOCK);
+    private static final ItemStack STONE = new ItemStack(Blocks.STONE);
+    private static final ItemStack WOOD = new ItemStack(Blocks.PLANKS);
+    private static final ItemStack REDSTONEBLOCK = new ItemStack(Blocks.REDSTONE_BLOCK);
+    private static final ItemStack SLIMEBLOCK = new ItemStack(Blocks.SLIME_BLOCK);
 
     private ISoldierRender<?, ?> renderer;
 
-    public LayerSoldierHeldItem(ISoldierRender<?, ?> renderer) {
+    public LayerHeldItem(ISoldierRender<?, ?> renderer) {
         this.renderer = renderer;
     }
 
@@ -60,6 +66,44 @@ public class LayerSoldierHeldItem
 
         renderHeldItem(soldier, EnumHandSide.RIGHT);
         renderHeldItem(soldier, EnumHandSide.LEFT);
+        renderWornItem(soldier, EnumHandSide.RIGHT);
+        renderWornItem(soldier, EnumHandSide.LEFT);
+    }
+
+    private void renderWornItem(ISoldier soldier, EnumHandSide handSide) {
+        GlStateManager.pushMatrix();
+
+        if (soldier.getEntity().isSneaking()) {
+            GlStateManager.translate(0.0F, 0.2F, 0.0F);
+        }
+
+        if( handSide == EnumHandSide.LEFT ) {
+            this.renderer.getSoldierModel().bipedLeftLeg.postRender(0.0625F);
+        } else if( handSide == EnumHandSide.RIGHT ) {
+            this.renderer.getSoldierModel().bipedRightLeg.postRender(0.0625F);
+        }
+        GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+        boolean flag = handSide == EnumHandSide.LEFT;
+        GlStateManager.translate((flag ? -1 : 1) / 16.0F, 0.125F, -0.5F);
+
+        renderFootItem(soldier, handSide == EnumHandSide.RIGHT ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+        GlStateManager.popMatrix();
+    }
+
+    private void renderFootItem(ISoldier soldier, EnumHand hand) {
+        switch( hand ) {
+            case MAIN_HAND:
+                if( soldier.hasEffect(Effects.STICKING_SLIMEBALL) ) {
+                    RenderUtils.renderStackInWorld(SLIMEBLOCK, -0.05D, -0.12D, -0.15D, 0.0F, 0.0F, 0.0F, 0.55D);
+                }
+                break;
+            case OFF_HAND:
+                if( soldier.hasEffect(Effects.STICKING_SLIMEBALL) ) {
+                    RenderUtils.renderStackInWorld(SLIMEBLOCK, 0.05D, -0.12D, -0.15D, 0.0F, 0.0F, 0.0F, 0.55D);
+                }
+                break;
+        }
     }
 
     private void renderHeldItem(ISoldier soldier, EnumHandSide handSide) {
@@ -80,10 +124,24 @@ public class LayerSoldierHeldItem
     }
 
     private void renderHandItem(ISoldier soldier, EnumHand hand) {
+        ISoldierUpgradeInst upgInst;
         switch( hand ) {
             case MAIN_HAND:
                 if( soldier.hasUpgrade(Upgrades.MC_REDMUSHROOM, EnumUpgradeType.MISC) ) {
                     RenderUtils.renderStackInWorld(REDMUSHROOM, 0.0D, -0.12D, 0.2D, 0.0F, 0.0F, 0.0F, 0.55D);
+                }
+                if( soldier.hasUpgrade(Upgrades.MC_REDSTONE, EnumUpgradeType.MISC) ) {
+                    RenderUtils.renderStackInWorld(REDSTONEBLOCK, 0.0D, -0.12D, 0.15D, 0.0F, 0.0F, 0.0F, 0.551D);
+                }
+                if( soldier.hasUpgrade(Upgrades.MC_SLIMEBALL, EnumUpgradeType.MISC) ) {
+                    RenderUtils.renderStackInWorld(SLIMEBLOCK, 0.0D, -0.12D, 0.1D, 0.0F, 0.0F, 0.0F, 0.552D);
+                }
+                if( (upgInst = soldier.getUpgradeInstance(Upgrades.MC_BUTTON, EnumUpgradeType.MISC)) != null ) {
+                    if( upgInst.getNbtData().getBoolean("isStone") ) {
+                        RenderUtils.renderStackInWorld(STONE, 0.0D, -0.12D, 0.0D, 0.0F, 0.0F, 0.0F, 0.553D);
+                    } else {
+                        RenderUtils.renderStackInWorld(WOOD, 0.0D, -0.12D, 0.0D, 0.0F, 0.0F, 0.0F, 0.553D);
+                    }
                 }
                 if( soldier.hasUpgrade(Upgrades.EC_FLINT, EnumUpgradeType.ENHANCEMENT) ) {
                     RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);

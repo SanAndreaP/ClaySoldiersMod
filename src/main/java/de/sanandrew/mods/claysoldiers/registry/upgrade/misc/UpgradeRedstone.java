@@ -10,11 +10,13 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.registry.effect.EffectRedstone;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
-import de.sanandrew.mods.claysoldiers.registry.effect.EffectTimeBomb;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -23,19 +25,20 @@ import net.minecraft.util.DamageSource;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class UpgradeMagmaCream
+public class UpgradeRedstone
         implements ISoldierUpgrade
 {
-    public static final int MAX_TIME_DETONATION = 40;
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.MAGMA_CREAM, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH };
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.REDSTONE, 1), new ItemStack(Blocks.REDSTONE_BLOCK) };
+    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH, EnumFunctionCalls.ON_ATTACK_SUCCESS };
+    private static final short MAX_USES = 4;
 
-    @Override
     @Nonnull
+    @Override
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
     }
 
+    @Nonnull
     @Override
     public EnumFunctionCalls[] getFunctionCalls() {
         return FUNC_CALLS;
@@ -48,11 +51,6 @@ public class UpgradeMagmaCream
     }
 
     @Override
-    public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
-        return !soldier.hasUpgrade(Upgrades.MC_GUNPOWDER, EnumUpgradeType.MISC) && !soldier.hasUpgrade(Upgrades.MC_FIREWORKSTAR, EnumUpgradeType.MISC);
-    }
-
-    @Override
     public boolean syncData() {
         return true;
     }
@@ -60,16 +58,38 @@ public class UpgradeMagmaCream
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
+            upgradeInst.getNbtData().setShort("uses", MAX_USES);
+            upgradeInst.getNbtData().setBoolean("isItem", ItemStackUtils.isItem(stack, Items.REDSTONE));
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            stack.shrink(1);
+
+            if( ItemStackUtils.isItem(stack, Items.REDSTONE) ) {
+                stack.shrink(1);
+            }
+        }
+    }
+
+    @Override
+    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
+        if( !soldier.getEntity().world.isRemote && target instanceof ISoldier ) {
+            ISoldier targetS = (ISoldier) target;
+            if( !targetS.hasEffect(Effects.BLINDING_REDSTONE) ) {
+                targetS.addEffect(EffectRedstone.INSTANCE, 60);
+                targetS.getEntity().setAttackTarget(null);
+                soldier.getEntity().playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
+
+                short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
+                if( uses < 1 ) {
+                    soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
+                } else {
+                    upgradeInst.getNbtData().setShort("uses", uses);
+                }
+            }
         }
     }
 
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
-        if( dmgSource.getTrueSource() instanceof ISoldier && !dmgSource.isFireDamage() && !dmgSource.isProjectile() ) {
-            ((ISoldier) dmgSource.getTrueSource()).addEffect(EffectTimeBomb.INSTANCE, MAX_TIME_DETONATION);
-        } else {
+        if( upgradeInst.getNbtData().getBoolean("isItem") && upgradeInst.getNbtData().getShort("uses") >= MAX_USES ) {
             drops.add(upgradeInst.getSavedStack());
         }
     }

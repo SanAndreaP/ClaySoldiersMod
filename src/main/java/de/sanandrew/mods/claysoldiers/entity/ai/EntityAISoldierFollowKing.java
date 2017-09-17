@@ -49,8 +49,7 @@ public class EntityAISoldierFollowKing
 
     @Override
     public boolean shouldContinueExecuting() {
-        Entity jack = this.executor.followingEntity;
-        return this.isKingOfGroup(jack) && jack.isEntityAlive() && this.executor.hasPath();
+        return this.executor.hasPath() && super.shouldContinueExecuting();
     }
 
     @Override

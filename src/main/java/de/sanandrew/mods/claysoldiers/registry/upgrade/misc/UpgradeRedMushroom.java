@@ -57,7 +57,7 @@ public class UpgradeRedMushroom
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            stack.setCount(stack.getCount() - 1);
+            stack.shrink(1);
         }
     }
 
@@ -65,6 +65,7 @@ public class UpgradeRedMushroom
     public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
         if( target instanceof EntityLivingBase ) {
             ((EntityLivingBase) target).addPotionEffect(new PotionEffect(MobEffects.POISON, 100, 1));
+            soldier.destroyUpgrade(this, EnumUpgradeType.MISC, false);
         }
     }
 

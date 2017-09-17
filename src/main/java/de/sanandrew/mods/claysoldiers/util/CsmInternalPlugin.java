@@ -21,11 +21,11 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGunpowd
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerLeatherArmor;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerMagmaCreamCharge;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSkull;
-import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSoldierHeldItem;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerHeldItem;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
 import de.sanandrew.mods.claysoldiers.event.SoldierTargetEnemyEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
-import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
+import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +47,7 @@ public class CsmInternalPlugin
 
     @Override
     public void registerEffects(IEffectRegistry registry) {
-        EffectRegistry.initialize(registry);
+        Effects.initialize(registry);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CsmInternalPlugin
     @Override
     @SideOnly(Side.CLIENT)
     public void registerSoldierRenderLayer(ISoldierRender<?, ?> renderer) {
-        renderer.addRenderLayer(new LayerSoldierHeldItem(renderer));
+        renderer.addRenderLayer(new LayerHeldItem(renderer));
         renderer.addRenderLayer(new LayerGoggles(renderer));
         renderer.addRenderLayer(new LayerLeatherArmor(renderer));
         renderer.addRenderLayer(new LayerMagmaCreamCharge(renderer));

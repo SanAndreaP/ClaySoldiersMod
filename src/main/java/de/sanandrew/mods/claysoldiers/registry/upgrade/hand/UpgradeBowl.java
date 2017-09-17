@@ -33,7 +33,7 @@ public class UpgradeBowl
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.BOWL, 1) };
     private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] {EnumFunctionCalls.ON_DEATH,
                                                                                    EnumFunctionCalls.ON_DAMAGED};
-    private static final byte MAX_USES = 20;
+    private static final short MAX_USES = 20;
 
     @Nonnull
     @Override
@@ -61,30 +61,30 @@ public class UpgradeBowl
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            upgradeInst.getNbtData().setByte("uses", MAX_USES);
+            upgradeInst.getNbtData().setShort("uses", MAX_USES);
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_VALUE);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            stack.setCount(stack.getCount() - 1);
+            stack.shrink(1);
         }
     }
 
     @Override
     public void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) {
         if( !soldier.getEntity().world.isRemote ) {
-            byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
+            short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
             if( uses < 1 ) {
                 soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
                 soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_VALUE);
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
             } else if( !(dmgSource.getTrueSource() instanceof EntityPlayer) && dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
-                upgradeInst.getNbtData().setByte("uses", uses);
+                upgradeInst.getNbtData().setShort("uses", uses);
             }
         }
     }
 
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
-        if( upgradeInst.getNbtData().getByte("uses") >= MAX_USES ) {
+        if( upgradeInst.getNbtData().getShort("uses") >= MAX_USES ) {
             drops.add(upgradeInst.getSavedStack());
         }
     }

@@ -6,15 +6,24 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.item.ItemSoldier;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeClay;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGhastTear;
+import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAISoldierFollowUpgrade
+public class EntityAISoldierFollowFallen
         extends EntityAIBase
 {
     protected EntityClaySoldier taskOwner;
@@ -24,7 +33,7 @@ public class EntityAISoldierFollowUpgrade
     private double targetY;
     private double targetZ;
 
-    public EntityAISoldierFollowUpgrade(EntityClaySoldier soldier, double speedIn) {
+    public EntityAISoldierFollowFallen(EntityClaySoldier soldier, double speedIn) {
         this.taskOwner = soldier;
         this.speedTowardsTarget = speedIn;
         this.setMutexBits(1);
@@ -36,7 +45,7 @@ public class EntityAISoldierFollowUpgrade
 
         if( !(item instanceof EntityItem) || !item.isEntityAlive() ) {
             return false;
-        } else if( UpgradeRegistry.INSTANCE.getUpgrade(((EntityItem) item).getItem()) == null ) {
+        } else if( !this.isValidItem(((EntityItem) item).getItem()) ) {
             return false;
         } else {
             this.entityPathEntity = this.taskOwner.getNavigator().getPathToEntityLiving(item);
@@ -87,13 +96,28 @@ public class EntityAISoldierFollowUpgrade
         }
 
         if( tgtDist < 1.0F ) {
-            EntityItem item = (EntityItem) jack;
-            this.taskOwner.pickupUpgrade(item);
+            ItemStack stack = ((EntityItem) jack).getItem();
+            if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_SOLDIER) ) {
+                ItemSoldier.spawnSoldiers(this.taskOwner.world, 1, jack.posX, jack.posY + 0.25D, jack.posZ, stack);
+                UpgradeClay.decrUses(this.taskOwner, this.taskOwner.getUpgradeInstance(Upgrades.MC_CLAY, EnumUpgradeType.MISC));
+            } else if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER) ) {
+                ItemStack teamStack = TeamRegistry.INSTANCE.getNewTeamStack(1, this.taskOwner.getSoldierTeam());
+                if( stack.hasTagCompound() ) {
+                    teamStack.getTagCompound().merge(stack.getTagCompound());
+                }
+                ItemSoldier.spawnSoldiers(this.taskOwner.world, 1, jack.posX, jack.posY + 0.25D, jack.posZ, teamStack);
+                UpgradeGhastTear.decrUses(this.taskOwner, this.taskOwner.getUpgradeInstance(Upgrades.MC_GHASTTEAR, EnumUpgradeType.MISC));
+                stack.shrink(1);
+            }
             this.taskOwner.getNavigator().clearPathEntity();
             this.taskOwner.followingEntity = null;
-            if( item.getItem().getCount() < 1 ) {
-                item.setDead();
+            if( stack.getCount() < 1 ) {
+                jack.setDead();
             }
         }
+    }
+
+    private boolean isValidItem(ItemStack stack) {
+        return TeamRegistry.INSTANCE.getTeam(stack).getId().equals(this.taskOwner.getSoldierTeam().getId()) || ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER);
     }
 }

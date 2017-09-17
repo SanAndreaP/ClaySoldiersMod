@@ -12,33 +12,32 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
-import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
-import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityFireworkRocket;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class UpgradeFireworkStar
+public class UpgradeGhastTear
         implements ISoldierUpgrade
 {
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.FIREWORK_CHARGE, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH };
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.GHAST_TEAR, 1) };
+    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] {EnumFunctionCalls.ON_DEATH};
+    private static final short MAX_USES = 2;
 
-    @Override
     @Nonnull
+    @Override
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
     }
 
+    @Nonnull
     @Override
     public EnumFunctionCalls[] getFunctionCalls() {
         return FUNC_CALLS;
@@ -51,33 +50,33 @@ public class UpgradeFireworkStar
     }
 
     @Override
-    public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
-        return !soldier.hasUpgrade(Upgrades.MC_GUNPOWDER, EnumUpgradeType.MISC) && !soldier.hasUpgrade(Upgrades.MC_MAGMACREAM, EnumUpgradeType.MISC);
+    public boolean syncData() {
+        return true;
     }
 
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
+            upgradeInst.getNbtData().setShort("uses", MAX_USES);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.shrink(1);
         }
     }
 
+    public static void decrUses(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
+        if( !soldier.getEntity().world.isRemote ) {
+            short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
+            if( uses < 1 ) {
+                soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
+            } else {
+                upgradeInst.getNbtData().setShort("uses", uses);
+            }
+        }
+    }
+
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, List<ItemStack> drops) {
-        if( dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
-            NBTTagCompound explosionNbt = upgradeInst.getSavedStack().getSubCompound("Explosion");
-            if( explosionNbt != null ) {
-                NBTTagCompound rocketNbt = new NBTTagCompound();
-                NBTTagList explosions = new NBTTagList();
-                EntityLivingBase soldierL = soldier.getEntity();
-
-                explosions.appendTag(explosionNbt);
-                rocketNbt.setTag("Explosions", explosions);
-
-                ClaySoldiersMod.proxy.spawnParticle(EnumParticle.FIREWORK, soldierL.world.provider.getDimension(), soldierL.posX, soldierL.posY, soldierL.posZ, rocketNbt);
-            }
-        } else {
+        if( upgradeInst.getNbtData().getShort("uses") >= MAX_USES ) {
             drops.add(upgradeInst.getSavedStack());
         }
     }

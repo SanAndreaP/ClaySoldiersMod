@@ -76,9 +76,4 @@ public final class EffectRegistry
         return ImmutableList.copyOf(this.effects);
     }
 
-    public static void initialize(IEffectRegistry registry) {
-        registry.registerEffect(TIME_BOMB, new EffectTimeBomb());
-    }
-
-    public static final UUID TIME_BOMB = UUID.fromString("710095EE-7E5F-4A6C-92E6-5214660810FD");
 }

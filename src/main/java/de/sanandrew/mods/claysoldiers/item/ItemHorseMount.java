@@ -85,7 +85,7 @@ public class ItemHorseMount
                         trevor.setCustomNameTag(stack.getDisplayName());
                     }
 
-                    stack.setCount(stack.getCount() - 1);
+                    stack.shrink(1);
                 }
             }
 

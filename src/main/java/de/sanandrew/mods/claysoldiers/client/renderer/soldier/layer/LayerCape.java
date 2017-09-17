@@ -36,13 +36,12 @@ public class LayerCape
     public void doRenderLayer(EntityCreature creature, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if( creature instanceof ISoldier ) {
             ISoldier soldier = (ISoldier) creature;
-            boolean hasPaper = soldier.hasUpgrade(Upgrades.MC_PAPER, EnumUpgradeType.MISC);
-            boolean hasDiamond = false;
-            if( hasPaper || hasDiamond ) {
+            boolean hasDiamond = soldier.hasUpgrade(Upgrades.MC_DIAMOND, EnumUpgradeType.MISC) || soldier.hasUpgrade(Upgrades.MC_DIAMONDBLOCK, EnumUpgradeType.MISC);
+            if( hasDiamond || soldier.hasUpgrade(Upgrades.MC_PAPER, EnumUpgradeType.MISC) ) {
                 if( hasDiamond ) {
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                     this.renderer.bindSoldierTexture(Resources.ENTITY_WEARABLE_CAPE_DIAMOND.resource);
-                } else if( hasPaper ) {
+                } else {
                     ISoldierUpgradeInst clrUpg = soldier.getUpgradeInstance(Upgrades.MC_CONCRETEPOWDER, EnumUpgradeType.MISC);
                     if( clrUpg != null ) {
                         float[] clr = EnumDyeColor.byMetadata(clrUpg.getNbtData().getInteger("color")).getColorComponentValues();
@@ -54,12 +53,12 @@ public class LayerCape
                 }
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(0.0F, 0.0F, 0.125F);
-                double dX = soldier.getChasingPosX(partialTicks) - (creature.prevPosX + (creature.posX - creature.prevPosX) * (double) partialTicks);
-                double dY = soldier.getChasingPosY(partialTicks) - (creature.prevPosY + (creature.posY - creature.prevPosY) * (double) partialTicks);
-                double dZ = soldier.getChasingPosZ(partialTicks) - (creature.prevPosZ + (creature.posZ - creature.prevPosZ) * (double) partialTicks);
+                double dX = soldier.getChasingPosX(partialTicks) - (creature.prevPosX + (creature.posX - creature.prevPosX) * partialTicks);
+                double dY = soldier.getChasingPosY(partialTicks) - (creature.prevPosY + (creature.posY - creature.prevPosY) * partialTicks);
+                double dZ = soldier.getChasingPosZ(partialTicks) - (creature.prevPosZ + (creature.posZ - creature.prevPosZ) * partialTicks);
                 float yaw = creature.prevRenderYawOffset + (creature.renderYawOffset - creature.prevRenderYawOffset) * partialTicks;
-                double sinYaw = (double) MathHelper.sin(yaw * 0.017453292F);
-                double cosYaw = (double) (-MathHelper.cos(yaw * 0.017453292F));
+                double sinYaw = MathHelper.sin(yaw * 0.017453292F);
+                double cosYaw = (-MathHelper.cos(yaw * 0.017453292F));
                 float rotY = (float) dY * 10.0F;
                 rotY = MathHelper.clamp(rotY, -6.0F, 32.0F);
                 float rotX = (float) (dX * sinYaw + dZ * cosYaw) * 100.0F;

@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.event;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -17,25 +18,29 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class SoldierTargetEnemyEventHandler
 {
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onTargetingHigh(SoldierTargetEnemyEvent evt) {
-        if( evt.target instanceof ISoldier ) {
-            ISoldier tgtSoldier = (ISoldier) evt.target;
+    public void onTargetingHigh(SoldierTargetEnemyEvent event) {
+        if( event.target instanceof ISoldier ) {
+            ISoldier tgtSoldier = (ISoldier) event.target;
             if( tgtSoldier.hasUpgrade(Upgrades.MC_EGG, EnumUpgradeType.MISC) ) {
-                evt.setResult(Event.Result.DENY);
+                event.setResult(Event.Result.DENY);
             }
 
-            if( evt.attacker.hasUpgrade(Upgrades.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
-                evt.setResult(evt.attacker.getSoldierTeam() == tgtSoldier.getSoldierTeam() && evt.target.getHealth() < evt.target.getMaxHealth() * 0.25F
+            if( event.attacker.hasUpgrade(Upgrades.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
+                event.setResult(event.attacker.getSoldierTeam() == tgtSoldier.getSoldierTeam() && event.target.getHealth() < event.target.getMaxHealth() * 0.25F
                               ? Event.Result.ALLOW
                               : Event.Result.DENY);
             }
         }
+
+        if( event.attacker.hasEffect(Effects.BLINDING_REDSTONE) ) {
+            event.setResult(Event.Result.DENY);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onTargetingNormal(SoldierTargetEnemyEvent evt) {
-        if( evt.attacker.hasUpgrade(Upgrades.MC_GLASS, EnumUpgradeType.MISC) ) {
-            evt.setResult(Event.Result.DEFAULT);
+    public void onTargetingNormal(SoldierTargetEnemyEvent event) {
+        if( event.attacker.hasUpgrade(Upgrades.MC_GLASS, EnumUpgradeType.MISC) ) {
+            event.setResult(Event.Result.DEFAULT);
         }
     }
 }

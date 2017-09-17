@@ -8,6 +8,9 @@
  */
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.sanlib.lib.util.EntityUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import io.netty.buffer.ByteBuf;
@@ -215,12 +218,24 @@ public abstract class EntityClayProjectile
                     hitObj.entityHit.setFire(5);
                 }
 
+                if( this.shooterCache instanceof EntityClaySoldier ) {
+                    EntityClaySoldier soldier = (EntityClaySoldier) this.shooterCache;
+                    final Entity target = hitObj.entityHit;
+                    soldier.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(soldier, upg, target, damagesource, dmg));
+                }
+
                 boolean preHitVelocityChanged = hitObj.entityHit.velocityChanged;
                 boolean preHitAirBorne = hitObj.entityHit.isAirBorne;
                 double preHitMotionX = hitObj.entityHit.motionX;
                 double preHitMotionY = hitObj.entityHit.motionY;
                 double preHitMotionZ = hitObj.entityHit.motionZ;
                 if( this.onPreHit(hitObj.entityHit, damagesource, dmg) && hitObj.entityHit.attackEntityFrom(damagesource, dmg.floatValue()) ) {
+                    if( this.shooterCache instanceof EntityClaySoldier ) {
+                        EntityClaySoldier soldier = (EntityClaySoldier) this.shooterCache;
+                        final Entity target = hitObj.entityHit;
+                        soldier.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK_SUCCESS, upg -> upg.getUpgrade().onAttackSuccess(soldier, upg, target));
+                    }
+
                     hitObj.entityHit.velocityChanged = preHitVelocityChanged;
                     hitObj.entityHit.isAirBorne = preHitAirBorne;
                     hitObj.entityHit.motionX = preHitMotionX;
