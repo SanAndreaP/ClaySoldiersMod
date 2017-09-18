@@ -83,7 +83,7 @@ Misc
 |x|BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
 |x|RedMushroom,            1 use,   applies poison to target
 |x|BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
-| |LillyPad,               inf use, soldier has pants and will float on water
+|x|LillyPad,               inf use, soldier has pants and will float on water
                                      info: no effect when used with iron ingot
 |x|Egg,                    inf use, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
                                      info: will be detected when others wearing glasses
@@ -95,7 +95,7 @@ Misc
 |x|MobHead,                inf use, gives the soldier a mask to wear
 |x|FireworkStar,             1 use, soldier explodes on death in a firework effect
                                      info: incompatible with gunpowder/magmacream
-| |Rabbit Foot,            inf use, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
+|x|Rabbit Foot,            inf use, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
 | |Prismarine Crystals,    inf use, makes soldiers glitter, that's all.
 ------------------
 Enchantments

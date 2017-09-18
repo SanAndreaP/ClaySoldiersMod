@@ -10,7 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.client.model.ModelGoggleBand;
+import de.sanandrew.mods.claysoldiers.client.model.accessory.ModelGoggleBand;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;

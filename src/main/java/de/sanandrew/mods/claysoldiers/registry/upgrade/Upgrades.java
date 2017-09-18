@@ -38,8 +38,11 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoggles;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGoldNugget;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGunpowder;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLeather;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeLilyPad;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradePaper;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradePrismarineCrystal;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitFoot;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRabbitHide;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRedMushroom;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeRedstone;
@@ -94,6 +97,9 @@ public final class Upgrades
     public static final UUID MC_ENDERPEARL = UUID.fromString("EEF80CB3-FAF7-4544-BEB2-15833235CDC3");
     public static final UUID MC_WHEATSEEDS = UUID.fromString("CF75CEE1-AFBB-4F37-9936-28EC455F1258");
     public static final UUID MC_BLAZEPOWDER = UUID.fromString("B351F5B8-ABEA-45D5-8E2F-C972493EFB28");
+    public static final UUID MC_LILYPAD = UUID.fromString("B95C8951-1393-4DBC-8DA5-F23AC140BEF7");
+    public static final UUID MC_RABBITFOOT = UUID.fromString("B45956F9-9A18-4A7F-8D2A-23E729DA4563");
+    public static final UUID MC_PRISMCRYSTALS = UUID.fromString("257E914C-4E72-47C0-908B-C9FC40FCACB2");
 
     public static final UUID CR_IRONINGOT = UUID.fromString("6426F05F-36C5-4F83-9D69-200CCBBA141D");
     public static final UUID CR_BRICK = UUID.fromString("00B12AB5-1E8D-43CA-A136-4BBB5E5970E0");
@@ -141,6 +147,9 @@ public final class Upgrades
         registry.registerUpgrade(MC_ENDERPEARL, new UpgradeEnderPearl());
         registry.registerUpgrade(MC_WHEATSEEDS, new UpgradeWheatSeeds());
         registry.registerUpgrade(MC_BLAZEPOWDER, new UpgradeBlazePowder());
+        registry.registerUpgrade(MC_LILYPAD, new UpgradeLilyPad());
+        registry.registerUpgrade(MC_RABBITFOOT, new UpgradeRabbitFoot());
+        registry.registerUpgrade(MC_PRISMCRYSTALS, new UpgradePrismarineCrystal());
 
         registry.registerUpgrade(CR_IRONINGOT, new UpgradeIronIngot());
         registry.registerUpgrade(CR_BRICK, new UpgradeBrick());

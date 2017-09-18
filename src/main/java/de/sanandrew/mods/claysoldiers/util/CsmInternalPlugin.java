@@ -19,6 +19,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCrown;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGoggles;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGunpowder;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerLeatherArmor;
+import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerLilyPants;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerMagmaCreamCharge;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSkull;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerHeldItem;
@@ -75,6 +76,7 @@ public class CsmInternalPlugin
         renderer.addRenderLayer(new LayerGunpowder(renderer));
         renderer.addRenderLayer(new LayerSkull(renderer));
         renderer.addRenderLayer(new LayerCape(renderer));
+        renderer.addRenderLayer(new LayerLilyPants(renderer));
     }
 
     @Override

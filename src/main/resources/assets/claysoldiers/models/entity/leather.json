@@ -13,7 +13,7 @@
       "offsetX": -4.0,
       "offsetY": -0.0,
       "offsetZ": -2.0,
-      "scaling": "0.5"
+      "scaling": "x + 0.5"
     },{
       "boxName": "leftArm",
       "sizeX": 4,
@@ -26,7 +26,7 @@
       "offsetX": -1.0,
       "offsetY": -2.0,
       "offsetZ": -2.0,
-      "scaling": "0.5"
+      "scaling": "x + 0.5"
     },{
       "boxName": "rightArm",
       "sizeX": 4,
@@ -40,7 +40,7 @@
       "offsetY": -2.0,
       "offsetZ": -2.0,
       "mirror": true,
-      "scaling": "0.5"
+      "scaling": "x + 0.5"
     }
   ]
 }

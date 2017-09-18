@@ -1,0 +1,48 @@
+{
+  "texture": "claysoldiers:textures/entities/wearables/lilypants.png",
+  "cubes": [
+    {
+      "boxName": "body",
+      "sizeX": 8,
+      "sizeY": 2,
+      "sizeZ": 4,
+      "textureX": 16,
+      "textureY": 0,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -4.0,
+      "offsetY": 10.0,
+      "offsetZ": -2.0,
+      "scaling": "x + 0.25"
+    },
+    {
+      "boxName": "leftLeg",
+      "sizeX": 4,
+      "sizeY": 8,
+      "sizeZ": 4,
+      "textureX": 0,
+      "textureY": 0,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -2.0,
+      "offsetY": 0.0,
+      "offsetZ": -2.0,
+      "scaling": "x + 0.25"
+    },
+    {
+      "boxName": "rightLeg",
+      "sizeX": 4,
+      "sizeY": 8,
+      "sizeZ": 4,
+      "textureX": 0,
+      "textureY": 0,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -2.0,
+      "offsetY": 0.0,
+      "offsetZ": -2.0,
+      "mirror": true,
+      "scaling": "x + 0.25"
+    }
+  ]
+}

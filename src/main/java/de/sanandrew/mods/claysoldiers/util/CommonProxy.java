@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
 import de.sanandrew.mods.claysoldiers.event.EntityFallEventHandler;
 import de.sanandrew.mods.claysoldiers.event.LivingAttackEventHandler;
+import de.sanandrew.mods.claysoldiers.event.LivingJumpEventHandler;
 import de.sanandrew.mods.claysoldiers.event.SoldierDeathEventHandler;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
@@ -52,6 +53,7 @@ public class CommonProxy
 
         MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());
         MinecraftForge.EVENT_BUS.register(new LivingAttackEventHandler());
+        MinecraftForge.EVENT_BUS.register(new LivingJumpEventHandler());
         MinecraftForge.EVENT_BUS.register(SoldierDeathEventHandler.INSTANCE);
     }
 
