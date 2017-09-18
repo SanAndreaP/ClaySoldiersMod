@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -28,24 +29,19 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
+@UpgradeFunctions({EnumUpgFunctions.ON_DEATH, EnumUpgFunctions.ON_DAMAGED})
 public class UpgradeRabbitHide
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.RABBIT_HIDE, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] {EnumFunctionCalls.ON_DEATH,
-                                                                                   EnumFunctionCalls.ON_DAMAGED};
     private static final short MAX_USES = 20;
 
     @Nonnull
     @Override
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
-    }
-
-    @Nonnull
-    @Override
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
     }
 
     @Nonnull

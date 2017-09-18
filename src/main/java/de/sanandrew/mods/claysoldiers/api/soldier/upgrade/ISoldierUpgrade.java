@@ -25,9 +25,6 @@ public interface ISoldierUpgrade
     ItemStack[] getStacks();
 
     @Nonnull
-    EnumFunctionCalls[] getFunctionCalls();
-
-    @Nonnull
     EnumUpgradeType getType(ISoldier<?> checker);
 
     default int getPriority() { return 0; }
@@ -67,19 +64,5 @@ public interface ISoldierUpgrade
     default void onDamagedSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, float damage) { }
 
     default void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) { }
-
-    enum EnumFunctionCalls {
-        ON_PICKUP,
-        ON_TICK,
-        ON_OTHR_DESTROYED,
-        ON_ATTACK,
-        ON_DAMAGED,
-        ON_DEATH,
-        ON_ATTACK_SUCCESS,
-        ON_DAMAGED_SUCCESS,
-        ON_UPGRADE_ADDED;
-
-        public static final EnumFunctionCalls[] VALUES = values();
-    }
 
 }

@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -19,22 +20,18 @@ import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
+@UpgradeFunctions({EnumUpgFunctions.ON_DEATH, EnumUpgFunctions.ON_TICK})
 public class UpgradeFeather
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.FEATHER, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH,
-                                                                                    EnumFunctionCalls.ON_TICK };
 
     @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
-    }
-
-    @Override
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
     }
 
     @Nonnull

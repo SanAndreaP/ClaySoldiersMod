@@ -13,20 +13,23 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
 
-@UpgradeFunctions({EnumUpgFunctions.ON_DEATH})
-public class UpgradeClay
+@UpgradeFunctions({EnumUpgFunctions.ON_DEATH, EnumUpgFunctions.ON_ATTACK_SUCCESS, EnumUpgFunctions.ON_TICK})
+public class UpgradeBlazePowder
         implements ISoldierUpgrade
 {
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.CLAY_BALL, 1) };
-    private static final short MAX_USES = 4;
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.BLAZE_POWDER, 1) };
+    private static final short MAX_USES = 1;
 
     @Nonnull
     @Override
@@ -54,14 +57,25 @@ public class UpgradeClay
         }
     }
 
-    public static void decrUses(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
-        if( !soldier.getEntity().world.isRemote ) {
+    @Override
+    public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
+        if( target instanceof ISoldier ) {
+            target.attackEntityFrom(DamageSource.ON_FIRE, Float.MAX_VALUE);
+
             short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
             if( uses < 1 ) {
                 soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
             } else {
                 upgradeInst.getNbtData().setShort("uses", uses);
             }
+        }
+    }
+
+    @Override
+    public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
+        EntityCreature soldierL = soldier.getEntity();
+        if( soldierL.world.isRemote && MiscUtils.RNG.randomInt(10) == 0 ) {
+            soldierL.world.spawnParticle(EnumParticleTypes.FLAME, soldierL.posX, soldierL.posY, soldierL.posZ, 0.0D, 0.0D, 0.0D);
         }
     }
 

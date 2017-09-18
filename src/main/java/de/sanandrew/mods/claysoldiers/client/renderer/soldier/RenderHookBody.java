@@ -41,14 +41,11 @@ public class RenderHookBody
         }
 
         if( soldier.hasUpgrade(Upgrades.MC_GLOWSTONE, EnumUpgradeType.MISC) ) {
-            int brightness = 0xF0;
-            int brightX = brightness % 65536;
-            int brightY = brightness / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xF0, 0x0);
         }
 
         if( soldier.hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC) ) {
-            GlStateManager.color(0.8F, 0.8F, 0.8F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x80, 0x0);
         }
     }
 
@@ -59,7 +56,7 @@ public class RenderHookBody
             GlStateManager.disableBlend();
         }
 
-        if( soldier.hasUpgrade(Upgrades.MC_GLOWSTONE, EnumUpgradeType.MISC) ) {
+        if( soldier.hasUpgrade(Upgrades.MC_GLOWSTONE, EnumUpgradeType.MISC) || soldier.hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC) ) {
             int brightness = soldier.getEntity().getBrightnessForRender();
             int brightX = brightness % 65536;
             int brightY = brightness / 65536;

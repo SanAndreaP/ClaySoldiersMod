@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -23,21 +24,18 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
+@UpgradeFunctions({EnumUpgFunctions.ON_DEATH})
 public class UpgradeSkull
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.SKULL, 1, OreDictionary.WILDCARD_VALUE) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH };
 
     @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
-    }
-
-    @Override
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
     }
 
     @Nonnull

@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -24,21 +25,18 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
+@UpgradeFunctions({EnumUpgFunctions.ON_DEATH, EnumUpgFunctions.ON_ATTACK})
 public class UpgradeButton
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Blocks.WOODEN_BUTTON, 1), new ItemStack(Blocks.STONE_BUTTON, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH, EnumFunctionCalls.ON_ATTACK };
 
     @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
-    }
-
-    @Override
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
     }
 
     @Nonnull

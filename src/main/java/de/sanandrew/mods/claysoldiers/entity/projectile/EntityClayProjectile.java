@@ -8,8 +8,7 @@
  */
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.sanlib.lib.util.EntityUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -221,7 +220,7 @@ public abstract class EntityClayProjectile
                 if( this.shooterCache instanceof EntityClaySoldier ) {
                     EntityClaySoldier soldier = (EntityClaySoldier) this.shooterCache;
                     final Entity target = hitObj.entityHit;
-                    soldier.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(soldier, upg, target, damagesource, dmg));
+                    soldier.callUpgradeFunc(EnumUpgFunctions.ON_ATTACK, upg -> upg.getUpgrade().onAttack(soldier, upg, target, damagesource, dmg));
                 }
 
                 boolean preHitVelocityChanged = hitObj.entityHit.velocityChanged;
@@ -233,7 +232,7 @@ public abstract class EntityClayProjectile
                     if( this.shooterCache instanceof EntityClaySoldier ) {
                         EntityClaySoldier soldier = (EntityClaySoldier) this.shooterCache;
                         final Entity target = hitObj.entityHit;
-                        soldier.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK_SUCCESS, upg -> upg.getUpgrade().onAttackSuccess(soldier, upg, target));
+                        soldier.callUpgradeFunc(EnumUpgFunctions.ON_ATTACK_SUCCESS, upg -> upg.getUpgrade().onAttackSuccess(soldier, upg, target));
                     }
 
                     hitObj.entityHit.velocityChanged = preHitVelocityChanged;

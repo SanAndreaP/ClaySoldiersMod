@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -30,12 +31,13 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
+@UpgradeFunctions({EnumUpgFunctions.ON_DAMAGED, EnumUpgFunctions.ON_DEATH})
 public class UpgradeFood
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS;
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DAMAGED,
-                                                                                    EnumFunctionCalls.ON_DEATH };
     private static final short MAX_USES = 4;
 
     static {
@@ -61,11 +63,6 @@ public class UpgradeFood
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
-    }
-
-    @Override
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
     }
 
     @Nonnull

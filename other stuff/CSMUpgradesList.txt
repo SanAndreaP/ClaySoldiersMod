@@ -78,17 +78,16 @@ Misc
                                      info: incompatible with diamondblock
 |x|DiamondBlock,           inf use, gives super crown and cape, multiplies limited use item uses by five, grants sugar speed boost, multiplies hp by 80
                                      info: incompatible with diamond
-| |EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
+|x|EnderPearl,             inf use, soldier zombifies, gains +5 hp, heals fully when deals last hit to a target, targets slain become zombies,
                                      dies after 10 minutes of no fighting
-                                     TODO: rendering, AI fixing
-| |BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
+|x|BlazePowder,            1 use,   instantly kills target with fire, turning it into brick doll
 |x|RedMushroom,            1 use,   applies poison to target
 |x|BrownMushroom,          2 use,   heals soldier for 10 hp when below 25%
 | |LillyPad,               inf use, soldier has pants and will float on water
                                      info: no effect when used with iron ingot
 |x|Egg,                    inf use, soldier is ghostly and can not be detected by enemies not wearing glass goggles, doubles damage output of shears
                                      info: will be detected when others wearing glasses
-| |WheatSeed,              inf use, soldier can NOT be infected by any zombification
+|x|WheatSeed,              inf use, soldier can NOT be infected by any zombification
 |x|WoodButton,             inf use, increases melee damage by 1 when no weapon is equipped
                                      incompatible with stone button
 |x|StoneButton,            inf use, increases melee damage by 2 when no weapon is equipped
@@ -105,7 +104,7 @@ Enchantments
 | |Prismarine Shard, req: shear blade(s), boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
 | |Wool,             req: leather         reduces incoming physical damage by 1
                           rabbit hide
-| |Sugarcane,        req: gravel          boosts thrown weapon range, projectiles hone in on target, boosts emerald range,
+| |Sugarcane,        req: gravel          boosts thrown weapon range, projectiles home in on target, boosts emerald range,
                           snowball
                           firecharge
                           emerald

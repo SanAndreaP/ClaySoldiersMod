@@ -8,10 +8,11 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
@@ -102,5 +103,15 @@ public final class UpgradeRegistry
     @Override
     public List<ISoldierUpgrade> getUpgrades() {
         return ImmutableList.copyOf(this.upgrades);
+    }
+
+    private static final EnumUpgFunctions[] EMPTY_FUNCS = {};
+    public static EnumUpgFunctions[] getFuncCalls(ISoldierUpgrade upgrade) {
+        UpgradeFunctions a = upgrade.getClass().getAnnotation(UpgradeFunctions.class);
+        if( a != null ) {
+            return a.value();
+        }
+
+        return EMPTY_FUNCS;
     }
 }

@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -24,22 +25,18 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
+@UpgradeFunctions({EnumUpgFunctions.ON_OTHR_DESTROYED})
 public class UpgradeIronBlock
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Blocks.IRON_BLOCK, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_OTHR_DESTROYED };
 
     @Override
     @Nonnull
     public EnumUpgradeType getType(ISoldier<?> checker) {
         return EnumUpgradeType.ENHANCEMENT;
-    }
-
-    @Override
-    @Nonnull
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
     }
 
     @Override

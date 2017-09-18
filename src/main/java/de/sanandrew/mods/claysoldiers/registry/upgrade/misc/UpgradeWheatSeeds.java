@@ -11,7 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -21,15 +21,16 @@ import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
 @UpgradeFunctions({EnumUpgFunctions.ON_DEATH})
-public class UpgradeClay
+public class UpgradeWheatSeeds
         implements ISoldierUpgrade
 {
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.CLAY_BALL, 1) };
-    private static final short MAX_USES = 4;
+    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.WHEAT_SEEDS, 1) };
 
-    @Nonnull
     @Override
+    @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
     }
@@ -41,6 +42,11 @@ public class UpgradeClay
     }
 
     @Override
+    public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
+        return !soldier.hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC);
+    }
+
+    @Override
     public boolean syncData() {
         return true;
     }
@@ -48,27 +54,13 @@ public class UpgradeClay
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            upgradeInst.getNbtData().setShort("uses", MAX_USES);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.shrink(1);
         }
     }
 
-    public static void decrUses(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
-        if( !soldier.getEntity().world.isRemote ) {
-            short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
-            if( uses < 1 ) {
-                soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
-            } else {
-                upgradeInst.getNbtData().setShort("uses", uses);
-            }
-        }
-    }
-
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
-        if( upgradeInst.getNbtData().getShort("uses") >= MAX_USES ) {
-            drops.add(upgradeInst.getSavedStack());
-        }
+        drops.add(upgradeInst.getSavedStack());
     }
 }

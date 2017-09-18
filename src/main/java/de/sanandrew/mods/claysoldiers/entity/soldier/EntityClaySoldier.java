@@ -6,7 +6,6 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierDeathEvent;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
@@ -14,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -80,7 +80,6 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -105,7 +104,7 @@ public class EntityClaySoldier
     private static final DataParameter<Byte> TEXTURE_ID_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializers.BYTE);
     private final DataWatcherBooleans<EntityClaySoldier> dwBooleans;
 
-    private final Map<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> upgradeFuncMap;
+    private final Map<EnumUpgFunctions, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> upgradeFuncMap;
     private final Queue<ISoldierUpgradeInst> upgradeSyncList;
     private final Map<UpgradeEntry, ISoldierUpgradeInst> upgradeMap;
     private final Queue<EntityAIBase> removedTasks;
@@ -238,7 +237,7 @@ public class EntityClaySoldier
         this.upgradeMap.remove(entry);
         this.upgradeSyncList.remove(inst);
         this.upgradeFuncMap.forEach((key, val) -> {
-            if( Arrays.asList(upgrade.getFunctionCalls()).contains(key) ) {
+            if( Arrays.asList(UpgradeRegistry.getFuncCalls(upgrade)).contains(key) ) {
                 val.get(upgrade.getPriority()).remove(inst);
             }
         });
@@ -249,7 +248,7 @@ public class EntityClaySoldier
         }
 
         upgrade.onDestroyed(this, inst);
-        this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_OTHR_DESTROYED, othrInst -> othrInst.getUpgrade().onUpgradeDestroyed(this, othrInst, upgrade));
+        this.callUpgradeFunc(EnumUpgFunctions.ON_OTHR_DESTROYED, othrInst -> othrInst.getUpgrade().onUpgradeDestroyed(this, othrInst, upgrade));
 
         if( !this.world.isRemote ) {
             if( upgrade.syncData() ) {
@@ -277,7 +276,7 @@ public class EntityClaySoldier
 
         upgrade.onAdded(this, stack, upgInst);
 
-        this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_UPGRADE_ADDED, upgInstCl -> upgInstCl.getUpgrade().onUpgradeAdded(this, upgInstCl, upgInst));
+        this.callUpgradeFunc(EnumUpgFunctions.ON_UPGRADE_ADDED, upgInstCl -> upgInstCl.getUpgrade().onUpgradeAdded(this, upgInstCl, upgInst));
 
         if( upgrade.syncData() && !this.world.isRemote ) {
             this.sendSyncUpgrades(true, new UpgradeEntry(upgrade, type));
@@ -294,7 +293,7 @@ public class EntityClaySoldier
         if( upgrade.syncData() ) {
             this.upgradeSyncList.add(instance);
         }
-        Arrays.asList(upgrade.getFunctionCalls()).forEach(func -> {
+        Arrays.asList(UpgradeRegistry.getFuncCalls(upgrade)).forEach(func -> {
             Queue<ISoldierUpgradeInst> upgList = this.upgradeFuncMap.get(func).computeIfAbsent(upgrade.getPriority(), k -> new ConcurrentLinkedQueue<>());
             upgList.add(instance);
         });
@@ -339,13 +338,13 @@ public class EntityClaySoldier
 
         ISoldierUpgradeInst upgInst = this.addUpgrade(upg, upg.getType(this), stack);
         if( upgInst != null ) {
-            if( Arrays.asList(upg.getFunctionCalls()).contains(ISoldierUpgrade.EnumFunctionCalls.ON_PICKUP) ) {
+            if( Arrays.asList(UpgradeRegistry.getFuncCalls(upg)).contains(EnumUpgFunctions.ON_PICKUP) ) {
                 upg.onPickup(this, item, upgInst);
             }
         }
     }
 
-    public void callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls funcCall, final Consumer<ISoldierUpgradeInst> forEach) {
+    public void callUpgradeFunc(EnumUpgFunctions funcCall, final Consumer<ISoldierUpgradeInst> forEach) {
         this.upgradeFuncMap.get(funcCall).forEach((key, val) -> val.forEach(forEach));
     }
 
@@ -375,9 +374,9 @@ public class EntityClaySoldier
         this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_OFFHAND_UPG.bit, hasUpgrade);
     }
 
-    private static EnumMap<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> initUpgFuncMap() {
-        EnumMap<ISoldierUpgrade.EnumFunctionCalls, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> enumMap = new EnumMap<>(ISoldierUpgrade.EnumFunctionCalls.class);
-        Arrays.asList(ISoldierUpgrade.EnumFunctionCalls.VALUES).forEach(val -> enumMap.put(val, new ConcurrentSkipListMap<>()));
+    private static EnumMap<EnumUpgFunctions, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> initUpgFuncMap() {
+        EnumMap<EnumUpgFunctions, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> enumMap = new EnumMap<>(EnumUpgFunctions.class);
+        Arrays.asList(EnumUpgFunctions.VALUES).forEach(val -> enumMap.put(val, new ConcurrentSkipListMap<>()));
 
         return enumMap;
     }
@@ -520,7 +519,7 @@ public class EntityClaySoldier
 
         DamageSource dmgSrc = DamageSource.causeMobDamage(this);
 
-        this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this, upg, trevor, dmgSrc, attackDmg));
+        this.callUpgradeFunc(EnumUpgFunctions.ON_ATTACK, upg -> upg.getUpgrade().onAttack(this, upg, trevor, dmgSrc, attackDmg));
 
         boolean attackSuccess = trevor.attackEntityFrom(dmgSrc, attackDmg.floatValue());
 
@@ -542,7 +541,7 @@ public class EntityClaySoldier
                 }
             }
 
-            this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_ATTACK_SUCCESS, upg -> upg.getUpgrade().onAttackSuccess(this, upg, trevor));
+            this.callUpgradeFunc(EnumUpgFunctions.ON_ATTACK_SUCCESS, upg -> upg.getUpgrade().onAttackSuccess(this, upg, trevor));
         }
 
         return attackSuccess;
@@ -569,7 +568,7 @@ public class EntityClaySoldier
 
         this.updateCape();
 
-        this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_TICK, upg -> upg.getUpgrade().onTick(this, upg));
+        this.callUpgradeFunc(EnumUpgFunctions.ON_TICK, upg -> upg.getUpgrade().onTick(this, upg));
 
         this.effectMap.forEach((effect, inst) -> {
             if( inst.getDurationLeft() > 0 ) {
@@ -749,7 +748,7 @@ public class EntityClaySoldier
         Entity srcEntity = source.getTrueSource();
 
         MutableFloat dmgMutable = new MutableFloat(damage);
-        this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DAMAGED, inst -> inst.getUpgrade().onDamaged(this, inst, srcEntity, source, dmgMutable));
+        this.callUpgradeFunc(EnumUpgFunctions.ON_DAMAGED, inst -> inst.getUpgrade().onDamaged(this, inst, srcEntity, source, dmgMutable));
         damage = dmgMutable.floatValue();
 
         if( !(srcEntity instanceof EntityPlayer) && !Objects.equals(source, IDisruptable.DISRUPT_DAMAGE) ) {
@@ -780,7 +779,7 @@ public class EntityClaySoldier
             }
 
             final float fnlDamage = damage;
-            this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DAMAGED_SUCCESS, inst -> inst.getUpgrade().onDamagedSuccess(this, inst, srcEntity, source, fnlDamage));
+            this.callUpgradeFunc(EnumUpgFunctions.ON_DAMAGED_SUCCESS, inst -> inst.getUpgrade().onDamagedSuccess(this, inst, srcEntity, source, fnlDamage));
 
             return true;
         }
@@ -811,7 +810,7 @@ public class EntityClaySoldier
 //                for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
 //                    upg.getUpgrade().onItemDrop(this, upg, drops);
 //                }
-                this.callUpgradeFunc(ISoldierUpgrade.EnumFunctionCalls.ON_DEATH, inst -> inst.getUpgrade().onDeath(this, inst, damageSource, drops));
+                this.callUpgradeFunc(EnumUpgFunctions.ON_DEATH, inst -> inst.getUpgrade().onDeath(this, inst, damageSource, drops));
 
             SoldierDeathEvent event = new SoldierDeathEvent(this, damageSource, drops);
             ClaySoldiersMod.EVENT_BUS.post(event);

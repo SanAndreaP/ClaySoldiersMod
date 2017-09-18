@@ -8,42 +8,40 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.EntityUtils;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+
+@UpgradeFunctions({EnumUpgFunctions.ON_DEATH, EnumUpgFunctions.ON_ATTACK_SUCCESS, EnumUpgFunctions.ON_TICK})
 public class UpgradeEnderPearl
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.ENDER_PEARL, 1) };
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_DEATH,
-                                                                                    EnumFunctionCalls.ON_ATTACK_SUCCESS,
-                                                                                    EnumFunctionCalls.ON_TICK };
 
     @Nonnull
     @Override
     public ItemStack[] getStacks() {
         return UPG_ITEMS;
-    }
-
-    @Nonnull
-    @Override
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
     }
 
     @Nonnull
@@ -54,6 +52,11 @@ public class UpgradeEnderPearl
 
     @Override
     public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
+        return !soldier.hasUpgrade(Upgrades.MC_WHEATSEEDS, EnumUpgradeType.MISC);
+    }
+
+    @Override
+    public boolean syncData() {
         return true;
     }
 
@@ -76,10 +79,10 @@ public class UpgradeEnderPearl
 
         if( target instanceof ISoldier ) {
             ISoldier tgtSoldier = (ISoldier) target;
-            if( !tgtSoldier.getEntity().isEntityAlive() ) {
+            if( !tgtSoldier.getEntity().isEntityAlive() && !tgtSoldier.hasUpgrade(Upgrades.MC_WHEATSEEDS, EnumUpgradeType.MISC) ) {
                 soldier.getEntity().heal(Float.MAX_VALUE);
                 tgtSoldier.getEntity().setHealth(Float.MAX_VALUE);
-                tgtSoldier.addUpgrade(this, EnumUpgradeType.MISC, ItemStack.EMPTY);
+                tgtSoldier.addUpgrade(this, this.getType(tgtSoldier), ItemStack.EMPTY);
                 soldier.getEntity().setAttackTarget(null);
                 tgtSoldier.getEntity().setAttackTarget(null);
             }
@@ -88,8 +91,21 @@ public class UpgradeEnderPearl
 
     @Override
     public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
-        if( soldier.getEntity().ticksExisted - upgradeInst.getNbtData().getInteger("tickAdded") > 12_000 ) {
-            soldier.getEntity().onKillCommand();
+        EntityCreature soldierL = soldier.getEntity();
+        if( !soldierL.world.isRemote ) {
+            if( soldierL.ticksExisted - upgradeInst.getNbtData().getInteger("tickAdded") > 12_000 ) {
+                soldierL.onKillCommand();
+            }
+
+            if( soldierL.getAttackTarget() instanceof ISoldier && ((ISoldier) soldierL.getAttackTarget()).hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC) ) {
+                soldierL.setAttackTarget(null);
+            }
+        } else if( MiscUtils.RNG.randomInt(10) == 0 ) {
+            double speedX = (MiscUtils.RNG.randomDouble() - 0.5D) * 0.5D;
+            double speedY = (MiscUtils.RNG.randomDouble() - 0.5D) * 0.5D;
+            double speedZ = (MiscUtils.RNG.randomDouble() - 0.5D) * 0.5D;
+
+            soldierL.world.spawnParticle(EnumParticleTypes.PORTAL, soldierL.posX, soldierL.posY + soldierL.getEyeHeight(), soldierL.posZ, speedX, speedY, speedZ);
         }
     }
 

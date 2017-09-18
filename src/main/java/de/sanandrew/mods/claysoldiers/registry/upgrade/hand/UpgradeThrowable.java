@@ -7,9 +7,11 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
@@ -31,19 +33,10 @@ import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 
+@UpgradeFunctions({EnumUpgFunctions.ON_ATTACK, EnumUpgFunctions.ON_ATTACK_SUCCESS, EnumUpgFunctions.ON_DEATH})
 public abstract class UpgradeThrowable
         implements ISoldierUpgrade
 {
-    private static final EnumFunctionCalls[] FUNC_CALLS = new EnumFunctionCalls[] { EnumFunctionCalls.ON_ATTACK,
-                                                                                    EnumFunctionCalls.ON_ATTACK_SUCCESS,
-                                                                                    EnumFunctionCalls.ON_DEATH};
-
-    @Override
-    @Nonnull
-    public EnumFunctionCalls[] getFunctionCalls() {
-        return FUNC_CALLS;
-    }
-
     @Nonnull
     @Override
     public EnumUpgradeType getType(ISoldier<?> checker) {
