@@ -7,7 +7,8 @@
 package de.sanandrew.mods.claysoldiers.crafting;
 
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -31,23 +32,23 @@ public class DyedSoldierRecipe
     private ItemStack resultItem = ItemStack.EMPTY;
 
     public static final UUID[] TEAMS = {
-            TeamRegistry.SOLDIER_BLACK,
-            TeamRegistry.SOLDIER_RED,
-            TeamRegistry.SOLDIER_GREEN,
-            TeamRegistry.SOLDIER_BROWN,
-            TeamRegistry.SOLDIER_BLUE,
-            TeamRegistry.SOLDIER_PURPLE,
-            TeamRegistry.SOLDIER_CYAN,
-            TeamRegistry.SOLDIER_CLAY,
-            TeamRegistry.SOLDIER_GRAY,
-            TeamRegistry.SOLDIER_PINK,
-            TeamRegistry.SOLDIER_LIME,
-            TeamRegistry.SOLDIER_YELLOW,
-            TeamRegistry.SOLDIER_LIGHTBLUE,
-            TeamRegistry.SOLDIER_MAGENTA,
-            TeamRegistry.SOLDIER_ORANGE,
-            TeamRegistry.SOLDIER_WHITE,
-    };
+            Teams.SOLDIER_BLACK,
+            Teams.SOLDIER_RED,
+            Teams.SOLDIER_GREEN,
+            Teams.SOLDIER_BROWN,
+            Teams.SOLDIER_BLUE,
+            Teams.SOLDIER_PURPLE,
+            Teams.SOLDIER_CYAN,
+            Teams.SOLDIER_CLAY,
+            Teams.SOLDIER_GRAY,
+            Teams.SOLDIER_PINK,
+            Teams.SOLDIER_LIME,
+            Teams.SOLDIER_YELLOW,
+            Teams.SOLDIER_LIGHTBLUE,
+            Teams.SOLDIER_MAGENTA,
+            Teams.SOLDIER_ORANGE,
+            Teams.SOLDIER_WHITE,
+            };
     public static final String[] DYES = {
             "dyeBlack",
             "dyeRed",

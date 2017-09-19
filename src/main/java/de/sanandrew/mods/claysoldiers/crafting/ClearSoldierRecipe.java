@@ -7,7 +7,8 @@
 package de.sanandrew.mods.claysoldiers.crafting;
 
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -59,7 +60,7 @@ class ClearSoldierRecipe
             return false;
         }
 
-        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.DOLL_SOLDIER, dyedCount), TeamRegistry.SOLDIER_CLAY);
+        this.resultItem = TeamRegistry.INSTANCE.setTeam(new ItemStack(ItemRegistry.DOLL_SOLDIER, dyedCount), Teams.SOLDIER_CLAY);
         return true;
     }
 

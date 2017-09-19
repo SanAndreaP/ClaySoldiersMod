@@ -8,7 +8,8 @@ package de.sanandrew.mods.claysoldiers.crafting;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,12 +35,12 @@ public class OtherSoldierRecipe
     private ItemStack resultItem = ItemStack.EMPTY;
 
     public static final UUID[] TEAMS = {
-            TeamRegistry.SOLDIER_MELON,
-            TeamRegistry.SOLDIER_PUMPKIN,
-            TeamRegistry.SOLDIER_PUMPKIN,
-            TeamRegistry.SOLDIER_REDSTONE,
-            TeamRegistry.SOLDIER_COAL,
-            TeamRegistry.SOLDIER_COAL
+            Teams.SOLDIER_MELON,
+            Teams.SOLDIER_PUMPKIN,
+            Teams.SOLDIER_PUMPKIN,
+            Teams.SOLDIER_REDSTONE,
+            Teams.SOLDIER_COAL,
+            Teams.SOLDIER_COAL
     };
     public static final ItemStack[] ITEMS = {
             new ItemStack(Blocks.MELON_BLOCK, 1),

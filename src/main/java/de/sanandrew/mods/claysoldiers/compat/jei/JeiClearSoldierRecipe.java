@@ -8,7 +8,8 @@ package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -21,7 +22,7 @@ class JeiClearSoldierRecipe
     final List<List<ItemStack>> ingredients;
 
     JeiClearSoldierRecipe(int count) {
-        this.result = TeamRegistry.INSTANCE.getNewTeamStack(count, TeamRegistry.SOLDIER_CLAY);
+        this.result = TeamRegistry.INSTANCE.getNewTeamStack(count, Teams.SOLDIER_CLAY);
         this.ingredients = new ArrayList<>();
 
         this.ingredients.add(ImmutableList.of(new ItemStack(Items.WATER_BUCKET, 1)));

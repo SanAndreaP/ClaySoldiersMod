@@ -38,6 +38,10 @@ public class RenderHookBody
             GlStateManager.enableBlend();
             GlStateManager.disableAlpha();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.DST_COLOR);
+        } else if( soldier.getSoldierTeam().getName().contains("glass") ) {
+            GlStateManager.enableBlend();
+            GlStateManager.disableAlpha();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         }
 
         if( soldier.hasUpgrade(Upgrades.MC_GLOWSTONE, EnumUpgradeType.MISC) ) {
@@ -51,7 +55,7 @@ public class RenderHookBody
 
     @Override
     public void renderModelPost(ISoldier<?> soldier, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        if( soldier.hasUpgrade(Upgrades.MC_EGG, EnumUpgradeType.MISC) ) {
+        if( soldier.hasUpgrade(Upgrades.MC_EGG, EnumUpgradeType.MISC) || soldier.getSoldierTeam().getName().contains("glass") ) {
             GlStateManager.enableAlpha();
             GlStateManager.disableBlend();
         }

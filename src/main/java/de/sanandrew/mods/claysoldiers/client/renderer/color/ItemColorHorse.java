@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.client.renderer.color;
 
 import de.sanandrew.mods.claysoldiers.item.ItemHorseMount;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 

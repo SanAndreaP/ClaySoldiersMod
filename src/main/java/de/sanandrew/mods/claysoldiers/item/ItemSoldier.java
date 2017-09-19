@@ -9,7 +9,8 @@ package de.sanandrew.mods.claysoldiers.item;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
@@ -20,7 +21,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -28,7 +28,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -69,11 +68,11 @@ public class ItemSoldier
         } else if( !player.canPlayerEdit(pos.offset(facing), facing, stack) ) {
             return EnumActionResult.FAIL;
         } else if( world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
-            if( !player.isSneaking() && !UuidUtils.areUuidsEqual(TeamRegistry.INSTANCE.getTeam(stack).getId(), TeamRegistry.SOLDIER_CLAY) ) {
+            if( !player.isSneaking() && !UuidUtils.areUuidsEqual(TeamRegistry.INSTANCE.getTeam(stack).getId(), Teams.SOLDIER_CLAY) ) {
                 IBlockState state = world.getBlockState(pos);
                 int level = state.getValue(BlockCauldron.LEVEL);
                 if( level > 0 ) {
-                    player.setHeldItem(hand, TeamRegistry.INSTANCE.setTeam(stack.copy(), TeamRegistry.SOLDIER_CLAY));
+                    player.setHeldItem(hand, TeamRegistry.INSTANCE.setTeam(stack.copy(), Teams.SOLDIER_CLAY));
                     player.inventoryContainer.detectAndSendChanges();
 
                     player.addStat(StatList.CAULDRON_USED);

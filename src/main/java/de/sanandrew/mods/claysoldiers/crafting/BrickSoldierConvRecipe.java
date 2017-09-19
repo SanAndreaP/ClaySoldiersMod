@@ -8,7 +8,8 @@ package de.sanandrew.mods.claysoldiers.crafting;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -38,7 +39,7 @@ public class BrickSoldierConvRecipe
         this.itmCount = 0;
         this.remaining.clear();
 
-        ITeam resultTeam = TeamRegistry.INSTANCE.getTeam(TeamRegistry.SOLDIER_CLAY);
+        ITeam resultTeam = TeamRegistry.INSTANCE.getTeam(Teams.SOLDIER_CLAY);
         boolean hasGhastTear = false;
         boolean hasBrickDoll = false;
 

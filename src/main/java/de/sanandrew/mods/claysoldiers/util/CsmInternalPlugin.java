@@ -26,10 +26,9 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerHeldIte
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
 import de.sanandrew.mods.claysoldiers.event.SoldierDeathEventHandler;
 import de.sanandrew.mods.claysoldiers.event.SoldierTargetEnemyEventHandler;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,7 +39,7 @@ public class CsmInternalPlugin
 {
     @Override
     public void registerTeams(ITeamRegistry registry) {
-        TeamRegistry.initialize(registry);
+        Teams.initialize(registry);
     }
 
     @Override

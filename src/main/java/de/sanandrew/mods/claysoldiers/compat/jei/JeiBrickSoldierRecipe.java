@@ -9,7 +9,8 @@ package de.sanandrew.mods.claysoldiers.compat.jei;
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -31,7 +32,7 @@ class JeiBrickSoldierRecipe
             this.result = TeamRegistry.INSTANCE.getNewTeamStack(1, team);
             this.ingredients.add(ImmutableList.of(TeamRegistry.INSTANCE.getNewTeamStack(1, team)));
         } else {
-            this.result = TeamRegistry.INSTANCE.getNewTeamStack(1, TeamRegistry.SOLDIER_CLAY);
+            this.result = TeamRegistry.INSTANCE.getNewTeamStack(1, Teams.SOLDIER_CLAY);
         }
     }
 
