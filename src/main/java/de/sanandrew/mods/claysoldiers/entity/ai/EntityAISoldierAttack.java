@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,14 +34,16 @@ public abstract class EntityAISoldierAttack
 
     @Override
     public boolean shouldExecute() {
-        EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
+        EntityLivingBase target = this.attacker.getAttackTarget();
 
-        if( entitylivingbase == null ) {
+        if( target == null ) {
             return false;
-        } else if( !entitylivingbase.isEntityAlive() ) {
+        } else if( !target.isEntityAlive() ) {
             return false;
+        } else if( this.attacker.getDistanceSqToEntity(target) <= getAttackReachSqr() ) {
+            return true;
         } else {
-            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
+            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(target);
             if( this.entityPathEntity == null ) {
                 Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
                 this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
@@ -53,8 +54,9 @@ public abstract class EntityAISoldierAttack
 
     @Override
     public boolean shouldContinueExecuting() {
-        EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
-        return entitylivingbase != null && (entitylivingbase.isEntityAlive() && (!this.attacker.getNavigator().noPath()));
+        EntityLivingBase target = this.attacker.getAttackTarget();
+        return (target != null && this.attacker.getDistanceSqToEntity(target) <= getAttackReachSqr() && target.isEntityAlive())
+                || (!this.attacker.getNavigator().noPath() && super.shouldContinueExecuting());
     }
 
     @Override
@@ -90,6 +92,11 @@ public abstract class EntityAISoldierAttack
         this.checkAndPerformAttack(jack, tgtDist);
     }
 
+    protected double getAttackReachSqr() {
+        final double reach = 0.5F + (this.attacker.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
+        return reach * reach;
+    }
+
     protected abstract void checkAndPerformAttack(EntityLivingBase entity, double dist);
 
     public static final class Meelee
@@ -101,18 +108,13 @@ public abstract class EntityAISoldierAttack
 
         @Override
         protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-            double d0 = this.getAttackReachSqr();
+            double reach = this.getAttackReachSqr();
 
-            if( dist <= d0 && this.attackTick <= 0 ) {
+            if( dist <= reach && this.attackTick <= 0 ) {
                 this.attackTick = 20;
                 this.attacker.swingArm(EnumHand.MAIN_HAND);
                 this.attacker.attackEntityAsMob(entity);
             }
-        }
-
-        protected double getAttackReachSqr() {
-            final double reach = this.attacker.width * 2.0F + (this.attacker.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
-            return reach * reach;
         }
     }
 
@@ -125,7 +127,7 @@ public abstract class EntityAISoldierAttack
 
         @Override
         protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-            if( dist <= 6.0D ) {
+            if( dist <= 9.0D ) {
                 this.attacker.setMoveMultiplier(-1.0F);
 
                 if( this.attackTick <= 0 ) {

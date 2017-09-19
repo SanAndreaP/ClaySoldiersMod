@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class EntityAISoldierAttackableTarget
+public class EntityAISoldierSrcEnemy
         extends EntityAITarget
 {
     private final EntityClaySoldier attacker;
@@ -27,7 +27,7 @@ public class EntityAISoldierAttackableTarget
 
     private final Predicate<EntityLivingBase> tgtSelector;
 
-    public EntityAISoldierAttackableTarget(EntityClaySoldier soldier) {
+    public EntityAISoldierSrcEnemy(EntityClaySoldier soldier) {
         super(soldier, false, false);
         this.attacker = soldier;
         this.tgtSelector = entity -> {

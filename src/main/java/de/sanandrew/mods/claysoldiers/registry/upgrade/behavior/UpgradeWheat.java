@@ -12,9 +12,14 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
+import de.sanandrew.mods.sanlib.CommonProxy;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
@@ -55,5 +60,14 @@ public class UpgradeWheat
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         drops.add(upgradeInst.getSavedStack());
+    }
+
+    @Override
+    public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
+        EntityCreature soldierL = soldier.getEntity();
+        if( soldierL.world.isRemote && MiscUtils.RNG.randomInt(50) == 0 ) {
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, soldierL.world.provider.getDimension(), soldierL.posX, soldierL.posY + soldierL.getEyeHeight(),
+                                                soldierL.posZ, Item.getIdFromItem(upgradeInst.getSavedStack().getItem()));
+        }
     }
 }

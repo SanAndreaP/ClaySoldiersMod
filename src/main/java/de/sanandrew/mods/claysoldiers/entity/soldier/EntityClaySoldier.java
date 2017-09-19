@@ -19,7 +19,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttackableTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcEnemy;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowFallen;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowKing;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowMount;
@@ -198,7 +198,7 @@ public class EntityClaySoldier
         this.tasks.addTask(7, new EntityAILookIdle(this));
 
         this.targetTasks.addTask(1, new EntityAISoldierSrcFallen(this));
-        this.targetTasks.addTask(2, new EntityAISoldierAttackableTarget(this));
+        this.targetTasks.addTask(2, new EntityAISoldierSrcEnemy(this));
         this.targetTasks.addTask(2, new EntityAISoldierSrcUpgradeItem(this));
         this.targetTasks.addTask(2, new EntityAISoldierSrcMount(this));
         this.targetTasks.addTask(3, new EntityAISoldierSrcKing(this));
@@ -727,7 +727,7 @@ public class EntityClaySoldier
             if( UuidUtils.isStringUuid(idStr) ) {
                 ItemStack upgStack = new ItemStack(upgNbt.getCompoundTag("upg_item"));
                 ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr));
-                if( upgrade != null && ItemStackUtils.isValid(upgStack) ) {
+                if( upgrade != null ) {
                     ISoldierUpgradeInst upgInst = new SoldierUpgrade(upgrade, EnumUpgradeType.VALUES[type], upgStack);
                     upgInst.setNbtData(upgNbt.getCompoundTag("upg_nbt"));
                     upgrade.onLoad(this, upgInst, upgNbt);
@@ -768,7 +768,7 @@ public class EntityClaySoldier
                 return false;
             }
 
-            if( this.i58O55 ) { damage /= 3.0F; }
+            if( this.i58O55 != null && this.i58O55 ) { damage /= 3.0F; }
 
             if( source == DamageSource.FALL ) {
                 damage *= 4.0F;

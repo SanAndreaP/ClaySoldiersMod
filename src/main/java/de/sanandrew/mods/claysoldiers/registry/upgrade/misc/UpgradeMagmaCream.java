@@ -64,7 +64,10 @@ public class UpgradeMagmaCream
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
         if( dmgSource.getTrueSource() instanceof ISoldier && !dmgSource.isFireDamage() && !dmgSource.isProjectile() ) {
-            ((ISoldier) dmgSource.getTrueSource()).addEffect(EffectTimeBomb.INSTANCE, MAX_TIME_DETONATION);
+            ISoldier target = (ISoldier) dmgSource.getTrueSource();
+            if( MiscUtils.RNG.randomBool() || !target.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                target.addEffect(EffectTimeBomb.INSTANCE, MAX_TIME_DETONATION);
+            }
         } else {
             drops.add(upgradeInst.getSavedStack());
         }

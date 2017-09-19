@@ -54,6 +54,7 @@ public class LayerHeldItem
     private static final ItemStack REDSTONEBLOCK = new ItemStack(Blocks.REDSTONE_BLOCK);
     private static final ItemStack SLIMEBLOCK = new ItemStack(Blocks.SLIME_BLOCK);
     private static final ItemStack RABBITFOOT = new ItemStack(Items.RABBIT_FOOT);
+    private static final ItemStack BRICKS = new ItemStack(Blocks.BRICK_BLOCK);
 
     private ISoldierRender<?, ?> renderer;
 
@@ -93,21 +94,24 @@ public class LayerHeldItem
     }
 
     private void renderFootItem(ISoldier soldier, EnumHand hand) {
+        if( soldier.hasUpgrade(Upgrades.MC_RABBITFOOT, EnumUpgradeType.MISC) ) {
+            RenderUtils.renderStackInWorld(RABBITFOOT, 0.0D, -0.05D, 0.0D, 0.0F, 90.0F, -120.0F, 0.75D);
+        }
         switch( hand ) {
             case MAIN_HAND:
                 if( soldier.hasEffect(Effects.STICKING_SLIMEBALL) ) {
                     RenderUtils.renderStackInWorld(SLIMEBLOCK, -0.05D, -0.12D, -0.15D, 0.0F, 0.0F, 0.0F, 0.55D);
                 }
-                if( soldier.hasUpgrade(Upgrades.MC_RABBITFOOT, EnumUpgradeType.MISC) ) {
-                    RenderUtils.renderStackInWorld(RABBITFOOT, 0.0D, -0.05D, 0.0D, 0.0F, 90.0F, -120.0F, 0.75D);
+                if( soldier.hasUpgrade(Upgrades.CR_BRICK, EnumUpgradeType.CORE) ) {
+                    RenderUtils.renderStackInWorld(BRICKS, -0.05D, -0.12D, -0.15D, 0.0F, 0.0F, 0.0F, 0.55D);
                 }
                 break;
             case OFF_HAND:
                 if( soldier.hasEffect(Effects.STICKING_SLIMEBALL) ) {
                     RenderUtils.renderStackInWorld(SLIMEBLOCK, 0.05D, -0.12D, -0.15D, 0.0F, 0.0F, 0.0F, 0.55D);
                 }
-                if( soldier.hasUpgrade(Upgrades.MC_RABBITFOOT, EnumUpgradeType.MISC) ) {
-                    RenderUtils.renderStackInWorld(RABBITFOOT, 0.0D, -0.05D, 0.0D, 0.0F, 90.0F, -120.0F, 0.75D);
+                if( soldier.hasUpgrade(Upgrades.CR_BRICK, EnumUpgradeType.CORE) ) {
+                    RenderUtils.renderStackInWorld(BRICKS, 0.05D, -0.12D, -0.15D, 0.0F, 0.0F, 0.0F, 0.55D);
                 }
                 break;
         }

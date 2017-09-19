@@ -29,14 +29,13 @@ Core
 |x|IronIngot,   makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
                 TODO: rendering
 |x|Brick,       makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
-                TODO: rendering
 | |String,      makes soldier resist all damage from one explosion
 | |Cactus,      75% chance to negate burn time, halves total burn time otherwise
 | |NetherBrick, gives burn time to any soldier that attacks nether brick user with unarmed attacks
 ------------------
 Behavior
 ------------------
-| |Wheat,              makes soldier never attack, even if hit first
+|x|Wheat,              makes soldier never attack, even if hit first
 | |NetherWart,         makes soldier attack its allies
 | |FermentedSpiderEye, makes soldier not attack, unless attacked first
 | |rotten flesh?,      makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
@@ -108,9 +107,8 @@ Enchantments
                           snowball
                           firecharge
                           emerald
-|-|IronBlock,        req: bowl            reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/
+|x|IronBlock,        req: bowl            reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/
                                            redmushroom/magmacream effects
-                                           TODO: negate effects of stuff
 | |Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
                           blaze powder
                           firecharge

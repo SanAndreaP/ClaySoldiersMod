@@ -6,6 +6,10 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
@@ -60,7 +64,9 @@ public class EntityProjectileSnow
     @Override
     public void onPostHit(Entity e, DamageSource dmgSource) {
         if( e instanceof EntityLivingBase ) {
-            ((EntityLivingBase) e).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1));
+            if( !(e instanceof ISoldier) || MiscUtils.RNG.randomBool() || !((ISoldier) e).hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                ((EntityLivingBase) e).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1));
+            }
         }
     }
 }

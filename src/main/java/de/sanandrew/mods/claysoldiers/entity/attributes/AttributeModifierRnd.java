@@ -4,7 +4,7 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.entity.ai.attributes;
+package de.sanandrew.mods.claysoldiers.entity.attributes;
 
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

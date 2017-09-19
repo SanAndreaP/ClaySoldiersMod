@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -60,7 +61,10 @@ public class UpgradeBlazePowder
     @Override
     public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
         if( target instanceof ISoldier ) {
-            target.attackEntityFrom(DamageSource.ON_FIRE, Float.MAX_VALUE);
+            if( MiscUtils.RNG.randomBool() || !((ISoldier) target).hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                target.attackEntityFrom(DamageSource.ON_FIRE, Float.MAX_VALUE);
+            }
+            soldier.getEntity().playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
 
             short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
             if( uses < 1 ) {

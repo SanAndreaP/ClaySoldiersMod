@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectSlimeball;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
@@ -69,7 +70,9 @@ public class UpgradeSlimeball
         if( !soldier.getEntity().world.isRemote && target instanceof ISoldier ) {
             ISoldier targetS = (ISoldier) target;
             if( !targetS.hasEffect(Effects.STICKING_SLIMEBALL) ) {
-                targetS.addEffect(EffectSlimeball.INSTANCE, 60);
+                if( MiscUtils.RNG.randomBool() || !targetS.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                    targetS.addEffect(EffectSlimeball.INSTANCE, 60);
+                }
                 soldier.getEntity().playSound(SoundEvents.ENTITY_SLIME_ATTACK, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
 
                 short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);

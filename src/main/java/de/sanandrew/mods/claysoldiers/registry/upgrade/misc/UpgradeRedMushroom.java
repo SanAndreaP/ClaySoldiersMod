@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -62,8 +63,11 @@ public class UpgradeRedMushroom
     @Override
     public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
         if( target instanceof EntityLivingBase ) {
+            if( !(target instanceof ISoldier) || MiscUtils.RNG.randomBool() || !((ISoldier) target).hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                ((EntityLivingBase) target).addPotionEffect(new PotionEffect(MobEffects.POISON, 100, 1));
+            }
+
             short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
-            ((EntityLivingBase) target).addPotionEffect(new PotionEffect(MobEffects.POISON, 100, 1));
             if( uses < 1 ) {
                 soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), true);
             } else {

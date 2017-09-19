@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRedstone;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
@@ -69,8 +70,10 @@ public class UpgradeRedstone
         if( !soldier.getEntity().world.isRemote && target instanceof ISoldier ) {
             ISoldier targetS = (ISoldier) target;
             if( !targetS.hasEffect(Effects.BLINDING_REDSTONE) ) {
-                targetS.addEffect(EffectRedstone.INSTANCE, 60);
-                targetS.getEntity().setAttackTarget(null);
+                if( MiscUtils.RNG.randomBool() || !targetS.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                    targetS.addEffect(EffectRedstone.INSTANCE, 60);
+                    targetS.getEntity().setAttackTarget(null);
+                }
                 soldier.getEntity().playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
 
                 short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
