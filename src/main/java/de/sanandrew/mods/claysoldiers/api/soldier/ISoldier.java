@@ -63,6 +63,8 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void setUniqueTextureId(byte id);
 
+    boolean hasBehaviorUpgrade();
+
     void destroyUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, boolean silent);
 
     ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, @Nonnull ItemStack stack);

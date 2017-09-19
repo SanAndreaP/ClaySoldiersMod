@@ -51,4 +51,11 @@ public final class SoldierTargetEnemyEventHandler
             }
         }
     }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void onTargetingLow(SoldierTargetEnemyEvent event) {
+        if( event.attacker.hasUpgrade(Upgrades.BH_WHEAT, EnumUpgradeType.BEHAVIOR) ) {
+            event.setResult(Event.Result.DENY);
+        }
+    }
 }

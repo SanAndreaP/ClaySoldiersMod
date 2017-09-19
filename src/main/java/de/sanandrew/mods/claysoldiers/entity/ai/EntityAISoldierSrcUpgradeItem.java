@@ -36,7 +36,8 @@ public class EntityAISoldierSrcUpgradeItem
                 return upgrade != null && upgrade.isApplicable(this.taskOwner, entity.getItem()) && this.taskOwner.canEntityBeSeen(entity)
                        && !this.taskOwner.hasUpgrade(entity.getItem(), upgrade.getType(this.taskOwner))
                        && (upgrade.getType(this.taskOwner) != EnumUpgradeType.MAIN_HAND || !this.taskOwner.hasMainHandUpgrade())
-                       && (upgrade.getType(this.taskOwner) != EnumUpgradeType.OFF_HAND || !this.taskOwner.hasOffHandUpgrade());
+                       && (upgrade.getType(this.taskOwner) != EnumUpgradeType.OFF_HAND || !this.taskOwner.hasOffHandUpgrade())
+                       && (upgrade.getType(this.taskOwner) != EnumUpgradeType.BEHAVIOR || !this.taskOwner.hasBehaviorUpgrade());
             }
             return false;
         };

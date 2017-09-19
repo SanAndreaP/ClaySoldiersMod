@@ -62,7 +62,8 @@ public final class DataWatcherBooleans<T extends Entity>
         CAN_MOVE(0),
         BREATHE_WATER(1),
         HAS_MAINHAND_UPG(2),
-        HAS_OFFHAND_UPG(3);
+        HAS_OFFHAND_UPG(3),
+        HAS_BEHAVIOR_UPG(4);
 
         public final int bit;
 

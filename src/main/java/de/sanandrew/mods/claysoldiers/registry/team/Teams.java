@@ -53,76 +53,77 @@ public final class Teams
 
     public static void initialize(ITeamRegistry registry) {
         registry.registerTeam(SOLDIER_CLAY, "clay", Resources.ITEM_SOLDIER_CLAY.resource, 0x8E8E86,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_CLAY.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_CLAY.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_CLAY.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_CLAY.resource});
         registry.registerTeam(SOLDIER_RED, "red", Resources.ITEM_SOLDIER_CLAY.resource, 0xA22823,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_RED.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_RED.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_RED.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_RED.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_RED.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_RED.resource});
         registry.registerTeam(SOLDIER_YELLOW, "yellow", Resources.ITEM_SOLDIER_CLAY.resource, 0xFCD030,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_YELLOW.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_YELLOW_1.resource, Resources.ENTITY_SOLDIER_R_YELLOW_2.resource, Resources.ENTITY_SOLDIER_R_YELLOW_3.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_YELLOW.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_YELLOW_1.resource, Resources.ENTITY_SOLDIER_R_YELLOW_2.resource,
+                                                      Resources.ENTITY_SOLDIER_R_YELLOW_3.resource});
         registry.registerTeam(SOLDIER_GREEN, "green", Resources.ITEM_SOLDIER_CLAY.resource, 0x56701B,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_GREEN.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_GREEN.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_GREEN_1.resource, Resources.ENTITY_SOLDIER_U_GREEN_2.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_GREEN.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_GREEN.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_GREEN_1.resource, Resources.ENTITY_SOLDIER_U_GREEN_2.resource});
         registry.registerTeam(SOLDIER_BLUE, "blue", Resources.ITEM_SOLDIER_CLAY.resource, 0x373CA1,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_BLUE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_BLUE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_BLUE.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_BLUE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_BLUE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_BLUE.resource});
         registry.registerTeam(SOLDIER_ORANGE, "orange", Resources.ITEM_SOLDIER_CLAY.resource, 0xEE7110,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_ORANGE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_ORANGE.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_ORANGE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_ORANGE.resource});
         registry.registerTeam(SOLDIER_MAGENTA, "magenta", Resources.ITEM_SOLDIER_CLAY.resource, 0xC64EBD,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_MAGENTA.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_MAGENTA.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_MAGENTA.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_MAGENTA.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_MAGENTA.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_MAGENTA.resource});
         registry.registerTeam(SOLDIER_LIGHTBLUE, "lightblue", Resources.ITEM_SOLDIER_CLAY.resource, 0x41B7DE,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_LIGHTBLUE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_LIGHTBLUE.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_LIGHTBLUE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_LIGHTBLUE.resource});
         registry.registerTeam(SOLDIER_LIME, "lime", Resources.ITEM_SOLDIER_CLAY.resource, 0x77BF1A,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_LIME.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_LIME.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_LIME.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_LIME.resource});
         registry.registerTeam(SOLDIER_PINK, "pink", Resources.ITEM_SOLDIER_CLAY.resource, 0xEF95B2,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_PINK.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_PINK.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_PINK.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_PINK.resource});
         registry.registerTeam(SOLDIER_CYAN, "cyan", Resources.ITEM_SOLDIER_CLAY.resource, 0x159095,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_CYAN.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_CYAN.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_CYAN.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_CYAN.resource});
         registry.registerTeam(SOLDIER_PURPLE, "purple", Resources.ITEM_SOLDIER_CLAY.resource, 0x7D2BAD,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_PURPLE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_PURPLE_1.resource, Resources.ENTITY_SOLDIER_R_PURPLE_2.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_PURPLE_1.resource, Resources.ENTITY_SOLDIER_U_PURPLE_2.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_PURPLE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_PURPLE_1.resource, Resources.ENTITY_SOLDIER_R_PURPLE_2.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_PURPLE_1.resource, Resources.ENTITY_SOLDIER_U_PURPLE_2.resource});
         registry.registerTeam(SOLDIER_BROWN, "brown", Resources.ITEM_SOLDIER_CLAY.resource, 0x784C2C,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_BROWN.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_BROWN_1.resource, Resources.ENTITY_SOLDIER_R_BROWN_2.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_BROWN_1.resource, Resources.ENTITY_SOLDIER_U_BROWN_2.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_BROWN.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_BROWN_1.resource, Resources.ENTITY_SOLDIER_R_BROWN_2.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_BROWN_1.resource, Resources.ENTITY_SOLDIER_U_BROWN_2.resource});
         registry.registerTeam(SOLDIER_BLACK, "black", Resources.ITEM_SOLDIER_CLAY.resource, 0x19191D,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_BLACK.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_BLACK.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_BLACK.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_BLACK.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_BLACK.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_BLACK.resource});
         registry.registerTeam(SOLDIER_GRAY, "gray", Resources.ITEM_SOLDIER_CLAY.resource, 0x545B5E,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_GRAY.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_GRAY.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_GRAY.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_GRAY.resource});
         registry.registerTeam(SOLDIER_WHITE, "white", Resources.ITEM_SOLDIER_CLAY.resource, 0xEAEDED,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_WHITE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_WHITE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_WHITE_1.resource, Resources.ENTITY_SOLDIER_U_WHITE_2.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_WHITE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_WHITE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_WHITE_1.resource, Resources.ENTITY_SOLDIER_U_WHITE_2.resource});
         registry.registerTeam(SOLDIER_MELON, "melon", Resources.ITEM_SOLDIER_MELON.resource, 0xFFFFFF,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_MELON.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_MELON.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_MELON.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_MELON.resource});
         registry.registerTeam(SOLDIER_PUMPKIN, "pumpkin", Resources.ITEM_SOLDIER_PUMPKIN.resource, 0xFFFFFF,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_PUMPKIN_1.resource, Resources.ENTITY_SOLDIER_N_PUMPKIN_2.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_PUMPKIN_1.resource, Resources.ENTITY_SOLDIER_R_PUMPKIN_2.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_PUMPKIN_1.resource, Resources.ENTITY_SOLDIER_U_PUMPKIN_2.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_PUMPKIN_1.resource, Resources.ENTITY_SOLDIER_N_PUMPKIN_2.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_PUMPKIN_1.resource, Resources.ENTITY_SOLDIER_R_PUMPKIN_2.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_PUMPKIN_1.resource, Resources.ENTITY_SOLDIER_U_PUMPKIN_2.resource});
         registry.registerTeam(SOLDIER_REDSTONE, "redstone", Resources.ITEM_SOLDIER_REDSTONE.resource, 0xFFFFFF,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_REDSTONE_1.resource, Resources.ENTITY_SOLDIER_N_REDSTONE_2.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_REDSTONE.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_REDSTONE_1.resource, Resources.ENTITY_SOLDIER_U_REDSTONE_2.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_REDSTONE_1.resource, Resources.ENTITY_SOLDIER_N_REDSTONE_2.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_REDSTONE.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_REDSTONE_1.resource, Resources.ENTITY_SOLDIER_U_REDSTONE_2.resource});
         registry.registerTeam(SOLDIER_COAL, "coal", Resources.ITEM_SOLDIER_COAL.resource, 0xFFFFFF,
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_COAL.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_COAL.resource},
-                new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_COAL.resource});
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_COAL.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_COAL.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_COAL.resource});
 
         registry.registerTeam(SOLDIER_GLASSLIGHTGRAY, "lightgrayglass", Resources.ITEM_SOLDIER_GLASS.resource, 0x8E8E86,
                               new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_GLASSLIGHTGRAY.resource},

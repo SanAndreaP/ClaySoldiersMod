@@ -96,7 +96,7 @@ Misc
 |x|FireworkStar,             1 use, soldier explodes on death in a firework effect
                                      info: incompatible with gunpowder/magmacream
 |x|Rabbit Foot,            inf use, jump boost allowing soldiers to climb 1.5 blocks, letting them get on top of fences and related structures.
-| |Prismarine Crystals,    inf use, makes soldiers glitter, that's all.
+|x|Prismarine Crystals,    inf use, makes soldiers glitter, that's all.
 ------------------
 Enchantments
 ------------------

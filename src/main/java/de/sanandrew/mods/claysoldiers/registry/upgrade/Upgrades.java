@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.behavior.UpgradeWheat;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeBrick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeIronIngot;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
@@ -67,6 +68,8 @@ public final class Upgrades
     public static final UUID OH_QUARTZ = UUID.fromString("8751AE74-134C-44E1-9405-55ED05E3416E");
     public static final UUID OH_BOWL = UUID.fromString("5FD5F54F-23C3-4D65-8D46-31F599F1E6CE");
 
+    public static final UUID BH_WHEAT = UUID.fromString("14ADDFAB-F1E0-4002-8EEB-A469D8643F3C");
+
     public static final UUID EC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
     public static final UUID EC_IRONBLOCK = UUID.fromString("05113D07-A86D-45EA-AC7F-52E34567197A");
 
@@ -116,6 +119,8 @@ public final class Upgrades
         registry.registerUpgrade(MH_SPECKLEDMELON, new UpgradeSpeckledMelon());
         registry.registerUpgrade(OH_QUARTZ, new UpgradeQuartz());
         registry.registerUpgrade(OH_BOWL, new UpgradeBowl());
+
+        registry.registerUpgrade(BH_WHEAT, new UpgradeWheat());
 
         registry.registerUpgrade(EC_FLINT, new UpgradeFlint());
         registry.registerUpgrade(EC_IRONBLOCK, new UpgradeIronBlock());

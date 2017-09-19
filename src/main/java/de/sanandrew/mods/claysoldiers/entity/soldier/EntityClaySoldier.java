@@ -230,6 +230,11 @@ public class EntityClaySoldier
     }
 
     @Override
+    public boolean hasBehaviorUpgrade() {
+        return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.HAS_BEHAVIOR_UPG.bit);
+    }
+
+    @Override
     public void destroyUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, boolean silent) {
         UpgradeEntry entry = new UpgradeEntry(upgrade, type);
         ISoldierUpgradeInst inst = this.upgradeMap.get(entry);
@@ -245,6 +250,7 @@ public class EntityClaySoldier
         switch( upgrade.getType(this)  ) {
             case MAIN_HAND: this.setMainhandUpg(false); break;
             case OFF_HAND: this.setOffhandUpg(false); break;
+            case BEHAVIOR: this.setBehaviorUpg(false); break;
         }
 
         upgrade.onDestroyed(this, inst);
@@ -301,6 +307,7 @@ public class EntityClaySoldier
         switch( upgrade.getType(this)  ) {
             case MAIN_HAND: this.setMainhandUpg(true); break;
             case OFF_HAND: this.setOffhandUpg(true); break;
+            case BEHAVIOR: this.setBehaviorUpg(true); break;
         }
     }
 
@@ -372,6 +379,10 @@ public class EntityClaySoldier
 
     public void setOffhandUpg(boolean hasUpgrade) {
         this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_OFFHAND_UPG.bit, hasUpgrade);
+    }
+
+    public void setBehaviorUpg(boolean hasUpgrade) {
+        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.HAS_BEHAVIOR_UPG.bit, hasUpgrade);
     }
 
     private static EnumMap<EnumUpgFunctions, ConcurrentNavigableMap<Integer, Queue<ISoldierUpgradeInst>>> initUpgFuncMap() {

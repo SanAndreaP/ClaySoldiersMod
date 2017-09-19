@@ -129,11 +129,11 @@ public enum Resources
     MODEL_SOLDIER_LEATHER_ARMOR("models/entity/leather.json"),
     MODEL_SOLDIER_RABBIT_HIDE("models/entity/rabbithide.json"),
     MODEL_SOLDIER_LILYPANTS("models/entity/lilypants.json"),
+    //endregion
 
     MODEL_CLAY_HORSE("models/entity/mount/horse.json"),
 
     LIGHTNING_OVERLAY("textures/entity/creeper/creeper_armor.png");
-    //endregion
 
     public final ResourceLocation resource;
 
