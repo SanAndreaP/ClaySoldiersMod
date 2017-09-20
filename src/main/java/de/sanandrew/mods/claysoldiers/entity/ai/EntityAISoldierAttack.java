@@ -133,6 +133,7 @@ public abstract class EntityAISoldierAttack
                 if( this.attackTick <= 0 ) {
                     this.attackTick = 20;
                     this.attacker.swingArm(EnumHand.MAIN_HAND);
+                    this.attacker.attackEntityAsMob(entity);
                 }
             } else {
                 this.attacker.setMoveMultiplier(1.0F);
