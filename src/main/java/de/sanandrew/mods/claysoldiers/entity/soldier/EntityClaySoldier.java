@@ -778,14 +778,14 @@ public class EntityClaySoldier
         }
 
         if( super.attackEntityFrom(source, damage) ) {
-            if( srcEntity instanceof EntityClaySoldier ) {
-                if( Objects.equals(srcEntity, this.getAttackTarget()) ) {
-                    this.getNavigator().clearPathEntity();
-                }
+            if( Objects.equals(srcEntity, this.getAttackTarget()) ) {
+                this.getNavigator().clearPathEntity();
+            }
 
-                SoldierTargetEnemyEvent evt = new SoldierTargetEnemyEvent(this, (EntityLivingBase) srcEntity);
+            if( srcEntity instanceof EntityLivingBase ) {
+                SoldierTargetEnemyEvent evt = new SoldierTargetEnemyEvent(this, (EntityLivingBase) srcEntity, false);
                 if( !ClaySoldiersMod.EVENT_BUS.post(evt) && evt.getResult() != Event.Result.DENY ) {
-                    this.setAttackTarget((EntityClaySoldier) srcEntity);
+                    this.setAttackTarget((EntityLivingBase) srcEntity);
                 }
             }
 

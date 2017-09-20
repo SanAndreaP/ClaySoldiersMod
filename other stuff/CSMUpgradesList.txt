@@ -36,12 +36,11 @@ Core
 Behavior
 ------------------
 |x|Wheat,              makes soldier never attack, even if hit first
-| |NetherWart,         makes soldier attack its allies
-| |FermentedSpiderEye, makes soldier not attack, unless attacked first
-| |rotten flesh?,      makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
-| |sponge?,            makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own team
+|x|NetherWart,         makes soldier attack its allies
+|x|FermentedSpiderEye, makes soldier not attack, unless attacked first
+|x|rotten flesh,       makes soldier attack hostile mobs, if infected soldier will also attack friendly/passive mobs and players
+|x|sponge,             makes soldier not attack, not be attacked (except by zombie/netherwart soldiers), and use healing items on any soldier rather than just own team
 
-info: they now have idle particle effects
 ------------------
 Misc
 ------------------

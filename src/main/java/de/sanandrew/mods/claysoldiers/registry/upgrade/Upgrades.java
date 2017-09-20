@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.behavior.UpgradeWheat;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.behavior.UpgradeStandardBehavior;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeBrick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeIronIngot;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
@@ -51,6 +51,10 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSkull;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSlimeball;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeSugar;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeWheatSeeds;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.UUID;
 
@@ -69,6 +73,10 @@ public final class Upgrades
     public static final UUID OH_BOWL = UUID.fromString("5FD5F54F-23C3-4D65-8D46-31F599F1E6CE");
 
     public static final UUID BH_WHEAT = UUID.fromString("14ADDFAB-F1E0-4002-8EEB-A469D8643F3C");
+    public static final UUID BH_NETHERWART = UUID.fromString("3A11E52E-72FF-4197-A9EA-B890F3945944");
+    public static final UUID BH_FERMSPIDEREYE = UUID.fromString("D2F734E1-2226-4B82-9ABA-FBB25E3DF80F");
+    public static final UUID BH_ROTTENFLESH = UUID.fromString("61F2B921-9F98-4B9C-B662-5FE7FB5BED75");
+    public static final UUID BH_SPONGE = UUID.fromString("CB4C3945-4D5F-4D51-AF2B-28740D6D0180");
 
     public static final UUID EC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
     public static final UUID EC_IRONBLOCK = UUID.fromString("05113D07-A86D-45EA-AC7F-52E34567197A");
@@ -120,7 +128,11 @@ public final class Upgrades
         registry.registerUpgrade(OH_QUARTZ, new UpgradeQuartz());
         registry.registerUpgrade(OH_BOWL, new UpgradeBowl());
 
-        registry.registerUpgrade(BH_WHEAT, new UpgradeWheat());
+        registry.registerUpgrade(BH_WHEAT, new UpgradeStandardBehavior(new ItemStack(Items.WHEAT)));
+        registry.registerUpgrade(BH_NETHERWART, new UpgradeStandardBehavior(new ItemStack(Items.NETHER_WART)));
+        registry.registerUpgrade(BH_FERMSPIDEREYE, new UpgradeStandardBehavior(new ItemStack(Items.FERMENTED_SPIDER_EYE)));
+        registry.registerUpgrade(BH_ROTTENFLESH, new UpgradeStandardBehavior(new ItemStack(Items.ROTTEN_FLESH)));
+        registry.registerUpgrade(BH_SPONGE, new UpgradeStandardBehavior(new ItemStack(Blocks.SPONGE, 1, OreDictionary.WILDCARD_VALUE)));
 
         registry.registerUpgrade(EC_FLINT, new UpgradeFlint());
         registry.registerUpgrade(EC_IRONBLOCK, new UpgradeIronBlock());

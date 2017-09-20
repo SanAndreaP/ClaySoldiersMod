@@ -17,10 +17,12 @@ public class SoldierTargetEnemyEvent
 {
     public final ISoldier<?> attacker;
     public final EntityLivingBase target;
+    public final boolean autoTargeted;
 
-    public SoldierTargetEnemyEvent(ISoldier<?> attacker, EntityLivingBase target) {
+    public SoldierTargetEnemyEvent(ISoldier<?> attacker, EntityLivingBase target, boolean autoTargeted) {
         super(attacker.getEntity());
         this.attacker = attacker;
         this.target = target;
+        this.autoTargeted = autoTargeted;
     }
 }

@@ -14,10 +14,8 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
-import de.sanandrew.mods.sanlib.CommonProxy;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,15 +25,19 @@ import net.minecraft.util.NonNullList;
 import javax.annotation.Nonnull;
 
 @UpgradeFunctions({EnumUpgFunctions.ON_DEATH, EnumUpgFunctions.ON_TICK})
-public class UpgradeWheat
+public class UpgradeStandardBehavior
         implements ISoldierUpgrade
 {
-    private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.WHEAT, 1) };
+    private final ItemStack[] upgItems;
+
+    public UpgradeStandardBehavior(ItemStack... items) {
+        this.upgItems = items;
+    }
 
     @Override
     @Nonnull
     public ItemStack[] getStacks() {
-        return UPG_ITEMS;
+        return this.upgItems;
     }
 
     @Nonnull

@@ -15,6 +15,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.init.Items;
@@ -28,8 +29,6 @@ import net.minecraft.util.NonNullList;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 
@@ -41,19 +40,10 @@ public class UpgradeFood
     private static final short MAX_USES = 4;
 
     static {
-        List<ItemStack> foods = new ArrayList<>();
+        NonNullList<ItemStack> foods = NonNullList.create();
         Item.REGISTRY.forEach(itm -> {
-            if( itm instanceof ItemFood ) {
-                int i = 0;
-                int max = 0;
-                while( i <= max ) {
-                    ItemStack stack = new ItemStack(itm, 1, i);
-                    if( itm.getHasSubtypes() ) {
-                        max = itm.getMaxDamage(stack);
-                    }
-                    foods.add(stack);
-                    i++;
-                }
+            if( itm instanceof ItemFood && itm != Items.ROTTEN_FLESH ) {
+                itm.getSubItems(CreativeTabs.SEARCH, foods);
             }
         });
         UPG_ITEMS = foods.toArray(new ItemStack[foods.size()]);
