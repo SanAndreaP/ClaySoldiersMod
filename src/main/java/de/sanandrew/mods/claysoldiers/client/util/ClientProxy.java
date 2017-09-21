@@ -17,6 +17,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.projectile.RenderProjectile;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
@@ -35,7 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-@SuppressWarnings({"MethodCallSideOnly", "unused"})
+@SuppressWarnings({"unused"})
 public class ClientProxy
         extends CommonProxy
         implements IRenderHookRegistry
@@ -50,13 +51,12 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileGravel.class, RenderProjectile.Gravel::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileSnow.class, RenderProjectile.Snow::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileFirecharge.class, RenderProjectile.Firecharge::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileEmerald.class, RenderProjectile.Emerald::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityClayHorse.class, RenderClayHorse::new);
 
         MinecraftForge.EVENT_BUS.register(new RenderWorldEventHandler());
 
-        ClaySoldiersMod.PLUGINS.forEach(plugin -> {
-            plugin.registerCsmClientEvents(ClaySoldiersMod.EVENT_BUS);
-        });
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerCsmClientEvents(ClaySoldiersMod.EVENT_BUS));
     }
 
     @Override

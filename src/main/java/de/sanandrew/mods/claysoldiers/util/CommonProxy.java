@@ -47,6 +47,8 @@ public class CommonProxy
                                          ClaySoldiersMod.instance, 64, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "fireProjectile"), EntityProjectileFirecharge.class, "fireProjectile", entityCount++,
                                          ClaySoldiersMod.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "emeraldProjectile"), EntityProjectileFirecharge.class, "emeraldProjectile", entityCount++,
+                                         ClaySoldiersMod.instance, 64, 1, true);
 
         EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountHorse"), EntityClayHorse.class, "mountHorse", entityCount++,
                                          ClaySoldiersMod.instance, 64, 1, true);

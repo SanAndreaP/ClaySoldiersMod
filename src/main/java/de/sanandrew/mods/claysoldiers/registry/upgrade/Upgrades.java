@@ -69,6 +69,7 @@ public final class Upgrades
     public static final UUID OH_GRAVEL = UUID.fromString("4A0232D9-3BE0-48BC-9BDB-DFE3EE458628");
     public static final UUID OH_SNOW = UUID.fromString("8F5DA9C0-9613-4816-B96A-8B6089B1140D");
     public static final UUID OH_FIRECHARGE = UUID.fromString("77F625B6-8C1D-405A-9EF5-50C25BFF7C03");
+    public static final UUID OH_EMERALD = UUID.fromString("C2FD483D-DD45-4FFC-881A-1CF1A3AC9D00");
     public static final UUID OH_QUARTZ = UUID.fromString("8751AE74-134C-44E1-9405-55ED05E3416E");
     public static final UUID OH_BOWL = UUID.fromString("5FD5F54F-23C3-4D65-8D46-31F599F1E6CE");
 
@@ -124,6 +125,7 @@ public final class Upgrades
         registry.registerUpgrade(OH_GRAVEL, new UpgradeThrowable.Gravel());
         registry.registerUpgrade(OH_SNOW, new UpgradeThrowable.Snow());
         registry.registerUpgrade(OH_FIRECHARGE, new UpgradeThrowable.Firecharge());
+        registry.registerUpgrade(OH_EMERALD, new UpgradeThrowable.Emerald());
         registry.registerUpgrade(MH_SPECKLEDMELON, new UpgradeSpeckledMelon());
         registry.registerUpgrade(OH_QUARTZ, new UpgradeQuartz());
         registry.registerUpgrade(OH_BOWL, new UpgradeBowl());

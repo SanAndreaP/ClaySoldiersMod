@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
@@ -51,7 +52,7 @@ public abstract class UpgradeThrowable
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            upgradeInst.getNbtData().setByte("uses", this.getMaxUses(stack));
+            upgradeInst.getNbtData().setShort("uses", this.getMaxUses(stack));
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
             stack.shrink(1);
@@ -71,7 +72,7 @@ public abstract class UpgradeThrowable
 
     @Override
     public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, MutableFloat damage) {
-        byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
+        short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
 
         Entity proj = this.createProjectile(soldier.getEntity().world, soldier.getEntity(), target);
         soldier.getEntity().world.spawnEntity(proj);
@@ -80,13 +81,13 @@ public abstract class UpgradeThrowable
             soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
         } else {
-            upgradeInst.getNbtData().setByte("uses", uses);
+            upgradeInst.getNbtData().setShort("uses", uses);
         }
     }
 
     @Override
     public void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) {
-        if( upgradeInst.getNbtData().getByte("uses") >= this.getMaxUses(upgradeInst.getSavedStack()) ) {
+        if( upgradeInst.getNbtData().getShort("uses") >= this.getMaxUses(upgradeInst.getSavedStack()) ) {
             drops.add(upgradeInst.getSavedStack());
         }
     }
@@ -95,7 +96,7 @@ public abstract class UpgradeThrowable
     @Nonnull
     public abstract ItemStack[] getStacks();
 
-    protected abstract byte getMaxUses(ItemStack savedStack);
+    protected abstract short getMaxUses(ItemStack savedStack);
 
     @Nonnull
     protected abstract Entity createProjectile(World world, Entity shooter, Entity target);
@@ -112,7 +113,7 @@ public abstract class UpgradeThrowable
         }
 
         @Override
-        protected byte getMaxUses(ItemStack savedStack) {
+        protected short getMaxUses(ItemStack savedStack) {
             return 15;
         }
 
@@ -135,8 +136,8 @@ public abstract class UpgradeThrowable
         }
 
         @Override
-        protected byte getMaxUses(ItemStack savedStack) {
-            return (byte) (ItemStackUtils.isItem(savedStack, Items.SNOWBALL) ? 5
+        protected short getMaxUses(ItemStack savedStack) {
+            return (short) (ItemStackUtils.isItem(savedStack, Items.SNOWBALL) ? 5
                             : ItemStackUtils.isBlock(savedStack, Blocks.SNOW_LAYER) ? 10
                             : ItemStackUtils.isBlock(savedStack, Blocks.SNOW) ? 20
                             : 0);
@@ -161,7 +162,7 @@ public abstract class UpgradeThrowable
         }
 
         @Override
-        protected byte getMaxUses(ItemStack savedStack) {
+        protected short getMaxUses(ItemStack savedStack) {
             return 15;
         }
 
@@ -169,6 +170,29 @@ public abstract class UpgradeThrowable
         @Override
         protected Entity createProjectile(World world, Entity shooter, Entity target) {
             return new EntityProjectileFirecharge(world, shooter, target);
+        }
+    }
+
+    public static class Emerald
+            extends UpgradeThrowable
+    {
+        private static final ItemStack[] ITEMS = { new ItemStack(Items.EMERALD), new ItemStack(Blocks.EMERALD_BLOCK) };
+
+        @Nonnull
+        @Override
+        public ItemStack[] getStacks() {
+            return ITEMS;
+        }
+
+        @Override
+        protected short getMaxUses(ItemStack savedStack) {
+            return (short) (ItemStackUtils.isBlock(savedStack, Blocks.EMERALD_BLOCK) ? 45 : 5);
+        }
+
+        @Nonnull
+        @Override
+        protected Entity createProjectile(World world, Entity shooter, Entity target) {
+            return new EntityProjectileEmerald(world, shooter, target);
         }
     }
 }

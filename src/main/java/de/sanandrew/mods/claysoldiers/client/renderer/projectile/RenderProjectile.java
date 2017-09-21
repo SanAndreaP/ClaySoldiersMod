@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.renderer.projectile;
 
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityClayProjectile;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
@@ -64,6 +65,14 @@ public class RenderProjectile<T extends EntityClayProjectile>
     {
         public Firecharge(RenderManager renderManager) {
             super(renderManager, Blocks.MAGMA);
+        }
+    }
+
+    public static class Emerald
+            extends RenderProjectile<EntityProjectileEmerald>
+    {
+        public Emerald(RenderManager renderManager) {
+            super(renderManager, Blocks.EMERALD_BLOCK);
         }
     }
 }
