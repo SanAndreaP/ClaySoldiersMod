@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
@@ -47,7 +48,7 @@ public class CommonProxy
                                          ClaySoldiersMod.instance, 64, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "fireProjectile"), EntityProjectileFirecharge.class, "fireProjectile", entityCount++,
                                          ClaySoldiersMod.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "emeraldProjectile"), EntityProjectileFirecharge.class, "emeraldProjectile", entityCount++,
+        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "emeraldProjectile"), EntityProjectileEmerald.class, "emeraldProjectile", entityCount++,
                                          ClaySoldiersMod.instance, 64, 1, true);
 
         EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountHorse"), EntityClayHorse.class, "mountHorse", entityCount++,
