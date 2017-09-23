@@ -209,7 +209,7 @@ public abstract class EntityClayProjectile
 
         if( hitObj != null ) {
             if( hitObj.entityHit != null ) {
-                MutableFloat dmg = new MutableFloat(this.getDamage());
+                MutableFloat dmg = new MutableFloat(this.getDamage(hitObj.entityHit));
 
                 DamageSource damagesource = this.getProjDamageSource(hitObj.entityHit);
 
@@ -302,11 +302,11 @@ public abstract class EntityClayProjectile
         this.setDead();
     }
 
-    private void onBlockHit(@SuppressWarnings("UnusedParameters") BlockPos pos) { }
+    protected void onBlockHit(BlockPos pos) { }
 
     public abstract float getInitialSpeedMultiplier();
 
-    public abstract float getDamage();
+    public abstract float getDamage(Entity e);
 
     public abstract float getKnockbackStrengthH();
 

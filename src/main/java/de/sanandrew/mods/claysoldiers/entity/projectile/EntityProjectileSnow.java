@@ -37,7 +37,7 @@ public class EntityProjectileSnow
     }
 
     @Override
-    public float getDamage() {
+    public float getDamage(Entity e) {
         return 0.0F;
     }
 

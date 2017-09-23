@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
@@ -36,7 +37,7 @@ import javax.annotation.Nonnull;
 
 @UpgradeFunctions({EnumUpgFunctions.ON_ATTACK, EnumUpgFunctions.ON_ATTACK_SUCCESS, EnumUpgFunctions.ON_DEATH})
 public abstract class UpgradeThrowable
-        implements ISoldierUpgrade
+        implements ISoldierUpgradeThrowable
 {
     @Nonnull
     @Override
@@ -54,34 +55,21 @@ public abstract class UpgradeThrowable
         if( !soldier.getEntity().world.isRemote ) {
             upgradeInst.getNbtData().setShort("uses", this.getMaxUses(stack));
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
-            soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
             stack.shrink(1);
         }
     }
 
     @Override
-    public void onLoad(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, NBTTagCompound nbt) {
-        soldier.getEntity().tasks.addTask(2, new EntityAISoldierAttack.Ranged((EntityClaySoldier) soldier, 1.0F));
-    }
-
-    @Override
-    public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
-        EntityUtils.getAisFromTaskList(soldier.getEntity().tasks.taskEntries, EntityAISoldierAttack.Ranged.class).forEach(soldier::removeTask);
-        soldier.setMoveMultiplier(1.0F);
-    }
-
-    @Override
     public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, MutableFloat damage) {
-        short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
+        if( !soldier.getEntity().world.isRemote ) {
+            short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
 
-        Entity proj = this.createProjectile(soldier.getEntity().world, soldier.getEntity(), target);
-        soldier.getEntity().world.spawnEntity(proj);
-
-        if( uses < 1 ) {
-            soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
-            soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
-        } else {
-            upgradeInst.getNbtData().setShort("uses", uses);
+            if( uses < 1 ) {
+                soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
+                soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
+            } else {
+                upgradeInst.getNbtData().setShort("uses", uses);
+            }
         }
     }
 
@@ -93,13 +81,15 @@ public abstract class UpgradeThrowable
     }
 
     @Override
+    public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
+        soldier.setMoveMultiplier(1.0F);
+    }
+
+    @Override
     @Nonnull
     public abstract ItemStack[] getStacks();
 
     protected abstract short getMaxUses(ItemStack savedStack);
-
-    @Nonnull
-    protected abstract Entity createProjectile(World world, Entity shooter, Entity target);
 
     public static class Gravel
             extends UpgradeThrowable
@@ -119,7 +109,7 @@ public abstract class UpgradeThrowable
 
         @Nonnull
         @Override
-        protected Entity createProjectile(World world, Entity shooter, Entity target) {
+        public Entity createProjectile(World world, Entity shooter, Entity target) {
             return new EntityProjectileGravel(world, shooter, target);
         }
     }
@@ -145,7 +135,7 @@ public abstract class UpgradeThrowable
 
         @Nonnull
         @Override
-        protected Entity createProjectile(World world, Entity shooter, Entity target) {
+        public Entity createProjectile(World world, Entity shooter, Entity target) {
             return new EntityProjectileSnow(world, shooter, target);
         }
     }
@@ -168,7 +158,7 @@ public abstract class UpgradeThrowable
 
         @Nonnull
         @Override
-        protected Entity createProjectile(World world, Entity shooter, Entity target) {
+        public Entity createProjectile(World world, Entity shooter, Entity target) {
             return new EntityProjectileFirecharge(world, shooter, target);
         }
     }
@@ -191,7 +181,7 @@ public abstract class UpgradeThrowable
 
         @Nonnull
         @Override
-        protected Entity createProjectile(World world, Entity shooter, Entity target) {
+        public Entity createProjectile(World world, Entity shooter, Entity target) {
             return new EntityProjectileEmerald(world, shooter, target);
         }
     }

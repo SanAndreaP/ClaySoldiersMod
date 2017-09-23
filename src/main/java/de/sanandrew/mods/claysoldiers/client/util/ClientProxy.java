@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.util;
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
-import de.sanandrew.mods.claysoldiers.client.RenderWorldEventHandler;
+import de.sanandrew.mods.claysoldiers.client.event.RenderWorldEventHandler;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorHorse;
 import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderClayHorse;
@@ -27,7 +27,10 @@ import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -54,7 +57,7 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileEmerald.class, RenderProjectile.Emerald::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityClayHorse.class, RenderClayHorse::new);
 
-        MinecraftForge.EVENT_BUS.register(new RenderWorldEventHandler());
+        MinecraftForge.EVENT_BUS.register(RenderWorldEventHandler.INSTANCE);
 
         ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerCsmClientEvents(ClaySoldiersMod.EVENT_BUS));
     }
@@ -84,5 +87,10 @@ public class ClientProxy
     @Override
     public EntityPlayer getClientPlayer() {
         return Minecraft.getMinecraft().player;
+    }
+
+    @Override
+    public void setRenderLightningAt(double x, double y, double z, EnumDyeColor color) {
+        RenderWorldEventHandler.INSTANCE.setRenderLightningAt(x, y, z, color == null ? 0x33FF33 : color.getColorValue());
     }
 }

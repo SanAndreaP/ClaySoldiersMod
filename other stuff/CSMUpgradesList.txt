@@ -20,9 +20,8 @@ LEFT HAND
 |x|Bowl,         20 use,   reduces incoming physical damage by half (when used with leather, only receives 25% of original damage)
                             info: no longer entirely blocks ranged attacks, only reduces damage from them
 |x|ShearBlade,   25 use,   increases melee damage by 1-2 points, by 3-4 damage on first hit while stealthed, can be held in either hand
-| |Emerald,      5-45 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
+|x|Emerald,      5-45 use, deals 3-4 direct unavoidable damage at medium range, plus two with sugarcane boost, doubles if target is wet
                             info: uses depend on the item given! emerald item gives 5 uses; emerald block gives 45 uses
-                            TODO: lightning bolts
 |x|NetherQuartz, 4 use,    deals heavy knockback to all targets nearby if soldier takes too many hits
 ------------------
 Core

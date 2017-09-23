@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.event;
 
+import de.sanandrew.mods.sanlib.lib.ColorObj;
 import de.sanandrew.mods.sanlib.lib.XorShiftRandom;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.client.Minecraft;
@@ -15,8 +16,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -25,14 +25,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Queue;
-import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @SideOnly(Side.CLIENT)
 public class RenderWorldEventHandler
 {
+    public static final RenderWorldEventHandler INSTANCE = new RenderWorldEventHandler();
+
+    public static float partTicks;
     public static int ticksInGame;
-    private static final WeakHashMap<Vec3d, Queue<RenderLightning>> LIGHTNING_RENDERS = new WeakHashMap<>();
+    private static final Queue<RenderLightning> LIGHTNING_RENDERS = new ConcurrentLinkedQueue<>();
+
+    private RenderWorldEventHandler() { }
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
@@ -46,25 +50,30 @@ public class RenderWorldEventHandler
 
     @SubscribeEvent
     public void renderWorldLast(RenderWorldLastEvent event) {
-        LIGHTNING_RENDERS.forEach((key, value) -> value.removeIf(RenderLightning::finished));
-        LIGHTNING_RENDERS.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+        partTicks = event.getPartialTicks();
+        Entity renderEntity = Minecraft.getMinecraft().getRenderViewEntity();
+
+        double renderX = renderEntity.lastTickPosX + (renderEntity.posX - renderEntity.lastTickPosX) * partTicks;
+        double renderY = renderEntity.lastTickPosY + (renderEntity.posY - renderEntity.lastTickPosY) * partTicks;
+        double renderZ = renderEntity.lastTickPosZ + (renderEntity.posZ - renderEntity.lastTickPosZ) * partTicks;
+
+        LIGHTNING_RENDERS.removeIf(RenderLightning::finished);
 
         float lastBrightX = OpenGlHelper.lastBrightnessX;
         float lastBrightY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xF0, 0x0);
-        LIGHTNING_RENDERS.forEach((key, value) -> {
+        LIGHTNING_RENDERS.forEach(value -> {
             GlStateManager.pushMatrix();
-            GlStateManager.translate(key.x, key.y, key.z);
+            GlStateManager.translate(value.x - renderX, value.y - renderY, value.z - renderZ);
             GlStateManager.scale(0.01D, 0.01D, 0.01D);
-            GlStateManager.translate(0.0F, -9*16, 0.0F);
-            value.forEach(val -> val.doRender(event.getPartialTicks()));
+            value.doRender(event.getPartialTicks());
             GlStateManager.popMatrix();
         });
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightX, lastBrightY);
     }
 
-    public void setRenderLightningAt(EntityCreature entity) {
-        LIGHTNING_RENDERS.computeIfAbsent(new Vec3d(entity.posX, entity.posY, entity.posZ), inst -> new ConcurrentLinkedQueue<>()).add(new RenderLightning());
+    public void setRenderLightningAt(double x, double y, double z, int color) {
+        LIGHTNING_RENDERS.add(new RenderLightning(x, y, z, color));
     }
 
     private static class RenderLightning
@@ -74,9 +83,20 @@ public class RenderWorldEventHandler
         private final int ticksVisible;
         private final long seed;
 
-        public RenderLightning() {
+        final double x;
+        final double y;
+        final double z;
+        private final ColorObj color;
+
+        public RenderLightning(double x, double y, double z, int color) {
             this.ticksVisible = RenderWorldEventHandler.ticksInGame + MAX_TICKS_VISIBLE;
             this.seed = MiscUtils.RNG.randomLong();
+
+            this.x = x;
+            this.y = y;
+            this.z = z;
+
+            this.color = new ColorObj(color);
         }
 
         public boolean finished() {
@@ -92,6 +112,7 @@ public class RenderWorldEventHandler
             Tessellator tess = Tessellator.getInstance();
             this.renderLightning(tess, partTicks);
 
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             GlStateManager.disableBlend();
             GlStateManager.enableLighting();
             GlStateManager.enableTexture2D();
@@ -173,8 +194,8 @@ public class RenderWorldEventHandler
 
                             float lum = 0.5F;
                             float alpha = (this.ticksVisible - RenderWorldEventHandler.ticksInGame - partTicks) / MAX_TICKS_VISIBLE;
-                            buf.pos(xTwigMin + minX,    level * 16,       zTwigMin + minZ)   .color(0.3F * lum, 0.9F * lum, 0.3F * lum, alpha).endVertex();
-                            buf.pos(xTwigMax + xBranch, (level + 1) * 16, zTwigMax + zBranch).color(0.4F * lum, 0.9F * lum, 0.3F * lum, alpha).endVertex();
+                            buf.pos(xTwigMin + minX,    level * 16,       zTwigMin + minZ)   .color(color.fRed() * lum, color.fGreen() * lum, color.fBlue() * lum, alpha).endVertex();
+                            buf.pos(xTwigMax + xBranch, (level + 1) * 16, zTwigMax + zBranch).color(color.fRed() * lum, color.fGreen() * lum, color.fBlue() * lum, alpha).endVertex();
                         }
 
                         tess.draw();

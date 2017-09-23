@@ -55,6 +55,7 @@ public class LayerHeldItem
     private static final ItemStack SLIMEBLOCK = new ItemStack(Blocks.SLIME_BLOCK);
     private static final ItemStack RABBITFOOT = new ItemStack(Items.RABBIT_FOOT);
     private static final ItemStack BRICKS = new ItemStack(Blocks.BRICK_BLOCK);
+    private static final ItemStack EMERALDBLOCK = new ItemStack(Blocks.EMERALD_BLOCK);
 
     private ISoldierRender<?, ?> renderer;
 
@@ -179,6 +180,8 @@ public class LayerHeldItem
                     RenderUtils.renderStackInWorld(SNOW, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                 } else if( soldier.hasUpgrade(Upgrades.OH_FIRECHARGE, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(MAGMA, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
+                } else if( soldier.hasUpgrade(Upgrades.OH_EMERALD, EnumUpgradeType.OFF_HAND) ) {
+                    RenderUtils.renderStackInWorld(EMERALDBLOCK, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                 } else if( soldier.hasUpgrade(Upgrades.OH_QUARTZ, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(QUARTZ, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                 } else if( soldier.hasUpgrade(Upgrades.OH_BOWL, EnumUpgradeType.OFF_HAND) ) {

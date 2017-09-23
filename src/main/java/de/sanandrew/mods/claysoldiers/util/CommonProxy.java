@@ -20,7 +20,10 @@ import de.sanandrew.mods.claysoldiers.event.SoldierDeathEventHandler;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -87,5 +90,9 @@ public class CommonProxy
 
     public EntityPlayer getClientPlayer() {
         return null;
+    }
+
+    public void setRenderLightningAt(double x, double y, double z, EnumDyeColor color) {
+
     }
 }

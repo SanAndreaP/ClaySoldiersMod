@@ -29,7 +29,7 @@ public class EntityProjectileGravel
     }
 
     @Override
-    public float getDamage() {
+    public float getDamage(Entity e) {
         return 2.0F + MiscUtils.RNG.randomFloat();
     }
 

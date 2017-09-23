@@ -6,11 +6,18 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityProjectileEmerald
@@ -30,8 +37,8 @@ public class EntityProjectileEmerald
     }
 
     @Override
-    public float getDamage() {
-        return 4.0F + MiscUtils.RNG.randomFloat();
+    public float getDamage(Entity e) {
+        return (4.0F + MiscUtils.RNG.randomFloat()) * (e.isWet() ? 2.0F : 1.0F);
     }
 
     @Override
@@ -52,6 +59,30 @@ public class EntityProjectileEmerald
     @Override
     public float getArc() {
         return 0.1F;
+    }
+
+    @Override
+    public void onPostHit(Entity e, DamageSource dmgSource) {
+        EnumDyeColor color = null;
+        if( this.shooterCache instanceof ISoldier ) {
+            ISoldierUpgradeInst inst = ((ISoldier) this.shooterCache).getUpgradeInstance(Upgrades.MC_CONCRETEPOWDER, EnumUpgradeType.MISC);
+            if( inst != null ) {
+                color = EnumDyeColor.byMetadata(inst.getNbtData().getInteger("color"));
+            }
+        }
+        ClaySoldiersMod.proxy.setRenderLightningAt(e.posX, e.posY, e.posZ, color);
+    }
+
+    @Override
+    protected void onBlockHit(BlockPos pos) {
+        EnumDyeColor color = null;
+        if( this.shooterCache instanceof ISoldier ) {
+            ISoldierUpgradeInst inst = ((ISoldier) this.shooterCache).getUpgradeInstance(Upgrades.MC_CONCRETEPOWDER, EnumUpgradeType.MISC);
+            if( inst != null ) {
+                color = EnumDyeColor.byMetadata(inst.getNbtData().getInteger("color"));
+            }
+        }
+        ClaySoldiersMod.proxy.setRenderLightningAt(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, color);
     }
 
     public DamageSource getProjDamageSource(Entity hitEntity) {

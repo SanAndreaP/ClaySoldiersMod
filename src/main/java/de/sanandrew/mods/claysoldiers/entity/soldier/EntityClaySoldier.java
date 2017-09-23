@@ -193,6 +193,7 @@ public class EntityClaySoldier
         this.tasks.addTask(2, new EntityAISoldierFollowMount(this, 1.0D));
         this.tasks.addTask(3, new EntityAISoldierFollowKing(this, 1.0D));
         this.tasks.addTask(4, new EntityAISoldierAttack.Meelee(this, 1.0D));
+        this.tasks.addTask(3, new EntityAISoldierAttack.Ranged(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(6, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
@@ -239,33 +240,42 @@ public class EntityClaySoldier
         UpgradeEntry entry = new UpgradeEntry(upgrade, type);
         ISoldierUpgradeInst inst = this.upgradeMap.get(entry);
 
-        this.upgradeMap.remove(entry);
-        this.upgradeSyncList.remove(inst);
-        this.upgradeFuncMap.forEach((key, val) -> {
-            if( Arrays.asList(UpgradeRegistry.getFuncCalls(upgrade)).contains(key) ) {
-                val.get(upgrade.getPriority()).remove(inst);
+        if( inst != null ) {
+            this.upgradeMap.remove(entry);
+            this.upgradeSyncList.remove(inst);
+            this.upgradeFuncMap.forEach((key, val) -> {
+                if( Arrays.asList(UpgradeRegistry.getFuncCalls(upgrade)).contains(key) ) {
+                    val.get(upgrade.getPriority()).remove(inst);
+                }
+            });
+
+            switch( upgrade.getType(this) ) {
+                case MAIN_HAND:
+                    this.setMainhandUpg(false);
+                    break;
+                case OFF_HAND:
+                    this.setOffhandUpg(false);
+                    break;
+                case BEHAVIOR:
+                    this.setBehaviorUpg(false);
+                    break;
             }
-        });
 
-        switch( upgrade.getType(this)  ) {
-            case MAIN_HAND: this.setMainhandUpg(false); break;
-            case OFF_HAND: this.setOffhandUpg(false); break;
-            case BEHAVIOR: this.setBehaviorUpg(false); break;
-        }
+            upgrade.onDestroyed(this, inst);
+            this.callUpgradeFunc(EnumUpgFunctions.ON_OTHR_DESTROYED, othrInst -> othrInst.getUpgrade().onUpgradeDestroyed(this, othrInst, upgrade));
 
-        upgrade.onDestroyed(this, inst);
-        this.callUpgradeFunc(EnumUpgFunctions.ON_OTHR_DESTROYED, othrInst -> othrInst.getUpgrade().onUpgradeDestroyed(this, othrInst, upgrade));
-
-        if( !this.world.isRemote ) {
-            if( upgrade.syncData() ) {
-                this.sendSyncUpgrades(false, new UpgradeEntry(upgrade, type));
+            if( !this.world.isRemote ) {
+                if( upgrade.syncData() ) {
+                    this.sendSyncUpgrades(false, new UpgradeEntry(upgrade, type));
+                }
             }
-        }
 
-        if( !silent ) {
-            if( this.world.isRemote || !upgrade.syncData() ) {
-                ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
-                        Item.getIdFromItem(inst.getSavedStack().getItem()));
+            if( !silent ) {
+                if( this.world.isRemote || !upgrade.syncData() ) {
+                    ClaySoldiersMod.proxy
+                            .spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ, Item.getIdFromItem(inst.getSavedStack()
+                                                                                                                                                                                      .getItem()));
+                }
             }
         }
     }

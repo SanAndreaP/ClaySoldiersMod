@@ -7,8 +7,12 @@
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeThrowable;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -54,9 +58,7 @@ public abstract class EntityAISoldierAttack
 
     @Override
     public boolean shouldContinueExecuting() {
-        EntityLivingBase target = this.attacker.getAttackTarget();
-        return (target != null && this.attacker.getDistanceSqToEntity(target) <= getAttackReachSqr() && target.isEntityAlive())
-                || (!this.attacker.getNavigator().noPath() && super.shouldContinueExecuting());
+        return !this.attacker.getNavigator().noPath() && super.shouldContinueExecuting();
     }
 
     @Override
@@ -92,12 +94,9 @@ public abstract class EntityAISoldierAttack
         this.checkAndPerformAttack(jack, tgtDist);
     }
 
-    protected double getAttackReachSqr() {
-        final double reach = 0.5F + (this.attacker.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
-        return reach * reach;
-    }
-
     protected abstract void checkAndPerformAttack(EntityLivingBase entity, double dist);
+
+    protected abstract double getAttackReachSqr();
 
     public static final class Meelee
             extends EntityAISoldierAttack
@@ -108,13 +107,16 @@ public abstract class EntityAISoldierAttack
 
         @Override
         protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-            double reach = this.getAttackReachSqr();
-
-            if( dist <= reach && this.attackTick <= 0 ) {
+            if( dist <= this.getAttackReachSqr() && this.attackTick <= 0 ) {
                 this.attackTick = 20;
                 this.attacker.swingArm(EnumHand.MAIN_HAND);
                 this.attacker.attackEntityAsMob(entity);
             }
+        }
+
+        protected double getAttackReachSqr() {
+            final double reach = 0.5F + (this.attacker.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
+            return reach * reach;
         }
     }
 
@@ -127,17 +129,37 @@ public abstract class EntityAISoldierAttack
 
         @Override
         protected void checkAndPerformAttack(EntityLivingBase entity, double dist) {
-            if( dist <= 9.0D ) {
+            if( dist <= this.getAttackReachSqr() ) {
                 this.attacker.setMoveMultiplier(-1.0F);
 
                 if( this.attackTick <= 0 ) {
                     this.attackTick = 20;
                     this.attacker.swingArm(EnumHand.MAIN_HAND);
-                    this.attacker.attackEntityAsMob(entity);
+                    this.attacker.getUpgradeInstanceList().stream().filter(inst -> inst.getUpgrade() instanceof ISoldierUpgradeThrowable).findFirst()
+                                 .ifPresent(inst -> {
+                                     ISoldierUpgradeThrowable upgThrowable = (ISoldierUpgradeThrowable) inst.getUpgrade();
+                                     Entity proj = upgThrowable.createProjectile(this.attacker.world, this.attacker, entity);
+                                     this.attacker.world.spawnEntity(proj);
+                                     inst.getUpgrade().onAttack(this.attacker, inst, entity, null, null);
+                                 });
                 }
             } else {
                 this.attacker.setMoveMultiplier(1.0F);
             }
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            return super.shouldExecute() && this.attacker.getUpgradeInstanceList().stream().anyMatch(inst -> inst.getUpgrade() instanceof ISoldierUpgradeThrowable);
+        }
+
+        @Override
+        public void resetTask() {
+            super.resetTask();
+        }
+
+        protected double getAttackReachSqr() {
+            return 9.0D;
         }
     }
 }
