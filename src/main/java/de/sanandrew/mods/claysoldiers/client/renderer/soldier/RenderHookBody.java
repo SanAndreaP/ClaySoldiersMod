@@ -51,6 +51,11 @@ public class RenderHookBody
         if( soldier.hasUpgrade(Upgrades.MC_ENDERPEARL, EnumUpgradeType.MISC) ) {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x80, 0x0);
         }
+
+        if( soldier.hasUpgrade(Upgrades.CR_IRONINGOT, EnumUpgradeType.CORE) ) {
+            GlStateManager.translate(0.0F, -0.2F, 0.0F);
+            GlStateManager.scale(1.2F, 1.2F, 1.2F);
+        }
     }
 
     @Override

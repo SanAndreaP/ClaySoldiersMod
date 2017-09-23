@@ -9,7 +9,10 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.behavior.UpgradeStandardBehavior;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeBrick;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeCactus;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeIronIngot;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeNetherBrick;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeString;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeIronBlock;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
@@ -115,6 +118,9 @@ public final class Upgrades
 
     public static final UUID CR_IRONINGOT = UUID.fromString("6426F05F-36C5-4F83-9D69-200CCBBA141D");
     public static final UUID CR_BRICK = UUID.fromString("00B12AB5-1E8D-43CA-A136-4BBB5E5970E0");
+    public static final UUID CR_STRING = UUID.fromString("60E5B0C2-7364-4FCD-9C6D-58E21E3B9E2B");
+    public static final UUID CR_CACTUS = UUID.fromString("41544F9D-0DE9-4D90-9934-E3534F2AB8E1");
+    public static final UUID CR_NETHERBRICK = UUID.fromString("89A63F20-48D8-4F5E-9ADD-7952260FEBFD");
 
     public static void initialize(IUpgradeRegistry registry) {
         registry.registerUpgrade(MH_STICK, new UpgradeStick());
@@ -172,5 +178,8 @@ public final class Upgrades
 
         registry.registerUpgrade(CR_IRONINGOT, new UpgradeIronIngot());
         registry.registerUpgrade(CR_BRICK, new UpgradeBrick());
+        registry.registerUpgrade(CR_STRING, new UpgradeString());
+        registry.registerUpgrade(CR_CACTUS, new UpgradeCactus());
+        registry.registerUpgrade(CR_NETHERBRICK, new UpgradeNetherBrick());
     }
 }

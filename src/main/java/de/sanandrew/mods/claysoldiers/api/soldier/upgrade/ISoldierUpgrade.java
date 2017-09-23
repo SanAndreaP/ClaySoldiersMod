@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,7 +42,7 @@ public interface ISoldierUpgrade
 
     default void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) { }
 
-    default ItemStack onPickup(ISoldier<?> soldier, EntityItem item, ISoldierUpgradeInst upgradeInst) { return null; }
+    default void onPickup(ISoldier<?> soldier, EntityItem item, ISoldierUpgradeInst upgradeInst) { }
 
     default void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) { }
 
@@ -55,7 +56,7 @@ public interface ISoldierUpgrade
 
     default void onUpgradeAdded(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgradeInst addedUpgInst) { }
 
-    default void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, @Nullable MutableFloat damage) { }
+    default void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, @Nullable DamageSource dmgSource, @Nullable MutableFloat damage) { }
 
     default void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) { }
 
@@ -65,4 +66,5 @@ public interface ISoldierUpgrade
 
     default void onDeath(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, DamageSource dmgSource, NonNullList<ItemStack> drops) { }
 
+    default void onSetFire(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, MutableInt fireInTicks) { }
 }

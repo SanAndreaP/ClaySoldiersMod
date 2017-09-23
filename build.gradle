@@ -61,6 +61,14 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+jar {
+    manifest {
+        attributes 'FMLAT': 'claysoldiers_at.cfg'
+    }
 }
 
 sourceJar {
@@ -73,6 +81,9 @@ task deobfJar(type: Jar) {
     from sourceSets.main.output
     appendix = 'deobf'
     archiveName = "${baseName}-${version}-${appendix}.jar"
+    manifest {
+        attributes 'FMLAT': 'claysoldiers_at.cfg'
+    }
 }
 
 configurations {

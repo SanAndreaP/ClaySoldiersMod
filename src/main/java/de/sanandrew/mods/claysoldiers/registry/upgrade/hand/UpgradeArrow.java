@@ -45,9 +45,6 @@ public class UpgradeArrow
         if( !soldier.getEntity().world.isRemote ) {
             soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(Upgrades.MH_STICK), EnumUpgradeType.MAIN_HAND, new ItemStack(Items.STICK, 1));
             soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(Upgrades.EC_FLINT), EnumUpgradeType.ENHANCEMENT, new ItemStack(Items.FLINT, 1));
-            soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), true);
-            soldier.getEntity().entityDropItem(new ItemStack(Items.FEATHER, 1), 0.0F);
-            soldier.getEntity().entityDropItem(new ItemStack(Items.FLINT, 1), 0.0F);
             stack.shrink(1);
         }
     }

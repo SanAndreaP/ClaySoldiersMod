@@ -11,6 +11,8 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -42,9 +44,11 @@ public class UpgradeFeather
 
     @Override
     public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
-        soldier.getEntity().fallDistance = 0.0F;
-        if( !soldier.getEntity().onGround && soldier.getEntity().motionY < 0.0D ) {
-            soldier.getEntity().motionY *= 0.6D;
+        if( !soldier.hasUpgrade(Upgrades.CR_IRONINGOT, EnumUpgradeType.CORE) && !soldier.getEntity().isRiding()  ) {
+            soldier.getEntity().fallDistance = 0.0F;
+            if( !soldier.getEntity().onGround && soldier.getEntity().motionY < 0.0D ) {
+                soldier.getEntity().motionY *= 0.6D;
+            }
         }
     }
 

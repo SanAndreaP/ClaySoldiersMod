@@ -76,6 +76,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -566,6 +567,16 @@ public class EntityClaySoldier
         }
 
         return attackSuccess;
+    }
+
+    @Override
+    public void setFire(int seconds) {
+        super.setFire(seconds);
+
+        MutableInt modFire = new MutableInt(this.fire);
+        this.callUpgradeFunc(EnumUpgFunctions.ON_SET_FIRE, upg -> upg.getUpgrade().onSetFire(this, upg, modFire));
+
+        this.fire = modFire.getValue();
     }
 
     @Override

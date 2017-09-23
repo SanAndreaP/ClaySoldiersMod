@@ -63,7 +63,7 @@ public class UpgradeSpeckledMelon
 
     @Override
     public void onAttack(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target, DamageSource dmgSource, MutableFloat damage) {
-        if( target instanceof EntityLivingBase ) {
+        if( target instanceof EntityLivingBase && !soldier.getEntity().world.isRemote ) {
             EntityLivingBase quinn = (EntityLivingBase) target;
             if( quinn.getHealth() < quinn.getMaxHealth() * 0.25F ) {
                 short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);

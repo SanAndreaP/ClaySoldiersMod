@@ -27,11 +27,10 @@ LEFT HAND
 Core
 ------------------
 |x|IronIngot,   makes soldier vastly resistant to knockback, increases knockback dealt to others, both effects neutralized vs another iron ingot user
-                TODO: rendering
 |x|Brick,       makes soldier extremely slow and less willing to move, will use ranged attacks if available before melee
-| |String,      makes soldier resist all damage from one explosion
-| |Cactus,      75% chance to negate burn time, halves total burn time otherwise
-| |NetherBrick, gives burn time to any soldier that attacks nether brick user with unarmed attacks
+|x|String,      makes soldier resist all damage from one explosion
+|x|Cactus,      75% chance to negate burn time, halves total burn time otherwise
+|x|NetherBrick, gives burn time to any soldier that attacks nether brick user with unarmed attacks
 ------------------
 Behavior
 ------------------

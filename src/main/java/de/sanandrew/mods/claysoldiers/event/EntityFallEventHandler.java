@@ -18,7 +18,7 @@ public class EntityFallEventHandler
     public void onFall(LivingFallEvent event) {
         if( event.getEntity() instanceof EntityClaySoldier ) {
             EntityClaySoldier soldier = (EntityClaySoldier) event.getEntity();
-            if( soldier.hasUpgrade(Upgrades.MC_FEATHER, EnumUpgradeType.MISC) ) {
+            if( soldier.hasUpgrade(Upgrades.MC_FEATHER, EnumUpgradeType.MISC) && !soldier.hasUpgrade(Upgrades.CR_IRONINGOT, EnumUpgradeType.CORE) && !event.getEntity().isRiding() ) {
                 event.setCanceled(true);
             }
         }
