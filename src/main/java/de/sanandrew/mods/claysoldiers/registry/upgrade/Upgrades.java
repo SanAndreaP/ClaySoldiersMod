@@ -15,6 +15,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeNetherBrick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeString;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeIronBlock;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradePrismarineShard;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBlazeRod;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBone;
@@ -84,6 +85,7 @@ public final class Upgrades
 
     public static final UUID EC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
     public static final UUID EC_IRONBLOCK = UUID.fromString("05113D07-A86D-45EA-AC7F-52E34567197A");
+    public static final UUID EC_PRISMARINESHARD = UUID.fromString("0580F0B7-7293-4EF6-B966-CD29E23B3B43");
 
     public static final UUID MC_EGG = UUID.fromString("4613D60F-B53C-4E75-99CA-0E2176B6D58D");
     public static final UUID MC_GLOWSTONE = UUID.fromString("6D1D540B-84DC-4009-BF29-134089104A3C");
@@ -144,6 +146,7 @@ public final class Upgrades
 
         registry.registerUpgrade(EC_FLINT, new UpgradeFlint());
         registry.registerUpgrade(EC_IRONBLOCK, new UpgradeIronBlock());
+        registry.registerUpgrade(EC_PRISMARINESHARD, new UpgradePrismarineShard());
 
         registry.registerUpgrade(MC_EGG, new UpgradeEgg());
         registry.registerUpgrade(MC_GLOWSTONE, new UpgradeGlowstone());

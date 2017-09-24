@@ -52,7 +52,7 @@ public interface ISoldierUpgrade
 
     default void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) { }
 
-    default void onUpgradeDestroyed(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgrade destroyedUpgInst) { }
+    default void onUpgradeDestroyed(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgradeInst destroyedUpgInst) { }
 
     default void onUpgradeAdded(ISoldier soldier, ISoldierUpgradeInst upgradeInst, ISoldierUpgradeInst addedUpgInst) { }
 

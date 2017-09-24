@@ -6,7 +6,6 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 
-import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -27,16 +26,14 @@ import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Map;
-import java.util.Queue;
-
 @SideOnly(Side.CLIENT)
 public class LayerHeldItem
         implements LayerRenderer<EntityCreature>
 {
     private static final boolean H_AS_EG_G = MiscUtils.RNG.randomInt(1_000_000) == 0;
 
-    private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.SHEAR_BLADE);
+    private static final ItemStack SHEARBLADE = new ItemStack(ItemRegistry.SHEAR_BLADE, 1, 0);
+    private static final ItemStack SHEARBLADEPRISM = new ItemStack(ItemRegistry.SHEAR_BLADE, 1, 1);
     private static final ItemStack GRAVEL = new ItemStack(Blocks.GRAVEL);
     private static final ItemStack SNOW = new ItemStack(Blocks.SNOW);
     private static final ItemStack MAGMA = new ItemStack(Blocks.MAGMA);
@@ -162,7 +159,11 @@ public class LayerHeldItem
                 } else if( soldier.hasUpgrade(Upgrades.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
-                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
+                    if( soldier.hasUpgrade(Upgrades.EC_PRISMARINESHARD, EnumUpgradeType.ENHANCEMENT) ) {
+                        RenderUtils.renderStackInWorld(SHEARBLADEPRISM, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
+                    } else {
+                        RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
+                    }
                 } else if( soldier.hasUpgrade(Upgrades.MH_SPECKLEDMELON, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(SPECLEDMELON, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -90.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ) {
@@ -173,7 +174,11 @@ public class LayerHeldItem
                 if( soldier.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                     RenderUtils.renderStackInWorld(SHIELD_STD, 0.0D, 0.2D, 0.0D, 90.0F, 0.0F, 0.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.OFF_HAND) ) {
-                    RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.0D, 0.0F, 90.0F, 135.0F, 0.75D);
+                    if( soldier.hasUpgrade(Upgrades.EC_PRISMARINESHARD, EnumUpgradeType.ENHANCEMENT) ) {
+                        RenderUtils.renderStackInWorld(SHEARBLADEPRISM, 0.0D, 0.2D, 0.0D, 0.0F, 90.0F, 135.0F, 0.75D);
+                    } else {
+                        RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.0D, 0.0F, 90.0F, 135.0F, 0.75D);
+                    }
                 } else if( soldier.hasUpgrade(Upgrades.OH_GRAVEL, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(GRAVEL, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                 } else if( soldier.hasUpgrade(Upgrades.OH_SNOW, EnumUpgradeType.OFF_HAND) ) {

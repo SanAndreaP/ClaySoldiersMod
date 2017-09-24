@@ -263,7 +263,7 @@ public class EntityClaySoldier
             }
 
             upgrade.onDestroyed(this, inst);
-            this.callUpgradeFunc(EnumUpgFunctions.ON_OTHR_DESTROYED, othrInst -> othrInst.getUpgrade().onUpgradeDestroyed(this, othrInst, upgrade));
+            this.callUpgradeFunc(EnumUpgFunctions.ON_OTHR_DESTROYED, othrInst -> othrInst.getUpgrade().onUpgradeDestroyed(this, othrInst, inst));
 
             if( !this.world.isRemote ) {
                 if( upgrade.syncData() ) {
@@ -273,9 +273,8 @@ public class EntityClaySoldier
 
             if( !silent ) {
                 if( this.world.isRemote || !upgrade.syncData() ) {
-                    ClaySoldiersMod.proxy
-                            .spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ, Item.getIdFromItem(inst.getSavedStack()
-                                                                                                                                                                                      .getItem()));
+                    ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
+                                                        Item.getIdFromItem(inst.getSavedStack().getItem()));
                 }
             }
         }

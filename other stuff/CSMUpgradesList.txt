@@ -98,7 +98,7 @@ Misc
 Enchantments
 ------------------
 |x|Flint,            req: stick,          boosts stick melee damage by 2 points (total bonus 4-5, same as arrow),
-| |Prismarine Shard, req: shear blade(s), boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
+|x|Prismarine Shard, req: shear blade(s), boosts shear blade damage by 1 per blade held (2-3 with one blade, 4-5 for stealth attacks)
 | |Wool,             req: leather         reduces incoming physical damage by 1
                           rabbit hide
 | |Sugarcane,        req: gravel          boosts thrown weapon range, projectiles home in on target, boosts emerald range,

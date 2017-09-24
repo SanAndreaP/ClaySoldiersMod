@@ -33,6 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -44,7 +45,6 @@ public final class ModelRegistry
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) throws Exception {
         setStandardModel(ItemRegistry.DOLL_BRICK_SOLDIER);
-        setStandardModel(ItemRegistry.SHEAR_BLADE);
         setCustomMeshModel(ItemRegistry.DOLL_SOLDIER, new MeshDefUUID.Soldier());
         setCustomMeshModel(ItemRegistry.DOLL_HORSE, new MeshDefOrdinal.Horse());
         setCustomMeshModel(ItemRegistry.DISRUPTOR, new MeshDefDisruptor());
@@ -52,6 +52,8 @@ public final class ModelRegistry
         for( EnumShieldTypes type : EnumShieldTypes.VALUES ) {
             setStandardModel(ItemRegistry.SOLDIER_SHIELD, type.damageVal, type.modelName);
         }
+        setStandardModel(ItemRegistry.SHEAR_BLADE, 0, "shear_blade");
+        setStandardModel(ItemRegistry.SHEAR_BLADE, 1, "shear_blade_prism");
     }
 
     private static void setStandardModel(Item item) {
@@ -85,7 +87,7 @@ public final class ModelRegistry
     private static class MeshDefDisruptor
             implements ItemMeshDefinition, MeshDef
     {
-        public final Map<ItemDisruptor.DisruptorType, ModelResourceLocation> modelRes = new HashMap<>();
+        public final Map<ItemDisruptor.DisruptorType, ModelResourceLocation> modelRes = new EnumMap<>(ItemDisruptor.DisruptorType.class);
 
         public MeshDefDisruptor() {
             for( ItemDisruptor.DisruptorType type : ItemDisruptor.DisruptorType.VALUES ) {
