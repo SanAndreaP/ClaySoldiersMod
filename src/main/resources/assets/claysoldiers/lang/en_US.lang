@@ -2,6 +2,7 @@ tile.claysoldiers:nexus.name=Clay Nexus
 
 item.claysoldiers:disruptor.clay.name=Clay Disruptor
 item.claysoldiers:disruptor.hardened.name=Hardened Clay Disruptor
+item.claysoldiers:disruptor.unbreaking.name=Indestructible Clay Disruptor
 
 item.claysoldiers:doll_soldier.clay.name=Clay Soldier
 item.claysoldiers:doll_soldier.clay.color=Clay
@@ -169,4 +170,5 @@ item.claysoldiers:stat_display.name=Clay Statistics Display
 item.claysoldiers:stat_display.title.soldiers=Soldiers
 item.claysoldiers:stat_display.title.mounts=Mounts
 
-itemGroup.claysoldiers:csm_tab=Clay Soldiers
+itemGroup.claysoldiers:dolls=Clay Soldiers (Dolls)
+itemGroup.claysoldiers:misc=Clay Soldiers (Misc. Items)

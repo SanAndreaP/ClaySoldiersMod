@@ -128,6 +128,7 @@ public enum Resources
     MODEL_SOLDIER_CROWN("models/entity/crown.json"),
     MODEL_SOLDIER_LEATHER_ARMOR("models/entity/leather.json"),
     MODEL_SOLDIER_RABBIT_HIDE("models/entity/rabbithide.json"),
+    MODEL_SOLDIER_WOOL_PADDING("models/entity/woolpadding.json"),
     MODEL_SOLDIER_LILYPANTS("models/entity/lilypants.json"),
     //endregion
 

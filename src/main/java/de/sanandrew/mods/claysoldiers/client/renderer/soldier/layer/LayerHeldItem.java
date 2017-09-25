@@ -53,6 +53,7 @@ public class LayerHeldItem
     private static final ItemStack RABBITFOOT = new ItemStack(Items.RABBIT_FOOT);
     private static final ItemStack BRICKS = new ItemStack(Blocks.BRICK_BLOCK);
     private static final ItemStack EMERALDBLOCK = new ItemStack(Blocks.EMERALD_BLOCK);
+    private static final ItemStack SUGARCANE = new ItemStack(Items.REEDS);
 
     private ISoldierRender<?, ?> renderer;
 
@@ -152,14 +153,16 @@ public class LayerHeldItem
                         RenderUtils.renderStackInWorld(WOOD, 0.0D, -0.12D, 0.0D, 0.0F, 0.0F, 0.0F, 0.553D);
                     }
                 }
-                if( soldier.hasUpgrade(Upgrades.EC_FLINT, EnumUpgradeType.ENHANCEMENT) ) {
-                    RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
-                } else if( soldier.hasUpgrade(Upgrades.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
-                    RenderUtils.renderStackInWorld(STICK, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
+                if( soldier.hasUpgrade(Upgrades.MH_STICK, EnumUpgradeType.MAIN_HAND) ) {
+                    if( soldier.hasUpgrade(Upgrades.EM_FLINT, EnumUpgradeType.ENHANCEMENT) ) {
+                        RenderUtils.renderStackInWorld(ARROW, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
+                    } else {
+                        RenderUtils.renderStackInWorld(STICK, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
+                    }
                 } else if( soldier.hasUpgrade(Upgrades.MH_BLAZEROD, EnumUpgradeType.MAIN_HAND) ) {
                     RenderUtils.renderStackInWorld(BLAZEROD, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, -45.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
-                    if( soldier.hasUpgrade(Upgrades.EC_PRISMARINESHARD, EnumUpgradeType.ENHANCEMENT) ) {
+                    if( soldier.hasUpgrade(Upgrades.EM_PRISMARINESHARD, EnumUpgradeType.ENHANCEMENT) ) {
                         RenderUtils.renderStackInWorld(SHEARBLADEPRISM, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
                     } else {
                         RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.1D, 0.0F, 90.0F, 135.0F, 0.75D);
@@ -171,10 +174,13 @@ public class LayerHeldItem
                 }
                 break;
             case OFF_HAND:
-                if( soldier.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                if( soldier.hasUpgrade(Upgrades.EM_SUGARCANE, EnumUpgradeType.ENHANCEMENT) ) {
+                    RenderUtils.renderStackInWorld(SUGARCANE, 0.0D, 0.1D, 0.05D, -35.0F, 0.0F, 135.0F, 0.5D);
+                }
+                if( soldier.hasUpgrade(Upgrades.EM_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                     RenderUtils.renderStackInWorld(SHIELD_STD, 0.0D, 0.2D, 0.0D, 90.0F, 0.0F, 0.0F, 0.75D);
                 } else if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.OFF_HAND) ) {
-                    if( soldier.hasUpgrade(Upgrades.EC_PRISMARINESHARD, EnumUpgradeType.ENHANCEMENT) ) {
+                    if( soldier.hasUpgrade(Upgrades.EM_PRISMARINESHARD, EnumUpgradeType.ENHANCEMENT) ) {
                         RenderUtils.renderStackInWorld(SHEARBLADEPRISM, 0.0D, 0.2D, 0.0D, 0.0F, 90.0F, 135.0F, 0.75D);
                     } else {
                         RenderUtils.renderStackInWorld(SHEARBLADE, 0.0D, 0.2D, 0.0D, 0.0F, 90.0F, 135.0F, 0.75D);

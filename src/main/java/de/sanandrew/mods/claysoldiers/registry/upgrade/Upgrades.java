@@ -16,6 +16,8 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeString;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeIronBlock;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradePrismarineShard;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeSugarCane;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeWool;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeArrow;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBlazeRod;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeBone;
@@ -83,9 +85,11 @@ public final class Upgrades
     public static final UUID BH_ROTTENFLESH = UUID.fromString("61F2B921-9F98-4B9C-B662-5FE7FB5BED75");
     public static final UUID BH_SPONGE = UUID.fromString("CB4C3945-4D5F-4D51-AF2B-28740D6D0180");
 
-    public static final UUID EC_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
-    public static final UUID EC_IRONBLOCK = UUID.fromString("05113D07-A86D-45EA-AC7F-52E34567197A");
-    public static final UUID EC_PRISMARINESHARD = UUID.fromString("0580F0B7-7293-4EF6-B966-CD29E23B3B43");
+    public static final UUID EM_FLINT = UUID.fromString("63342EEB-932B-4330-9B60-C5E21434A0B8");
+    public static final UUID EM_IRONBLOCK = UUID.fromString("05113D07-A86D-45EA-AC7F-52E34567197A");
+    public static final UUID EM_PRISMARINESHARD = UUID.fromString("0580F0B7-7293-4EF6-B966-CD29E23B3B43");
+    public static final UUID EM_WOOL = UUID.fromString("18AFA548-DCF4-431E-A62E-96743FADC1B4");
+    public static final UUID EM_SUGARCANE = UUID.fromString("F4F8224E-14E6-470F-AC7F-8D08B0B0FFB3");
 
     public static final UUID MC_EGG = UUID.fromString("4613D60F-B53C-4E75-99CA-0E2176B6D58D");
     public static final UUID MC_GLOWSTONE = UUID.fromString("6D1D540B-84DC-4009-BF29-134089104A3C");
@@ -144,9 +148,11 @@ public final class Upgrades
         registry.registerUpgrade(BH_ROTTENFLESH, new UpgradeStandardBehavior(new ItemStack(Items.ROTTEN_FLESH)));
         registry.registerUpgrade(BH_SPONGE, new UpgradeStandardBehavior(new ItemStack(Blocks.SPONGE, 1, OreDictionary.WILDCARD_VALUE)));
 
-        registry.registerUpgrade(EC_FLINT, new UpgradeFlint());
-        registry.registerUpgrade(EC_IRONBLOCK, new UpgradeIronBlock());
-        registry.registerUpgrade(EC_PRISMARINESHARD, new UpgradePrismarineShard());
+        registry.registerUpgrade(EM_FLINT, new UpgradeFlint());
+        registry.registerUpgrade(EM_IRONBLOCK, new UpgradeIronBlock());
+        registry.registerUpgrade(EM_PRISMARINESHARD, new UpgradePrismarineShard());
+        registry.registerUpgrade(EM_WOOL, new UpgradeWool());
+        registry.registerUpgrade(EM_SUGARCANE, new UpgradeSugarCane());
 
         registry.registerUpgrade(MC_EGG, new UpgradeEgg());
         registry.registerUpgrade(MC_GLOWSTONE, new UpgradeGlowstone());

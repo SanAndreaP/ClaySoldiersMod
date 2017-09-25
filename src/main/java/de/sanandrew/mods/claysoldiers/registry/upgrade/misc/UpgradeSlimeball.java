@@ -70,7 +70,7 @@ public class UpgradeSlimeball
         if( !soldier.getEntity().world.isRemote && target instanceof ISoldier ) {
             ISoldier targetS = (ISoldier) target;
             if( !targetS.hasEffect(Effects.STICKING_SLIMEBALL) ) {
-                if( MiscUtils.RNG.randomBool() || !targetS.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                if( MiscUtils.RNG.randomBool() || !targetS.hasUpgrade(Upgrades.EM_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                     targetS.addEffect(EffectSlimeball.INSTANCE, 60);
                 }
                 soldier.getEntity().playSound(SoundEvents.ENTITY_SLIME_ATTACK, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);

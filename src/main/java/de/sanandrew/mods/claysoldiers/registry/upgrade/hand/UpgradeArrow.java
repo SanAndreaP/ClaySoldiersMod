@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -37,14 +36,14 @@ public class UpgradeArrow
 
     @Override
     public boolean isApplicable(ISoldier<?> soldier, ItemStack stack) {
-        return !soldier.hasUpgrade(Upgrades.MH_STICK, EnumUpgradeType.MAIN_HAND) && !soldier.hasUpgrade(Upgrades.EC_FLINT, EnumUpgradeType.MISC);
+        return !soldier.hasUpgrade(Upgrades.MH_STICK, EnumUpgradeType.MAIN_HAND) && !soldier.hasUpgrade(Upgrades.EM_FLINT, EnumUpgradeType.MISC);
     }
 
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(Upgrades.MH_STICK), EnumUpgradeType.MAIN_HAND, new ItemStack(Items.STICK, 1));
-            soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(Upgrades.EC_FLINT), EnumUpgradeType.ENHANCEMENT, new ItemStack(Items.FLINT, 1));
+            soldier.addUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(Upgrades.EM_FLINT), EnumUpgradeType.ENHANCEMENT, new ItemStack(Items.FLINT, 1));
             stack.shrink(1);
         }
     }

@@ -61,7 +61,7 @@ public class UpgradeBlazePowder
     @Override
     public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
         if( target instanceof ISoldier ) {
-            if( MiscUtils.RNG.randomBool() || !((ISoldier) target).hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+            if( MiscUtils.RNG.randomBool() || !((ISoldier) target).hasUpgrade(Upgrades.EM_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                 target.attackEntityFrom(DamageSource.ON_FIRE, Float.MAX_VALUE);
             }
             soldier.getEntity().playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);

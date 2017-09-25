@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeThrowable;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityClayProjectile;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
@@ -139,6 +140,9 @@ public abstract class EntityAISoldierAttack
                                  .ifPresent(inst -> {
                                      ISoldierUpgradeThrowable upgThrowable = (ISoldierUpgradeThrowable) inst.getUpgrade();
                                      Entity proj = upgThrowable.createProjectile(this.attacker.world, this.attacker, entity);
+                                     if( this.attacker.hasUpgrade(Upgrades.EM_SUGARCANE, EnumUpgradeType.ENHANCEMENT) && proj instanceof EntityClayProjectile ) {
+                                         ((EntityClayProjectile) proj).setHoming();
+                                     }
                                      this.attacker.world.spawnEntity(proj);
                                      inst.getUpgrade().onAttack(this.attacker, inst, entity, null, null);
                                  });
@@ -159,7 +163,7 @@ public abstract class EntityAISoldierAttack
         }
 
         protected double getAttackReachSqr() {
-            return 9.0D;
+            return this.attacker.hasUpgrade(Upgrades.EM_SUGARCANE, EnumUpgradeType.ENHANCEMENT) ? 16.0D : 9.0D;
         }
     }
 }

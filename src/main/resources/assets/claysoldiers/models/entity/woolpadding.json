@@ -1,0 +1,48 @@
+{
+  "texture": "claysoldiers:textures/entities/wearables/padding.png",
+  "cubes": [
+    {
+      "boxName": "body",
+      "sizeX": 8,
+      "sizeY": 2,
+      "sizeZ": 4,
+      "textureX": 16,
+      "textureY": 22,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -4.0,
+      "offsetY": 7.0,
+      "offsetZ": -2.0,
+      "scaling": "x + 0.49"
+    },
+    {
+      "boxName": "leftArm",
+      "sizeX": 4,
+      "sizeY": 2,
+      "sizeZ": 4,
+      "textureX": 40,
+      "textureY": 18,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -1.0,
+      "offsetY": 1.0,
+      "offsetZ": -2.0,
+      "scaling": "x + 0.49"
+    },
+    {
+      "boxName": "rightArm",
+      "sizeX": 4,
+      "sizeY": 2,
+      "sizeZ": 4,
+      "textureX": 40,
+      "textureY": 18,
+      "textureWidth": 64,
+      "textureHeight": 64,
+      "offsetX": -3.0,
+      "offsetY": 1.0,
+      "offsetZ": -2.0,
+      "mirror": true,
+      "scaling": "x + 0.49"
+    }
+  ]
+}

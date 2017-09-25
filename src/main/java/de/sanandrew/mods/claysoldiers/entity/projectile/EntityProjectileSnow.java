@@ -14,7 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -64,7 +63,7 @@ public class EntityProjectileSnow
     @Override
     public void onPostHit(Entity e, DamageSource dmgSource) {
         if( e instanceof EntityLivingBase ) {
-            if( !(e instanceof ISoldier) || MiscUtils.RNG.randomBool() || !((ISoldier) e).hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+            if( !(e instanceof ISoldier) || MiscUtils.RNG.randomBool() || !((ISoldier) e).hasUpgrade(Upgrades.EM_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                 ((EntityLivingBase) e).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 1));
             }
         }

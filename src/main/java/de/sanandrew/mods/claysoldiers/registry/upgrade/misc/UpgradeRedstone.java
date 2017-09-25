@@ -70,7 +70,7 @@ public class UpgradeRedstone
         if( !soldier.getEntity().world.isRemote && target instanceof ISoldier ) {
             ISoldier targetS = (ISoldier) target;
             if( !targetS.hasEffect(Effects.BLINDING_REDSTONE) ) {
-                if( MiscUtils.RNG.randomBool() || !targetS.hasUpgrade(Upgrades.EC_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
+                if( MiscUtils.RNG.randomBool() || !targetS.hasUpgrade(Upgrades.EM_IRONBLOCK, EnumUpgradeType.ENHANCEMENT) ) {
                     targetS.addEffect(EffectRedstone.INSTANCE, 60);
                     targetS.getEntity().setAttackTarget(null);
                 }

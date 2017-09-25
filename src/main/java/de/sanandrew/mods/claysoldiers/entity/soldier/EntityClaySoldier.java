@@ -17,7 +17,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.entity.CsmMobAttributes;
+import de.sanandrew.mods.claysoldiers.api.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcEnemy;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowFallen;
@@ -217,7 +217,6 @@ public class EntityClaySoldier
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(20.0D);
     }
 
     //region upgrades

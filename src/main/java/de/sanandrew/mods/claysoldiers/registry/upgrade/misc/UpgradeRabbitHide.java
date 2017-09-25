@@ -65,7 +65,6 @@ public class UpgradeRabbitHide
         if( !soldier.getEntity().world.isRemote ) {
             upgradeInst.getNbtData().setShort("uses", MAX_USES);
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(SPEED_BOOST);
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_VALUE);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.shrink(1);
         }
@@ -73,12 +72,12 @@ public class UpgradeRabbitHide
 
     @Override
     public void onDamaged(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity attacker, DamageSource dmgSource, MutableFloat damage) {
+        damage.setValue(damage.getValue() * 0.875F);
         if( !soldier.getEntity().world.isRemote ) {
             short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
             if( uses < 1 ) {
                 soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
                 soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(SPEED_BOOST);
-                soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_VALUE);
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
             } else if( !(dmgSource.getTrueSource() instanceof EntityPlayer) && dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
                 upgradeInst.getNbtData().setShort("uses", uses);
@@ -94,5 +93,4 @@ public class UpgradeRabbitHide
     }
 
     private static final AttributeModifier SPEED_BOOST = new AttributeModifier(UUID.fromString("0DA68028-B25B-47AA-A0FF-2D45FA8BCF1E"), CsmConstants.ID + ".rhide_speed", 0.075D, 0);
-    private static final AttributeModifier ARMOR_VALUE = new AttributeModifier(UUID.fromString("A801BBD1-4C82-45E4-96D0-ECC309D2837F"), CsmConstants.ID + ".rhide_armor", 6.25D, 0);
 }

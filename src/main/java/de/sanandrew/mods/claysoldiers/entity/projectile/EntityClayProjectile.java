@@ -50,6 +50,8 @@ public abstract class EntityClayProjectile
 
     protected double maxDist;
 
+    protected boolean homing;
+
     public EntityClayProjectile(World world) {
         super(world);
         this.setSize(0.08F, 0.08F);
@@ -75,9 +77,13 @@ public abstract class EntityClayProjectile
         this.motionY += this.getArc() * Math.sqrt(targetVec.x * targetVec.x + targetVec.z * targetVec.z) * 0.05;
     }
 
+    public void setHoming() {
+        this.homing = true;
+    }
+
     private void setHeadingFromVec(Vec3d vector) {
-        double scatterVal = getScatterValue();
-        float initSpeed = getInitialSpeedMultiplier();
+        double scatterVal = this.homing ? 0.0D : this.getScatterValue();
+        float initSpeed = this.getInitialSpeedMultiplier();
 
         this.motionX = vector.x * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
         this.motionZ = vector.z * initSpeed + (MiscUtils.RNG.randomDouble() * 2.0D - 1.0D) * scatterVal;
@@ -106,6 +112,13 @@ public abstract class EntityClayProjectile
         if( this.shooterCache != null && this.getDistanceToEntity(this.shooterCache) > this.maxDist ) {
             this.setDead();
             return;
+        }
+
+        if( this.targetCache != null && this.shooterCache != null && this.homing ) {
+            Vec3d targetVec = new Vec3d(this.targetCache.posX - this.shooterCache.posX,
+                                        (this.targetCache.getEntityBoundingBox().minY + this.targetCache.height / 1.4D) - (this.shooterCache.posY + this.shooterCache.getEyeHeight() - 0.1D),
+                                        this.targetCache.posZ - this.shooterCache.posZ);
+            this.setHeadingFromVec(targetVec.normalize());
         }
 
         this.doCollisionCheck();
@@ -388,6 +401,7 @@ public abstract class EntityClayProjectile
         if( this.targetCache != null ) {
             buffer.writeInt(this.targetCache.getEntityId());
         }
+        buffer.writeBoolean(this.homing);
     }
 
     @Override
@@ -401,6 +415,7 @@ public abstract class EntityClayProjectile
         if( buffer.readBoolean() ) {
             this.targetCache = this.world.getEntityByID(buffer.readInt());
         }
+        this.homing = buffer.readBoolean();
     }
 
     @Override

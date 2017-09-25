@@ -23,12 +23,10 @@ public class ModelLeatherArmor
     public ModelRenderer body;
     public ModelRenderer leftArm;
     public ModelRenderer rightArm;
-    private ModelJsonLoader<ModelLeatherArmor, ModelJsonLoader.ModelJson> jsonLoader;
     public ResourceLocation texture;
 
     public ModelLeatherArmor(ResourceLocation modelLoc) {
-        this.jsonLoader = ModelJsonLoader.create(this, modelLoc, "body", "leftArm", "rightArm");
-        this.jsonLoader.load();
+        ModelJsonLoader.create(this, modelLoc, "body", "leftArm", "rightArm").load();
     }
 
     @Override
