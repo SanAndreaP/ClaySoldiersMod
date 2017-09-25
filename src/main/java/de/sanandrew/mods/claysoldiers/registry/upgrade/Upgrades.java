@@ -13,7 +13,9 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeCactus;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeIronIngot;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeNetherBrick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeString;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeCoal;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeFlint;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeGoldIngot;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeIronBlock;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradePrismarineShard;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement.UpgradeSugarCane;
@@ -90,6 +92,8 @@ public final class Upgrades
     public static final UUID EM_PRISMARINESHARD = UUID.fromString("0580F0B7-7293-4EF6-B966-CD29E23B3B43");
     public static final UUID EM_WOOL = UUID.fromString("18AFA548-DCF4-431E-A62E-96743FADC1B4");
     public static final UUID EM_SUGARCANE = UUID.fromString("F4F8224E-14E6-470F-AC7F-8D08B0B0FFB3");
+    public static final UUID EM_COAL = UUID.fromString("B93A32C1-D29E-4936-855D-1D6795A033E7");
+    public static final UUID EM_GOLDINGOT = UUID.fromString("BB415900-C367-4BC9-AC89-165DF5D43A4A");
 
     public static final UUID MC_EGG = UUID.fromString("4613D60F-B53C-4E75-99CA-0E2176B6D58D");
     public static final UUID MC_GLOWSTONE = UUID.fromString("6D1D540B-84DC-4009-BF29-134089104A3C");
@@ -153,6 +157,8 @@ public final class Upgrades
         registry.registerUpgrade(EM_PRISMARINESHARD, new UpgradePrismarineShard());
         registry.registerUpgrade(EM_WOOL, new UpgradeWool());
         registry.registerUpgrade(EM_SUGARCANE, new UpgradeSugarCane());
+        registry.registerUpgrade(EM_COAL, new UpgradeCoal());
+        registry.registerUpgrade(EM_GOLDINGOT, new UpgradeGoldIngot());
 
         registry.registerUpgrade(MC_EGG, new UpgradeEgg());
         registry.registerUpgrade(MC_GLOWSTONE, new UpgradeGlowstone());

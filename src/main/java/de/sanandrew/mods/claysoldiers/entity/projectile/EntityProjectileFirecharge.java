@@ -6,6 +6,9 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.projectile;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
@@ -59,7 +62,7 @@ public class EntityProjectileFirecharge
     @Override
     public void onPostHit(Entity e, DamageSource dmgSource) {
         if( e != null ) {
-            e.setFire(5);
+            e.setFire(this.shooterCache instanceof ISoldier && ((ISoldier) this.shooterCache).hasUpgrade(Upgrades.EM_COAL, EnumUpgradeType.ENHANCEMENT) ? 10 : 5);
         }
     }
 }

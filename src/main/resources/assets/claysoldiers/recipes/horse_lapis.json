@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "BSB",
+    "B B"
+  ],
+  "key": {
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockLapis"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "result": {
+    "item": "claysoldiers:doll_horse",
+    "count": 2,
+    "nbt": {
+      "dollHorse": {
+        "type": 5
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.claysoldiers.entity.attributes.AttributeModifierRnd;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -64,7 +65,7 @@ public class UpgradeBlazeRod
     @Override
     public void onAttackSuccess(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, Entity target) {
         byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
-        target.setFire(3);
+        target.setFire(soldier.hasUpgrade(Upgrades.EM_COAL, EnumUpgradeType.ENHANCEMENT) ? 6 : 3);
         if( uses < 1 ) {
             soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(ATTACK_DMG);
             soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);

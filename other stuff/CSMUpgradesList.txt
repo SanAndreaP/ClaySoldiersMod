@@ -107,10 +107,10 @@ Enchantments
                           emerald
 |x|IronBlock,        req: bowl            reduces incoming physical damage by 1, 50% chance to negate redstone/slimeball/blazepowder/snowball/
                                            redmushroom/magmacream effects
-| |Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
+|x|Coal/Charcoal,    req: blaze rod       doubles length of burn time on all fire effects, adds additional use to blaze powder
                           blaze powder
                           firecharge
-| |GoldIngot,        req: gold nugget     doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1
+|x|GoldIngot,        req: gold nugget     doubles number of uses on all weapons and armor, boosts all damage by 1-2, reduces incoming damage by 1
 ------------------
 
 ------------------

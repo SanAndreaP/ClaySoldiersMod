@@ -54,6 +54,7 @@ public class LayerHeldItem
     private static final ItemStack BRICKS = new ItemStack(Blocks.BRICK_BLOCK);
     private static final ItemStack EMERALDBLOCK = new ItemStack(Blocks.EMERALD_BLOCK);
     private static final ItemStack SUGARCANE = new ItemStack(Items.REEDS);
+    private static final ItemStack COALBLOCK = new ItemStack(Blocks.COAL_BLOCK);
 
     private ISoldierRender<?, ?> renderer;
 
@@ -137,6 +138,9 @@ public class LayerHeldItem
         ISoldierUpgradeInst upgInst;
         switch( hand ) {
             case MAIN_HAND:
+                if( soldier.hasUpgrade(Upgrades.EM_COAL, EnumUpgradeType.ENHANCEMENT) ) {
+                    RenderUtils.renderStackInWorld(COALBLOCK, 0.0D, -0.12D, 0.25D, 0.0F, 0.0F, 0.0F, 0.549D);
+                }
                 if( soldier.hasUpgrade(Upgrades.MC_REDMUSHROOM, EnumUpgradeType.MISC) ) {
                     RenderUtils.renderStackInWorld(REDMUSHROOM, 0.0D, -0.12D, 0.2D, 0.0F, 0.0F, 0.0F, 0.55D);
                 }
@@ -200,6 +204,7 @@ public class LayerHeldItem
                 }
                 break;
         }
+        GlStateManager.enableRescaleNormal();
     }
 
     @Override

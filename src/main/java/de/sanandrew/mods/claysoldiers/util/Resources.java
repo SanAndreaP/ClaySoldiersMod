@@ -121,6 +121,7 @@ public enum Resources
     ENTITY_SOLDIER_U_GLASSLIME("textures/entities/soldiers/unique/limeglass.png"),
 
     ENTITY_WEARABLE_GUNPOWDER("textures/entities/wearables/gunpowder.png"),
+    ENTITY_WEARABLE_GOLD_HOODIE("textures/entities/wearables/gold_hoodie.png"),
     ENTITY_WEARABLE_CAPE_PAPER("textures/entities/wearables/cape_blank.png"),
     ENTITY_WEARABLE_CAPE_DIAMOND("textures/entities/wearables/cape_diamond.png"),
 
