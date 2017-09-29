@@ -50,6 +50,9 @@ public final class Teams
     public static final UUID SOLDIER_GLASSBLACK = UUID.fromString("0100CB85-106F-4498-AC86-ACB269D51C89");
     public static final UUID SOLDIER_GLASSGRAY = UUID.fromString("516A2BE4-DFFC-454A-9D5C-4624C2A2C5B2");
     public static final UUID SOLDIER_GLASSWHITE = UUID.fromString("437EB12D-956A-4881-A4A6-220A8B0FDF4A");
+    public static final UUID SOLDIER_CARROT = UUID.fromString("8E7B0ADF-756C-4B25-B352-E9ED21219024");
+    public static final UUID SOLDIER_POTATO = UUID.fromString("C52FD8FB-AD68-4F8F-8BBD-EA9D399A735C");
+    public static final UUID SOLDIER_BEETROOT = UUID.fromString("F2F99E13-D874-4C23-B454-B3383861E996");
 
     public static void initialize(ITeamRegistry registry) {
         registry.registerTeam(SOLDIER_CLAY, "clay", Resources.ITEM_SOLDIER_CLAY.resource, 0x8E8E86,
@@ -175,5 +178,17 @@ public final class Teams
         registry.registerTeam(SOLDIER_GLASSWHITE, "whiteglass", Resources.ITEM_SOLDIER_GLASS.resource, 0xEAEDED,
                               new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_GLASSWHITE.resource},
                               new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_GLASSWHITE.resource});
+
+        registry.registerTeam(SOLDIER_CARROT, "carrot", Resources.ITEM_SOLDIER_CARROT.resource, 0xFFFFFF,
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_CARROT.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_CARROT.resource});
+        registry.registerTeam(SOLDIER_POTATO, "potato", Resources.ITEM_SOLDIER_POTATO.resource, 0xFFFFFF,
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_POTATO.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_POTATO.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_POTATO.resource});
+        registry.registerTeam(SOLDIER_BEETROOT, "beetroot", Resources.ITEM_SOLDIER_BEETROOT.resource, 0xFFFFFF,
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_N_BEETROOT.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_R_BEETROOT.resource},
+                              new ResourceLocation[] {Resources.ENTITY_SOLDIER_U_BEETROOT.resource});
     }
 }

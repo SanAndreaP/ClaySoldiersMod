@@ -76,6 +76,12 @@ item.claysoldiers:doll_soldier.grayglass.name=Gray Glass Soldier
 item.claysoldiers:doll_soldier.grayglass.color=Gray Glass
 item.claysoldiers:doll_soldier.whiteglass.name=White Glass Soldier
 item.claysoldiers:doll_soldier.whiteglass.color=White Glass
+item.claysoldiers:doll_soldier.carrot.name=Carrot Soldier
+item.claysoldiers:doll_soldier.carrot.color=Carrot
+item.claysoldiers:doll_soldier.potato.name=Potato Soldier
+item.claysoldiers:doll_soldier.potato.color=Potato
+item.claysoldiers:doll_soldier.beetroot.name=Beetroot Soldier
+item.claysoldiers:doll_soldier.beetroot.color=Beetroot
 
 item.claysoldiers:doll_brick_soldier.name=Brick Soldier Doll
 

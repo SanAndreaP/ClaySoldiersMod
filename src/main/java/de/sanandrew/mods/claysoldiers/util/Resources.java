@@ -18,6 +18,9 @@ public enum Resources
     ITEM_SOLDIER_REDSTONE("soldiers/redstone"),
     ITEM_SOLDIER_COAL("soldiers/coal"),
     ITEM_SOLDIER_GLASS("soldiers/glass"),
+    ITEM_SOLDIER_CARROT("soldiers/carrot"),
+    ITEM_SOLDIER_POTATO("soldiers/potato"),
+    ITEM_SOLDIER_BEETROOT("soldiers/beetroot"),
 
     ENTITY_SOLDIER_N_CLAY("textures/entities/soldiers/lightgray.png"),
     ENTITY_SOLDIER_N_RED("textures/entities/soldiers/red.png"),
@@ -57,6 +60,9 @@ public enum Resources
     ENTITY_SOLDIER_N_GLASSBLACK("textures/entities/soldiers/blackglass.png"),
     ENTITY_SOLDIER_N_GLASSGRAY("textures/entities/soldiers/grayglass.png"),
     ENTITY_SOLDIER_N_GLASSWHITE("textures/entities/soldiers/whiteglass.png"),
+    ENTITY_SOLDIER_N_CARROT("textures/entities/soldiers/carrot.png"),
+    ENTITY_SOLDIER_N_POTATO("textures/entities/soldiers/potato.png"),
+    ENTITY_SOLDIER_N_BEETROOT("textures/entities/soldiers/beetroot.png"),
 
     ENTITY_SOLDIER_R_CLAY("textures/entities/soldiers/rare/lightgray.png"),
     ENTITY_SOLDIER_R_RED("textures/entities/soldiers/rare/red.png"),
@@ -100,6 +106,9 @@ public enum Resources
     ENTITY_SOLDIER_R_GLASSBLACK("textures/entities/soldiers/rare/blackglass.png"),
     ENTITY_SOLDIER_R_GLASSGRAY("textures/entities/soldiers/rare/grayglass.png"),
     ENTITY_SOLDIER_R_GLASSWHITE("textures/entities/soldiers/rare/whiteglass.png"),
+    ENTITY_SOLDIER_R_CARROT("textures/entities/soldiers/rare/carrot.png"),
+    ENTITY_SOLDIER_R_POTATO("textures/entities/soldiers/rare/potato.png"),
+    ENTITY_SOLDIER_R_BEETROOT("textures/entities/soldiers/rare/beetroot.png"),
 
     ENTITY_SOLDIER_U_RED("textures/entities/soldiers/unique/red.png"),
     ENTITY_SOLDIER_U_GREEN_1("textures/entities/soldiers/unique/green.png"),
@@ -119,6 +128,8 @@ public enum Resources
     ENTITY_SOLDIER_U_REDSTONE_2("textures/entities/soldiers/unique/redstone2.png"),
     ENTITY_SOLDIER_U_COAL("textures/entities/soldiers/unique/coal.png"),
     ENTITY_SOLDIER_U_GLASSLIME("textures/entities/soldiers/unique/limeglass.png"),
+    ENTITY_SOLDIER_U_POTATO("textures/entities/soldiers/unique/potato.png"),
+    ENTITY_SOLDIER_U_BEETROOT("textures/entities/soldiers/unique/beetroot.png"),
 
     ENTITY_WEARABLE_GUNPOWDER("textures/entities/wearables/gunpowder.png"),
     ENTITY_WEARABLE_GOLD_HOODIE("textures/entities/wearables/gold_hoodie.png"),

@@ -40,7 +40,11 @@ public class OtherSoldierRecipe
             Teams.SOLDIER_PUMPKIN,
             Teams.SOLDIER_REDSTONE,
             Teams.SOLDIER_COAL,
-            Teams.SOLDIER_COAL
+            Teams.SOLDIER_COAL,
+            Teams.SOLDIER_CARROT,
+            Teams.SOLDIER_POTATO,
+            Teams.SOLDIER_POTATO,
+            Teams.SOLDIER_BEETROOT
     };
     public static final ItemStack[] ITEMS = {
             new ItemStack(Blocks.MELON_BLOCK, 1),
@@ -48,7 +52,11 @@ public class OtherSoldierRecipe
             new ItemStack(Blocks.LIT_PUMPKIN, 1),
             new ItemStack(Items.REDSTONE, 1),
             new ItemStack(Items.COAL, 1, 0),
-            new ItemStack(Items.COAL, 1, 1)
+            new ItemStack(Items.COAL, 1, 1),
+            new ItemStack(Items.CARROT, 1),
+            new ItemStack(Items.POTATO, 1),
+            new ItemStack(Items.POISONOUS_POTATO, 1),
+            new ItemStack(Items.BEETROOT)
     };
 
     @Override

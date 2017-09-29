@@ -22,7 +22,7 @@ idea {
     }
 }
 
-version = "1.12-3.0.0-alpha.4"
+version = "1.12-3.0.0-alpha.4.1"
 group = "de.sanandrew.mods"
 archivesBaseName = "ClaySoldiersMod"
 
