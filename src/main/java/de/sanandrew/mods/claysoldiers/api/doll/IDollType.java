@@ -4,17 +4,11 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.renderer.color;
+package de.sanandrew.mods.claysoldiers.api.doll;
 
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.ItemStack;
-
-public class ItemColorHorse
-        implements IItemColor
+public interface IDollType
 {
-    @Override
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        return ItemRegistry.DOLL_HORSE.getType(stack).itemColor;
-    }
+    boolean isVisible();
+    boolean isValid();
+    String getName();
 }

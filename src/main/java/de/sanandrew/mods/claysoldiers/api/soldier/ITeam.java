@@ -6,12 +6,14 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.soldier;
 
+import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
 public interface ITeam
+        extends IDollType
 {
     /**
      * gets the unique ID for that team.
@@ -23,6 +25,7 @@ public interface ITeam
      * gets the unique name for that team.
      * @return the team name
      */
+    @Override
     String getName();
 
     /**

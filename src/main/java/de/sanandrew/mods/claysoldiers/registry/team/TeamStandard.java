@@ -70,6 +70,16 @@ public class TeamStandard
     }
 
     @Override
+    public boolean isVisible() {
+        return true;
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }

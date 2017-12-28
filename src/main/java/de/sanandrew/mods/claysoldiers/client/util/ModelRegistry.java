@@ -12,7 +12,6 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.item.EnumShieldTypes;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
-import de.sanandrew.mods.claysoldiers.item.ItemHorseMount;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
@@ -191,7 +190,7 @@ public final class ModelRegistry
             }
 
             @Override
-            public EnumClayHorseType getType(ItemStack stack) { return ItemHorseMount.getType(stack); }
+            public EnumClayHorseType getType(ItemStack stack) { return ItemRegistry.DOLL_HORSE.getType(stack); }
         }
     }
 }

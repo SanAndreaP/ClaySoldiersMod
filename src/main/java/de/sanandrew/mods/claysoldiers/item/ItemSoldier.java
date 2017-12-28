@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
@@ -29,45 +30,25 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.stream.Collectors;
 
 public class ItemSoldier
-        extends Item
+        extends ItemDoll<EntityClaySoldier, ITeam>
 {
     public ItemSoldier() {
-        super();
-        this.setCreativeTab(CsmCreativeTabs.DOLLS);
-        this.setUnlocalizedName(CsmConstants.ID + ":doll_soldier");
-        this.setMaxDamage(0);
-        this.maxStackSize = 16;
-        this.setRegistryName(CsmConstants.ID, "doll_soldier");
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-        if( this.isInCreativeTab(tab) ) {
-            list.addAll(TeamRegistry.INSTANCE.getTeams().stream().map(team -> TeamRegistry.INSTANCE.setTeam(new ItemStack(this, 1), team)).collect(Collectors.toList()));
-        }
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + '.' + TeamRegistry.INSTANCE.getTeam(stack).getName();
+        super(CsmConstants.ID, "doll_soldier", CsmCreativeTabs.DOLLS);
     }
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        if( world.isRemote ) {
-            return EnumActionResult.SUCCESS;
-        } else if( !player.canPlayerEdit(pos.offset(facing), facing, stack) ) {
-            return EnumActionResult.FAIL;
-        } else if( world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
+        if( !world.isRemote && player.canPlayerEdit(pos.offset(facing), facing, stack) && world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
             if( !player.isSneaking() && !UuidUtils.areUuidsEqual(TeamRegistry.INSTANCE.getTeam(stack).getId(), Teams.SOLDIER_CLAY) ) {
                 IBlockState state = world.getBlockState(pos);
                 int level = state.getValue(BlockCauldron.LEVEL);
@@ -86,60 +67,36 @@ public class ItemSoldier
 
             return EnumActionResult.FAIL;
         } else {
-            IBlockState iblockstate = world.getBlockState(pos);
-
-            pos = pos.offset(facing);
-            double yShift = 0.0D;
-
-            if( facing == EnumFacing.UP && iblockstate.getBlock() instanceof BlockFence ) {
-                yShift = 0.5D;
-            }
-
-            spawnSoldiers(world, player.isSneaking() ? 1 : stack.getCount(), pos.getX() + 0.5D, pos.getY() + yShift, pos.getZ() + 0.4D + MiscUtils.RNG.randomFloat() * 0.2D, stack);
-
-            if( hand != null && player.capabilities.isCreativeMode ) {
-                if( stack.getCount() < 1 ) {
-                    player.setHeldItem(hand, ItemStack.EMPTY);
-                } else {
-                    player.setHeldItem(hand, stack.copy());
-                }
-
-                player.inventoryContainer.detectAndSendChanges();
-            }
-
-            return EnumActionResult.SUCCESS;
+            return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
         }
     }
 
-    public static void spawnSoldiers(World world, int count, double x, double y, double z, ItemStack dollStack) {
-        ITeam team = TeamRegistry.INSTANCE.getTeam(dollStack);
-        if( team != TeamRegistry.NULL_TEAM ) {
-            for( int i = 0; i < count; i++ ) {
-                double xs = x - 0.1D + MiscUtils.RNG.randomFloat() * 0.02D;
-                double zs = z - 0.1D + MiscUtils.RNG.randomFloat() * 0.02D;
+    @Nonnull
+    @Override
+    public ITeam[] getTypes() {
+        return TeamRegistry.INSTANCE.getTeams().toArray(new ITeam[0]);
+    }
 
-                ItemStack newDollStack = ItemStack.EMPTY;
-                if( dollStack != null ) {
-                    newDollStack = dollStack.copy();
-                    newDollStack.setCount(1);
-                }
+    @Nonnull
+    @Override
+    public ItemStack getTypeStack(ITeam type) {
+        return TeamRegistry.INSTANCE.getNewTeamStack(1, type);
+    }
 
-                EntityClaySoldier aleks = new EntityClaySoldier(world, team, newDollStack);
-                aleks.setLocationAndAngles(xs, y, zs, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
-                aleks.rotationYawHead = aleks.rotationYaw;
-                aleks.renderYawOffset = aleks.rotationYaw;
-                aleks.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(aleks)), null);
-                world.spawnEntity(aleks);
+    @Nonnull
+    @Override
+    public ITeam getType(ItemStack stack) {
+        return TeamRegistry.INSTANCE.getTeam(stack);
+    }
 
-                if( dollStack.hasDisplayName() ) {
-                    aleks.setCustomNameTag(dollStack.getDisplayName());
-                }
+    @Nonnull
+    @Override
+    public EntityClaySoldier createEntity(World world, ITeam type, ItemStack newDollStack) {
+        return new EntityClaySoldier(world, type, newDollStack);
+    }
 
-                dollStack.shrink(1);
-
-                float pitch = (MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.2F + 1.0F;
-                world.playSound(null, xs, y, zs, SoundEvents.BLOCK_GRAVEL_BREAK, SoundCategory.NEUTRAL, 1.0F, pitch);
-            }
-        }
+    @Override
+    public SoundEvent getPlacementSound() {
+        return SoundEvents.BLOCK_GRAVEL_BREAK;
     }
 }

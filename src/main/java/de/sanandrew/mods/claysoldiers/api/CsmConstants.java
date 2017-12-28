@@ -19,8 +19,5 @@ public final class CsmConstants
     public static final String DEPENDENCIES = "required-after:forge@[14.21.1.2387,];required-after:sanlib@[1.2.0,]";
 
     public static final String API_ID = "claysoldiers_api";
-    public static final String API_VERSION = "1.0.0-alpha.1";
-
-//    public static ITmrUtils utils;
-//    public static IRepairKitRegistry repkitRegistry;
+    public static final String API_VERSION = "1.0.0-alpha.2";
 }

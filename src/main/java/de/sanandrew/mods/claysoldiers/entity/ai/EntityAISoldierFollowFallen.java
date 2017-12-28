@@ -8,7 +8,6 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.item.ItemSoldier;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
@@ -97,14 +96,14 @@ public class EntityAISoldierFollowFallen
         if( tgtDist < 1.0F ) {
             ItemStack stack = ((EntityItem) jack).getItem();
             if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_SOLDIER) ) {
-                ItemSoldier.spawnSoldiers(this.taskOwner.world, 1, jack.posX, jack.posY + 0.25D, jack.posZ, stack);
+                ItemRegistry.DOLL_SOLDIER.spawnEntities(this.taskOwner.world, this.taskOwner.getSoldierTeam(), 1, jack.posX, jack.posY + 0.25D, jack.posZ, stack);
                 UpgradeClay.decrUses(this.taskOwner, this.taskOwner.getUpgradeInstance(Upgrades.MC_CLAY, EnumUpgradeType.MISC));
             } else if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER) ) {
                 ItemStack teamStack = TeamRegistry.INSTANCE.getNewTeamStack(1, this.taskOwner.getSoldierTeam());
                 if( stack.hasTagCompound() ) {
                     teamStack.getTagCompound().merge(stack.getTagCompound());
                 }
-                ItemSoldier.spawnSoldiers(this.taskOwner.world, 1, jack.posX, jack.posY + 0.25D, jack.posZ, teamStack);
+                ItemRegistry.DOLL_SOLDIER.spawnEntities(this.taskOwner.world, this.taskOwner.getSoldierTeam(), 1, jack.posX, jack.posY + 0.25D, jack.posZ, teamStack);
                 UpgradeGhastTear.decrUses(this.taskOwner, this.taskOwner.getUpgradeInstance(Upgrades.MC_GHASTTEAR, EnumUpgradeType.MISC));
                 stack.shrink(1);
             }

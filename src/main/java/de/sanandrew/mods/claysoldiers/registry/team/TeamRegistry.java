@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.registry.team;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
@@ -156,6 +157,7 @@ public final class TeamRegistry
         @Override public boolean addNormalTexture(byte id, ResourceLocation texture) { return false; }
         @Override public boolean addRareTexture(byte id, ResourceLocation texture) { return false; }
         @Override public boolean addUniqueTexture(byte id, ResourceLocation texture) { return false; }
+        @Override public boolean isVisible() { return false; }
+        @Override public boolean isValid() { return false; }
     };
-
 }

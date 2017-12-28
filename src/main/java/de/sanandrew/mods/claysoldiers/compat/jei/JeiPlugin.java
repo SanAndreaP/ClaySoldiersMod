@@ -9,7 +9,6 @@
 package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
-import de.sanandrew.mods.claysoldiers.item.ItemHorseMount;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import mezz.jei.api.IModPlugin;
@@ -47,7 +46,7 @@ public class JeiPlugin
     @Override
     public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
         subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DISRUPTOR, itemStack -> ItemDisruptor.getType(itemStack).name());
-        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_SOLDIER, itemStack -> TeamRegistry.INSTANCE.getTeam(itemStack).toString());
-        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_HORSE, itemStack -> ItemHorseMount.getType(itemStack).name());
+        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_SOLDIER, itemStack -> TeamRegistry.INSTANCE.getTeam(itemStack).getName());
+        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_HORSE, itemStack -> ItemRegistry.DOLL_HORSE.getType(itemStack).getName());
     }
 }

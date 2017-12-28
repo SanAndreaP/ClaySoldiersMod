@@ -7,11 +7,13 @@
 package de.sanandrew.mods.claysoldiers.registry.mount;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Arrays;
 
 public enum EnumClayHorseType
+        implements IDollType
 {
     DIRT(true, 35.0F, 0.6F, false, 0x9C5300, "dirt1", "dirt2", "dirt3", "dirt4"),
     SAND(true, 30.0F, 0.7F, false, 0xF9FF80, "sand"),
@@ -58,5 +60,20 @@ public enum EnumClayHorseType
 
     EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, String cstItemTexture, String... textures) {
         this(visible, maxHealth, movementSpeed, canBreatheUnderwater, cstItemTexture, 0xFFFFFF, textures);
+    }
+
+    @Override
+    public boolean isVisible() {
+        return this.visible;
+    }
+
+    @Override
+    public boolean isValid() {
+        return this != UNKNOWN;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 }

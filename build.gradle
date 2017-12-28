@@ -22,7 +22,7 @@ idea {
     }
 }
 
-version = "1.12-3.0.0-alpha.4.1"
+version = "1.12-3.0.0-alpha.5"
 group = "de.sanandrew.mods"
 archivesBaseName = "ClaySoldiersMod"
 
@@ -65,6 +65,15 @@ processResources {
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
+task dlSanLib(type: LibDownloader) {
+    sourceUrl = 'https://minecraft.curseforge.com/projects/sanlib/files/2501131/download'
+    target = file('libs/SanLib.jar')
+}
+
+setupDecompWorkspace.dependsOn dlSanLib
+setupDevWorkspace.dependsOn dlSanLib
+setupCiWorkspace.dependsOn dlSanLib
+
 jar {
     manifest {
         attributes 'FMLAT': 'claysoldiers_at.cfg'
@@ -86,25 +95,21 @@ task deobfJar(type: Jar) {
     }
 }
 
-configurations {
-//    deployDev
-}
-
 artifacts {
     archives deobfJar
     archives sourceJar
     archives jar
-//    deployDev deobfJar
 }
 
-project.ext {
-    releaseRepoUrl = "file://${project(':').projectDir}/maven-repo/"
-}
+class LibDownloader extends DefaultTask {
+    @Input
+    String sourceUrl
 
-//uploadDeployDev {
-//    repositories.mavenDeployer {
-//        pom.artifactId = project.name
-//        pom.version = project.version + '-deobf'
-//        repository(url: project.releaseRepoUrl)
-//    }
-//}
+    @OutputFile
+    File target
+
+    @TaskAction
+    void download() {
+        ant.get(src: sourceUrl, dest: target)
+    }
+}
