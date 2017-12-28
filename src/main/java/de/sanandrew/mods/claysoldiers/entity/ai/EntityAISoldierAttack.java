@@ -16,6 +16,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.hand.UpgradeThrowable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
@@ -53,18 +54,22 @@ public abstract class EntityAISoldierAttack
                 Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
                 this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
             }
-            return this.entityPathEntity != null;
+            if( this.entityPathEntity == null ) {
+                Vec3d rndPos = RandomPositionGenerator.findRandomTarget(this.attacker, 5, 3);
+                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(rndPos.x, rndPos.y, rndPos.z);
+            }
+//            return this.entityPathEntity != null;
+            return true;//this.attacker.canEntityBeSeen(target);
         }
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.attacker.getNavigator().noPath() && super.shouldContinueExecuting();
+        return /*!this.attacker.getNavigator().noPath() &&*/ super.shouldContinueExecuting();
     }
 
     @Override
     public void startExecuting() {
-        this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
     }
 
     @Override
@@ -74,6 +79,10 @@ public abstract class EntityAISoldierAttack
 
     @Override
     public void updateTask() {
+        if( this.attacker.getNavigator().noPath() ) {
+            this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
+        }
+
         EntityLivingBase jack = this.attacker.getAttackTarget();
         if( jack == null ) {
             return;
