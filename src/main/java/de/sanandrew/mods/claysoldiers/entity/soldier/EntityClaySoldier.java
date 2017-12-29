@@ -40,6 +40,7 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeEntry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
+import de.sanandrew.mods.claysoldiers.util.RayTraceFixed;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
@@ -69,6 +70,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -626,6 +629,12 @@ public class EntityClaySoldier
 
     @Override
     public boolean canEntityBeSeen(Entity target) {
+        Vec3d start = new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ);
+        Vec3d end = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
+        RayTraceResult res = this.world.rayTraceBlocks(start, end, false, true, false);
+        if( res != null && res.typeOfHit == RayTraceResult.Type.BLOCK ) {
+            return RayTraceFixed.collisionRayTrace(this.world.getBlockState(res.getBlockPos()), this, this.world, res.getBlockPos(), start, end) == null;
+        }
         //        RayTraceResult res = RayTraceFixed.rayTraceSight(this, this.world, new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ),
         //                                                         new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ));
         //        return res == null;

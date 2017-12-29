@@ -46,31 +46,23 @@ public abstract class EntityAISoldierAttack
             return false;
         } else if( !target.isEntityAlive() ) {
             return false;
-        } else if( this.attacker.getDistanceSqToEntity(target) <= getAttackReachSqr() ) {
-            return true;
+//        } else if( this.attacker.getDistanceSqToEntity(target) <= getAttackReachSqr() ) {
+//            return true;
         } else {
-            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(target);
-            if( this.entityPathEntity == null ) {
-                Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
-                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
-            }
-            if( this.entityPathEntity == null ) {
-                Vec3d rndPos = RandomPositionGenerator.findRandomTarget(this.attacker, 5, 3);
-                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(rndPos.x, rndPos.y, rndPos.z);
-            }
-//            return this.entityPathEntity != null;
-            return true;//this.attacker.canEntityBeSeen(target);
+            boolean b1 = this.attacker.canEntityBeSeen(target);
+            boolean b2 = !this.attacker.getNavigator().noPath();
+            return b1 || b2;
         }
     }
 
-    @Override
-    public boolean shouldContinueExecuting() {
-        return /*!this.attacker.getNavigator().noPath() &&*/ super.shouldContinueExecuting();
-    }
-
-    @Override
-    public void startExecuting() {
-    }
+//    @Override
+//    public boolean shouldContinueExecuting() {
+//        return /*!this.attacker.getNavigator().noPath() &&*/ super.shouldContinueExecuting();
+//    }
+//
+//    @Override
+//    public void startExecuting() {
+//    }
 
     @Override
     public void resetTask() {
@@ -79,6 +71,19 @@ public abstract class EntityAISoldierAttack
 
     @Override
     public void updateTask() {
+        EntityLivingBase target = this.attacker.getAttackTarget();
+
+        this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(target);
+        if( this.entityPathEntity == null ) {
+            Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
+            this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
+
+            if( this.entityPathEntity == null ) {
+                Vec3d rndPos = RandomPositionGenerator.findRandomTarget(this.attacker, 5, 3);
+                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(rndPos.x, rndPos.y, rndPos.z);
+            }
+        }
+
         if( this.attacker.getNavigator().noPath() ) {
             this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
         }
@@ -106,7 +111,7 @@ public abstract class EntityAISoldierAttack
 
     protected abstract void checkAndPerformAttack(EntityLivingBase entity, double dist);
 
-    protected abstract double getAttackReachSqr();
+//    protected abstract double getAttackReachSqr();
 
     public static final class Meelee
             extends EntityAISoldierAttack
