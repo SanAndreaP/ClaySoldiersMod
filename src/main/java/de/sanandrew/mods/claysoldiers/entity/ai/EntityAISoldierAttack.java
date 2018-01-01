@@ -73,15 +73,21 @@ public abstract class EntityAISoldierAttack
     public void updateTask() {
         EntityLivingBase target = this.attacker.getAttackTarget();
 
-        this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(target);
-        if( this.entityPathEntity == null ) {
-            Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
-            this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
-
+        if( target != null ) {
+            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(target);
             if( this.entityPathEntity == null ) {
-                Vec3d rndPos = RandomPositionGenerator.findRandomTarget(this.attacker, 5, 3);
-                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(rndPos.x, rndPos.y, rndPos.z);
+                Vec3d vec = new Vec3d(this.targetX - this.attacker.posX, this.targetY - this.attacker.posY, this.targetZ - this.attacker.posZ).normalize().scale(1.1D);
+                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.targetX + vec.x, this.targetY + vec.y, this.targetZ + vec.z);
+
+                if( this.entityPathEntity == null ) {
+                    Vec3d rndPos = RandomPositionGenerator.findRandomTarget(this.attacker, 6, 3);
+                    if( rndPos != null ) {
+                        this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(rndPos.x, rndPos.y, rndPos.z);
+                    }
+                }
             }
+        } else {
+            this.entityPathEntity = null;
         }
 
         if( this.attacker.getNavigator().noPath() ) {

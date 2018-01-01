@@ -629,15 +629,25 @@ public class EntityClaySoldier
 
     @Override
     public boolean canEntityBeSeen(Entity target) {
-        Vec3d start = new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ);
-        Vec3d end = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
-        RayTraceResult res = this.world.rayTraceBlocks(start, end, false, true, false);
-        if( res != null && res.typeOfHit == RayTraceResult.Type.BLOCK ) {
-            return RayTraceFixed.collisionRayTrace(this.world.getBlockState(res.getBlockPos()), this, this.world, res.getBlockPos(), start, end) == null;
-        }
-        //        RayTraceResult res = RayTraceFixed.rayTraceSight(this, this.world, new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ),
-        //                                                         new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ));
-        //        return res == null;
+//        Vec3d start = new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ);
+//        Vec3d end = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
+//        RayTraceResult res = this.world.rayTraceBlocks(start, end, false, true, false);
+//        if( res != null && res.typeOfHit == RayTraceResult.Type.BLOCK ) {
+//            return !RayTraceFixed.collisionRayTrace(this.world.getBlockState(res.getBlockPos()), this, this.world, res.getBlockPos(), start, end) ;//== null;
+//        }
+//        //        RayTraceResult res = RayTraceFixed.rayTraceSight(this, this.world, new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ),
+//        //                                                         new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ));
+//        //        return res == null;
+//        return true;
+
+        Vec3d myVec = new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ);
+        Vec3d tgVec = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
+        Vec3d distVec = tgVec.subtract(myVec).normalize().scale(1.0D / 16.0D);
+
+        myVec = myVec.subtract(distVec);
+        tgVec = tgVec.add(distVec);
+
+//        return !RayTraceFixed.rayTraceSight(this, this.world, myVec, tgVec);
         return super.canEntityBeSeen(target);
     }
 

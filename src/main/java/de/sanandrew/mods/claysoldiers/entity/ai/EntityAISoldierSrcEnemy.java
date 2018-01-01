@@ -31,7 +31,7 @@ public class EntityAISoldierSrcEnemy
         super(soldier, false, false);
         this.attacker = soldier;
         this.tgtSelector = entity -> {
-            if( entity != null && entity.isEntityAlive() && entity.canEntityBeSeen(this.attacker) ) {
+            if( entity != null && entity != this.attacker && entity.isEntityAlive() && this.attacker.canEntityBeSeen(entity) ) {
                 SoldierTargetEnemyEvent evt = new SoldierTargetEnemyEvent(this.attacker, entity, true);
                 if( !ClaySoldiersMod.EVENT_BUS.post(evt) ) {
                     return evt.getResult() == Event.Result.ALLOW
