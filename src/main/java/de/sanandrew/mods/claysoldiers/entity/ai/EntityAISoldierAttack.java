@@ -51,6 +51,7 @@ public abstract class EntityAISoldierAttack
         } else {
             boolean b1 = this.attacker.canEntityBeSeen(target);
             boolean b2 = !this.attacker.getNavigator().noPath();
+            this.attacker.canEntityBeSeen(target);
             return b1 || b2;
         }
     }

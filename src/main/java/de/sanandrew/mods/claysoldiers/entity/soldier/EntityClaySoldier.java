@@ -642,13 +642,13 @@ public class EntityClaySoldier
 
         Vec3d myVec = new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ);
         Vec3d tgVec = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
-        Vec3d distVec = tgVec.subtract(myVec).normalize().scale(1.0D / 16.0D);
+//        Vec3d distVec = tgVec.subtract(myVec).normalize().scale(1.0D / 16.0D);
 
-        myVec = myVec.subtract(distVec);
-        tgVec = tgVec.add(distVec);
+//        myVec = myVec.subtract(distVec);
+//        tgVec = tgVec.add(distVec);
 
-//        return !RayTraceFixed.rayTraceSight(this, this.world, myVec, tgVec);
-        return super.canEntityBeSeen(target);
+        return !RayTraceFixed.rayTraceSight(this, this.world, myVec, tgVec);
+//        return super.canEntityBeSeen(target);
     }
 
     @Override
