@@ -13,12 +13,14 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+import de.sanandrew.mods.claysoldiers.entity.projectile.EntityClayProjectile;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.EntityUtils;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -85,6 +87,14 @@ public abstract class UpgradeThrowable
         soldier.setMoveMultiplier(1.0F);
     }
 
+    protected static Entity setHoming(Entity shooter, Entity in) {
+        if( shooter instanceof ISoldier && ((ISoldier) shooter).hasUpgrade(Upgrades.EM_SUGARCANE, EnumUpgradeType.ENHANCEMENT) && in instanceof EntityClayProjectile ) {
+            ((EntityClayProjectile) in).setHoming();
+        }
+
+        return in;
+    }
+
     @Override
     @Nonnull
     public abstract ItemStack[] getStacks();
@@ -110,7 +120,7 @@ public abstract class UpgradeThrowable
         @Nonnull
         @Override
         public Entity createProjectile(World world, Entity shooter, Entity target) {
-            return new EntityProjectileGravel(world, shooter, target);
+            return setHoming(shooter, new EntityProjectileGravel(world, shooter, target));
         }
     }
 
@@ -136,7 +146,7 @@ public abstract class UpgradeThrowable
         @Nonnull
         @Override
         public Entity createProjectile(World world, Entity shooter, Entity target) {
-            return new EntityProjectileSnow(world, shooter, target);
+            return setHoming(shooter, new EntityProjectileSnow(world, shooter, target));
         }
     }
 
@@ -159,7 +169,7 @@ public abstract class UpgradeThrowable
         @Nonnull
         @Override
         public Entity createProjectile(World world, Entity shooter, Entity target) {
-            return new EntityProjectileFirecharge(world, shooter, target);
+            return setHoming(shooter, new EntityProjectileFirecharge(world, shooter, target));
         }
     }
 
@@ -182,7 +192,7 @@ public abstract class UpgradeThrowable
         @Nonnull
         @Override
         public Entity createProjectile(World world, Entity shooter, Entity target) {
-            return new EntityProjectileEmerald(world, shooter, target);
+            return setHoming(shooter, new EntityProjectileEmerald(world, shooter, target));
         }
     }
 }
