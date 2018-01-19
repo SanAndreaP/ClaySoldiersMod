@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.util;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
+import de.sanandrew.mods.claysoldiers.dispenser.DispenserBehaviorRegistry;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
@@ -58,6 +59,8 @@ public class ClaySoldiersMod
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
         PacketManager.initialize();
+
+        DispenserBehaviorRegistry.initialize();
 
         proxy.preInit(event);
     }

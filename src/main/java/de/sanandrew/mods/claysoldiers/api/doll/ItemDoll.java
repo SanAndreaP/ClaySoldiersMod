@@ -86,10 +86,6 @@ public abstract class ItemDoll<E extends EntityLiving, T extends IDollType>
 
             for( E trevor : spawns ) {
                 if( trevor != null ) {
-                    if( stack.hasDisplayName() ) {
-                        trevor.setCustomNameTag(stack.getDisplayName());
-                    }
-
                     stack.shrink(1);
                 }
             }
@@ -124,6 +120,9 @@ public abstract class ItemDoll<E extends EntityLiving, T extends IDollType>
                 aleks.rotationYawHead = aleks.rotationYaw;
                 aleks.renderYawOffset = aleks.rotationYaw;
                 aleks.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(aleks)), null);
+                if( dollStack.hasDisplayName() ) {
+                    aleks.setCustomNameTag(dollStack.getDisplayName());
+                }
                 world.spawnEntity(aleks);
                 float pitch = (RNG.nextFloat() - RNG.nextFloat()) * 0.2F + 1.0F;
                 world.playSound(null, xs, y, zs, this.getPlacementSound(), SoundCategory.NEUTRAL, 1.0F, pitch);

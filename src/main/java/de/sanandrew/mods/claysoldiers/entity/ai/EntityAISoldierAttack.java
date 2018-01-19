@@ -65,7 +65,7 @@ public abstract class EntityAISoldierAttack
             return;
         }
 
-        if( this.attacker.getNavigator().noPath() ) {
+        if( this.attacker.getNavigator().noPath() && this.entityPathEntity != null ) {
             this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
         }
 

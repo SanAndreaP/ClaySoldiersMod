@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.crafting;
 
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
