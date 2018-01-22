@@ -1,0 +1,36 @@
+{
+  "parent": "claysoldiers:models/entity/mount/horse.json",
+  "cubes": [
+    {
+      "boxName": "wingL",
+      "sizeX": 13,
+      "sizeY": 1,
+      "sizeZ": 5,
+      "textureX": 0,
+      "textureY": 22,
+      "offsetX": -13.5,
+      "offsetY": 0.25,
+      "offsetZ": -2.25,
+      "rotationPointX": 0.0,
+      "rotationPointY": 12.25,
+      "rotationPointZ": 0.0,
+      "scaling": "x + 0.25"
+    },
+    {
+      "boxName": "wingR",
+      "sizeX": 13,
+      "sizeY": 1,
+      "sizeZ": 5,
+      "textureX": 0,
+      "textureY": 22,
+      "mirror": true,
+      "offsetX": 0.5,
+      "offsetY": 0.25,
+      "offsetZ": -2.25,
+      "rotationPointX": 0.0,
+      "rotationPointY": 12.25,
+      "rotationPointZ": 0.0,
+      "scaling": "x + 0.15"
+    }
+  ]
+}

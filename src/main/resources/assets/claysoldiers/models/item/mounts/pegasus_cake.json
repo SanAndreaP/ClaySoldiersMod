@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "claysoldiers:items/mounts/horse_cake",
+    "layer1": "claysoldiers:items/mounts/pegasus_wing"
+  }
+}

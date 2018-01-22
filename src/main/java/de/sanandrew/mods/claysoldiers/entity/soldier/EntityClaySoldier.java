@@ -33,7 +33,7 @@ import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncEffects;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncUpgrades;
-import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;

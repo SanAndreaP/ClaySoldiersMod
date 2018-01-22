@@ -24,7 +24,7 @@ public enum EnumClayHorseType
     CLAY(true, 35.0F, 0.6F, true, 0xA3A3A3, "clay"),
     CARROT(true, 35.0F, 0.9F, true, 0xF0A800, "carrot1", "carrot2"),
     SOULSAND(true, 35.0F, 0.8F, false, 0x5C3100, "soulsand"),
-    CAKE(true, 30.0F, 1.1F, false, "horse_cake", "cake"),
+    CAKE(true, 30.0F, 1.1F, false, "cake", "cake"),
 
     NIGHTMARE(false, 50.0F, 1.2F, false, 0x0, "spec_nightmare1", "spec_nightmare2"),
     UNKNOWN(false, 0.0F, 0.0F, false, 0x0);
@@ -36,10 +36,10 @@ public enum EnumClayHorseType
     public final boolean canBreatheUnderwater;
     public final boolean visible;
     public final int itemColor;
-    public final String cstItemTexture;
+    public final String cstItemSuffix;
     public final ResourceLocation[] textures;
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, String cstItemTexture, int itemColor, String... textures) {
+    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, String cstItemSuffix, int itemColor, String... textures) {
         if (textures == null) {
             textures = new String[0];
         }
@@ -51,15 +51,15 @@ public enum EnumClayHorseType
         this.itemColor = itemColor;
         this.textures = Arrays.stream(textures).map(s -> new ResourceLocation(CsmConstants.ID, String.format("textures/entities/mount/horses/%s.png", s)))
                               .toArray(ResourceLocation[]::new);
-        this.cstItemTexture = cstItemTexture;
+        this.cstItemSuffix = cstItemSuffix;
     }
 
     EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, int itemColor, String... textures) {
         this(visible, maxHealth, movementSpeed, canBreatheUnderwater, null, itemColor, textures);
     }
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, String cstItemTexture, String... textures) {
-        this(visible, maxHealth, movementSpeed, canBreatheUnderwater, cstItemTexture, 0xFFFFFF, textures);
+    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, String cstItemSuffix, String... textures) {
+        this(visible, maxHealth, movementSpeed, canBreatheUnderwater, cstItemSuffix, 0xFFFFFF, textures);
     }
 
     @Override

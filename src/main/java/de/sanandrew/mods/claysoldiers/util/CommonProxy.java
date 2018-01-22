@@ -39,24 +39,8 @@ import java.util.List;
 public class CommonProxy
         implements IGuiHandler
 {
-    public static int entityCount = 0;
 
     public void preInit(FMLPreInitializationEvent event) {
-        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "claySoldier"), EntityClaySoldier.class, "claySoldier", entityCount++,
-                                         ClaySoldiersMod.instance, 64, 1, true);
-
-        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "gravelProjectile"), EntityProjectileGravel.class, "gravelProjectile", entityCount++,
-                                         ClaySoldiersMod.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "snowProjectile"), EntityProjectileSnow.class, "snowProjectile", entityCount++,
-                                         ClaySoldiersMod.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "fireProjectile"), EntityProjectileFirecharge.class, "fireProjectile", entityCount++,
-                                         ClaySoldiersMod.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "emeraldProjectile"), EntityProjectileEmerald.class, "emeraldProjectile", entityCount++,
-                                         ClaySoldiersMod.instance, 64, 1, true);
-
-        EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountHorse"), EntityClayHorse.class, "mountHorse", entityCount++,
-                                         ClaySoldiersMod.instance, 64, 1, true);
-
         MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());
         MinecraftForge.EVENT_BUS.register(new LivingAttackEventHandler());
         MinecraftForge.EVENT_BUS.register(new LivingJumpEventHandler());

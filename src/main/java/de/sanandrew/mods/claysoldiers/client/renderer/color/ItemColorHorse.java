@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.color;
 
-import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 
@@ -15,6 +15,6 @@ public class ItemColorHorse
 {
     @Override
     public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        return ItemRegistry.DOLL_HORSE.getType(stack).itemColor;
+        return tintIndex > 0 ? -1 : ItemRegistry.DOLL_HORSE.getType(stack).itemColor;
     }
 }

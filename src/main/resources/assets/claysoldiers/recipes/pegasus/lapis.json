@@ -1,0 +1,30 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " F ",
+    "BSB",
+    "B B"
+  ],
+  "key": {
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "feather"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockLapis"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "result": {
+    "item": "claysoldiers:doll_pegasus",
+    "count": 2,
+    "nbt": {
+      "dollPegasus": {
+        "type": 5
+      }
+    }
+  }
+}

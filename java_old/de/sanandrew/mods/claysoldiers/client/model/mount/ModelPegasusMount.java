@@ -26,7 +26,7 @@ public class ModelPegasusMount
 
         this.wingLeft = new ModelRenderer(this, 0, 22);
         this.wingLeft.addBox(-12.5F, 0.25F, -2.25F, 13, 1, 5, 0.0F);
-        this.wingLeft.setRotationPoint(-1.5F, -0.5F, 0.0F);
+        this.wingLeft.setRotationPoint(-1.5F, 15.75F, 2.75F);
 
         this.wingRight = new ModelRenderer(this, 0, 22);
         this.wingRight.mirror = true;

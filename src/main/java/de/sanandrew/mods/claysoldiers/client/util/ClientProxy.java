@@ -12,25 +12,18 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.event.RenderWorldEventHandler;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorHorse;
-import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderClayHorse;
-import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderClaySoldier;
+import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorPegasus;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
-import de.sanandrew.mods.claysoldiers.client.renderer.projectile.RenderProjectile;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
+import de.sanandrew.mods.claysoldiers.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
-import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -48,12 +41,7 @@ public class ClientProxy
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityClaySoldier.class, RenderClaySoldier::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileGravel.class, RenderProjectile.Gravel::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileSnow.class, RenderProjectile.Snow::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileFirecharge.class, RenderProjectile.Firecharge::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileEmerald.class, RenderProjectile.Emerald::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityClayHorse.class, RenderClayHorse::new);
+        EntityRegistry.registerRenderers();
 
         MinecraftForge.EVENT_BUS.register(RenderWorldEventHandler.INSTANCE);
 
@@ -66,6 +54,7 @@ public class ClientProxy
 
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorSoldier(), ItemRegistry.DOLL_SOLDIER);
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorHorse(), ItemRegistry.DOLL_HORSE);
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorPegasus(), ItemRegistry.DOLL_PEGASUS);
 
         this.soldierRenderer = (ISoldierRender) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
 

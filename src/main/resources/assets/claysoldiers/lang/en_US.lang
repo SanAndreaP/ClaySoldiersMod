@@ -86,25 +86,26 @@ item.claysoldiers:doll_soldier.beetroot.color=Beetroot
 item.claysoldiers:doll_brick_soldier.name=Brick Soldier Doll
 
 item.claysoldiers:doll_horse.dirt.name=Dirt Horse
-item.claysoldiers:doll_horse.dirt.pegasus.name=Dirt Pegasus
 item.claysoldiers:doll_horse.sand.name=Sand Horse
-item.claysoldiers:doll_horse.sand.pegasus.name=Sand Pegasus
 item.claysoldiers:doll_horse.gravel.name=Gravel Horse
-item.claysoldiers:doll_horse.gravel.pegasus.name=Gravel Pegasus
 item.claysoldiers:doll_horse.snow.name=Snow Horse
-item.claysoldiers:doll_horse.snow.pegasus.name=Snow Pegasus
 item.claysoldiers:doll_horse.grass.name=Grass Horse
-item.claysoldiers:doll_horse.grass.pegasus.name=Grass Pegasus
 item.claysoldiers:doll_horse.lapis.name=Lapis Lazuli Horse
-item.claysoldiers:doll_horse.lapis.pegasus.name=Lapis Lazuli Pegasus
 item.claysoldiers:doll_horse.clay.name=Clay Horse
-item.claysoldiers:doll_horse.clay.pegasus.name=Clay Pegasus
 item.claysoldiers:doll_horse.carrot.name=Carrot Horse
-item.claysoldiers:doll_horse.carrot.pegasus.name=Carrot Pegasus
 item.claysoldiers:doll_horse.soulsand.name=Soulsand Horse
-item.claysoldiers:doll_horse.soulsand.pegasus.name=Soulsand Pegasus
 item.claysoldiers:doll_horse.cake.name=Cake Horse
-item.claysoldiers:doll_horse.cake.pegasus.name=Cake Pegasus
+
+item.claysoldiers:doll_pegasus.dirt.name=Dirt Pegasus
+item.claysoldiers:doll_pegasus.sand.name=Sand Pegasus
+item.claysoldiers:doll_pegasus.gravel.name=Gravel Pegasus
+item.claysoldiers:doll_pegasus.snow.name=Snow Pegasus
+item.claysoldiers:doll_pegasus.grass.name=Grass Pegasus
+item.claysoldiers:doll_pegasus.lapis.name=Lapis Lazuli Pegasus
+item.claysoldiers:doll_pegasus.clay.name=Clay Pegasus
+item.claysoldiers:doll_pegasus.carrot.name=Carrot Pegasus
+item.claysoldiers:doll_pegasus.soulsand.name=Soulsand Pegasus
+item.claysoldiers:doll_pegasus.cake.name=Cake Pegasus
 
 item.claysoldiers:turtlemount_doll.cobble.name=Cobblestone Turtle
 item.claysoldiers:turtlemount_doll.mossy.name=Mossy Cobble Turtle

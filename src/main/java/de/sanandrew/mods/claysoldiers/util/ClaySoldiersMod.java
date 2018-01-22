@@ -9,9 +9,10 @@ package de.sanandrew.mods.claysoldiers.util;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
-import de.sanandrew.mods.claysoldiers.dispenser.DispenserBehaviorRegistry;
+import de.sanandrew.mods.claysoldiers.registry.DispenserBehaviorRegistry;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
+import de.sanandrew.mods.claysoldiers.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
@@ -61,6 +62,7 @@ public class ClaySoldiersMod
         PacketManager.initialize();
 
         DispenserBehaviorRegistry.initialize();
+        EntityRegistry.initialize();
 
         proxy.preInit(event);
     }
@@ -89,7 +91,7 @@ public class ClaySoldiersMod
                 Class<? extends ICsmPlugin> asmInstanceClass = asmClass.asSubclass(ICsmPlugin.class);
                 ICsmPlugin instance = asmInstanceClass.getConstructor().newInstance();
                 PLUGINS.add(instance);
-            } catch (ClassNotFoundException | IllegalAccessException | ExceptionInInitializerError | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            } catch( ClassNotFoundException | IllegalAccessException | ExceptionInInitializerError | InstantiationException | NoSuchMethodException | InvocationTargetException e ) {
                 CsmConstants.LOG.error("Failed to load: {}", asmData.getClassName(), e);
             }
         }

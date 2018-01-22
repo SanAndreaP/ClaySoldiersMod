@@ -6,12 +6,13 @@
  * http://creativecommons.org/licenses/by-nc-sa/4.0/
  * *****************************************************************************************************************
  */
-package de.sanandrew.mods.claysoldiers.item;
+package de.sanandrew.mods.claysoldiers.registry;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemBrickSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.item.ItemHorseMount;
+import de.sanandrew.mods.claysoldiers.item.ItemPegasusMount;
 import de.sanandrew.mods.claysoldiers.item.ItemShearBlade;
 import de.sanandrew.mods.claysoldiers.item.ItemSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemSoldierShield;
@@ -25,6 +26,7 @@ public class ItemRegistry
 {
     public static final ItemSoldier DOLL_SOLDIER = new ItemSoldier();
     public static final ItemHorseMount DOLL_HORSE = new ItemHorseMount();
+    public static final ItemPegasusMount DOLL_PEGASUS = new ItemPegasusMount();
     public static final ItemDisruptor DISRUPTOR = new ItemDisruptor();
     public static final ItemBrickSoldier DOLL_BRICK_SOLDIER = new ItemBrickSoldier();
     public static final ItemShearBlade SHEAR_BLADE = new ItemShearBlade();
@@ -35,6 +37,7 @@ public class ItemRegistry
         event.getRegistry().registerAll(
                 DOLL_SOLDIER,
                 DOLL_HORSE,
+                DOLL_PEGASUS,
                 DISRUPTOR,
                 DOLL_BRICK_SOLDIER,
                 SHEAR_BLADE,

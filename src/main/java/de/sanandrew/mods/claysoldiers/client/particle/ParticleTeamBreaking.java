@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.particle;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
-import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.sanlib.lib.ColorObj;
 import net.minecraft.client.Minecraft;

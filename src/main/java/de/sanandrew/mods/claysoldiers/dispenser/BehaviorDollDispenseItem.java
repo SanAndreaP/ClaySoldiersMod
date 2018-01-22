@@ -14,17 +14,22 @@ import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 public class BehaviorDollDispenseItem<T extends IDollType>
         extends BehaviorDefaultDispenseItem
 {
     @Override
     protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-        IPosition iposition = BlockDispenser.getDispensePosition(source);
+        EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
+        double x = source.getX() + facing.getFrontOffsetX();
+        double y = source.getY() + facing.getFrontOffsetY();
+        double z = source.getZ() + facing.getFrontOffsetZ();
+
         ItemStack itemstack = stack.splitStack(1);
 
         ItemDoll<?, T> doll = ReflectionUtils.getCasted(itemstack.getItem());
-        doll.spawnEntities(source.getWorld(), doll.getType(itemstack), 1, iposition.getX(), iposition.getY(), iposition.getZ(), itemstack);
+        doll.spawnEntities(source.getWorld(), doll.getType(itemstack), 1, x, y, z, itemstack);
 
         return stack;
     }
