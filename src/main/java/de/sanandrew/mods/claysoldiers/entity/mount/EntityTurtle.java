@@ -9,15 +9,17 @@ package de.sanandrew.mods.claysoldiers.entity.mount;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
-import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -33,25 +35,25 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EntityClayHorse
+public class EntityTurtle
         extends EntityCreature
-        implements IMount<EntityClayHorse>, IEntityAdditionalSpawnData
+        implements IMount<EntityTurtle>, IEntityAdditionalSpawnData
 {
-    private EnumClayHorseType type = EnumClayHorseType.UNKNOWN;
+    private EnumTurtleType type = EnumTurtleType.UNKNOWN;
     private int textureId = 0;
     @Nonnull
     private ItemStack doll = ItemStack.EMPTY;
 
-    public EntityClayHorse(World world) {
+    public EntityTurtle(World world) {
         super(world);
 
         this.stepHeight = 0.1F;
         this.jumpMovementFactor = 0.2F;
 
-        this.setSize(0.35F, 0.5F);
+        this.setSize(0.35F, 0.15F);
     }
 
-    public EntityClayHorse(World world, EnumClayHorseType type, ItemStack doll) {
+    public EntityTurtle(World world, EnumTurtleType type, ItemStack doll) {
         this(world);
 
         this.doll = doll;
@@ -71,13 +73,28 @@ public class EntityClayHorse
     protected void initEntityAI() {
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.tasks.addTask(9, new EntityAISwimming(this));
+    }
+
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+
+        if( this.isInWater()/* && this.motionY < 0.0D*/ ) {
+            this.motionY *= 0.05D;
+        }
+    }
+
+    @Override
+    public boolean isInWater() {
+        return super.isInWater() && this.isInsideOfMaterial(Material.WATER);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
 
-        compound.setInteger(NBTConstants.E_DOLL_TYPE_HORSE, this.type.ordinal());
+        compound.setInteger(NBTConstants.E_DOLL_TYPE_TURTLE, this.type.ordinal());
         compound.setInteger(NBTConstants.E_MOUNT_TEXTURE_ID, this.textureId);
         compound.setTag(NBTConstants.E_DOLL_ITEM, this.doll.serializeNBT());
     }
@@ -86,7 +103,7 @@ public class EntityClayHorse
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
 
-        this.setType(EnumClayHorseType.VALUES[compound.getInteger(NBTConstants.E_DOLL_TYPE_HORSE)]);
+        this.setType(EnumTurtleType.VALUES[compound.getInteger(NBTConstants.E_DOLL_TYPE_TURTLE)]);
         this.textureId = compound.getInteger(NBTConstants.E_MOUNT_TEXTURE_ID);
         this.doll = new ItemStack(compound.getCompoundTag(NBTConstants.E_DOLL_ITEM));
     }
@@ -103,8 +120,11 @@ public class EntityClayHorse
 
     @Override
     public boolean canBreatheUnderwater() {
-        return this.type.canBreatheUnderwater;
+        return true;
     }
+
+    @Override
+    protected void doWaterSplashEffect() { }
 
     @Override
     protected boolean canDespawn() {
@@ -131,6 +151,12 @@ public class EntityClayHorse
 
     @Override
     public void onDeath(DamageSource damageSource) {
+        if( this.rand.nextInt(16) == 0 && damageSource.isFireDamage() ) {
+            this.setSpecial();
+            this.setHealth(this.getMaxHealth());
+            return;
+        }
+
         super.onDeath(damageSource);
 
         if( !this.world.isRemote ) {
@@ -151,6 +177,11 @@ public class EntityClayHorse
     }
 
     @Override
+    public boolean isPushedByWater() {
+        return false;
+    }
+
+    @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if( source.getTrueSource() instanceof EntityPlayer ) {
             amount = Float.MAX_VALUE;
@@ -167,7 +198,7 @@ public class EntityClayHorse
 
     @Override
     public void readSpawnData(ByteBuf additionalData) {
-        this.setType(EnumClayHorseType.VALUES[additionalData.readInt()]);
+        this.setType(EnumTurtleType.VALUES[additionalData.readInt()]);
         this.textureId = additionalData.readInt();
     }
 
@@ -178,16 +209,16 @@ public class EntityClayHorse
 
     @Override
     public void setSpecial() {
-        this.setType(EnumClayHorseType.NIGHTMARE);
+        this.setType(EnumTurtleType.KAWAKO);
     }
 
     @Override
     public boolean isSpecial() {
-        return this.type == EnumClayHorseType.NIGHTMARE;
+        return this.type == EnumTurtleType.KAWAKO;
     }
 
     @Override
-    public EntityClayHorse getEntity() {
+    public EntityTurtle getEntity() {
         return this;
     }
 
@@ -210,9 +241,10 @@ public class EntityClayHorse
         return this.textureId >= 0 && this.textureId < this.type.textures.length ? this.type.textures[this.textureId] : null;
     }
 
-    private void setType(EnumClayHorseType type) {
+    private void setType(EnumTurtleType type) {
         this.type = type;
         this.textureId = MiscUtils.RNG.randomInt(type.textures.length);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(type.maxHealth);
+        this.isImmuneToFire = type.fireproof;
     }
 }

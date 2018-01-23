@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.model.item;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -63,5 +64,20 @@ abstract class MeshDefOrdinal<T extends Enum<T>>
 
         @Override
         public EnumClayHorseType getType(ItemStack stack) { return ItemRegistry.DOLL_PEGASUS.getType(stack); }
+    }
+
+    static final class Turtle
+            extends MeshDefOrdinal<EnumTurtleType>
+    {
+        Turtle() {
+            Arrays.stream(EnumTurtleType.VALUES).filter(type -> type.visible).forEach(type -> {
+                ResourceLocation resLoc = new ResourceLocation(CsmConstants.ID, "mounts/turtle" + (type.cstItemSuffix == null ? "" : '_' + type.cstItemSuffix));
+                ModelResourceLocation modelRes = new ModelResourceLocation(resLoc, "inventory");
+                this.modelRes.put(type.ordinal(), modelRes);
+            });
+        }
+
+        @Override
+        public EnumTurtleType getType(ItemStack stack) { return ItemRegistry.DOLL_TURTLE.getType(stack); }
     }
 }

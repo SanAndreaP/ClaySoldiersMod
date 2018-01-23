@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.entity.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierDeathEvent;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
@@ -18,16 +19,12 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.CsmMobAttributes;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchFollowing;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcEnemy;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowFallen;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowKing;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowMount;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowUpgrade;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcFallen;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcKing;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcMount;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierSrcUpgradeItem;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
@@ -199,11 +196,11 @@ public class EntityClaySoldier
         this.tasks.addTask(6, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(1, new EntityAISoldierSrcFallen(this));
-        this.targetTasks.addTask(2, new EntityAISoldierSrcEnemy(this));
-        this.targetTasks.addTask(2, new EntityAISoldierSrcUpgradeItem(this));
-        this.targetTasks.addTask(2, new EntityAISoldierSrcMount(this));
-        this.targetTasks.addTask(3, new EntityAISoldierSrcKing(this));
+        this.targetTasks.addTask(1, new EntityAISearchFollowing.Fallen(this));
+        this.targetTasks.addTask(2, new EntityAISearchFollowing.Enemy(this));
+        this.targetTasks.addTask(2, new EntityAISearchFollowing.Upgrade(this));
+        this.targetTasks.addTask(2, new EntityAISearchFollowing.Mount(this));
+        this.targetTasks.addTask(3, new EntityAISearchFollowing.King(this));
     }
 
     @Override
@@ -694,34 +691,34 @@ public class EntityClaySoldier
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
 
-        compound.setString("soldier_team", this.dataManager.get(TEAM_PARAM).toString());
-        compound.setByte("soldier_texture_type", this.dataManager.get(TEXTURE_TYPE_PARAM));
-        compound.setByte("soldier_texture_id", this.dataManager.get(TEXTURE_ID_PARAM));
+        compound.setString(NBTConstants.E_SOLDIER_TEAM, this.dataManager.get(TEAM_PARAM).toString());
+        compound.setByte(NBTConstants.E_SOLDIER_TEXTYPE, this.dataManager.get(TEXTURE_TYPE_PARAM));
+        compound.setByte(NBTConstants.E_SOLDIER_TEXID, this.dataManager.get(TEXTURE_ID_PARAM));
 
-        ItemStackUtils.writeStackToTag(this.doll, compound, "soldier_doll");
+        ItemStackUtils.writeStackToTag(this.doll, compound, NBTConstants.E_SOLDIER_DOLL);
 
         NBTTagList upgrades = new NBTTagList();
         this.upgradeMap.forEach((upgEntry, upgInst) -> {
             NBTTagCompound upgNbt = new NBTTagCompound();
-            upgNbt.setString("upg_id", MiscUtils.defIfNull(UpgradeRegistry.INSTANCE.getId(upgEntry.upgrade), UuidUtils.EMPTY_UUID).toString());
-            upgNbt.setByte("upg_type", (byte) upgEntry.type.ordinal());
-            upgNbt.setTag("upg_nbt", upgInst.getNbtData());
-            ItemStackUtils.writeStackToTag(upgInst.getSavedStack(), upgNbt, "upg_item");
+            upgNbt.setString(NBTConstants.N_UPGRADE_ID, MiscUtils.defIfNull(UpgradeRegistry.INSTANCE.getId(upgEntry.upgrade), UuidUtils.EMPTY_UUID).toString());
+            upgNbt.setByte(NBTConstants.N_UPGRADE_TYPE, (byte) upgEntry.type.ordinal());
+            upgNbt.setTag(NBTConstants.N_UPGRADE_NBT, upgInst.getNbtData());
+            ItemStackUtils.writeStackToTag(upgInst.getSavedStack(), upgNbt, NBTConstants.N_UPGRADE_ITEM);
             upgEntry.upgrade.onSave(this, upgInst, upgNbt);
             upgrades.appendTag(upgNbt);
         });
-        compound.setTag("soldier_upgrades", upgrades);
+        compound.setTag(NBTConstants.E_SOLDIER_UPGRADES, upgrades);
 
         NBTTagList effects = new NBTTagList();
         this.effectMap.forEach((effect, effInst) -> {
             NBTTagCompound effNbt = new NBTTagCompound();
-            effNbt.setString("eff_id", MiscUtils.defIfNull(EffectRegistry.INSTANCE.getId(effect), UuidUtils.EMPTY_UUID).toString());
-            effNbt.setInteger("eff_duration", effInst.getDurationLeft());
-            effNbt.setTag("eff_nbt", effInst.getNbtData());
+            effNbt.setString(NBTConstants.N_EFFECT_ID, MiscUtils.defIfNull(EffectRegistry.INSTANCE.getId(effect), UuidUtils.EMPTY_UUID).toString());
+            effNbt.setInteger(NBTConstants.N_EFFECT_DURATION, effInst.getDurationLeft());
+            effNbt.setTag(NBTConstants.N_EFFECT_NBT, effInst.getNbtData());
             effect.onSave(this, effInst, effNbt);
             effects.appendTag(effNbt);
         });
-        compound.setTag("soldier_effects", effects);
+        compound.setTag(NBTConstants.E_SOLDIER_EFFECTS, effects);
 
         this.dwBooleans.writeToNbt(compound);
     }
@@ -730,41 +727,41 @@ public class EntityClaySoldier
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
 
-        String teamId = compound.getString("soldier_team");
+        String teamId = compound.getString(NBTConstants.E_SOLDIER_TEAM);
         this.dataManager.set(TEAM_PARAM, UuidUtils.isStringUuid(teamId) ? UUID.fromString(teamId) : UuidUtils.EMPTY_UUID);
-        this.dataManager.set(TEXTURE_TYPE_PARAM, compound.getByte("soldier_texture_type"));
-        this.dataManager.set(TEXTURE_ID_PARAM, compound.getByte("soldier_texture_id"));
+        this.dataManager.set(TEXTURE_TYPE_PARAM, compound.getByte(NBTConstants.E_SOLDIER_TEXTYPE));
+        this.dataManager.set(TEXTURE_ID_PARAM, compound.getByte(NBTConstants.E_SOLDIER_TEXID));
 
-        if( compound.hasKey("soldier_doll", Constants.NBT.TAG_COMPOUND) ) {
-            this.doll = new ItemStack(compound.getCompoundTag("soldier_doll"));
+        if( compound.hasKey(NBTConstants.E_SOLDIER_DOLL, Constants.NBT.TAG_COMPOUND) ) {
+            this.doll = new ItemStack(compound.getCompoundTag(NBTConstants.E_SOLDIER_DOLL));
         }
 
-        NBTTagList upgrades = compound.getTagList("soldier_upgrades", Constants.NBT.TAG_COMPOUND);
+        NBTTagList upgrades = compound.getTagList(NBTConstants.E_SOLDIER_UPGRADES, Constants.NBT.TAG_COMPOUND);
         for( int i = 0, max = upgrades.tagCount(); i < max; i++ ) {
             NBTTagCompound upgNbt = upgrades.getCompoundTagAt(i);
-            String idStr = upgNbt.getString("upg_id");
-            byte type = upgNbt.getByte("upg_type");
+            String idStr = upgNbt.getString(NBTConstants.N_UPGRADE_ID);
+            byte type = upgNbt.getByte(NBTConstants.N_UPGRADE_TYPE);
             if( UuidUtils.isStringUuid(idStr) ) {
-                ItemStack upgStack = new ItemStack(upgNbt.getCompoundTag("upg_item"));
+                ItemStack upgStack = new ItemStack(upgNbt.getCompoundTag(NBTConstants.N_UPGRADE_ITEM));
                 ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(UUID.fromString(idStr));
                 if( upgrade != null ) {
                     ISoldierUpgradeInst upgInst = new SoldierUpgrade(upgrade, EnumUpgradeType.VALUES[type], upgStack);
-                    upgInst.setNbtData(upgNbt.getCompoundTag("upg_nbt"));
+                    upgInst.setNbtData(upgNbt.getCompoundTag(NBTConstants.N_UPGRADE_NBT));
                     upgrade.onLoad(this, upgInst, upgNbt);
                     this.addUpgradeInternal(upgInst);
                 }
             }
         }
 
-        NBTTagList effects = compound.getTagList("soldier_effects", Constants.NBT.TAG_COMPOUND);
+        NBTTagList effects = compound.getTagList(NBTConstants.E_SOLDIER_EFFECTS, Constants.NBT.TAG_COMPOUND);
         for( int i = 0, max = effects.tagCount(); i < max; i++ ) {
             NBTTagCompound effectNbt = effects.getCompoundTagAt(i);
-            String idStr = effectNbt.getString("eff_id");
+            String idStr = effectNbt.getString(NBTConstants.N_EFFECT_ID);
             if( UuidUtils.isStringUuid(idStr) ) {
                 ISoldierEffect effect = EffectRegistry.INSTANCE.getEffect(UUID.fromString(idStr));
                 if( effect != null ) {
-                    ISoldierEffectInst effInst = new SoldierEffect(effect, effectNbt.getInteger("eff_duration"));
-                    effInst.setNbtData(effectNbt.getCompoundTag("eff_nbt"));
+                    ISoldierEffectInst effInst = new SoldierEffect(effect, effectNbt.getInteger(NBTConstants.N_EFFECT_DURATION));
+                    effInst.setNbtData(effectNbt.getCompoundTag(NBTConstants.N_EFFECT_NBT));
                     effect.onLoad(this, effInst, effectNbt);
                     this.addEffectInternal(effInst);
                 }
@@ -833,24 +830,16 @@ public class EntityClaySoldier
                     drops.add(this.doll);
                 }
             }
-//            if( !this.nexusSpawn ) {
-//                if( this.dollItem != null ) {
-//                    drops.add(this.dollItem.copy());
-//                }
 
-//                for( SoldierUpgradeInst upg : this.p_upgrades.values() ) {
-//                    upg.getUpgrade().onItemDrop(this, upg, drops);
-//                }
-                this.callUpgradeFunc(EnumUpgFunctions.ON_DEATH, inst -> inst.getUpgrade().onDeath(this, inst, damageSource, drops));
+            this.callUpgradeFunc(EnumUpgFunctions.ON_DEATH, inst -> inst.getUpgrade().onDeath(this, inst, damageSource, drops));
 
             SoldierDeathEvent event = new SoldierDeathEvent(this, damageSource, drops);
             ClaySoldiersMod.EVENT_BUS.post(event);
-//
-                drops.removeAll(Collections.<ItemStack>singleton(null));
-                for( ItemStack drop : drops ) {
-                    this.entityDropItem(drop, 0.5F);
-                }
-//            }
+
+            drops.removeIf(stack -> !ItemStackUtils.isValid(stack));
+            for( ItemStack drop : drops ) {
+                this.entityDropItem(drop, 0.5F);
+            }
         } else {
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.TEAM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
                                                 this.getSoldierTeam().getId());

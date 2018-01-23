@@ -34,6 +34,7 @@ public final class ModelRegistry
         setCustomMeshModel(ItemRegistry.DOLL_SOLDIER, new MeshDefUUID.Soldier());
         setCustomMeshModel(ItemRegistry.DOLL_HORSE, new MeshDefOrdinal.Horse());
         setCustomMeshModel(ItemRegistry.DOLL_PEGASUS, new MeshDefOrdinal.Pegasus());
+        setCustomMeshModel(ItemRegistry.DOLL_TURTLE, new MeshDefOrdinal.Turtle());
         setCustomMeshModel(ItemRegistry.DISRUPTOR, new MeshDefDisruptor());
 
         for( EnumShieldTypes type : EnumShieldTypes.VALUES ) {

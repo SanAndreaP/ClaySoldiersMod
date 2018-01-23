@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "claysoldiers:items/mounts/turtle_base",
+    "layer1": "claysoldiers:items/mounts/turtle_cakeshell"
+  }
+}
