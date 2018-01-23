@@ -67,15 +67,15 @@ item.claysoldiers:doll_pegasus.soulsand.name=소울샌드 페가수스
 item.claysoldiers:doll_horse.cake.name=케이크 말
 item.claysoldiers:doll_pegasus.cake.name=케이크 페가수스
 
-item.claysoldiers:turtlemount_doll.cobble.name=조약돌 거북
-item.claysoldiers:turtlemount_doll.mossy.name=이끼 낀 조약돌 거북
-item.claysoldiers:turtlemount_doll.netherrack.name=네더랙 거북
-item.claysoldiers:turtlemount_doll.melon.name=수박 거북
-item.claysoldiers:turtlemount_doll.sandstone.name=사암 거북
-item.claysoldiers:turtlemount_doll.endstone.name=엔드 스톤 거북
-item.claysoldiers:turtlemount_doll.pumpkin.name=호박 거북
-item.claysoldiers:turtlemount_doll.lapis.name=청금석 거북
-item.claysoldiers:turtlemount_doll.cake.name=케이크 거북
+item.claysoldiers:doll_turtle.cobble.name=조약돌 거북
+item.claysoldiers:doll_turtle.mossy.name=이끼 낀 조약돌 거북
+item.claysoldiers:doll_turtle.netherrack.name=네더랙 거북
+item.claysoldiers:doll_turtle.melon.name=수박 거북
+item.claysoldiers:doll_turtle.sandstone.name=사암 거북
+item.claysoldiers:doll_turtle.endstone.name=엔드 스톤 거북
+item.claysoldiers:doll_turtle.pumpkin.name=호박 거북
+item.claysoldiers:doll_turtle.lapis.name=청금석 거북
+item.claysoldiers:doll_turtle.cake.name=케이크 거북
 
 item.claysoldiers:bunnymount_doll.red.name=빨간색 토끼
 item.claysoldiers:bunnymount_doll.orange.name=주황색 토끼

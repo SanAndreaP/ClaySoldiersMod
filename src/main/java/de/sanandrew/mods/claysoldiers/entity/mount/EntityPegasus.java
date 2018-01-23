@@ -11,17 +11,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EntityClayPegasus
+public class EntityPegasus
         extends EntityClayHorse
 {
     public float wingSwing = 0.0F;
     public float prevWingSwing = 0.0F;
 
-    public EntityClayPegasus(World world) {
+    public EntityPegasus(World world) {
         super(world);
     }
 
-    public EntityClayPegasus(World world, EnumClayHorseType type, ItemStack doll) {
+    public EntityPegasus(World world, EnumClayHorseType type, ItemStack doll) {
         super(world, type, doll);
     }
 

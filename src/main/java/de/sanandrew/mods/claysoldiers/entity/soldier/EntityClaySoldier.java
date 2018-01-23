@@ -19,12 +19,9 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.CsmMobAttributes;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchFollowing;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierAttack;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowFallen;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowKing;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowMount;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISoldierFollowUpgrade;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowEnemy;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
@@ -79,7 +76,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -186,21 +182,21 @@ public class EntityClaySoldier
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISoldierFollowFallen(this, 1.0D));
-        this.tasks.addTask(2, new EntityAISoldierFollowUpgrade(this, 1.0D));
-        this.tasks.addTask(2, new EntityAISoldierFollowMount(this, 1.0D));
-        this.tasks.addTask(3, new EntityAISoldierFollowKing(this, 1.0D));
-        this.tasks.addTask(4, new EntityAISoldierAttack.Meelee(this, 1.0D));
-        this.tasks.addTask(3, new EntityAISoldierAttack.Ranged(this, 1.0D));
+        this.tasks.addTask(1, new EntityAIFollowTarget.Fallen(this, 1.0D));
+        this.tasks.addTask(2, new EntityAIFollowTarget.Upgrade(this, 1.0D));
+        this.tasks.addTask(2, new EntityAIFollowTarget.Mount(this, 1.0D));
+        this.tasks.addTask(3, new EntityAIFollowTarget.King(this, 1.0D));
+        this.tasks.addTask(4, new EntityAIFollowEnemy.Meelee(this, 1.0D));
+        this.tasks.addTask(3, new EntityAIFollowEnemy.Ranged(this, 1.0D));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(6, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(7, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(1, new EntityAISearchFollowing.Fallen(this));
-        this.targetTasks.addTask(2, new EntityAISearchFollowing.Enemy(this));
-        this.targetTasks.addTask(2, new EntityAISearchFollowing.Upgrade(this));
-        this.targetTasks.addTask(2, new EntityAISearchFollowing.Mount(this));
-        this.targetTasks.addTask(3, new EntityAISearchFollowing.King(this));
+        this.targetTasks.addTask(1, new EntityAISearchTarget.Fallen(this));
+        this.targetTasks.addTask(2, new EntityAISearchTarget.Enemy(this));
+        this.targetTasks.addTask(2, new EntityAISearchTarget.Upgrade(this));
+        this.targetTasks.addTask(2, new EntityAISearchTarget.Mount(this));
+        this.targetTasks.addTask(3, new EntityAISearchTarget.King(this));
     }
 
     @Override

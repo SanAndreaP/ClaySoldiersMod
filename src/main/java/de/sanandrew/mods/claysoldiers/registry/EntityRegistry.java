@@ -13,7 +13,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderTurtle;
 import de.sanandrew.mods.claysoldiers.client.renderer.projectile.RenderProjectile;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayPegasus;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasus;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtle;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
 import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
@@ -45,7 +45,7 @@ public final class EntityRegistry
 
         net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountHorse"), EntityClayHorse.class,
                                                                                 "mounthorse", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
-        net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountPegasus"), EntityClayPegasus.class,
+        net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountPegasus"), EntityPegasus.class,
                                                                                 "mountpegasus", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
         net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountturtle"), EntityTurtle.class,
                                                                                 "mountturtle", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
@@ -59,7 +59,7 @@ public final class EntityRegistry
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileFirecharge.class, RenderProjectile.Firecharge::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityProjectileEmerald.class, RenderProjectile.Emerald::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityClayHorse.class, RenderClayHorse::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityClayPegasus.class, RenderClayPegasus::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPegasus.class, RenderClayPegasus::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityTurtle.class, RenderTurtle::new);
     }
 }

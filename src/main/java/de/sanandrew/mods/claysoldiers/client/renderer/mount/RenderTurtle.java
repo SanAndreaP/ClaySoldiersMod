@@ -6,9 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.mount;
 
-import de.sanandrew.mods.claysoldiers.client.model.mount.ModelClayPegasus;
 import de.sanandrew.mods.claysoldiers.client.model.mount.ModelTurtle;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayPegasus;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtle;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;

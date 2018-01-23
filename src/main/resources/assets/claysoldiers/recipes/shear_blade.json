@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:shears",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "claysoldiers:shear_blade",
+    "count": 2
+  }
+}

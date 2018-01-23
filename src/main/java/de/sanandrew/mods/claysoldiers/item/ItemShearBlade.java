@@ -18,7 +18,7 @@ public class ItemShearBlade
         this.setCreativeTab(CsmCreativeTabs.MISC);
         this.setUnlocalizedName(CsmConstants.ID + ":shear_blade");
         this.setMaxDamage(0);
-        this.setHasSubtypes(true);
+        this.setHasSubtypes(false);
         this.setRegistryName(CsmConstants.ID, "shear_blade");
     }
 }

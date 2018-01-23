@@ -67,15 +67,15 @@ item.claysoldiers:doll_pegasus.soulsand.name=灵魂沙飞马
 item.claysoldiers:doll_horse.cake.name=蛋糕马
 item.claysoldiers:doll_pegasus.cake.name=蛋糕飞马
 
-item.claysoldiers:turtlemount_doll.cobble.name=圆石乌龟
-item.claysoldiers:turtlemount_doll.mossy.name=苔石乌龟
-item.claysoldiers:turtlemount_doll.netherrack.name=地狱岩乌龟
-item.claysoldiers:turtlemount_doll.melon.name=西瓜乌龟
-item.claysoldiers:turtlemount_doll.sandstone.name=沙石乌龟
-item.claysoldiers:turtlemount_doll.endstone.name=末地石乌龟
-item.claysoldiers:turtlemount_doll.pumpkin.name=南瓜乌龟
-item.claysoldiers:turtlemount_doll.lapis.name=青金石乌龟
-item.claysoldiers:turtlemount_doll.cake.name=蛋糕乌龟
+item.claysoldiers:doll_turtle.cobble.name=圆石乌龟
+item.claysoldiers:doll_turtle.mossy.name=苔石乌龟
+item.claysoldiers:doll_turtle.netherrack.name=地狱岩乌龟
+item.claysoldiers:doll_turtle.melon.name=西瓜乌龟
+item.claysoldiers:doll_turtle.sandstone.name=沙石乌龟
+item.claysoldiers:doll_turtle.endstone.name=末地石乌龟
+item.claysoldiers:doll_turtle.pumpkin.name=南瓜乌龟
+item.claysoldiers:doll_turtle.lapis.name=青金石乌龟
+item.claysoldiers:doll_turtle.cake.name=蛋糕乌龟
 
 item.claysoldiers:bunnymount_doll.red.name=红色兔子
 item.claysoldiers:bunnymount_doll.orange.name=橙色兔子

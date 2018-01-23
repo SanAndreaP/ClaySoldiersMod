@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.model.mount;
 
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayPegasus;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasus;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.client.ModelJsonLoader;
 import net.minecraft.client.model.ModelRenderer;
@@ -38,7 +38,7 @@ public class ModelClayPegasus
     public void setLivingAnimations(EntityLivingBase livingBase, float limbSwing, float limbSwingAmount, float partialTickTime) {
         super.setLivingAnimations(livingBase, limbSwing, limbSwingAmount, partialTickTime);
 
-        EntityClayPegasus pegasus = (EntityClayPegasus) livingBase;
+        EntityPegasus pegasus = (EntityPegasus) livingBase;
         this.wingSwingAmount = (pegasus.wingSwing + (pegasus.wingSwing - pegasus.prevWingSwing) * partialTickTime);
     }
 

@@ -210,6 +210,7 @@ public class EntityTurtle
     @Override
     public void setSpecial() {
         this.setType(EnumTurtleType.KAWAKO);
+        ClaySoldiersMod.sendSpawnPacket(this);
     }
 
     @Override

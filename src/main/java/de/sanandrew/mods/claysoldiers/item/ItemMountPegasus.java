@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayPegasus;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasus;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 public class ItemMountPegasus
-        extends ItemDoll<EntityClayPegasus, EnumClayHorseType>
+        extends ItemDoll<EntityPegasus, EnumClayHorseType>
 {
     public ItemMountPegasus() {
         super(CsmConstants.ID, "doll_pegasus", CsmCreativeTabs.DOLLS);
@@ -40,8 +40,8 @@ public class ItemMountPegasus
     }
 
     @Override
-    public EntityClayPegasus createEntity(World world, EnumClayHorseType type, ItemStack newDollStack) {
-        return new EntityClayPegasus(world, type, newDollStack);
+    public EntityPegasus createEntity(World world, EnumClayHorseType type, ItemStack newDollStack) {
+        return new EntityPegasus(world, type, newDollStack);
     }
 
     @Override

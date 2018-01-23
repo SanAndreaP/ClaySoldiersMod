@@ -12,7 +12,6 @@ import de.sanandrew.mods.sanlib.lib.util.ReflectionUtils;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 

@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " BB",
+    "SSB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:mossy_cobblestone"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "result": {
+    "item": "claysoldiers:doll_turtle",
+    "count": 2,
+    "nbt": {
+      "dollTurtle": {
+        "type": 1
+      }
+    }
+  }
+}

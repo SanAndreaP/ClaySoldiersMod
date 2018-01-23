@@ -106,15 +106,15 @@ item.claysoldiers:doll_pegasus.soulsand.name=Seelensandpegasus
 item.claysoldiers:doll_horse.cake.name=Kuchenpferd
 item.claysoldiers:doll_pegasus.cake.name=Kuchenpegasus
 
-item.claysoldiers:turtlemount_doll.cobble.name=Bruchsteinschildkröte
-item.claysoldiers:turtlemount_doll.mossy.name=Bemooste Bruchsteinschildkröte
-item.claysoldiers:turtlemount_doll.netherrack.name=Netherrack-Schildkröte
-item.claysoldiers:turtlemount_doll.melon.name=Melonenschildkröte
-item.claysoldiers:turtlemount_doll.sandstone.name=Sandsteinschildkröte
-item.claysoldiers:turtlemount_doll.endstone.name=Endsteinschildkröte
-item.claysoldiers:turtlemount_doll.pumpkin.name=Kürbisschildkröte
-item.claysoldiers:turtlemount_doll.lapis.name=Lapis Lazuli-Schildkröte
-item.claysoldiers:turtlemount_doll.cake.name=Kuchenschildkröte
+item.claysoldiers:doll_turtle.cobble.name=Bruchsteinschildkröte
+item.claysoldiers:doll_turtle.mossy.name=Bemooste Bruchsteinschildkröte
+item.claysoldiers:doll_turtle.netherrack.name=Netherrack-Schildkröte
+item.claysoldiers:doll_turtle.melon.name=Melonenschildkröte
+item.claysoldiers:doll_turtle.sandstone.name=Sandsteinschildkröte
+item.claysoldiers:doll_turtle.endstone.name=Endsteinschildkröte
+item.claysoldiers:doll_turtle.pumpkin.name=Kürbisschildkröte
+item.claysoldiers:doll_turtle.lapis.name=Lapis Lazuli-Schildkröte
+item.claysoldiers:doll_turtle.cake.name=Kuchenschildkröte
 
 item.claysoldiers:bunnymount_doll.red.name=Roter Hase
 item.claysoldiers:bunnymount_doll.orange.name=Oranger Hase

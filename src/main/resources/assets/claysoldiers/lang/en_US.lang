@@ -107,15 +107,15 @@ item.claysoldiers:doll_pegasus.carrot.name=Carrot Pegasus
 item.claysoldiers:doll_pegasus.soulsand.name=Soulsand Pegasus
 item.claysoldiers:doll_pegasus.cake.name=Cake Pegasus
 
-item.claysoldiers:turtlemount_doll.cobble.name=Cobblestone Turtle
-item.claysoldiers:turtlemount_doll.mossy.name=Mossy Cobble Turtle
-item.claysoldiers:turtlemount_doll.netherrack.name=Netherrack Turtle
-item.claysoldiers:turtlemount_doll.melon.name=Melon Turtle
-item.claysoldiers:turtlemount_doll.sandstone.name=Sandstone Turtle
-item.claysoldiers:turtlemount_doll.endstone.name=Endstone Turtle
-item.claysoldiers:turtlemount_doll.pumpkin.name=Pumpkin Turtle
-item.claysoldiers:turtlemount_doll.lapis.name=Lapis Lazuli Turtle
-item.claysoldiers:turtlemount_doll.cake.name=Cake Turtle
+item.claysoldiers:doll_turtle.cobble.name=Cobblestone Turtle
+item.claysoldiers:doll_turtle.mossy.name=Mossy Cobble Turtle
+item.claysoldiers:doll_turtle.netherrack.name=Netherrack Turtle
+item.claysoldiers:doll_turtle.melon.name=Melon Turtle
+item.claysoldiers:doll_turtle.sandstone.name=Sandstone Turtle
+item.claysoldiers:doll_turtle.endstone.name=Endstone Turtle
+item.claysoldiers:doll_turtle.pumpkin.name=Pumpkin Turtle
+item.claysoldiers:doll_turtle.lapis.name=Lapis Lazuli Turtle
+item.claysoldiers:doll_turtle.cake.name=Cake Turtle
 
 item.claysoldiers:bunnymount_doll.red.name=Red Bunny
 item.claysoldiers:bunnymount_doll.orange.name=Orange Bunny

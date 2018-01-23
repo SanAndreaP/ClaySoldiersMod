@@ -16,6 +16,10 @@ import de.sanandrew.mods.claysoldiers.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.Packet;
+import net.minecraft.util.EntitySelectors;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -24,6 +28,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import java.lang.reflect.InvocationTargetException;
@@ -93,6 +98,16 @@ public class ClaySoldiersMod
                 PLUGINS.add(instance);
             } catch( ClassNotFoundException | IllegalAccessException | ExceptionInInitializerError | InstantiationException | NoSuchMethodException | InvocationTargetException e ) {
                 CsmConstants.LOG.error("Failed to load: {}", asmData.getClassName(), e);
+            }
+        }
+    }
+
+    public static void sendSpawnPacket(Entity e) {
+        if( !e.world.isRemote ) {
+            Packet<?> pkt = FMLNetworkHandler.getEntitySpawningPacket(e);
+            if( pkt != null ) {
+                List<EntityPlayerMP> playersInRange = e.world.getPlayers(EntityPlayerMP.class, EntitySelectors.NOT_SPECTATING);
+                playersInRange.forEach(player -> player.connection.sendPacket(pkt));
             }
         }
     }

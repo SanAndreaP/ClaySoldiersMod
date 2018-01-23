@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.List;
 
-public abstract class EntityAISearchFollowing<T extends Entity>
+public abstract class EntityAISearchTarget<T extends Entity>
         extends EntityAIBase
 {
     final EntityClaySoldier taskOwner;
@@ -38,7 +38,7 @@ public abstract class EntityAISearchFollowing<T extends Entity>
 
     T target;
 
-    EntityAISearchFollowing(EntityClaySoldier soldier, Class<T> toScanEntityType) {
+    EntityAISearchTarget(EntityClaySoldier soldier, Class<T> toScanEntityType) {
         this.taskOwner = soldier;
         this.toScanEntityType = toScanEntityType;
         this.setMutexBits(1);
@@ -88,7 +88,7 @@ public abstract class EntityAISearchFollowing<T extends Entity>
     }
 
     public static class Mount
-            extends EntityAISearchFollowing<EntityLivingBase>
+            extends EntityAISearchTarget<EntityLivingBase>
     {
         public Mount(EntityClaySoldier soldier) {
             super(soldier, EntityLivingBase.class);
@@ -103,7 +103,7 @@ public abstract class EntityAISearchFollowing<T extends Entity>
     }
 
     public static class King
-            extends EntityAISearchFollowing<EntityLivingBase>
+            extends EntityAISearchTarget<EntityLivingBase>
     {
         public King(EntityClaySoldier soldier) {
             super(soldier, EntityLivingBase.class);
@@ -125,7 +125,7 @@ public abstract class EntityAISearchFollowing<T extends Entity>
     }
 
     public static class Fallen
-            extends EntityAISearchFollowing<EntityItem>
+            extends EntityAISearchTarget<EntityItem>
     {
         public Fallen(EntityClaySoldier soldier) {
             super(soldier, EntityItem.class);
@@ -145,7 +145,7 @@ public abstract class EntityAISearchFollowing<T extends Entity>
     }
 
     public static class Upgrade
-            extends EntityAISearchFollowing<EntityItem>
+            extends EntityAISearchTarget<EntityItem>
     {
         public Upgrade(EntityClaySoldier soldier) {
             super(soldier, EntityItem.class);
@@ -167,7 +167,7 @@ public abstract class EntityAISearchFollowing<T extends Entity>
     }
 
     public static class Enemy
-            extends EntityAISearchFollowing<EntityLivingBase>
+            extends EntityAISearchTarget<EntityLivingBase>
     {
         public Enemy(EntityClaySoldier soldier) {
             super(soldier, EntityLivingBase.class);

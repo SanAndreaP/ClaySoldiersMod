@@ -67,15 +67,15 @@ item.claysoldiers:doll_pegasus.soulsand.name=Pégase en sable des âmes
 item.claysoldiers:doll_horse.cake.name=Cheval en gâteau
 item.claysoldiers:doll_pegasus.cake.name=Pégase en gâteau
 
-item.claysoldiers:turtlemount_doll.cobble.name=Tortue en pierre
-item.claysoldiers:turtlemount_doll.mossy.name=Tortue en pierre moussue
-item.claysoldiers:turtlemount_doll.netherrack.name=Tortue en roche du Tréfonds
-item.claysoldiers:turtlemount_doll.melon.name=Tortue en pastèque
-item.claysoldiers:turtlemount_doll.sandstone.name=Tortue en grès
-item.claysoldiers:turtlemount_doll.endstone.name=Tortue en pierre du Néant
-item.claysoldiers:turtlemount_doll.pumpkin.name=Tortue en citrouille
-item.claysoldiers:turtlemount_doll.lapis.name=Tortue en lapis lazuli
-item.claysoldiers:turtlemount_doll.cake.name=Tortue en gâteau
+item.claysoldiers:doll_turtle.cobble.name=Tortue en pierre
+item.claysoldiers:doll_turtle.mossy.name=Tortue en pierre moussue
+item.claysoldiers:doll_turtle.netherrack.name=Tortue en roche du Tréfonds
+item.claysoldiers:doll_turtle.melon.name=Tortue en pastèque
+item.claysoldiers:doll_turtle.sandstone.name=Tortue en grès
+item.claysoldiers:doll_turtle.endstone.name=Tortue en pierre du Néant
+item.claysoldiers:doll_turtle.pumpkin.name=Tortue en citrouille
+item.claysoldiers:doll_turtle.lapis.name=Tortue en lapis lazuli
+item.claysoldiers:doll_turtle.cake.name=Tortue en gâteau
 
 item.claysoldiers:bunnymount_doll.red.name=Lapin rouge
 item.claysoldiers:bunnymount_doll.orange.name=Lapin orange

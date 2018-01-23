@@ -49,5 +49,6 @@ public class JeiPlugin
         subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_SOLDIER, itemStack -> TeamRegistry.INSTANCE.getTeam(itemStack).getName());
         subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_HORSE, itemStack -> ItemRegistry.DOLL_HORSE.getType(itemStack).getName());
         subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_PEGASUS, itemStack -> ItemRegistry.DOLL_PEGASUS.getType(itemStack).getName());
+        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_TURTLE, itemStack -> ItemRegistry.DOLL_TURTLE.getType(itemStack).getName());
     }
 }

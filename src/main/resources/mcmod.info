@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "claysoldiers",
+    "name": "Clay Soldiers Mod",
+    "description": "A mod which adds small clay soldiers for your entertainment.",
+    "version": "3.0.0-alpha.6",
+    "mcversion": "1.12",
+    "url": "",
+    "updateUrl": "",
+    "authors": ["SanAndreasP", "SilverChiren", "CliffracerX"],
+    "credits": "KodaichiZero",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
