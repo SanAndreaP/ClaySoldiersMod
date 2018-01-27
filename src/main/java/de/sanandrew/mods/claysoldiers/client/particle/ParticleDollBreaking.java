@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.particle;
 
+import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.sanlib.lib.ColorObj;
@@ -19,18 +20,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ParticleHorseBreaking
+public class ParticleDollBreaking
         extends ParticleBreaking
 {
-    protected ParticleHorseBreaking(World worldIn, double posXIn, double posYIn, double posZIn, EnumClayHorseType horseType) {
+    protected ParticleDollBreaking(World worldIn, double posXIn, double posYIn, double posZIn, IDollType type) {
         super(worldIn, posXIn, posYIn, posZIn, ItemRegistry.DOLL_SOLDIER);
 
-        ItemStack horseStack = ItemRegistry.DOLL_HORSE.getTypeStack(horseType);
+        ItemStack typeStack = type.getTypeStack();
         ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-        IBakedModel model = mesher.getItemModel(horseStack);
-        this.setParticleTexture(model.getOverrides().handleItemState(model, horseStack, null, null).getParticleTexture());
+        IBakedModel model = mesher.getItemModel(typeStack);
+        this.setParticleTexture(model.getOverrides().handleItemState(model, typeStack, null, null).getParticleTexture());
 
-        ColorObj clr = new ColorObj(horseType.itemColor);
+        ColorObj clr = new ColorObj(type.getItemColor());
         this.particleRed = clr.fRed();
         this.particleGreen = clr.fGreen();
         this.particleBlue = clr.fBlue();

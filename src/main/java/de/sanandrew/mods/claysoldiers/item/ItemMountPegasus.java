@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasus;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
@@ -29,10 +30,10 @@ public class ItemMountPegasus
 
     @Override
     public EnumClayHorseType getType(ItemStack stack) {
-        if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_PEGASUS) ) {
-            NBTTagCompound nbt = stack.getSubCompound("dollPegasus");
-            if( nbt != null && nbt.hasKey("type", Constants.NBT.TAG_INT) ) {
-                return EnumClayHorseType.VALUES[nbt.getInteger("type")];
+        if( ItemStackUtils.isItem(stack, this) ) {
+            NBTTagCompound nbt = stack.getSubCompound(NBTConstants.S_DOLL_PEGASUS);
+            if( nbt != null && nbt.hasKey(NBTConstants.I_DOLL_TYPE, Constants.NBT.TAG_INT) ) {
+                return EnumClayHorseType.VALUES[nbt.getInteger(NBTConstants.I_DOLL_TYPE)];
             }
         }
 
@@ -51,8 +52,8 @@ public class ItemMountPegasus
 
     @Override
     public ItemStack getTypeStack(EnumClayHorseType type) {
-        ItemStack stack = new ItemStack(ItemRegistry.DOLL_PEGASUS, 1);
-        stack.getOrCreateSubCompound("dollPegasus").setInteger("type", type.ordinal());
+        ItemStack stack = new ItemStack(this, 1);
+        stack.getOrCreateSubCompound(NBTConstants.S_DOLL_PEGASUS).setInteger(NBTConstants.I_DOLL_TYPE, type.ordinal());
         return stack;
     }
 

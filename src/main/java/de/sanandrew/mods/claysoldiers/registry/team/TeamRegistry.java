@@ -157,5 +157,6 @@ public final class TeamRegistry
         @Override public boolean addUniqueTexture(byte id, ResourceLocation texture) { return false; }
         @Override public boolean isVisible() { return false; }
         @Override public boolean isValid() { return false; }
+        @Override public ItemStack getTypeStack() { return ItemStack.EMPTY; }
     };
 }

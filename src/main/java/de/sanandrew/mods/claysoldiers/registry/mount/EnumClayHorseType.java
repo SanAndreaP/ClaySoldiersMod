@@ -8,6 +8,8 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Arrays;
@@ -15,18 +17,18 @@ import java.util.Arrays;
 public enum EnumClayHorseType
         implements IDollType
 {
-    DIRT(true, 35.0F, 0.6F, false, 0x9C5300, "dirt1", "dirt2", "dirt3", "dirt4"),
-    SAND(true, 30.0F, 0.7F, false, 0xF9FF80, "sand"),
-    GRAVEL(true, 45.0F, 0.4F, false, 0xD1BABA, "gravel1", "gravel2"),
-    SNOW(true, 40.0F, 0.5F, false, 0xFFFFFF, "snow"),
-    GRASS(true, 20.0F, 0.9F, false, 0x2ABA1A, "grass1", "grass2"),
-    LAPIS(true, 35.0F, 0.9F, true, 0x4430C2, "lapis"),
-    CLAY(true, 35.0F, 0.6F, true, 0xA3A3A3, "clay"),
-    CARROT(true, 35.0F, 0.9F, true, 0xF0A800, "carrot1", "carrot2"),
-    SOULSAND(true, 35.0F, 0.8F, false, 0x5C3100, "soulsand"),
-    CAKE(true, 30.0F, 1.1F, false, "cake", "cake"),
+    DIRT(true, 35.0F, 1.05F, false, 0x9C5300, "dirt1", "dirt2", "dirt3", "dirt4"),
+    SAND(true, 30.0F, 1.1F, false, 0xF9FF80, "sand"),
+    GRAVEL(true, 45.0F, 0.95F, false, 0xD1BABA, "gravel1", "gravel2"),
+    SNOW(true, 40.0F, 1.0F, false, 0xFFFFFF, "snow"),
+    GRASS(true, 20.0F, 1.2F, false, 0x2ABA1A, "grass1", "grass2"),
+    LAPIS(true, 35.0F, 1.2F, true, 0x4430C2, "lapis"),
+    CLAY(true, 35.0F, 1.1F, true, 0xA3A3A3, "clay"),
+    CARROT(true, 35.0F, 1.2F, true, 0xF0A800, "carrot1", "carrot2"),
+    SOULSAND(true, 35.0F, 1.15F, false, 0x5C3100, "soulsand"),
+    CAKE(true, 30.0F, 1.4F, false, "cake", "cake"),
 
-    NIGHTMARE(false, 50.0F, 1.2F, false, 0x0, "spec_nightmare1", "spec_nightmare2"),
+    NIGHTMARE(false, 50.0F, 1.6F, false, 0x0, "spec_nightmare1", "spec_nightmare2"),
     UNKNOWN(false, 0.0F, 0.0F, false, 0x0);
 
     public static final EnumClayHorseType[] VALUES = values();
@@ -75,5 +77,15 @@ public enum EnumClayHorseType
     @Override
     public String getName() {
         return this.name();
+    }
+
+    @Override
+    public int getItemColor() {
+        return this.itemColor;
+    }
+
+    @Override
+    public ItemStack getTypeStack() {
+        return ItemRegistry.DOLL_HORSE.getTypeStack(this);
     }
 }

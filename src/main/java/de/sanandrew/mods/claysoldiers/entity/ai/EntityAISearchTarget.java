@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
@@ -96,7 +97,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
 
         @Override
         boolean canFollow(EntityLivingBase entity) {
-            return entity instanceof IMount && entity.isEntityAlive() && this.taskOwner.canEntityBeSeen(entity)
+            return !this.taskOwner.isRiding() && entity instanceof IMount && entity.isEntityAlive() && this.taskOwner.canEntityBeSeen(entity)
                            && !this.taskOwner.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND)
                            && ((IMount) entity).getMaxPassengers() > entity.getPassengers().size();
         }
@@ -111,7 +112,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
 
         @Override
         boolean canFollow(EntityLivingBase entity) {
-            return this.isKingOfGroup(entity) && entity.isEntityAlive() && this.taskOwner.canEntityBeSeen(entity);
+            return this.isKingOfGroup(entity) && entity.isEntityAlive() && this.taskOwner.canEntityBeSeen(entity) && entity.getDistanceSqToEntity(this.taskOwner) > 1.0D;
         }
 
         private boolean isKingOfGroup(Entity e) {
@@ -139,7 +140,8 @@ public abstract class EntityAISearchTarget<T extends Entity>
         }
 
         private boolean isValidItem(ItemStack stack) {
-            return (this.taskOwner.hasUpgrade(Upgrades.MC_CLAY, EnumUpgradeType.MISC) && TeamRegistry.INSTANCE.getTeam(stack).getId().equals(this.taskOwner.getSoldierTeam().getId()))
+            return (this.taskOwner.hasUpgrade(Upgrades.MC_CLAY, EnumUpgradeType.MISC) && stack.getItem() instanceof ItemDoll
+                                && ((ItemDoll<?, ?>) stack.getItem()).canBeResurrected(stack, this.taskOwner))
                            || (this.taskOwner.hasUpgrade(Upgrades.MC_GHASTTEAR, EnumUpgradeType.MISC) && ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER));
         }
     }

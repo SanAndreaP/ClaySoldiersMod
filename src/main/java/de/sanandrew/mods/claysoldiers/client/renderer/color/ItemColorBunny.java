@@ -4,15 +4,17 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.doll;
+package de.sanandrew.mods.claysoldiers.client.renderer.color;
 
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 
-public interface IDollType
+public class ItemColorBunny
+        implements IItemColor
 {
-    boolean isVisible();
-    boolean isValid();
-    String getName();
-    ItemStack getTypeStack();
-    int getItemColor();
+    @Override
+    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+        return tintIndex > 0 ? -1 : ItemRegistry.DOLL_BUNNY.getType(stack).itemColor;
+    }
 }

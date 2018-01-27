@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.doll;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -173,4 +174,8 @@ public abstract class ItemDoll<E extends EntityLiving, T extends IDollType>
 
     @Nonnull
     public abstract SoundEvent getPlacementSound();
+
+    public boolean canBeResurrected(ItemStack stack, ISoldier<?> soldier) {
+        return true;
+    }
 }

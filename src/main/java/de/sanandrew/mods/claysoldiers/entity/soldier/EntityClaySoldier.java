@@ -572,7 +572,7 @@ public class EntityClaySoldier
 
     @Override
     protected float getWaterSlowDown() {
-        return 1.0F;
+        return 0.9F;
     }
 
     @Override

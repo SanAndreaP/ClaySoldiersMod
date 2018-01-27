@@ -11,6 +11,7 @@ package de.sanandrew.mods.claysoldiers.registry;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemBrickSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.item.ItemMountBunny;
 import de.sanandrew.mods.claysoldiers.item.ItemMountHorse;
 import de.sanandrew.mods.claysoldiers.item.ItemMountPegasus;
 import de.sanandrew.mods.claysoldiers.item.ItemMountTurtle;
@@ -29,6 +30,7 @@ public class ItemRegistry
     public static final ItemMountHorse DOLL_HORSE = new ItemMountHorse();
     public static final ItemMountPegasus DOLL_PEGASUS = new ItemMountPegasus();
     public static final ItemMountTurtle DOLL_TURTLE = new ItemMountTurtle();
+    public static final ItemMountBunny DOLL_BUNNY = new ItemMountBunny();
     public static final ItemDisruptor DISRUPTOR = new ItemDisruptor();
     public static final ItemBrickSoldier DOLL_BRICK_SOLDIER = new ItemBrickSoldier();
     public static final ItemShearBlade SHEAR_BLADE = new ItemShearBlade();
@@ -41,6 +43,7 @@ public class ItemRegistry
                 DOLL_HORSE,
                 DOLL_PEGASUS,
                 DOLL_TURTLE,
+                DOLL_BUNNY,
                 DISRUPTOR,
                 DOLL_BRICK_SOLDIER,
                 SHEAR_BLADE,

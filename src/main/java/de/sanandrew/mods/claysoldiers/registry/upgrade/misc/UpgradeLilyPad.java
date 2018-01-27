@@ -14,10 +14,12 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 
@@ -50,7 +52,15 @@ public class UpgradeLilyPad
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
+            soldier.setBreathableUnderwater(true);
             stack.shrink(1);
+        }
+    }
+
+    @Override
+    public void onLoad(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst, NBTTagCompound nbt) {
+        if( !soldier.getEntity().world.isRemote ) {
+            soldier.setBreathableUnderwater(true);
         }
     }
 
@@ -61,7 +71,7 @@ public class UpgradeLilyPad
 
     @Override
     public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
-        if( soldier.getEntity().isInWater() && !soldier.hasUpgrade(Upgrades.CR_IRONINGOT, EnumUpgradeType.CORE) ) {
+        if( soldier.getEntity().isInsideOfMaterial(Material.WATER) && !soldier.hasUpgrade(Upgrades.CR_IRONINGOT, EnumUpgradeType.CORE) ) {
             soldier.getEntity().motionY = Math.min(soldier.getEntity().motionY + 0.025D, 0.4D);
         }
     }

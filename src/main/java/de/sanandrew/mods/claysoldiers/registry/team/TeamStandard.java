@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.registry.team;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Level;
 
@@ -161,5 +162,10 @@ public class TeamStandard
 
         CsmConstants.LOG.log(Level.DEBUG, String.format("Already registered unique texture with ID %d for team %s!", id, this.name));
         return false;
+    }
+
+    @Override
+    public ItemStack getTypeStack() {
+        return TeamRegistry.INSTANCE.getNewTeamStack(1, this);
     }
 }

@@ -6,6 +6,9 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.particle;
 
+import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
@@ -33,8 +36,10 @@ public final class ParticleHandler
     private static Minecraft mc;
 
     static {
-        PARTICLES.put(EnumParticle.TEAM_BREAK, ParticleHandler::spawnTeamParticle);
-        PARTICLES.put(EnumParticle.HORSE_BREAK, ParticleHandler::spawnHorseParticle);
+        PARTICLES.put(EnumParticle.TEAM_BREAK, ParticleHandler::spawnBreakParticle);
+        PARTICLES.put(EnumParticle.HORSE_BREAK, ParticleHandler::spawnBreakParticle);
+        PARTICLES.put(EnumParticle.TURTLE_BREAK, ParticleHandler::spawnBreakParticle);
+        PARTICLES.put(EnumParticle.BUNNY_BREAK, ParticleHandler::spawnBreakParticle);
         PARTICLES.put(EnumParticle.ITEM_BREAK, ParticleHandler::spawnItemParticle);
         PARTICLES.put(EnumParticle.CRITICAL, ParticleHandler::spawnCriticalParticle);
         PARTICLES.put(EnumParticle.HEARTS, ParticleHandler::spawnHealingParticle);
@@ -47,32 +52,32 @@ public final class ParticleHandler
             mc = Minecraft.getMinecraft();
         }
 
-        PARTICLES.get(particle).accept(dim, x, y, z, new Tuple(additData));
+        PARTICLES.get(particle).accept(particle, dim, x, y, z, new Tuple(additData));
     }
 
-    private static void spawnTeamParticle(int dim, double x, double y, double z, Tuple additData) {
-        if( additData.checkValue(0, val -> val instanceof UUID) ) {
+    private static void spawnBreakParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
+        IDollType type = null;
+        switch( particle ) {
+            case TEAM_BREAK: if( additData.checkValue(0, val -> val instanceof UUID) ) type = TeamRegistry.INSTANCE.getTeam(additData.<UUID>getValue(0)); break;
+            case HORSE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumClayHorseType.VALUES[additData.<Integer>getValue(0)]; break;
+            case TURTLE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumTurtleType.VALUES[additData.<Integer>getValue(0)]; break;
+            case BUNNY_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumWoolBunnyType.VALUES[additData.<Integer>getValue(0)]; break;
+        }
+
+        if( type != null ) {
             for( int i = 0; i < 20; i++ ) {
-                mc.effectRenderer.addEffect(new ParticleTeamBreaking(mc.world, x, y, z, TeamRegistry.INSTANCE.getTeam(additData.<UUID>getValue(0))));
+                mc.effectRenderer.addEffect(new ParticleDollBreaking(mc.world, x, y, z, type));
             }
         }
     }
 
-    private static void spawnFireworks(int dim, double x, double y, double z, Tuple additData) {
+    private static void spawnFireworks(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
         if( additData.checkValue(0, val -> val instanceof NBTTagCompound) ) {
             mc.world.makeFireworks(x, y, z, 0.0D, 0.0D, 0.0D, additData.getValue(0));
         }
     }
 
-    private static void spawnHorseParticle(int dim, double x, double y, double z, Tuple additData) {
-        if( additData.checkValue(0, val -> val instanceof Integer) ) {
-            for( int i = 0; i < 20; i++ ) {
-                mc.effectRenderer.addEffect(new ParticleHorseBreaking(mc.world, x, y, z, EnumClayHorseType.VALUES[additData.<Integer>getValue(0)]));
-            }
-        }
-    }
-
-    private static void spawnItemParticle(int dim, double x, double y, double z, Tuple additData) {
+    private static void spawnItemParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
         if( additData.checkValue(0, val -> val instanceof Integer) ) {
             ParticleBreaking.Factory bf = new ParticleBreaking.Factory();
             for( int i = 0; i < 20; i++ ) {
@@ -81,21 +86,21 @@ public final class ParticleHandler
         }
     }
 
-    private static void spawnCriticalParticle(int dim, double x, double y, double z, Tuple additData) {
+    private static void spawnCriticalParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
         ParticleCrit.Factory cf = new ParticleCrit.Factory();
         for( int i = 0; i < 20; i++ ) {
             mc.effectRenderer.addEffect(cf.createParticle(0, mc.world, x, y, z, MiscUtils.RNG.randomFloat() * 0.5D, 0.0D, MiscUtils.RNG.randomFloat() * 0.5D));
         }
     }
 
-    private static void spawnHealingParticle(int dim, double x, double y, double z, Tuple additData) {
+    private static void spawnHealingParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
         ParticleHeart.Factory cf = new ParticleHeart.Factory();
         for( int i = 0; i < 5; i++ ) {
             mc.effectRenderer.addEffect(cf.createParticle(0, mc.world, x, y, z, MiscUtils.RNG.randomFloat() * 0.5D, 0.0D, MiscUtils.RNG.randomFloat() * 0.5D));
         }
     }
 
-    private static void spawnShockwaveParticle(int dim, double x, double y, double z, Tuple additData) {
+    private static void spawnShockwaveParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
         ParticleBlockDust.Factory cf = new ParticleBlockDust.Factory();
 
         for( int i = 0; i < 75; i++ ) {

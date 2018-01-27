@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.particle;
 
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
 
 import java.util.Objects;
@@ -13,10 +14,10 @@ import java.util.Objects;
 @FunctionalInterface
 public interface ParticleFunc
 {
-    void accept(int dim, double x, double y, double z, Tuple additData);
+    void accept(EnumParticle particle, int dim, double x, double y, double z, Tuple additData);
 
     default ParticleFunc andThen(ParticleFunc after) {
         Objects.requireNonNull(after);
-        return (dim, x, y, z, additData) -> {accept(dim, x, y, z, additData); after.accept(dim, x, y, z, additData);};
+        return (particle, dim, x, y, z, additData) -> {accept(particle, dim, x, y, z, additData); after.accept(particle, dim, x, y, z, additData);};
     }
 }

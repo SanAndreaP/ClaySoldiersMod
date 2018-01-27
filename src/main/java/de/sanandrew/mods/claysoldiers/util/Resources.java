@@ -147,6 +147,7 @@ public enum Resources
     MODEL_CLAY_HORSE("models/entity/mount/horse.json"),
     MODEL_CLAY_PEGASUS("models/entity/mount/pegasus.json"),
     MODEL_TURTLE("models/entity/mount/turtle.json"),
+    MODEL_BUNNY("models/entity/mount/bunny.json"),
 
     LIGHTNING_OVERLAY("textures/entity/creeper/creeper_armor.png");
 

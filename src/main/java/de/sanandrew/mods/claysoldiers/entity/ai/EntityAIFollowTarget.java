@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -103,18 +104,19 @@ public abstract class EntityAIFollowTarget
             if( this.taskOwner.followingEntity instanceof EntityItem ) {
                 ItemStack stack = ((EntityItem) this.taskOwner.followingEntity).getItem();
                 return ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER)
-                            || TeamRegistry.INSTANCE.getTeam(stack).getId().equals(this.taskOwner.getSoldierTeam().getId());
+                            || (stack.getItem() instanceof ItemDoll && ((ItemDoll<?, ?>) stack.getItem()).canBeResurrected(stack, this.taskOwner));
             }
             return false;
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         void checkAndPerformAction(Entity entity, double dist) {
             if( dist < 1.0F && entity instanceof EntityItem ) {
                 ItemStack stack = ((EntityItem) entity).getItem();
-                if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_SOLDIER) ) {
-                    ItemRegistry.DOLL_SOLDIER.spawnEntities(this.taskOwner.world, this.taskOwner.getSoldierTeam(), 1,
-                                                            entity.posX, entity.posY + 0.25D, entity.posZ, stack);
+                if( stack.getItem() instanceof ItemDoll ) {
+                    ItemDoll doll = (ItemDoll) stack.getItem();
+                    doll.spawnEntities(this.taskOwner.world, doll.getType(stack), 1, entity.posX, entity.posY + 0.25D, entity.posZ, stack);
                     UpgradeClay.decrUses(this.taskOwner, this.taskOwner.getUpgradeInstance(Upgrades.MC_CLAY, EnumUpgradeType.MISC));
                     stack.shrink(1);
                 } else if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER) ) {

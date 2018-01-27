@@ -9,9 +9,8 @@ package de.sanandrew.mods.claysoldiers.item;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityWoolBunny;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.SoundEvents;
@@ -21,44 +20,44 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public class ItemMountHorse
-        extends ItemDoll<EntityClayHorse, EnumClayHorseType>
+public class ItemMountBunny
+        extends ItemDoll<EntityWoolBunny, EnumWoolBunnyType>
 {
-    public ItemMountHorse() {
-        super(CsmConstants.ID, "doll_horse", CsmCreativeTabs.DOLLS);
+    public ItemMountBunny() {
+        super(CsmConstants.ID, "doll_bunny", CsmCreativeTabs.DOLLS);
     }
 
     @Override
-    public EnumClayHorseType getType(ItemStack stack) {
+    public EnumWoolBunnyType getType(ItemStack stack) {
         if( ItemStackUtils.isItem(stack, this) ) {
-            NBTTagCompound nbt = stack.getSubCompound(NBTConstants.S_DOLL_HORSE);
+            NBTTagCompound nbt = stack.getSubCompound(NBTConstants.S_DOLL_BUNNY);
             if( nbt != null && nbt.hasKey(NBTConstants.I_DOLL_TYPE, Constants.NBT.TAG_INT) ) {
-                return EnumClayHorseType.VALUES[nbt.getInteger(NBTConstants.I_DOLL_TYPE)];
+                return EnumWoolBunnyType.VALUES[nbt.getInteger(NBTConstants.I_DOLL_TYPE)];
             }
         }
 
-        return EnumClayHorseType.UNKNOWN;
+        return EnumWoolBunnyType.UNKNOWN;
     }
 
     @Override
-    public EntityClayHorse createEntity(World world, EnumClayHorseType type, ItemStack newDollStack) {
-        return new EntityClayHorse(world, type, newDollStack);
+    public EntityWoolBunny createEntity(World world, EnumWoolBunnyType type, ItemStack newDollStack) {
+        return new EntityWoolBunny(world, type, newDollStack);
     }
 
     @Override
-    public EnumClayHorseType[] getTypes() {
-        return EnumClayHorseType.VALUES;
+    public EnumWoolBunnyType[] getTypes() {
+        return EnumWoolBunnyType.VALUES;
     }
 
     @Override
-    public ItemStack getTypeStack(EnumClayHorseType type) {
+    public ItemStack getTypeStack(EnumWoolBunnyType type) {
         ItemStack stack = new ItemStack(this, 1);
-        stack.getOrCreateSubCompound(NBTConstants.S_DOLL_HORSE).setInteger(NBTConstants.I_DOLL_TYPE, type.ordinal());
+        stack.getOrCreateSubCompound(NBTConstants.S_DOLL_BUNNY).setInteger(NBTConstants.I_DOLL_TYPE, type.ordinal());
         return stack;
     }
 
     @Override
     public SoundEvent getPlacementSound() {
-        return SoundEvents.BLOCK_GRAVEL_BREAK;
+        return SoundEvents.BLOCK_CLOTH_BREAK;
     }
 }
