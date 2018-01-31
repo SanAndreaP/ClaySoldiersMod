@@ -14,7 +14,6 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
@@ -51,7 +50,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
             return false;
         }
 
-        List<T> list = this.taskOwner.world.getEntitiesWithinAABB(this.toScanEntityType, this.getTargetableArea(), this::canFollow);
+        List<T> list = this.taskOwner.world.getEntitiesWithinAABB(this.toScanEntityType, getTargetableArea(this.taskOwner), this::canFollow);
 
         if( list.isEmpty() ) {
             return false;
@@ -62,7 +61,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
     }
 
     boolean hasTarget() {
-        return this.taskOwner.followingEntity != null && this.taskOwner.followingEntity.isEntityAlive();
+        return hasFollowTarget(this.taskOwner);
     }
 
     void setTarget(T target) {
@@ -76,16 +75,20 @@ public abstract class EntityAISearchTarget<T extends Entity>
         this.target = null;
     }
 
-    private AxisAlignedBB getTargetableArea() {
-        double targetDistance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
-        return this.taskOwner.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
-    }
-
     @Override
     public void updateTask() {
         if( this.target != null ) {
             this.setTarget(this.target);
         }
+    }
+
+    static boolean hasFollowTarget(EntityClaySoldier soldier) {
+        return (soldier.followingEntity != null && soldier.followingEntity.isEntityAlive())
+                       || (soldier.followingBlock != null && soldier.world.isBlockLoaded(soldier.followingBlock) && soldier.world.getChunkFromBlockCoords(soldier.followingBlock).isLoaded());
+    }
+
+    static AxisAlignedBB getTargetableArea(EntityClaySoldier soldier) {
+        return soldier.getEntityBoundingBox().grow(soldier.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue());
     }
 
     public static class Mount

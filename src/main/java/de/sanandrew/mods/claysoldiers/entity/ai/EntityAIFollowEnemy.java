@@ -23,32 +23,6 @@ public abstract class EntityAIFollowEnemy
         this.setMutexBits(3);
     }
 
-//    @Override
-//    public void updateTask() {
-//        EntityLivingBase target = this.attacker.getAttackTarget();
-//
-//        if( target != null ) {
-//            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(target);
-//            if( this.entityPathEntity == null ) {
-//                Vec3d vec = new Vec3d(target.posX - this.attacker.posX, target.posY - this.attacker.posY, target.posZ - this.attacker.posZ).normalize().scale(2.0D);
-//                this.entityPathEntity = this.attacker.getNavigator().getPathToXYZ(this.attacker.posX + vec.x, this.attacker.posY + vec.y, this.attacker.posZ + vec.z);
-//            }
-//        } else {
-//            this.entityPathEntity = null;
-//            return;
-//        }
-//
-//        if( this.attacker.getNavigator().noPath() && this.entityPathEntity != null ) {
-//            this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
-//        }
-//
-//        this.attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
-//        double tgtDist = this.attacker.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
-//
-//        this.checkAndPerformAttack(target, tgtDist);
-//    }
-
-
     @Override
     void checkAndPerformAction(Entity entity, double dist) {
         this.attackTick = Math.max(this.attackTick - 1, 0);
@@ -67,7 +41,6 @@ public abstract class EntityAIFollowEnemy
 
     @Override
     void clearTarget() {
-        this.taskOwner.getNavigator().clearPathEntity();
         this.taskOwner.setAttackTarget(null);
     }
 

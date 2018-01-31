@@ -84,7 +84,6 @@ public abstract class EntityAIFollowTarget
     }
 
     void clearTarget() {
-        this.taskOwner.getNavigator().clearPathEntity();
         this.taskOwner.followingEntity = null;
     }
 

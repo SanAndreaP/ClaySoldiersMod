@@ -38,6 +38,7 @@ import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -110,6 +111,7 @@ public class EntityClaySoldier
     public Boolean i58O55;
 
     public Entity followingEntity;
+    public BlockPos followingBlock;
 
     public float moveMulti;
 
@@ -584,6 +586,11 @@ public class EntityClaySoldier
         if( this.followingEntity != null && !this.followingEntity.isEntityAlive() ) {
             this.followingEntity = null;
         }
+        if( this.followingBlock != null && (!this.world.getChunkFromBlockCoords(this.followingBlock).isLoaded() || !this.world.isBlockLoaded(this.followingBlock)
+                                                    || this.world.isAirBlock(this.followingBlock)) )
+        {
+            this.followingBlock = null;
+        }
 
         super.onUpdate();
 
@@ -887,6 +894,11 @@ public class EntityClaySoldier
         bbEdgeLength = bbEdgeLength * 320.0D;
 
         return distance < bbEdgeLength * bbEdgeLength;
+    }
+
+    @Override
+    public boolean isInWater() {
+        return super.isInWater() && this.isInsideOfMaterial(Material.WATER);
     }
 
     @Override
