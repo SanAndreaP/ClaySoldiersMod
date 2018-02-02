@@ -95,6 +95,10 @@ public final class UpgradeRegistry
     @Nullable
     @Override
     public ISoldierUpgrade getUpgrade(ItemStack stack) {
+        if( !ItemStackUtils.isValid(stack) ) {
+            return null;
+        }
+
         return this.stackToUpgradeMap.entrySet().stream()
                                      .filter(entry -> ItemStackUtils.areEqualNbtFit(stack, entry.getKey(), false, entry.getKey().getItemDamage() != OreDictionary.WILDCARD_VALUE))
                                      .map(Map.Entry::getValue).findFirst().orElse(null);

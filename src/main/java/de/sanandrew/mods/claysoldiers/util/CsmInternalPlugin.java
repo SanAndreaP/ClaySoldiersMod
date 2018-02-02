@@ -26,6 +26,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSkull;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerHeldItem;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
 import de.sanandrew.mods.claysoldiers.event.SoldierDeathEventHandler;
+import de.sanandrew.mods.claysoldiers.event.SoldierInventoryEventHandler;
 import de.sanandrew.mods.claysoldiers.event.SoldierTargetEnemyEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
@@ -57,6 +58,7 @@ public class CsmInternalPlugin
     public void registerCsmEvents(EventBus bus) {
         bus.register(new SoldierTargetEnemyEventHandler());
         bus.register(SoldierDeathEventHandler.INSTANCE);
+        bus.register(new SoldierInventoryEventHandler());
     }
 
     @Override

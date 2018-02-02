@@ -19,7 +19,9 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.CsmMobAttributes;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowEnemy;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
@@ -187,6 +189,7 @@ public class EntityClaySoldier
         this.tasks.addTask(1, new EntityAIFollowTarget.Fallen(this, 1.0D));
         this.tasks.addTask(2, new EntityAIFollowTarget.Upgrade(this, 1.0D));
         this.tasks.addTask(2, new EntityAIFollowTarget.Mount(this, 1.0D));
+        this.tasks.addTask(2, new EntityAIFollowInventory(this, 1.0D));
         this.tasks.addTask(3, new EntityAIFollowTarget.King(this, 1.0D));
         this.tasks.addTask(4, new EntityAIFollowEnemy.Meelee(this, 1.0D));
         this.tasks.addTask(3, new EntityAIFollowEnemy.Ranged(this, 1.0D));
@@ -197,6 +200,7 @@ public class EntityClaySoldier
         this.targetTasks.addTask(1, new EntityAISearchTarget.Fallen(this));
         this.targetTasks.addTask(2, new EntityAISearchTarget.Enemy(this));
         this.targetTasks.addTask(2, new EntityAISearchTarget.Upgrade(this));
+        this.targetTasks.addTask(2, new EntityAISearchInventory(this));
         this.targetTasks.addTask(2, new EntityAISearchTarget.Mount(this));
         this.targetTasks.addTask(3, new EntityAISearchTarget.King(this));
     }
@@ -275,6 +279,11 @@ public class EntityClaySoldier
     }
 
     @Override
+    public ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, @Nonnull ItemStack stack) {
+        return this.addUpgrade(upgrade, upgrade.getType(this), stack);
+    }
+
+    @Override
     public ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, @Nonnull ItemStack stack) {
         if( upgrade == null ) {
             return null;
@@ -316,8 +325,8 @@ public class EntityClaySoldier
     }
 
     @Override
-    public boolean hasUpgrade(@Nonnull ItemStack stack, EnumUpgradeType type) {
-        return hasUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(stack), type);
+    public boolean hasUpgrade(UUID id, EnumUpgradeType type) {
+        return this.hasUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(id), type);
     }
 
     @Override
@@ -326,8 +335,16 @@ public class EntityClaySoldier
     }
 
     @Override
-    public boolean hasUpgrade(UUID id, EnumUpgradeType type) {
-        return this.hasUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(id), type);
+    public boolean canPickupUpgrade(ISoldierUpgrade upgrade, ItemStack stack) {
+        if( upgrade != null ) {
+            EnumUpgradeType type = upgrade.getType(this);
+            return upgrade.isApplicable(this, stack) && !this.upgradeMap.containsKey(new UpgradeEntry(upgrade, type))
+                           && (type != EnumUpgradeType.MAIN_HAND || !this.hasMainHandUpgrade())
+                           && (type != EnumUpgradeType.OFF_HAND || !this.hasOffHandUpgrade())
+                           && (type != EnumUpgradeType.BEHAVIOR || !this.hasBehaviorUpgrade());
+        }
+
+        return false;
     }
 
     @Override

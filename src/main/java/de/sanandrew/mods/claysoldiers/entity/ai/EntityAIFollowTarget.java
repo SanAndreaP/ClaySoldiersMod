@@ -33,12 +33,12 @@ public abstract class EntityAIFollowTarget
 {
     final EntityClaySoldier taskOwner;
 
-    double speedTowardsTarget;
-    Path entityPathEntity;
+    double speed;
+    Path path;
 
     EntityAIFollowTarget(EntityClaySoldier soldier, double speedIn) {
         this.taskOwner = soldier;
-        this.speedTowardsTarget = speedIn;
+        this.speed = speedIn;
         this.setMutexBits(1);
     }
 
@@ -59,18 +59,18 @@ public abstract class EntityAIFollowTarget
         Entity target = this.getTarget();
 
         if( target != null ) {
-            this.entityPathEntity = this.taskOwner.getNavigator().getPathToEntityLiving(target);
-            if( this.entityPathEntity == null ) {
+            this.path = this.taskOwner.getNavigator().getPathToEntityLiving(target);
+            if( this.path == null ) {
                 Vec3d vec = new Vec3d(target.posX - this.taskOwner.posX, target.posY - this.taskOwner.posY, target.posZ - this.taskOwner.posZ).normalize().scale(2.0D);
-                this.entityPathEntity = this.taskOwner.getNavigator().getPathToXYZ(this.taskOwner.posX + vec.x, this.taskOwner.posY + vec.y, this.taskOwner.posZ + vec.z);
+                this.path = this.taskOwner.getNavigator().getPathToXYZ(this.taskOwner.posX + vec.x, this.taskOwner.posY + vec.y, this.taskOwner.posZ + vec.z);
             }
         } else {
-            this.entityPathEntity = null;
+            this.path = null;
             return;
         }
 
-        if( this.taskOwner.getNavigator().noPath() && this.entityPathEntity != null ) {
-            this.taskOwner.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
+        if( this.taskOwner.getNavigator().noPath() && this.path != null ) {
+            this.taskOwner.getNavigator().setPath(this.path, this.speed);
         }
 
         this.taskOwner.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
@@ -102,8 +102,7 @@ public abstract class EntityAIFollowTarget
         boolean isTargetValid() {
             if( this.taskOwner.followingEntity instanceof EntityItem ) {
                 ItemStack stack = ((EntityItem) this.taskOwner.followingEntity).getItem();
-                return ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER)
-                            || (stack.getItem() instanceof ItemDoll && ((ItemDoll<?, ?>) stack.getItem()).canBeResurrected(stack, this.taskOwner));
+                return ResurrectionHelper.canBeResurrected(this.taskOwner, stack);
             }
             return false;
         }
@@ -113,21 +112,7 @@ public abstract class EntityAIFollowTarget
         void checkAndPerformAction(Entity entity, double dist) {
             if( dist < 1.0F && entity instanceof EntityItem ) {
                 ItemStack stack = ((EntityItem) entity).getItem();
-                if( stack.getItem() instanceof ItemDoll ) {
-                    ItemDoll doll = (ItemDoll) stack.getItem();
-                    doll.spawnEntities(this.taskOwner.world, doll.getType(stack), 1, entity.posX, entity.posY + 0.25D, entity.posZ, stack);
-                    UpgradeClay.decrUses(this.taskOwner, this.taskOwner.getUpgradeInstance(Upgrades.MC_CLAY, EnumUpgradeType.MISC));
-                    stack.shrink(1);
-                } else if( ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER) ) {
-                    ItemStack teamStack = TeamRegistry.INSTANCE.getNewTeamStack(1, this.taskOwner.getSoldierTeam());
-                    if( stack.hasTagCompound() ) {
-                        Objects.requireNonNull(teamStack.getTagCompound()).merge(Objects.requireNonNull(stack.getTagCompound()));
-                    }
-                    ItemRegistry.DOLL_SOLDIER.spawnEntities(this.taskOwner.world, this.taskOwner.getSoldierTeam(), 1,
-                                                            entity.posX, entity.posY + 0.25D, entity.posZ, teamStack);
-                    UpgradeGhastTear.decrUses(this.taskOwner, this.taskOwner.getUpgradeInstance(Upgrades.MC_GHASTTEAR, EnumUpgradeType.MISC));
-                    stack.shrink(1);
-                }
+                ResurrectionHelper.resurrectDoll(this.taskOwner, stack, entity.posX, entity.posY, entity.posZ);
 
                 this.clearTarget();
                 if( stack.getCount() < 1 ) {

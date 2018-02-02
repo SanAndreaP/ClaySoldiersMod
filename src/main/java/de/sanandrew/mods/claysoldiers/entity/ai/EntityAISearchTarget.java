@@ -160,11 +160,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
         boolean canFollow(EntityItem entity) {
             if( entity != null && entity.isEntityAlive() && !entity.cannotPickup() ) {
                 ISoldierUpgrade upgrade = UpgradeRegistry.INSTANCE.getUpgrade(entity.getItem());
-                return upgrade != null && upgrade.isApplicable(this.taskOwner, entity.getItem()) && this.taskOwner.canEntityBeSeen(entity)
-                               && !this.taskOwner.hasUpgrade(entity.getItem(), upgrade.getType(this.taskOwner))
-                               && (upgrade.getType(this.taskOwner) != EnumUpgradeType.MAIN_HAND || !this.taskOwner.hasMainHandUpgrade())
-                               && (upgrade.getType(this.taskOwner) != EnumUpgradeType.OFF_HAND || !this.taskOwner.hasOffHandUpgrade())
-                               && (upgrade.getType(this.taskOwner) != EnumUpgradeType.BEHAVIOR || !this.taskOwner.hasBehaviorUpgrade());
+                return upgrade != null && this.taskOwner.canEntityBeSeen(entity) && this.taskOwner.canPickupUpgrade(upgrade, entity.getItem());
             }
 
             return false;

@@ -67,15 +67,17 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     void destroyUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, boolean silent);
 
+    ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, @Nonnull ItemStack stack);
+
     ISoldierUpgradeInst addUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type, @Nonnull ItemStack stack);
 
     ISoldierUpgradeInst getUpgradeInstance(UUID upgradeId, EnumUpgradeType type);
 
+    boolean canPickupUpgrade(ISoldierUpgrade upgrade, ItemStack stack);
+
     long countUpgradesOfType(EnumUpgradeType type);
 
     ISoldierUpgradeInst getUpgradeInstance(ISoldierUpgrade upgrade, EnumUpgradeType type);
-
-    boolean hasUpgrade(@Nonnull ItemStack stack, EnumUpgradeType type);
 
     boolean hasUpgrade(UUID id, EnumUpgradeType type);
 
