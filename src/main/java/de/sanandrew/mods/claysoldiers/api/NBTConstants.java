@@ -11,6 +11,7 @@ public final class NBTConstants
     public static final String E_DOLL_TYPE_HORSE = "horseType";             // integer
     public static final String E_DOLL_TYPE_TURTLE = "turtleType";           // integer
     public static final String E_DOLL_TYPE_BUNNY = "bunny_type";            // integer
+    public static final String E_DOLL_TYPE_GECKO = "gecko_type";            // integer
     public static final String E_DOLL_ITEM = "dollItem";                    // compound tag
 
     public static final String E_MOUNT_TEXTURE_ID = "textureId";            // integer
@@ -34,6 +35,7 @@ public final class NBTConstants
     public static final String S_DOLL_PEGASUS = "dollPegasus";              // sub - compound tag
     public static final String S_DOLL_TURTLE = "dollTurtle";                // sub - compound tag
     public static final String S_DOLL_BUNNY = "doll_bunny";                 // sub - compound tag
+    public static final String S_DOLL_GECKO = "doll_gecko";                 // sub - compound tag
     public static final String I_DOLL_TYPE = "type";                        // integer
 
 }

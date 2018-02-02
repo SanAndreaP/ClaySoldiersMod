@@ -1,0 +1,30 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "T",
+    "S",
+    "B"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:sapling",
+      "data": 0
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    },
+    "B": {
+      "item": "minecraft:sapling",
+      "data": 1
+    }
+  },
+  "result": {
+    "item": "claysoldiers:doll_gecko",
+    "count": 2,
+    "nbt": {
+      "doll_gecko": {
+        "type": 1
+      }
+    }
+  }
+}

@@ -53,5 +53,6 @@ public class JeiPlugin
         subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_PEGASUS, itemStack -> ItemRegistry.DOLL_PEGASUS.getType(itemStack).getName());
         subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_TURTLE, itemStack -> ItemRegistry.DOLL_TURTLE.getType(itemStack).getName());
         subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_BUNNY, itemStack -> ItemRegistry.DOLL_BUNNY.getType(itemStack).getName());
+        subtypeRegistry.registerSubtypeInterpreter(ItemRegistry.DOLL_GECKO, itemStack -> ItemRegistry.DOLL_GECKO.getType(itemStack).getName());
     }
 }

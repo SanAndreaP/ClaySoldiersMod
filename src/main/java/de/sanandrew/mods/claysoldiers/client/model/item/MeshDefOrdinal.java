@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.model.item;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -95,5 +96,20 @@ abstract class MeshDefOrdinal<T extends Enum<T>>
 
         @Override
         public EnumWoolBunnyType getType(ItemStack stack) { return ItemRegistry.DOLL_BUNNY.getType(stack); }
+    }
+
+    static final class Gecko
+            extends MeshDefOrdinal<EnumGeckoType>
+    {
+        Gecko() {
+            Arrays.stream(EnumGeckoType.VALUES).filter(type -> type.visible).forEach(type -> {
+                ResourceLocation resLoc = new ResourceLocation(CsmConstants.ID, "mounts/gecko");
+                ModelResourceLocation modelRes = new ModelResourceLocation(resLoc, "inventory");
+                this.modelRes.put(type.ordinal(), modelRes);
+            });
+        }
+
+        @Override
+        public EnumGeckoType getType(ItemStack stack) { return ItemRegistry.DOLL_GECKO.getType(stack); }
     }
 }

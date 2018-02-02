@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.event.RenderWorldEventHandler;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorBunny;
+import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorGecko;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorHorse;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorPegasus;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
@@ -59,6 +60,7 @@ public class ClientProxy
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorPegasus(), ItemRegistry.DOLL_PEGASUS);
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorTurtle(), ItemRegistry.DOLL_TURTLE);
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorBunny(), ItemRegistry.DOLL_BUNNY);
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorGecko(), ItemRegistry.DOLL_GECKO);
 
         this.soldierRenderer = (ISoldierRender) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
 

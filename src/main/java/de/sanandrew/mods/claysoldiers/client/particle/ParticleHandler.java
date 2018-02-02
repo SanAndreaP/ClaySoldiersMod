@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.particle;
 
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
@@ -40,6 +41,7 @@ public final class ParticleHandler
         PARTICLES.put(EnumParticle.HORSE_BREAK, ParticleHandler::spawnBreakParticle);
         PARTICLES.put(EnumParticle.TURTLE_BREAK, ParticleHandler::spawnBreakParticle);
         PARTICLES.put(EnumParticle.BUNNY_BREAK, ParticleHandler::spawnBreakParticle);
+        PARTICLES.put(EnumParticle.GECKO_BREAK, ParticleHandler::spawnBreakParticle);
         PARTICLES.put(EnumParticle.ITEM_BREAK, ParticleHandler::spawnItemParticle);
         PARTICLES.put(EnumParticle.CRITICAL, ParticleHandler::spawnCriticalParticle);
         PARTICLES.put(EnumParticle.HEARTS, ParticleHandler::spawnHealingParticle);
@@ -62,6 +64,7 @@ public final class ParticleHandler
             case HORSE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumClayHorseType.VALUES[additData.<Integer>getValue(0)]; break;
             case TURTLE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumTurtleType.VALUES[additData.<Integer>getValue(0)]; break;
             case BUNNY_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumWoolBunnyType.VALUES[additData.<Integer>getValue(0)]; break;
+            case GECKO_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumGeckoType.VALUES[additData.<Integer>getValue(0)]; break;
         }
 
         if( type != null ) {

@@ -5,6 +5,7 @@ public enum EnumParticle
     TEAM_BREAK,
     HORSE_BREAK,
     TURTLE_BREAK,
+    GECKO_BREAK,
     BUNNY_BREAK,
     ITEM_BREAK,
     CRITICAL,

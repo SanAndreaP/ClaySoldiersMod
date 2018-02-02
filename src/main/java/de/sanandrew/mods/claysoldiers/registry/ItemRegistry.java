@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemBrickSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.item.ItemMountBunny;
+import de.sanandrew.mods.claysoldiers.item.ItemMountGecko;
 import de.sanandrew.mods.claysoldiers.item.ItemMountHorse;
 import de.sanandrew.mods.claysoldiers.item.ItemMountPegasus;
 import de.sanandrew.mods.claysoldiers.item.ItemMountTurtle;
@@ -31,6 +32,7 @@ public class ItemRegistry
     public static final ItemMountPegasus DOLL_PEGASUS = new ItemMountPegasus();
     public static final ItemMountTurtle DOLL_TURTLE = new ItemMountTurtle();
     public static final ItemMountBunny DOLL_BUNNY = new ItemMountBunny();
+    public static final ItemMountGecko DOLL_GECKO = new ItemMountGecko();
     public static final ItemDisruptor DISRUPTOR = new ItemDisruptor();
     public static final ItemBrickSoldier DOLL_BRICK_SOLDIER = new ItemBrickSoldier();
     public static final ItemShearBlade SHEAR_BLADE = new ItemShearBlade();
@@ -44,6 +46,7 @@ public class ItemRegistry
                 DOLL_PEGASUS,
                 DOLL_TURTLE,
                 DOLL_BUNNY,
+                DOLL_GECKO,
                 DISRUPTOR,
                 DOLL_BRICK_SOLDIER,
                 SHEAR_BLADE,

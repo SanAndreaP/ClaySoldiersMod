@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "claysoldiers:items/mounts/gecko_body",
+    "layer1": "claysoldiers:items/mounts/gecko_spots"
+  }
+}

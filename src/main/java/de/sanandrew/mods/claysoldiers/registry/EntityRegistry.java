@@ -9,11 +9,13 @@ package de.sanandrew.mods.claysoldiers.registry;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderClayHorse;
 import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderClayPegasus;
+import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderGecko;
 import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderTurtle;
 import de.sanandrew.mods.claysoldiers.client.renderer.mount.RenderWoolBunny;
 import de.sanandrew.mods.claysoldiers.client.renderer.projectile.RenderProjectile;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
+import de.sanandrew.mods.claysoldiers.entity.mount.EntityGecko;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasus;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtle;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityWoolBunny;
@@ -53,6 +55,8 @@ public final class EntityRegistry
                                                                                 "mountturtle", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
         net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountbunny"), EntityWoolBunny.class,
                                                                                 "mountbunny", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
+        net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(CsmConstants.ID, "mountgecko"), EntityGecko.class,
+                                                                                "mountgecko", entityCount++, ClaySoldiersMod.instance, 64, 1, true);
     }
 
     @SideOnly(Side.CLIENT)
@@ -66,5 +70,6 @@ public final class EntityRegistry
         RenderingRegistry.registerEntityRenderingHandler(EntityPegasus.class, RenderClayPegasus::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityTurtle.class, RenderTurtle::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityWoolBunny.class, RenderWoolBunny::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGecko.class, RenderGecko::new);
     }
 }
