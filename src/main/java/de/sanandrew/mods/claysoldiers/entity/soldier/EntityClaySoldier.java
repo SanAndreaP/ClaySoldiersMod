@@ -109,7 +109,7 @@ public class EntityClaySoldier
     private final Queue<ISoldierEffectInst> effectSyncList;
 
     @Nonnull
-    private ItemStack doll;
+    private ItemStack doll = ItemStack.EMPTY;
     public Boolean i58O55;
 
     public Entity followingEntity;
@@ -816,7 +816,7 @@ public class EntityClaySoldier
 
         if( super.attackEntityFrom(source, damage) ) {
             if( Objects.equals(srcEntity, this.getAttackTarget()) ) {
-                this.getNavigator().clearPathEntity();
+                this.getNavigator().clearPath();
             }
 
             if( srcEntity instanceof EntityLivingBase ) {

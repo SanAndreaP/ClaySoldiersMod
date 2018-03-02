@@ -50,7 +50,7 @@ public abstract class EntityAIFollowTarget
 
     @Override
     public void resetTask() {
-        this.taskOwner.getNavigator().clearPathEntity();
+        this.taskOwner.getNavigator().clearPath();
         this.clearTarget();
     }
 

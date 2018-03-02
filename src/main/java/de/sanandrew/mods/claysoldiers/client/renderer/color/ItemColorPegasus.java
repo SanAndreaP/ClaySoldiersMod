@@ -14,7 +14,7 @@ public class ItemColorPegasus
         implements IItemColor
 {
     @Override
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+    public int colorMultiplier(ItemStack stack, int tintIndex) {
         return tintIndex > 0 ? -1 : ItemRegistry.DOLL_PEGASUS.getType(stack).itemColor;
     }
 }

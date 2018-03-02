@@ -140,7 +140,7 @@ public class DyedSoldierRecipe
     }
 
     @Override
-    public boolean isHidden() {
+    public boolean isDynamic() {
         return true;
     }
 }

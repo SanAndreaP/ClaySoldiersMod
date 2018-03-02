@@ -68,7 +68,7 @@ public class EntityAIFollowInventory
 
     @Override
     public void resetTask() {
-        this.taskOwner.getNavigator().clearPathEntity();
+        this.taskOwner.getNavigator().clearPath();
         this.taskOwner.followingBlock = null;
     }
 

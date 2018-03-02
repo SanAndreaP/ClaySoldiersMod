@@ -109,7 +109,7 @@ public abstract class EntityClayProjectile
     public void onUpdate() {
         this.isAirBorne = true;
 
-        if( this.shooterCache != null && this.getDistanceToEntity(this.shooterCache) > this.maxDist ) {
+        if( this.shooterCache != null && this.getDistance(this.shooterCache) > this.maxDist ) {
             this.setDead();
             return;
         }
@@ -370,17 +370,17 @@ public abstract class EntityClayProjectile
     }
 
     @Override
-    public void setThrowableHeading(double x, double y, double z, float recoil, float randMulti) {
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         float vecNormal = MathHelper.sqrt(x * x + y * y + z * z);
         x /= vecNormal;
         y /= vecNormal;
         z /= vecNormal;
-        x += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * randMulti;
-        y += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * randMulti;
-        z += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * randMulti;
-        x *= recoil;
-        y *= recoil;
-        z *= recoil;
+        x += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * inaccuracy;
+        y += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * inaccuracy;
+        z += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * inaccuracy;
+        x *= velocity;
+        y *= velocity;
+        z *= velocity;
         this.motionX = x;
         this.motionY = y;
         this.motionZ = z;

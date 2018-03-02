@@ -14,7 +14,7 @@ public class ItemColorGecko
         implements IItemColor
 {
     @Override
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+    public int colorMultiplier(ItemStack stack, int tintIndex) {
         switch( tintIndex ) {
             case 0: return ItemRegistry.DOLL_GECKO.getType(stack).itemColorBody;
             case 1: return ItemRegistry.DOLL_GECKO.getType(stack).itemColorSpots;

@@ -158,6 +158,10 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
         return DisruptType.MOUNT;
     }
 
+    public T getType() {
+        return this.type;
+    }
+
     abstract void setType(T type);
 
     abstract void spawnBreakParticles();

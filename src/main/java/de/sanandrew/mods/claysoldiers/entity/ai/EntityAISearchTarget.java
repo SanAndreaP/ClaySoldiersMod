@@ -115,7 +115,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
 
         @Override
         boolean canFollow(EntityLivingBase entity) {
-            return this.isKingOfGroup(entity) && entity.isEntityAlive() && this.taskOwner.canEntityBeSeen(entity) && entity.getDistanceSqToEntity(this.taskOwner) > 1.0D;
+            return this.isKingOfGroup(entity) && entity.isEntityAlive() && this.taskOwner.canEntityBeSeen(entity) && entity.getDistanceSq(this.taskOwner) > 1.0D;
         }
 
         private boolean isKingOfGroup(Entity e) {
