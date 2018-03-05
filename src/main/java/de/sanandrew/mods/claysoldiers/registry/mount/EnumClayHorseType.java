@@ -9,10 +9,14 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public enum EnumClayHorseType
         implements IDollType
@@ -33,8 +37,8 @@ public enum EnumClayHorseType
 
     public static final EnumClayHorseType[] VALUES = values();
 
-    public final float maxHealth;
-    public final float movementSpeed;
+    public float maxHealth;
+    public float movementSpeed;
     public final boolean canBreatheUnderwater;
     public final boolean visible;
     public final int itemColor;
@@ -87,5 +91,19 @@ public enum EnumClayHorseType
     @Override
     public ItemStack getTypeStack() {
         return ItemRegistry.DOLL_HORSE.getTypeStack(this);
+    }
+
+    public static void updateConfiguration(Configuration config) {
+        String horseCat = CsmConfiguration.CAT_ENTITY_CFG + Configuration.CATEGORY_SPLITTER + "Horses";
+        for( EnumClayHorseType type : VALUES ) {
+            if( type == UNKNOWN ) {
+                continue;
+            }
+
+            type.maxHealth = config.getFloat(type.getName().toLowerCase(Locale.ENGLISH) + "HorseMaxHealth", horseCat, type.maxHealth, 0.0F, 1024.0F,
+                                             "Maximum health of a " + type.getName().toLowerCase(Locale.ENGLISH) + " horse");
+            type.movementSpeed = config.getFloat(type.getName().toLowerCase(Locale.ENGLISH) + "HorseMovementSpeed", horseCat, type.movementSpeed, 0.0F, 1024.0F,
+                                                 "Movement speed of a " + type.getName().toLowerCase(Locale.ENGLISH) + " horse");
+        }
     }
 }
