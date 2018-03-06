@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasus;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.SoundEvents;
@@ -26,6 +27,7 @@ public class ItemMountPegasus
 {
     public ItemMountPegasus() {
         super(CsmConstants.ID, "doll_pegasus", CsmCreativeTabs.DOLLS);
+        this.maxStackSize = CsmConfiguration.pegasusDollStackSize;
     }
 
     @Override

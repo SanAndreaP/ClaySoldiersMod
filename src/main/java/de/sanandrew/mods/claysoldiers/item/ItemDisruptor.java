@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.item;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,7 +26,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -96,8 +99,8 @@ public class ItemDisruptor
     public static DisruptorType getType(ItemStack stack) {
         if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
             NBTTagCompound nbt = stack.getSubCompound("disruptor");
-            if( nbt != null && nbt.hasKey("type", Constants.NBT.TAG_BYTE) ) {
-                byte type = nbt.getByte("type");
+            if( nbt != null && nbt.hasKey("type", Constants.NBT.TAG_ANY_NUMERIC) ) {
+                int type = nbt.getInteger("type");
                 return type >= 0 && type < DisruptorType.VALUES.length ? DisruptorType.VALUES[type] : DisruptorType.UNKNOWN;
             }
         }
@@ -108,7 +111,7 @@ public class ItemDisruptor
     public static ItemStack setType(ItemStack stack, DisruptorType type) {
         if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
             NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
-            nbt.setByte("type", (byte) type.ordinal());
+            nbt.setInteger("type", type.ordinal());
         }
 
         return stack;
@@ -121,13 +124,26 @@ public class ItemDisruptor
         UNKNOWN("null", 1);
 
         public final String name;
-        public final int damage;
+        public int damage;
 
         public static final DisruptorType[] VALUES = DisruptorType.values();
 
         DisruptorType(String name, int damage) {
             this.name = name;
             this.damage = damage;
+        }
+
+        public static void updateConfiguration(Configuration config) {
+            final String category = CsmConfiguration.CAT_BLOCKSITEMS + Configuration.CATEGORY_SPLITTER + "Disruptors";
+            config.getCategory(category).setRequiresMcRestart(true);
+            for( DisruptorType type : VALUES ) {
+                if( type == UNKNOWN ) {
+                    continue;
+                }
+
+                type.damage = config.getInt(type.name + "DisruptorDurability", category, type.damage, 0, OreDictionary.WILDCARD_VALUE - 1,
+                                            "Durability of the " + type.name + " disruptor. 0 durability = unbreakable");
+            }
         }
     }
 }

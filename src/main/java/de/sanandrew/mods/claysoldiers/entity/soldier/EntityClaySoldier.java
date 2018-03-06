@@ -35,6 +35,7 @@ import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeEntry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -191,18 +192,18 @@ public class EntityClaySoldier
         this.tasks.addTask(2, new EntityAIFollowTarget.Mount(this, 1.0D));
         this.tasks.addTask(2, new EntityAIFollowInventory(this, 1.0D));
         this.tasks.addTask(3, new EntityAIFollowTarget.King(this, 1.0D));
-        this.tasks.addTask(4, new EntityAIFollowEnemy.Meelee(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIFollowEnemy.Ranged(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.5D));
-        this.tasks.addTask(6, new EntityAIWander(this, 0.5D));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
+        this.tasks.addTask(4, new EntityAIFollowEnemy.Ranged(this, 1.0D));
+        this.tasks.addTask(5, new EntityAIFollowEnemy.Meelee(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 0.5D));
+        this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
 
         this.targetTasks.addTask(1, new EntityAISearchTarget.Fallen(this));
-        this.targetTasks.addTask(2, new EntityAISearchTarget.Enemy(this));
         this.targetTasks.addTask(2, new EntityAISearchTarget.Upgrade(this));
         this.targetTasks.addTask(2, new EntityAISearchInventory(this));
         this.targetTasks.addTask(2, new EntityAISearchTarget.Mount(this));
         this.targetTasks.addTask(3, new EntityAISearchTarget.King(this));
+        this.targetTasks.addTask(4, new EntityAISearchTarget.Enemy(this));
     }
 
     @Override
@@ -212,10 +213,10 @@ public class EntityClaySoldier
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttributeMap().registerAttribute(CsmMobAttributes.KB_RESISTANCE);
 
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(CsmConfiguration.soldierMovementSpeed);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(CsmConfiguration.soldierAttackDamage);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(CsmConfiguration.soldierMaxHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(CsmConfiguration.soldierFollowRange);
     }
 
     //region upgrades

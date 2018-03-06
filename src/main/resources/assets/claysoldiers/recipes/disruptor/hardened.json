@@ -1,0 +1,40 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " S ",
+    "CMC",
+    "CRC"
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "M": [
+      {
+        "item": "minecraft:hardened_clay"
+      },
+      {
+        "item": "minecraft:stained_hardened_clay",
+        "data": 32767
+      }
+    ],
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "claysoldiers:disruptor",
+    "count": 1,
+    "data": 0,
+    "nbt": {
+      "disruptor": {
+        "type": 1
+      }
+    }
+  }
+}

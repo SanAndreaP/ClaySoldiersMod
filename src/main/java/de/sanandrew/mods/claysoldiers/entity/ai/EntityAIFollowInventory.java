@@ -8,7 +8,6 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.event.SoldierInventoryEvent;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -28,7 +27,7 @@ public class EntityAIFollowInventory
     public EntityAIFollowInventory(EntityClaySoldier soldier, double speedIn) {
         this.taskOwner = soldier;
         this.speed = speedIn;
-        this.setMutexBits(1);
+        this.setMutexBits(MutexBits.MOTION);
     }
 
     @Override

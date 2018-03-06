@@ -20,9 +20,9 @@ public class CraftingRecipes
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         event.getRegistry()
-             .registerAll(new DisruptorRecipe(ItemDisruptor.DisruptorType.CLAY).setRegistryName(new ResourceLocation(CsmConstants.ID, "disruptorClay")),
+             .registerAll(/*new DisruptorRecipe(ItemDisruptor.DisruptorType.CLAY).setRegistryName(new ResourceLocation(CsmConstants.ID, "disruptorClay")),
                           new DisruptorRecipe(ItemDisruptor.DisruptorType.HARDENED).setRegistryName(new ResourceLocation(CsmConstants.ID, "disruptorHardened")),
-                          new DisruptorRecipe(ItemDisruptor.DisruptorType.OBSIDIAN).setRegistryName(new ResourceLocation(CsmConstants.ID, "disruptorObsidian")),
+                          new DisruptorRecipe(ItemDisruptor.DisruptorType.OBSIDIAN).setRegistryName(new ResourceLocation(CsmConstants.ID, "disruptorObsidian")),*/
                           new DyedSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedSoldier")),
                           new ClearSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "clearSoldier")),
                           new OtherSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "othrSoldier")),

@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -133,6 +134,7 @@ public class EntityGecko
 
     void setType(EnumGeckoType type) {
         this.type = type;
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(type.maxHealth);
     }
 
     @Override
@@ -142,7 +144,7 @@ public class EntityGecko
 
     @Override
     float getMovementMultiplier() {
-        return 1.0F;
+        return this.type.movementFactor;
     }
 
     public boolean isOnLadder() {

@@ -32,7 +32,7 @@ class DisruptorRecipe
     private final ItemStack result;
     private ItemStack[] coreItems;
 
-    public DisruptorRecipe(ItemDisruptor.DisruptorType type) {
+    private DisruptorRecipe(ItemDisruptor.DisruptorType type) {
         this.result = ItemDisruptor.setType(new ItemStack(ItemRegistry.DISRUPTOR, 1), type);
 
         switch (type) {

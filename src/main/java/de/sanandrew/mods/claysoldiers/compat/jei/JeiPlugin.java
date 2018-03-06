@@ -30,14 +30,14 @@ public class JeiPlugin
 
     @Override
     public void register(IModRegistry registry) {
-        registry.handleRecipes(ItemDisruptor.DisruptorType.class, new DisruptorRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
+//        registry.handleRecipes(ItemDisruptor.DisruptorType.class, new DisruptorRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
         registry.handleRecipes(JeiDyedSoldierRecipe.class, new DyedSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
         registry.handleRecipes(JeiClearSoldierRecipe.class, new ClearSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
         registry.handleRecipes(JeiOtherSoldierRecipe.class, new OtherSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
         registry.handleRecipes(JeiBrickSoldierRecipe.class, new BrickSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
         registry.handleRecipes(JeiDyedGlassSoldierRecipe.class, new DyedGlassSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
 
-        registry.addRecipes(Arrays.asList(ItemDisruptor.DisruptorType.VALUES), VanillaRecipeCategoryUid.CRAFTING);
+//        registry.addRecipes(Arrays.asList(ItemDisruptor.DisruptorType.VALUES), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(JeiDyedSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(JeiClearSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(JeiOtherSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);

@@ -13,7 +13,6 @@ import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -38,21 +37,21 @@ public enum EnumClayHorseType
     public static final EnumClayHorseType[] VALUES = values();
 
     public float maxHealth;
-    public float movementSpeed;
-    public final boolean canBreatheUnderwater;
+    public float movementFactor;
+    public boolean canBreatheUnderwater;
     public final boolean visible;
     public final int itemColor;
     public final String cstItemSuffix;
     public final ResourceLocation[] textures;
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, String cstItemSuffix, int itemColor, String... textures) {
+    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, String cstItemSuffix, int itemColor, String... textures) {
         if (textures == null) {
             textures = new String[0];
         }
 
         this.visible = visible;
         this.maxHealth = maxHealth;
-        this.movementSpeed = movementSpeed;
+        this.movementFactor = movementFactor;
         this.canBreatheUnderwater = canBreatheUnderwater;
         this.itemColor = itemColor;
         this.textures = Arrays.stream(textures).map(s -> new ResourceLocation(CsmConstants.ID, String.format("textures/entities/mount/horses/%s.png", s)))
@@ -60,12 +59,12 @@ public enum EnumClayHorseType
         this.cstItemSuffix = cstItemSuffix;
     }
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, int itemColor, String... textures) {
-        this(visible, maxHealth, movementSpeed, canBreatheUnderwater, null, itemColor, textures);
+    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, int itemColor, String... textures) {
+        this(visible, maxHealth, movementFactor, canBreatheUnderwater, null, itemColor, textures);
     }
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, String cstItemSuffix, String... textures) {
-        this(visible, maxHealth, movementSpeed, canBreatheUnderwater, cstItemSuffix, 0xFFFFFF, textures);
+    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, String cstItemSuffix, String... textures) {
+        this(visible, maxHealth, movementFactor, canBreatheUnderwater, cstItemSuffix, 0xFFFFFF, textures);
     }
 
     @Override
@@ -94,16 +93,21 @@ public enum EnumClayHorseType
     }
 
     public static void updateConfiguration(Configuration config) {
-        String horseCat = CsmConfiguration.CAT_ENTITY_CFG + Configuration.CATEGORY_SPLITTER + "Horses";
+        final String category = CsmConfiguration.CAT_ENTITY_VALS + Configuration.CATEGORY_SPLITTER + "Horses";
+        config.getCategory(category).setRequiresWorldRestart(true).setComment("This category controls both horses and pegasi!");
+
         for( EnumClayHorseType type : VALUES ) {
             if( type == UNKNOWN ) {
                 continue;
             }
+            String typeNameL = type.getName().toLowerCase(Locale.ENGLISH);
 
-            type.maxHealth = config.getFloat(type.getName().toLowerCase(Locale.ENGLISH) + "HorseMaxHealth", horseCat, type.maxHealth, 0.0F, 1024.0F,
-                                             "Maximum health of a " + type.getName().toLowerCase(Locale.ENGLISH) + " horse");
-            type.movementSpeed = config.getFloat(type.getName().toLowerCase(Locale.ENGLISH) + "HorseMovementSpeed", horseCat, type.movementSpeed, 0.0F, 1024.0F,
-                                                 "Movement speed of a " + type.getName().toLowerCase(Locale.ENGLISH) + " horse");
+            type.maxHealth = config.getFloat(typeNameL + "HorseMaxHealth", category, type.maxHealth, 0.0F, 1024.0F,
+                                             "Maximum health of a " + typeNameL + " horse");
+            type.movementFactor = config.getFloat(typeNameL + "HorseMovementFactor", category, type.movementFactor, 0.0F, 1024.0F,
+                                                  "Movement factor of a " + typeNameL + " horse");
+            type.canBreatheUnderwater = config.getBoolean(typeNameL + "HorseUnderwaterBreath", category, type.canBreatheUnderwater,
+                                                          "Wether or not a " + typeNameL + " horse can breathe underwater");
         }
     }
 }

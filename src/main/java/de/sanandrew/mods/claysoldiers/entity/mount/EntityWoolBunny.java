@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -85,7 +86,12 @@ public class EntityWoolBunny
 
     @Override
     float getMovementMultiplier() {
-        return 1.0F;
+        return this.type.movementFactor;
+    }
+
+    @Override
+    protected float getJumpUpwardsMotion() {
+        return this.type.jumpMoveFactor;
     }
 
     @Override
@@ -125,6 +131,7 @@ public class EntityWoolBunny
     void setType(EnumWoolBunnyType type) {
         this.type = type;
         this.textureId = MiscUtils.RNG.randomInt(type.textures.length);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(type.maxHealth);
     }
 
     @Override

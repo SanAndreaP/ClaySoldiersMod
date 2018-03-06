@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
@@ -44,6 +45,7 @@ public class ItemSoldier
 {
     public ItemSoldier() {
         super(CsmConstants.ID, "doll_soldier", CsmCreativeTabs.DOLLS);
+        this.maxStackSize = CsmConfiguration.soldierDollStackSize;
     }
 
     @Override

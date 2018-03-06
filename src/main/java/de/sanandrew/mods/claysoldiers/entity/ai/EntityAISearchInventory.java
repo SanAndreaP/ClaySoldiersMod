@@ -20,7 +20,7 @@ public class EntityAISearchInventory
 
     public EntityAISearchInventory(EntityClaySoldier soldier) {
         this.taskOwner = soldier;
-        this.setMutexBits(1);
+        this.setMutexBits(MutexBits.TARGETING);
     }
 
     @Override

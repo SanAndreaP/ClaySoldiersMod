@@ -18,7 +18,7 @@ public class ItemSoldierShield
 {
     public ItemSoldierShield() {
         super();
-        this.setCreativeTab(CsmCreativeTabs.MISC);
+        this.setCreativeTab(null);
         this.setUnlocalizedName(CsmConstants.ID + ":shield");
         this.setMaxDamage(0);
         this.setHasSubtypes(true);

@@ -9,10 +9,13 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public enum EnumWoolBunnyType
         implements IDollType
@@ -38,6 +41,9 @@ public enum EnumWoolBunnyType
 
     public static final EnumWoolBunnyType[] VALUES = values();
 
+    public float maxHealth;
+    public float movementFactor;
+    public float jumpMoveFactor;
     public final boolean visible;
     public final int itemColor;
     public final ResourceLocation[] textures;
@@ -47,6 +53,9 @@ public enum EnumWoolBunnyType
             textures = new String[0];
         }
 
+        this.maxHealth = 20.0F;
+        this.movementFactor = 1.0F;
+        this.jumpMoveFactor = 0.42F;
         this.visible = visible;
         this.itemColor = itemColor;
         this.textures = Arrays.stream(textures).map(s -> new ResourceLocation(CsmConstants.ID, String.format("textures/entities/mount/bunnies/%s.png", s)))
@@ -76,5 +85,24 @@ public enum EnumWoolBunnyType
     @Override
     public ItemStack getTypeStack() {
         return ItemRegistry.DOLL_BUNNY.getTypeStack(this);
+    }
+
+    public static void updateConfiguration(Configuration config) {
+        final String category = CsmConfiguration.CAT_ENTITY_VALS + Configuration.CATEGORY_SPLITTER + "Bunnies";
+        config.getCategory(category).setRequiresWorldRestart(true);
+
+        for( EnumWoolBunnyType type : VALUES ) {
+            if( type == UNKNOWN ) {
+                continue;
+            }
+            String typeNameL = type.getName().toLowerCase(Locale.ENGLISH);
+
+            type.maxHealth = config.getFloat(typeNameL + "BunnyMaxHealth", category, type.maxHealth, 0.0F, 1024.0F,
+                                             "Maximum health of a " + typeNameL + " bunny");
+            type.movementFactor = config.getFloat(typeNameL + "BunnyMovementFactor", category, type.movementFactor, 0.0F, 1024.0F,
+                                                  "Movement factor of a " + typeNameL + " bunny");
+            type.jumpMoveFactor = config.getFloat(type.getName().toLowerCase(Locale.ENGLISH) + "BunnyJumpMoveFactor", category, type.jumpMoveFactor, 0.0F, 1024.0F,
+                                                  "Jump movement factor of a " + typeNameL + " bunny");
+        }
     }
 }

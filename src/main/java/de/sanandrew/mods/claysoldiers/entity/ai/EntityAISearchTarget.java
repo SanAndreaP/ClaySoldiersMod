@@ -41,7 +41,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
     EntityAISearchTarget(EntityClaySoldier soldier, Class<T> toScanEntityType) {
         this.taskOwner = soldier;
         this.toScanEntityType = toScanEntityType;
-        this.setMutexBits(1);
+        this.setMutexBits(MutexBits.TARGETING);
     }
 
     @Override

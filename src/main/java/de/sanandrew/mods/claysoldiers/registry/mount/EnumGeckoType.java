@@ -9,10 +9,12 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
 
-import java.util.Arrays;
+import java.util.Locale;
 
 public enum EnumGeckoType
         implements IDollType
@@ -58,6 +60,8 @@ public enum EnumGeckoType
 
     public static final EnumGeckoType[] VALUES = values();
 
+    public float maxHealth;
+    public float movementFactor;
     public final boolean visible;
     public final int itemColorBody;
     public final int itemColorSpots;
@@ -65,6 +69,8 @@ public enum EnumGeckoType
     public final ResourceLocation textureSpots;
 
     EnumGeckoType(boolean visible, int itemColorBody, int itemColorSpots, String textureBody, String textureSpots) {
+        this.maxHealth = 20.0F;
+        this.movementFactor = 1.0F;
         this.visible = visible;
         this.itemColorBody = itemColorBody;
         this.itemColorSpots = itemColorSpots;
@@ -95,5 +101,22 @@ public enum EnumGeckoType
     @Override
     public ItemStack getTypeStack() {
         return ItemRegistry.DOLL_GECKO.getTypeStack(this);
+    }
+
+    public static void updateConfiguration(Configuration config) {
+        final String category = CsmConfiguration.CAT_ENTITY_VALS + Configuration.CATEGORY_SPLITTER + "Geckos";
+        config.getCategory(category).setRequiresWorldRestart(true);
+
+        for( EnumGeckoType type : VALUES ) {
+            if( type == UNKNOWN ) {
+                continue;
+            }
+            String typeNameL = type.getName().toLowerCase(Locale.ENGLISH).replace('_', '|');
+
+            type.maxHealth = config.getFloat(typeNameL + "GeckoMaxHealth", category, type.maxHealth, 0.0F, 1024.0F,
+                                             "Maximum health of a " + typeNameL + " Gecko");
+            type.movementFactor = config.getFloat(typeNameL + "GeckoMovementFactor", category, type.movementFactor, 0.0F, 1024.0F,
+                                                  "Movement factor of a " + typeNameL + " Gecko");
+        }
     }
 }

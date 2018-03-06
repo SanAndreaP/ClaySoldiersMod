@@ -20,7 +20,7 @@ public abstract class EntityAIFollowEnemy
 
     public EntityAIFollowEnemy(EntityClaySoldier soldier, double speedIn) {
         super(soldier, speedIn);
-        this.setMutexBits(3);
+        this.setMutexBits(MutexBits.MOTION | MutexBits.LOOK_MOVEMENT);
     }
 
     @Override

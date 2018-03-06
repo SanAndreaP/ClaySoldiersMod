@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.entity.mount.EntityGecko;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityGecko;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.SoundEvents;
@@ -27,6 +28,7 @@ public class ItemMountGecko
 {
     public ItemMountGecko() {
         super(CsmConstants.ID, "doll_gecko", CsmCreativeTabs.DOLLS);
+        this.maxStackSize = CsmConfiguration.geckoDollStackSize;
     }
 
     @Override

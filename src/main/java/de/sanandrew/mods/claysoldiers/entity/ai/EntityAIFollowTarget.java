@@ -6,27 +6,19 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeClay;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeGhastTear;
-import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.Vec3d;
-
-import java.util.Objects;
 
 public abstract class EntityAIFollowTarget
         extends EntityAIBase
@@ -39,7 +31,7 @@ public abstract class EntityAIFollowTarget
     EntityAIFollowTarget(EntityClaySoldier soldier, double speedIn) {
         this.taskOwner = soldier;
         this.speed = speedIn;
-        this.setMutexBits(1);
+        this.setMutexBits(MutexBits.MOTION);
     }
 
     @Override
