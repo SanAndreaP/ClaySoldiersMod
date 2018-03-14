@@ -45,9 +45,11 @@ public class CsmConfiguration
 
     public static final String CAT_RECIPES = "recipes";
     public static boolean enableDyedSoldierRecipe = true;
+    public static boolean enableSoldierWashRecipe = true;
     public static boolean enableDyedGlassSoldierRecipe = true;
     public static boolean enableBrickSoldierReverseRecipe = true;
     public static boolean enableResourceSoldierRecipe = true;
+    public static boolean enableCauldronSoldierWash = true;
 
     public static void initialize(FMLPreInitializationEvent event) {
         config = new Configuration(event.getSuggestedConfigurationFile(), CONFIG_VER, true);
@@ -81,6 +83,8 @@ public class CsmConfiguration
         enableDyedGlassSoldierRecipe = config.getBoolean("enableDyedGlassSoldierRecipe", CAT_RECIPES, enableDyedGlassSoldierRecipe, "Wether or not to allow dyed glass soldiers to be craftable");
         enableBrickSoldierReverseRecipe = config.getBoolean("enableBrickSoldierReverseRecipe", CAT_RECIPES, enableBrickSoldierReverseRecipe, "Wether or not to allow brick soldiers to be reversible via crafting");
         enableResourceSoldierRecipe = config.getBoolean("enableResourceSoldierRecipe", CAT_RECIPES, enableResourceSoldierRecipe, "Wether or not to allow resource soldiers (redstone, melon, etc.) to be craftable");
+        enableSoldierWashRecipe = config.getBoolean("enableSoldierWashRecipe", CAT_RECIPES, enableSoldierWashRecipe, "Wether or not to allow soldier dolls to be reverted into regular clay soldiers via crafting");
+        enableCauldronSoldierWash = config.getBoolean("enableCauldronSoldierWash", CAT_RECIPES, enableCauldronSoldierWash, "Wether or not to allow soldier dolls to be reverted into regular clay soldiers via right-click on a cauldron");
 
         if( config.hasChanged() ) {
             config.save();

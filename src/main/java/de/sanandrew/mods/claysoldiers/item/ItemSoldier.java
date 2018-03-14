@@ -51,7 +51,7 @@ public class ItemSoldier
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        if( !world.isRemote && player.canPlayerEdit(pos.offset(facing), facing, stack) && world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
+        if( CsmConfiguration.enableCauldronSoldierWash && !world.isRemote && player.canPlayerEdit(pos.offset(facing), facing, stack) && world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
             if( !player.isSneaking() && !UuidUtils.areUuidsEqual(TeamRegistry.INSTANCE.getTeam(stack).getId(), Teams.SOLDIER_CLAY) ) {
                 IBlockState state = world.getBlockState(pos);
                 int level = state.getValue(BlockCauldron.LEVEL);
