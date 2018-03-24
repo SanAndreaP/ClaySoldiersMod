@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
+import de.sanandrew.mods.claysoldiers.entity.ai.PathHelper;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -32,6 +33,7 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
         extends EntityCreature
         implements IMount<E>, IEntityAdditionalSpawnData
 {
+    private final PathHelper pathHelper;
     T type = this.getUnknownType();
     int textureId = 0;
     @Nonnull
@@ -42,6 +44,8 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
 
         this.stepHeight = 0.1F;
         this.jumpMovementFactor = 0.2F;
+
+        this.pathHelper = new PathHelper(this);
     }
 
     public EntityClayMount(World worldIn, T type, ItemStack doll) {
@@ -107,6 +111,13 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
     protected void onDeathUpdate() {
         this.deathTime = 20;
         this.setDead();
+    }
+
+    @Override
+    public void onUpdate() {
+        this.pathHelper.update();
+
+        super.onUpdate();
     }
 
     @Override

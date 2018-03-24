@@ -14,7 +14,7 @@ import net.minecraft.util.DamageSource;
 
 public interface IDisruptable
 {
-    DamageSource DISRUPT_DAMAGE = new DamageSource(CsmConstants.ID + ".disrupt").setDamageIsAbsolute();
+    DamageSource DISRUPT_DAMAGE = new DamageSource(CsmConstants.ID + ".disrupt").setDamageIsAbsolute().setDamageBypassesArmor();
 
     void disrupt();
 

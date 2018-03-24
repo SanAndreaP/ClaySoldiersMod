@@ -16,9 +16,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -81,6 +83,23 @@ public class EntityTurtle
     }
 
     @Override
+    public void onDeath(DamageSource damageSource) {
+        if( !this.isSpecial() && damageSource != DISRUPT_DAMAGE && this.isPotionActive(MobEffects.POISON) && MiscUtils.RNG.randomInt(100) == 0 ) {
+            this.dead = false;
+            this.isDead = false;
+            this.deathTime = 0;
+            this.setSpecial();
+        } else {
+            super.onDeath(damageSource);
+        }
+    }
+
+    @Override
+    public boolean isPotionApplicable(PotionEffect potioneffectIn) {
+        return !(this.isSpecial() && potioneffectIn.getPotion() == MobEffects.POISON) && super.isPotionApplicable(potioneffectIn);
+    }
+
+    @Override
     public boolean shouldDismountInWater(Entity rider) {
         return false;
     }
@@ -131,6 +150,13 @@ public class EntityTurtle
     @Override
     public void setSpecial() {
         this.setType(EnumTurtleType.KAWAKO);
+        this.setHealth(this.getMaxHealth());
+        PotionEffect effect = this.getActivePotionEffect(MobEffects.POISON);
+        if( effect != null ) {
+            this.onFinishedPotionEffect(effect);
+            this.removePotionEffect(MobEffects.POISON);
+        }
+        this.removePassengers();
         ClaySoldiersMod.sendSpawnPacket(this);
     }
 

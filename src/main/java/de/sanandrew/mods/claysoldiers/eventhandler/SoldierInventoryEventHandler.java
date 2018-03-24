@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.event;
+package de.sanandrew.mods.claysoldiers.eventhandler;
 
 import de.sanandrew.mods.claysoldiers.api.event.SoldierInventoryEvent;
 import de.sanandrew.mods.claysoldiers.entity.ai.ResurrectionHelper;

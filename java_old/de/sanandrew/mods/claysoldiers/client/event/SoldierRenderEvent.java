@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
-import de.sanandrew.mods.claysoldiers.event.SoldierEvent;
+import de.sanandrew.mods.claysoldiers.eventhandler.SoldierEvent;
 import net.minecraft.client.model.ModelBiped;
 
 @SideOnly(Side.CLIENT)

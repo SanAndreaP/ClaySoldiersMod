@@ -6,32 +6,21 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileEmerald;
-import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileFirecharge;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileGravel;
-import de.sanandrew.mods.claysoldiers.entity.projectile.EntityProjectileSnow;
-import de.sanandrew.mods.claysoldiers.event.EntityFallEventHandler;
-import de.sanandrew.mods.claysoldiers.event.LivingAttackEventHandler;
-import de.sanandrew.mods.claysoldiers.event.LivingJumpEventHandler;
-import de.sanandrew.mods.claysoldiers.event.SoldierDeathEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.EntityFallEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.LivingAttackEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.LivingJumpEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.SoldierDeathEventHandler;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.Arrays;
 import java.util.List;

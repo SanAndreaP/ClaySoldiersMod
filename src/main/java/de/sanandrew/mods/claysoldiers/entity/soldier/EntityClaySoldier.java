@@ -24,6 +24,7 @@ import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowEnemy;
+import de.sanandrew.mods.claysoldiers.entity.ai.PathHelper;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
@@ -125,6 +126,8 @@ public class EntityClaySoldier
     private double chasingPosY;
     private double chasingPosZ;
 
+    private PathHelper pathHelper;
+
     public EntityClaySoldier(World world) {
         super(world);
 
@@ -154,6 +157,8 @@ public class EntityClaySoldier
         this.setMovable(true);
 
         ((PathNavigateGround) this.getNavigator()).setCanSwim(true);
+
+        this.pathHelper = new PathHelper(this);
     }
 
     public EntityClaySoldier(World world, @Nonnull ITeam team, @Nonnull ItemStack doll) {
@@ -609,6 +614,8 @@ public class EntityClaySoldier
         {
             this.followingBlock = null;
         }
+
+        this.pathHelper.update();
 
         super.onUpdate();
 

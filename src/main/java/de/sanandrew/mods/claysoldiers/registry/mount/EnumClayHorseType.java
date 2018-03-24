@@ -20,31 +20,32 @@ import java.util.Locale;
 public enum EnumClayHorseType
         implements IDollType
 {
-    DIRT(true, 35.0F, 1.05F, false, 0x9C5300, "dirt1", "dirt2", "dirt3", "dirt4"),
-    SAND(true, 30.0F, 1.1F, false, 0xF9FF80, "sand"),
-    GRAVEL(true, 45.0F, 0.95F, false, 0xD1BABA, "gravel1", "gravel2"),
-    SNOW(true, 40.0F, 1.0F, false, 0xFFFFFF, "snow"),
-    GRASS(true, 20.0F, 1.2F, false, 0x2ABA1A, "grass1", "grass2"),
-    LAPIS(true, 35.0F, 1.2F, true, 0x4430C2, "lapis"),
-    CLAY(true, 35.0F, 1.1F, true, 0xA3A3A3, "clay"),
-    CARROT(true, 35.0F, 1.2F, true, 0xF0A800, "carrot1", "carrot2"),
-    SOULSAND(true, 35.0F, 1.15F, false, 0x5C3100, "soulsand"),
-    CAKE(true, 30.0F, 1.4F, false, "cake", "cake"),
+    DIRT(true, 35.0F, 1.05F, false, false, 0x9C5300, "dirt1", "dirt2", "dirt3", "dirt4"),
+    SAND(true, 30.0F, 1.1F, false, false, 0xF9FF80, "sand"),
+    GRAVEL(true, 45.0F, 0.95F, false, false, 0xD1BABA, "gravel1", "gravel2"),
+    SNOW(true, 40.0F, 1.0F, false, false, 0xFFFFFF, "snow"),
+    GRASS(true, 20.0F, 1.2F, false, false, 0x2ABA1A, "grass1", "grass2"),
+    LAPIS(true, 35.0F, 1.2F, true, false, 0x4430C2, "lapis"),
+    CLAY(true, 35.0F, 1.1F, true, false, 0xA3A3A3, "clay"),
+    CARROT(true, 35.0F, 1.2F, true, false, 0xF0A800, "carrot1", "carrot2"),
+    SOULSAND(true, 35.0F, 1.15F, false, false, 0x5C3100, "soulsand"),
+    CAKE(true, 30.0F, 1.4F, false, false, "cake", "cake"),
 
-    NIGHTMARE(false, 50.0F, 1.6F, false, 0x0, "spec_nightmare1", "spec_nightmare2"),
-    UNKNOWN(false, 0.0F, 0.0F, false, 0x0);
+    NIGHTMARE(false, 50.0F, 1.6F, false, true, 0x0, "spec_nightmare1", "spec_nightmare2"),
+    UNKNOWN(false, 0.0F, 0.0F, false, false, 0x0);
 
     public static final EnumClayHorseType[] VALUES = values();
 
     public float maxHealth;
     public float movementFactor;
     public boolean canBreatheUnderwater;
+    public boolean hasFireImmunity;
     public final boolean visible;
     public final int itemColor;
     public final String cstItemSuffix;
     public final ResourceLocation[] textures;
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, String cstItemSuffix, int itemColor, String... textures) {
+    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, boolean immuneToFire, String cstItemSuffix, int itemColor, String... textures) {
         if (textures == null) {
             textures = new String[0];
         }
@@ -57,14 +58,15 @@ public enum EnumClayHorseType
         this.textures = Arrays.stream(textures).map(s -> new ResourceLocation(CsmConstants.ID, String.format("textures/entities/mount/horses/%s.png", s)))
                               .toArray(ResourceLocation[]::new);
         this.cstItemSuffix = cstItemSuffix;
+        this.hasFireImmunity = immuneToFire;
     }
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, int itemColor, String... textures) {
-        this(visible, maxHealth, movementFactor, canBreatheUnderwater, null, itemColor, textures);
+    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, boolean immuneToFire, int itemColor, String... textures) {
+        this(visible, maxHealth, movementFactor, canBreatheUnderwater, immuneToFire, null, itemColor, textures);
     }
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, String cstItemSuffix, String... textures) {
-        this(visible, maxHealth, movementFactor, canBreatheUnderwater, cstItemSuffix, 0xFFFFFF, textures);
+    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, boolean immuneToFire, String cstItemSuffix, String... textures) {
+        this(visible, maxHealth, movementFactor, canBreatheUnderwater, immuneToFire, cstItemSuffix, 0xFFFFFF, textures);
     }
 
     @Override
@@ -108,6 +110,8 @@ public enum EnumClayHorseType
                                                   "Movement factor of a " + typeNameL + " horse");
             type.canBreatheUnderwater = config.getBoolean(typeNameL + "HorseUnderwaterBreath", category, type.canBreatheUnderwater,
                                                           "Wether or not a " + typeNameL + " horse can breathe underwater");
+            type.hasFireImmunity = config.getBoolean(typeNameL + "HorseHasFireImmunity", category, type.hasFireImmunity,
+                                                          "Wether or not a " + typeNameL + " horse is immune to fire");
         }
     }
 }

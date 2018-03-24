@@ -74,6 +74,17 @@ public class EntityClayHorse
         return SoundEvents.BLOCK_GRAVEL_STEP;
     }
 
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        if( !this.isSpecial() && damageSource.isFireDamage() && MiscUtils.RNG.randomInt(100) == 0 ) {
+            this.dead = false;
+            this.isDead = false;
+            this.deathTime = 0;
+            this.setSpecial();
+        } else {
+            super.onDeath(damageSource);
+        }
+    }
 
     @Override
     void spawnBreakParticles() {
@@ -96,6 +107,10 @@ public class EntityClayHorse
     @Override
     public void setSpecial() {
         this.setType(EnumClayHorseType.NIGHTMARE);
+        this.setHealth(this.getMaxHealth());
+        this.extinguish();
+        this.removePassengers();
+        ClaySoldiersMod.sendSpawnPacket(this);
     }
 
     @Override
@@ -122,6 +137,7 @@ public class EntityClayHorse
         this.textureId = MiscUtils.RNG.randomInt(type.textures.length);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(type.maxHealth);
         this.setHealth(this.getMaxHealth());
+        this.isImmuneToFire = type.hasFireImmunity;
     }
 
     @Override
