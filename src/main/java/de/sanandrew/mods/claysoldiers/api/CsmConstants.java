@@ -16,7 +16,7 @@ public final class CsmConstants
     public static final String VERSION = "3.0.0-alpha.9.1";
     public static final String CHANNEL = "ClaySoldiersNWCH";
     public static final String NAME = "Clay Soldiers Mod";
-    public static final String DEPENDENCIES = "required-after:forge@[14.23.2.2611,];required-after:sanlib@[1.3.1,]";
+    public static final String DEPENDENCIES = "required-after:forge@[14.23.2.2611,];required-after:sanlib@[1.4.2,]";
     public static final String GUI_FACTORY = "de.sanandrew.mods.claysoldiers.client.gui.config.CsmGuiFactory";
 
     public static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.claysoldiers.client.util.ClientProxy";
