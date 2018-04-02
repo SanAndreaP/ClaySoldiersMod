@@ -150,7 +150,14 @@ public enum Resources
     MODEL_BUNNY("models/entity/mount/bunny.json"),
     MODEL_GECKO("models/entity/mount/gecko.json"),
 
-    LIGHTNING_OVERLAY("textures/entity/creeper/creeper_armor.png");
+    LIGHTNING_OVERLAY("textures/entity/creeper/creeper_armor.png"),
+
+    GUI_LEXICON("textures/gui/lexicon/background.png"),
+    GUI_GROUPICON_UPGRADES("textures/gui/lexicon/group_upgrades.png"),
+
+    SHADER_STENCIL("shader/stencil.frag"),
+
+    STENCIL_LEXICON_GRP("textures/gui/lexicon/group_stencil.png");
 
     public final ResourceLocation resource;
 

@@ -62,6 +62,7 @@ public class LayerGoggles
             }
             RenderUtils.renderStackInWorld(renderedStack, 0.15D, -0.3D, -0.1825D, 0.0F, 0.0F, 0.0F, 0.375F);
             RenderUtils.renderStackInWorld(renderedStack, -0.15D, -0.3D, -0.1825D, 0.0F, 0.0F, 0.0F, 0.375F);
+            GlStateManager.enableRescaleNormal();
 
             GlStateManager.popMatrix();
         }

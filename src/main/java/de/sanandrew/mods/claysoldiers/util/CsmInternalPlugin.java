@@ -6,14 +6,20 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.IEffectRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconEntry;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderUpgrades;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCrown;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGoggles;
@@ -31,6 +37,8 @@ import de.sanandrew.mods.claysoldiers.eventhandler.SoldierTargetEnemyEventHandle
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -86,5 +94,14 @@ public class CsmInternalPlugin
     @SideOnly(Side.CLIENT)
     public void registerSoldierRenderHook(IRenderHookRegistry registry) {
         registry.registerSoldierHook(new RenderHookBody());
+    }
+
+    @Override
+    public void registerLexicon(ILexiconRegistry registry) {
+        registry.registerPageRender(new LexiconRenderUpgrades());
+
+        ILexiconGroup grp = new LexiconGroup("upgrades", Resources.GUI_GROUPICON_UPGRADES.resource);
+        registry.registerGroup(grp);
+        grp.addEntry(new LexiconEntry("stick", "upgrades", CsmConstants.ID + ":upgrades", new ItemStack(Items.STICK)));
     }
 }

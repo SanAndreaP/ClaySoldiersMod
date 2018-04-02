@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.event.RenderWorldEventHandler;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorBunny;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorGecko;
@@ -23,9 +24,12 @@ import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
+import de.sanandrew.mods.claysoldiers.util.GuiHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -53,8 +57,6 @@ public class ClientProxy
 
     @Override
     public void init(FMLInitializationEvent event) {
-        super.init(event);
-
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorSoldier(), ItemRegistry.DOLL_SOLDIER);
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorHorse(), ItemRegistry.DOLL_HORSE);
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorPegasus(), ItemRegistry.DOLL_PEGASUS);
@@ -64,7 +66,12 @@ public class ClientProxy
 
         this.soldierRenderer = (ISoldierRender) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
 
-        ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerSoldierRenderHook(this));
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> {
+            plugin.registerSoldierRenderHook(this);
+            plugin.registerLexicon(LexiconRegistry.INSTANCE);
+        });
+
+        Shaders.initShaders();
     }
 
     @Override
@@ -85,5 +92,10 @@ public class ClientProxy
     @Override
     public void setRenderLightningAt(double x, double y, double z, EnumDyeColor color) {
         RenderWorldEventHandler.INSTANCE.setRenderLightningAt(x, y, z, color == null ? 0x33FF33 : color.getColorValue());
+    }
+
+    @Override
+    public Gui getClientGui(int id, EntityPlayer player, World world, int x, int y, int z) {
+        return GuiHandler.INSTANCE.getClientGui(id, player, world, x, y, z);
     }
 }

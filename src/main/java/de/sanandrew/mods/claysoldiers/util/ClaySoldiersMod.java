@@ -10,6 +10,10 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.compat.IMCHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.EntityFallEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.LivingAttackEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.LivingJumpEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.SoldierDeathEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.DispenserBehaviorRegistry;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
@@ -21,6 +25,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.util.EntitySelectors;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -63,11 +68,16 @@ public class ClaySoldiersMod
             plugin.registerCsmEvents(EVENT_BUS);
         });
 
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler.INSTANCE);
         PacketManager.initialize();
 
         DispenserBehaviorRegistry.initialize();
         EntityRegistry.initialize();
+
+        MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());
+        MinecraftForge.EVENT_BUS.register(new LivingAttackEventHandler());
+        MinecraftForge.EVENT_BUS.register(new LivingJumpEventHandler());
+        MinecraftForge.EVENT_BUS.register(SoldierDeathEventHandler.INSTANCE);
 
         IMCHandler.sendIMC();
 

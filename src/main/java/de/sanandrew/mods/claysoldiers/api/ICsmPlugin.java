@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import net.minecraft.client.renderer.entity.RenderBiped;
@@ -32,5 +33,8 @@ public interface ICsmPlugin
     default void registerSoldierRenderLayer(ISoldierRender<?, ?> renderer) { }
 
     @SideOnly(Side.CLIENT)
-    void registerSoldierRenderHook(IRenderHookRegistry registry);
+    default void registerSoldierRenderHook(IRenderHookRegistry registry) { }
+
+    @SideOnly(Side.CLIENT)
+    default void registerLexicon(ILexiconRegistry registry) { }
 }
