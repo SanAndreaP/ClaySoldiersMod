@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
@@ -47,6 +48,16 @@ public class UpgradeFood
             }
         });
         UPG_ITEMS = foods.toArray(new ItemStack[foods.size()]);
+    }
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "food";
     }
 
     @Override

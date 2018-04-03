@@ -33,6 +33,16 @@ public class UpgradeString
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.STRING, 1) };
 
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "string";
+    }
+
     @Nonnull
     @Override
     public ItemStack[] getStacks() {

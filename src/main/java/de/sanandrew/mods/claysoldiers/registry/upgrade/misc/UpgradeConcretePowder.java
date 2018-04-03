@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
@@ -25,6 +26,16 @@ public class UpgradeConcretePowder
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Blocks.CONCRETE_POWDER, 1, OreDictionary.WILDCARD_VALUE) };
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "concretepowder";
+    }
 
     @Override
     @Nonnull

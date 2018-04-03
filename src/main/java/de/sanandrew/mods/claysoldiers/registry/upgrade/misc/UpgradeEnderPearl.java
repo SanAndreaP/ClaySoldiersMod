@@ -38,6 +38,16 @@ public class UpgradeEnderPearl
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.ENDER_PEARL, 1) };
 
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "enderpearl";
+    }
+
     @Nonnull
     @Override
     public ItemStack[] getStacks() {

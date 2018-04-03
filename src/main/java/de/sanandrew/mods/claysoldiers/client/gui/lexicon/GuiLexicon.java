@@ -39,8 +39,6 @@ public class GuiLexicon
         extends GuiScreen
         implements GuiYesNoCallback
 {
-    private static final int X_SIZE = 200;
-    private static final int Y_SIZE = 213;
 
     private int guiLeft;
     private int guiTop;
@@ -55,6 +53,7 @@ public class GuiLexicon
     public int entryX;
     public int entryY;
     private URI clickedURI;
+    private boolean updateGUI;
 
     public final List<GuiButton> entryButtons;
     public final ILexiconRenderHelper renderHelper;
@@ -68,8 +67,10 @@ public class GuiLexicon
     public void initGui() {
         super.initGui();
 
-        this.guiLeft = (this.width - X_SIZE) / 2;
-        this.guiTop = (this.height - Y_SIZE) / 2;
+        this.scroll = 0.0F;
+
+        this.guiLeft = (this.width - ILexiconRenderHelper.GUI_SIZE_X) / 2;
+        this.guiTop = (this.height - ILexiconRenderHelper.GUI_SIZE_Y) / 2;
 
         this.entryX = this.guiLeft + 9;
         this.entryY = this.guiTop + 19;
@@ -104,6 +105,14 @@ public class GuiLexicon
     }
 
     @Override
+    public void updateScreen() {
+        if( this.updateGUI ) {
+            this.updateGUI = false;
+            this.initGui();
+        }
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partTicks) {
         boolean mouseDown = Mouse.isButtonDown(0);
 
@@ -113,7 +122,7 @@ public class GuiLexicon
         this.mc.renderEngine.bindTexture(Resources.GUI_LEXICON.resource);
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, X_SIZE, Y_SIZE);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, ILexiconRenderHelper.GUI_SIZE_X, ILexiconRenderHelper.GUI_SIZE_Y);
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(this.entryX + ILexiconPageRender.MAX_ENTRY_WIDTH, this.entryY, 0.0F);
@@ -217,16 +226,16 @@ public class GuiLexicon
                         if( this.group.getEntries().size() == 1 ) {
                             this.group = null;
                         }
-                        this.initGui();
+                        this.updateGUI = true;
                     } else if( this.entry == null && this.group != null ) {
                         this.group = null;
-                        this.initGui();
+                        this.updateGUI = true;
                     }
                     break;
                 case 1:
                     this.entry = null;
                     this.group = null;
-                    this.initGui();
+                    this.updateGUI = true;
                     break;
                 case 2:
                     this.mc.player.closeScreen();
@@ -239,10 +248,10 @@ public class GuiLexicon
             if( entries.size() == 1 ) {
                 this.entry = entries.get(0);
             }
-            this.initGui();
+            this.updateGUI = true;
         } else if( button instanceof GuiButtonEntry ) {
             this.entry = ((GuiButtonEntry) button).entry;
-            this.initGui();
+            this.updateGUI = true;
         } else if( button instanceof GuiButtonLink ) {
             try {
                 this.clickedURI = new URI(((GuiButtonLink) button).link);

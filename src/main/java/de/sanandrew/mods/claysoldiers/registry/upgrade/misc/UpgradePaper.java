@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -28,6 +29,16 @@ public class UpgradePaper
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.PAPER, 1), new ItemStack(Items.BOOK, 1) };
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "paper";
+    }
 
     @Override
     @Nonnull

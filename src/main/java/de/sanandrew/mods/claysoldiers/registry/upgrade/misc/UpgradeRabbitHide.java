@@ -38,6 +38,16 @@ public class UpgradeRabbitHide
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.RABBIT_HIDE, 1) };
     private static final short MAX_USES = 20;
 
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "rabbithide";
+    }
+
     @Nonnull
     @Override
     public ItemStack[] getStacks() {

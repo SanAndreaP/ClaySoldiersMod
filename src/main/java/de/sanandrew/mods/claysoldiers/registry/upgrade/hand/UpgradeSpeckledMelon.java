@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -34,6 +35,16 @@ public class UpgradeSpeckledMelon
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.SPECKLED_MELON, 1) };
     private static final short MAX_USES = 20;
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "speckledmelon";
+    }
 
     @Override
     @Nonnull

@@ -33,6 +33,16 @@ public class UpgradeFlint
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.FLINT, 1) };
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "flint";
+    }
+
+    @Override
     @Nonnull
     public EnumUpgradeType getType(ISoldier<?> checker) {
         return EnumUpgradeType.ENHANCEMENT;

@@ -36,6 +36,16 @@ public class UpgradeBone
     private static final short MAX_USES = 30;
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "bone";
+    }
+
+    @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;

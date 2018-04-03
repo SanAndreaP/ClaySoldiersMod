@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -37,6 +38,16 @@ public class UpgradeCoal
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.COAL, 1, 0), new ItemStack(Items.COAL, 1, 1) };
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "coal";
+    }
 
     @Override
     @Nonnull

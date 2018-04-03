@@ -38,6 +38,16 @@ public class UpgradeLeather
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.LEATHER, 1) };
     private static final short MAX_USES = 20;
 
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "leather";
+    }
+
     @Nonnull
     @Override
     public ItemStack[] getStacks() {

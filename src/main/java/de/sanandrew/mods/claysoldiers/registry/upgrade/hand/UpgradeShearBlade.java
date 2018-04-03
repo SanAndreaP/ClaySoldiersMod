@@ -41,6 +41,16 @@ public class UpgradeShearBlade
     private static final byte MAX_USAGES = 25;
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "shearblade";
+    }
+
+    @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;

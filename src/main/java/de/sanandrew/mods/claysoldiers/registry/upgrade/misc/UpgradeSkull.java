@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -31,6 +32,16 @@ public class UpgradeSkull
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.SKULL, 1, OreDictionary.WILDCARD_VALUE) };
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "skull";
+    }
 
     @Override
     @Nonnull

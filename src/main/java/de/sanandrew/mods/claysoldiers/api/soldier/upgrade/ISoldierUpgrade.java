@@ -28,6 +28,10 @@ public interface ISoldierUpgrade
     @Nonnull
     EnumUpgradeType getType(ISoldier<?> checker);
 
+    String getModId();
+
+    String getShortName();
+
     default int getPriority() { return 0; }
 
     default boolean syncData() { return false; }

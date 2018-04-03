@@ -53,6 +53,16 @@ public class UpgradeGoggles
     }
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "goggles";
+    }
+
+    @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;

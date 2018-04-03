@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
@@ -21,6 +22,16 @@ public class UpgradeArrow
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.ARROW, 1) };
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "arrow";
+    }
 
     @Override
     @Nonnull

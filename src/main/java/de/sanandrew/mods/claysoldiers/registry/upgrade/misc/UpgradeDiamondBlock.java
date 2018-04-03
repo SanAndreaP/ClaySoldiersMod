@@ -37,6 +37,16 @@ public class UpgradeDiamondBlock
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Blocks.DIAMOND_BLOCK, 1) };
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "diamondblock";
+    }
+
+    @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;

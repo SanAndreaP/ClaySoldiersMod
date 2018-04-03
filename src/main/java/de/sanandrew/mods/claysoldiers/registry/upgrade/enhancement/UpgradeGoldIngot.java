@@ -39,6 +39,16 @@ public class UpgradeGoldIngot
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.GOLD_INGOT) };
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "goldingot";
+    }
+
+    @Override
     @Nonnull
     public EnumUpgradeType getType(ISoldier<?> checker) {
         return EnumUpgradeType.ENHANCEMENT;

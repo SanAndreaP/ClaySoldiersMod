@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
@@ -32,6 +33,16 @@ public class UpgradeBowl
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.BOWL, 1) };
     private static final short MAX_USES = 20;
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "bowl";
+    }
 
     @Nonnull
     @Override

@@ -31,6 +31,16 @@ public class UpgradeBrick
 {
     private static final ItemStack[] UPG_ITEMS = { new ItemStack(Items.BRICK, 1) };
 
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "brick";
+    }
+
     @Nonnull
     @Override
     public ItemStack[] getStacks() {

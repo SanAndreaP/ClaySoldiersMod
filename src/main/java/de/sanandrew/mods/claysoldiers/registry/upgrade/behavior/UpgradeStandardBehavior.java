@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.behavior;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -29,9 +30,22 @@ public class UpgradeStandardBehavior
         implements ISoldierUpgrade
 {
     private final ItemStack[] upgItems;
+    private String shortName;
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return this.shortName;
+    }
 
     public UpgradeStandardBehavior(ItemStack... items) {
         this.upgItems = items;
+        this.shortName = items[0].getUnlocalizedName();
+        this.shortName = this.shortName.substring(this.shortName.indexOf('.') + 1);
     }
 
     @Override

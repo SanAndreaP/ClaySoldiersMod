@@ -35,6 +35,16 @@ public class UpgradeStick
     private static final short MAX_USES = 20;
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "stick";
+    }
+
+    @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;

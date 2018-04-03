@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
@@ -29,6 +30,16 @@ public class UpgradeGlowstone
         implements ISoldierUpgrade
 {
     private static final ItemStack[] UPG_ITEMS = new ItemStack[] { new ItemStack(Items.GLOWSTONE_DUST, 1), new ItemStack(Blocks.GLOWSTONE, 1) };
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "glowstone";
+    }
 
     @Override
     public ItemStack[] getStacks() {

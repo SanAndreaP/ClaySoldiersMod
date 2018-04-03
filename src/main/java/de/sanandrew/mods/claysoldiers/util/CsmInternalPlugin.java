@@ -18,6 +18,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconEntry;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconEntryUpgrade;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderUpgrades;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
@@ -36,6 +37,7 @@ import de.sanandrew.mods.claysoldiers.eventhandler.SoldierInventoryEventHandler;
 import de.sanandrew.mods.claysoldiers.eventhandler.SoldierTargetEnemyEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -102,6 +104,6 @@ public class CsmInternalPlugin
 
         ILexiconGroup grp = new LexiconGroup("upgrades", Resources.GUI_GROUPICON_UPGRADES.resource);
         registry.registerGroup(grp);
-        grp.addEntry(new LexiconEntry("stick", "upgrades", CsmConstants.ID + ":upgrades", new ItemStack(Items.STICK)));
+        UpgradeRegistry.INSTANCE.getUpgrades().forEach(upg -> grp.addEntry(new LexiconEntryUpgrade("upgrades", CsmConstants.ID + ":upgrades", upg)));
     }
 }

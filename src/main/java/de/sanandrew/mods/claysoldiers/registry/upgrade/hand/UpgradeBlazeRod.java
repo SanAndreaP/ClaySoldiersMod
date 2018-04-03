@@ -36,6 +36,16 @@ public class UpgradeBlazeRod
     private static final byte MAX_USAGES = 20;
 
     @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "blazerod";
+    }
+
+    @Override
     @Nonnull
     public ItemStack[] getStacks() {
         return UPG_ITEMS;

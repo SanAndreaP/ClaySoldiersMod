@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -36,6 +37,11 @@ import javax.annotation.Nonnull;
 public abstract class UpgradeThrowable
         implements ISoldierUpgradeThrowable
 {
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
     @Nonnull
     @Override
     public EnumUpgradeType getType(ISoldier<?> checker) {
@@ -101,6 +107,11 @@ public abstract class UpgradeThrowable
     {
         private static final ItemStack[] ITEMS = { new ItemStack(Blocks.GRAVEL, 1) };
 
+        @Override
+        public String getShortName() {
+            return "gravel";
+        }
+
         @Nonnull
         @Override
         public ItemStack[] getStacks() {
@@ -123,6 +134,11 @@ public abstract class UpgradeThrowable
             extends UpgradeThrowable
     {
         private static final ItemStack[] ITEMS = { new ItemStack(Blocks.SNOW, 1), new ItemStack(Blocks.SNOW_LAYER), new ItemStack(Items.SNOWBALL) };
+
+        @Override
+        public String getShortName() {
+            return "snow";
+        }
 
         @Nonnull
         @Override
@@ -150,6 +166,11 @@ public abstract class UpgradeThrowable
     {
         private static final ItemStack[] ITEMS = { new ItemStack(Items.FIRE_CHARGE) };
 
+        @Override
+        public String getShortName() {
+            return "firecharge";
+        }
+
         @Nonnull
         @Override
         public ItemStack[] getStacks() {
@@ -172,6 +193,11 @@ public abstract class UpgradeThrowable
             extends UpgradeThrowable
     {
         private static final ItemStack[] ITEMS = { new ItemStack(Items.EMERALD), new ItemStack(Blocks.EMERALD_BLOCK) };
+
+        @Override
+        public String getShortName() {
+            return "emerald";
+        }
 
         @Nonnull
         @Override

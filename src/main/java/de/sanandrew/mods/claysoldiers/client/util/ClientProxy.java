@@ -32,6 +32,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,10 +69,16 @@ public class ClientProxy
 
         ClaySoldiersMod.PLUGINS.forEach(plugin -> {
             plugin.registerSoldierRenderHook(this);
-            plugin.registerLexicon(LexiconRegistry.INSTANCE);
         });
 
         Shaders.initShaders();
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> {
+            plugin.registerLexicon(LexiconRegistry.INSTANCE);
+        });
     }
 
     @Override

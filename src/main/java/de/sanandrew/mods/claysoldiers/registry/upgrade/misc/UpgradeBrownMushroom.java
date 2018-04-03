@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
@@ -35,6 +36,16 @@ public class UpgradeBrownMushroom
 {
     private static final ItemStack[] UPG_ITEMS = new ItemStack[] { new ItemStack(Blocks.BROWN_MUSHROOM) };
     private static final short MAX_USES = 2;
+
+    @Override
+    public String getModId() {
+        return CsmConstants.ID;
+    }
+
+    @Override
+    public String getShortName() {
+        return "brownshroom";
+    }
 
     @Override
     @Nonnull
