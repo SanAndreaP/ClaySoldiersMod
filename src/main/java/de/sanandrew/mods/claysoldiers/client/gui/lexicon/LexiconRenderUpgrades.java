@@ -44,7 +44,7 @@ public class LexiconRenderUpgrades
         mc.fontRenderer.drawSplitString(text, 3, 14, MAX_ENTRY_WIDTH - 2, 0xFFFFFFFF);
         mc.fontRenderer.drawSplitString(text, 2, 13, MAX_ENTRY_WIDTH - 2, 0xFF000000);
 
-        helper.drawItemGrid(3, 17, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
+        helper.drawItemGrid(0, 0, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
     }
 
     @Override

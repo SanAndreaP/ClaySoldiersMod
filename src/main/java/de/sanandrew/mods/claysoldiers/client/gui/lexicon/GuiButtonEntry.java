@@ -9,6 +9,7 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
 
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.sanlib.client.ClientTickHandler;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,7 @@ public class GuiButtonEntry
     private float lastTime;
 
     public GuiButtonEntry(int id, int x, int y, ILexiconEntry entry) {
-        super(id, x, y, 156, 14, entry.getEntryName());
+        super(id, x, y, ILexiconPageRender.MAX_ENTRY_WIDTH - 12, 14, entry.getEntryName());
         this.entry = entry;
         this.icon = entry.getEntryIcon();
     }
@@ -46,7 +47,7 @@ public class GuiButtonEntry
         this.lastTime = time;
 
         if( this.visible ) {
-            boolean inside = this.enabled && mx >= x && my >= y && mx < x + width && my < y + height;
+            boolean inside = this.enabled && mx >= this.x && my >= this.y && mx < this.x + this.width && my < this.y + this.height;
             if( inside ) {
                 this.ticksHovered = Math.min(TIME, this.ticksHovered + timeDelta);
             } else {

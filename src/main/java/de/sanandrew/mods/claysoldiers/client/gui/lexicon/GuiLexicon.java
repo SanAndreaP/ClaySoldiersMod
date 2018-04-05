@@ -69,11 +69,11 @@ public class GuiLexicon
 
         this.scroll = 0.0F;
 
-        this.guiLeft = (this.width - ILexiconRenderHelper.GUI_SIZE_X) / 2;
-        this.guiTop = (this.height - ILexiconRenderHelper.GUI_SIZE_Y) / 2;
+        this.guiLeft = (this.width - ILexiconPageRender.GUI_SIZE_X) / 2;
+        this.guiTop = (this.height - ILexiconPageRender.GUI_SIZE_Y) / 2;
 
-        this.entryX = this.guiLeft + 9;
-        this.entryY = this.guiTop + 19;
+        this.entryX = this.guiLeft + ILexiconPageRender.ENTRY_X;
+        this.entryY = this.guiTop + ILexiconPageRender.ENTRY_Y;
 
         this.buttonList.clear();
         this.entryButtons.clear();
@@ -122,7 +122,7 @@ public class GuiLexicon
         this.mc.renderEngine.bindTexture(Resources.GUI_LEXICON.resource);
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, ILexiconRenderHelper.GUI_SIZE_X, ILexiconRenderHelper.GUI_SIZE_Y);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, ILexiconPageRender.GUI_SIZE_X, ILexiconPageRender.GUI_SIZE_Y);
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(this.entryX + ILexiconPageRender.MAX_ENTRY_WIDTH, this.entryY, 0.0F);

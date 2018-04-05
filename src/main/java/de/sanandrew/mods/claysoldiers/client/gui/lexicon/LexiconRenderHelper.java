@@ -19,6 +19,8 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LexiconRenderHelper
         implements ILexiconRenderHelper
@@ -71,10 +73,13 @@ public class LexiconRenderHelper
         this.gui.mc.getTextureManager().bindTexture(Resources.GUI_LEXICON.resource);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x - (1.0F * scale), y - (1.0F * scale), 0.0F);
+        GlStateManager.translate(x, y, 0.0F);
         GlStateManager.scale(scale, scale, 1.0F);
         this.drawTextureRect(0, 0, 222, 0, 18, 18);
         GlStateManager.popMatrix();
+
+        x += (1.0F * scale);
+        y += (1.0F * scale);
 
         boolean mouseOver = mouseY >= 0 && mouseY < ILexiconPageRender.MAX_ENTRY_HEIGHT && mouseX >= x && mouseX < x + 16 * scale && mouseY >= y - scrollY && mouseY < y + 16 * scale - scrollY;
         if( mouseOver && ItemStackUtils.isValid(stack) ) {
@@ -103,6 +108,15 @@ public class LexiconRenderHelper
             Gui.drawRect(x, y, x + (int)(16 * scale), y + (int)(16 * scale), 0x80FFFFFF);
             GlStateManager.popMatrix();
         }
+    }
+
+    private static final Pattern PATTERN_LINKSTRING = Pattern.compile("\\{link:(.+?)\\|(.+?):(.+?)}");
+    public void drawContentString(String str, int x, int y, int wrapWidth, int textColor) {
+        Matcher matcher = PATTERN_LINKSTRING.matcher(str);
+
+//        String shortStr = .replaceAll("$1$2$5");
+//        Map<String, >
+        List<String> lines = this.gui.mc.fontRenderer.listFormattedStringToWidth(str, wrapWidth);
     }
 
     @Override

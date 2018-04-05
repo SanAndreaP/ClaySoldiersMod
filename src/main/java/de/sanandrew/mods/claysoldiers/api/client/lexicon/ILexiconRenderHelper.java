@@ -13,9 +13,6 @@ import javax.annotation.Nonnull;
 
 public interface ILexiconRenderHelper
 {
-    int GUI_SIZE_X = 200;
-    int GUI_SIZE_Y = 213;
-
     void doEntryScissoring(int x, int y, int width, int height);
 
     void doEntryScissoring();

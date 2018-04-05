@@ -179,3 +179,9 @@ item.claysoldiers:stat_display.title.mounts=Mounts
 
 itemGroup.claysoldiers:dolls=Clay Soldiers (Dolls)
 itemGroup.claysoldiers:misc=Clay Soldiers (Misc. Items)
+
+claysoldiers.lexicon.upgrades.name=Upgrades
+claysoldiers.lexicon.upgrades.stick.name=Stick
+claysoldiers.lexicon.upgrades.stick.text=A stick is like a wooden sword for a soldier, increasing their damage output for a limited amount of uses.\n\nMain hand upgrade\n20 uses\n+ 2-3 pts. damage
+claysoldiers.lexicon.upgrades.arrow.name=Arrow
+claysoldiers.lexicon.upgrades.arrow.text=An arrow provides 3 upgrades at once: {link:Feather|upgrades:feather}, {link:Stick|upgrades:stick} and {link:Flint|upgrades:flint}
