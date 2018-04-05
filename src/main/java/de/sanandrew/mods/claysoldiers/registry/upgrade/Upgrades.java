@@ -146,11 +146,11 @@ public final class Upgrades
         registry.registerUpgrade(OH_QUARTZ, new UpgradeQuartz());
         registry.registerUpgrade(OH_BOWL, new UpgradeBowl());
 
-        registry.registerUpgrade(BH_WHEAT, new UpgradeStandardBehavior(new ItemStack(Items.WHEAT)));
-        registry.registerUpgrade(BH_NETHERWART, new UpgradeStandardBehavior(new ItemStack(Items.NETHER_WART)));
-        registry.registerUpgrade(BH_FERMSPIDEREYE, new UpgradeStandardBehavior(new ItemStack(Items.FERMENTED_SPIDER_EYE)));
-        registry.registerUpgrade(BH_ROTTENFLESH, new UpgradeStandardBehavior(new ItemStack(Items.ROTTEN_FLESH)));
-        registry.registerUpgrade(BH_SPONGE, new UpgradeStandardBehavior(new ItemStack(Blocks.SPONGE, 1, OreDictionary.WILDCARD_VALUE)));
+        registry.registerUpgrade(BH_WHEAT, new UpgradeStandardBehavior("wheat", new ItemStack(Items.WHEAT)));
+        registry.registerUpgrade(BH_NETHERWART, new UpgradeStandardBehavior("netherwart", new ItemStack(Items.NETHER_WART)));
+        registry.registerUpgrade(BH_FERMSPIDEREYE, new UpgradeStandardBehavior("fermentedspidereye", new ItemStack(Items.FERMENTED_SPIDER_EYE)));
+        registry.registerUpgrade(BH_ROTTENFLESH, new UpgradeStandardBehavior("rottenflesh", new ItemStack(Items.ROTTEN_FLESH)));
+        registry.registerUpgrade(BH_SPONGE, new UpgradeStandardBehavior("sponge", new ItemStack(Blocks.SPONGE, 1, OreDictionary.WILDCARD_VALUE)));
 
         registry.registerUpgrade(EM_FLINT, new UpgradeFlint());
         registry.registerUpgrade(EM_IRONBLOCK, new UpgradeIronBlock());

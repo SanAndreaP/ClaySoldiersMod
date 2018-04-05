@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
+package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
@@ -27,7 +27,7 @@ public class LexiconEntryUpgrade
     private final ItemStack[] icons;
 
     public LexiconEntryUpgrade(String groupId, String renderId, ISoldierUpgrade upgrade) {
-        this.id = "upgrade:" + upgrade.getModId() + ':' + upgrade.getShortName();
+        this.id = upgrade.getModId() + ':' + upgrade.getShortName();
         this.groupId = groupId;
         this.renderId = renderId;
         this.icons = Arrays.stream(upgrade.getStacks()).map(item -> {

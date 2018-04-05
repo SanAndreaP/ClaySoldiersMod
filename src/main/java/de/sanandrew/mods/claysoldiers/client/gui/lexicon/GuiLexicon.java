@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRenderHelper;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -40,27 +40,27 @@ public class GuiLexicon
         implements GuiYesNoCallback
 {
 
-    private int guiLeft;
-    private int guiTop;
+    int guiLeft;
+    int guiTop;
+    int entryX;
+    int entryY;
 
-    public ILexiconGroup group;
-    public ILexiconEntry entry;
-    public ILexiconPageRender render;
+    private ILexiconGroup group;
+    private ILexiconEntry entry;
+    private ILexiconPageRender render;
 
-    public float scroll = 0.0F;
+    float scroll;
     int dHeight;
     boolean isScrolling;
-    public int entryX;
-    public int entryY;
     private URI clickedURI;
     private boolean updateGUI;
 
     public final List<GuiButton> entryButtons;
-    public final ILexiconRenderHelper renderHelper;
+    public final ILexiconGuiHelper renderHelper;
 
     public GuiLexicon() {
         this.entryButtons = new ArrayList<>();
-        this.renderHelper = new LexiconRenderHelper(this);
+        this.renderHelper = new LexiconGuiHelper(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -178,6 +178,12 @@ public class GuiLexicon
         super.drawScreen(mouseX, mouseY, partTicks);
     }
 
+    public void changePage(ILexiconGroup group, ILexiconEntry entry) {
+        this.group = group;
+        this.entry = entry;
+        this.updateGUI = true;
+    }
+
     private void groupBtnMouseOver(ILexiconGroup group, int mouseX, int mouseY) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(mouseX + 12, mouseY - 12, 32.0F);
@@ -218,54 +224,56 @@ public class GuiLexicon
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        if( button instanceof GuiButtonNav ) {
-            switch( ((GuiButtonNav) button).buttonType ) {
-                case 0:
-                    if( this.entry != null && this.group != null ) {
-                        this.entry = null;
-                        if( this.group.getEntries().size() == 1 ) {
+        if( this.render == null || !this.render.actionPerformed(button, this.renderHelper) ) {
+            if( button instanceof GuiButtonNav ) {
+                switch( ((GuiButtonNav) button).buttonType ) {
+                    case 0:
+                        if( this.entry != null && this.group != null ) {
+                            this.entry = null;
+                            if( this.group.getEntries().size() == 1 ) {
+                                this.group = null;
+                            }
+                            this.updateGUI = true;
+                        } else if( this.entry == null && this.group != null ) {
                             this.group = null;
+                            this.updateGUI = true;
                         }
-                        this.updateGUI = true;
-                    } else if( this.entry == null && this.group != null ) {
+                        break;
+                    case 1:
+                        this.entry = null;
                         this.group = null;
                         this.updateGUI = true;
-                    }
-                    break;
-                case 1:
-                    this.entry = null;
-                    this.group = null;
-                    this.updateGUI = true;
-                    break;
-                case 2:
-                    this.mc.player.closeScreen();
-                    break;
-            }
-        } else if( button instanceof GuiButtonGroup ) {
-            GuiButtonGroup grpButton = (GuiButtonGroup) button;
-            List<ILexiconEntry> entries = grpButton.group.getEntries();
-            this.group = grpButton.group;
-            if( entries.size() == 1 ) {
-                this.entry = entries.get(0);
-            }
-            this.updateGUI = true;
-        } else if( button instanceof GuiButtonEntry ) {
-            this.entry = ((GuiButtonEntry) button).entry;
-            this.updateGUI = true;
-        } else if( button instanceof GuiButtonLink ) {
-            try {
-                this.clickedURI = new URI(((GuiButtonLink) button).link);
-                if (this.mc.gameSettings.chatLinksPrompt) {
-                    this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, this.clickedURI.toString(), 0, false));
-                } else {
-                    this.openLink(this.clickedURI);
+                        break;
+                    case 2:
+                        this.mc.player.closeScreen();
+                        break;
                 }
-            } catch( URISyntaxException e ) {
-                CsmConstants.LOG.log(Level.ERROR, "Cannot create invalid URI", e);
-                this.clickedURI = null;
+            } else if( button instanceof GuiButtonGroup ) {
+                GuiButtonGroup grpButton = (GuiButtonGroup) button;
+                List<ILexiconEntry> entries = grpButton.group.getEntries();
+                this.group = grpButton.group;
+                if( entries.size() == 1 ) {
+                    this.entry = entries.get(0);
+                }
+                this.updateGUI = true;
+            } else if( button instanceof GuiButtonEntry ) {
+                this.entry = ((GuiButtonEntry) button).entry;
+                this.updateGUI = true;
+            } else if( button instanceof GuiButtonLink ) {
+                try {
+                    this.clickedURI = new URI(((GuiButtonLink) button).link);
+                    if( this.mc.gameSettings.chatLinksPrompt ) {
+                        this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, this.clickedURI.toString(), 0, false));
+                    } else {
+                        this.openLink(this.clickedURI);
+                    }
+                } catch( URISyntaxException e ) {
+                    CsmConstants.LOG.log(Level.ERROR, "Cannot create invalid URI", e);
+                    this.clickedURI = null;
+                }
+            } else {
+                super.actionPerformed(button);
             }
-        } else if( this.render == null || !this.render.actionPerformed(button, this.renderHelper) ) {
-            super.actionPerformed(button);
         }
     }
 
@@ -305,25 +313,6 @@ public class GuiLexicon
             java.awt.Desktop.getDesktop().browse(uri);
         } catch( Throwable throwable ) {
             CsmConstants.LOG.log(Level.ERROR, "Couldn\'t open link", throwable);
-        }
-    }
-
-    public static class GuiButtonLink
-            extends GuiButton
-    {
-        public final String link;
-
-        public GuiButtonLink(int id, int x, int y, String text, String link) {
-            super(id, x, y, Minecraft.getMinecraft().fontRenderer.getStringWidth(text), Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT, text);
-            this.link = link;
-        }
-
-        @Override
-        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partTicks) {
-            if( this.visible ) {
-                String clrCode = (this.enabled ? TextFormatting.BLUE : TextFormatting.GRAY).toString();
-                mc.fontRenderer.drawString(clrCode + TextFormatting.UNDERLINE + this.displayString, this.x, this.y, 0xFF000000, false);
-            }
         }
     }
 

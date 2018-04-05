@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.api.client.lexicon;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,15 +24,15 @@ public interface ILexiconPageRender
 
     String getId();
 
-    void initPage(ILexiconEntry entry, ILexiconRenderHelper helper, List<GuiButton> globalButtons, List<GuiButton> entryButtons);
+    void initPage(ILexiconEntry entry, ILexiconGuiHelper helper, List<GuiButton> globalButtons, List<GuiButton> entryButtons);
 
-    default void renderPageGlobal(ILexiconEntry entry, ILexiconRenderHelper helper, int mouseX, int mouseY, float partTicks) { }
+    default void renderPageGlobal(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, float partTicks) { }
 
-    void renderPageEntry(ILexiconEntry entry, ILexiconRenderHelper helper, int mouseX, int mouseY, int scrollY, float partTicks);
+    void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks);
 
-    int getEntryHeight(ILexiconEntry entry, ILexiconRenderHelper helper);
+    int getEntryHeight(ILexiconEntry entry, ILexiconGuiHelper helper);
 
-    default boolean actionPerformed(GuiButton button, ILexiconRenderHelper helper) {
+    default boolean actionPerformed(GuiButton button, ILexiconGuiHelper helper) {
         return false;
     }
 }

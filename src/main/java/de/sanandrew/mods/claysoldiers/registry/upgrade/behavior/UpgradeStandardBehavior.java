@@ -42,9 +42,9 @@ public class UpgradeStandardBehavior
         return this.shortName;
     }
 
-    public UpgradeStandardBehavior(ItemStack... items) {
+    public UpgradeStandardBehavior(String shortName, ItemStack... items) {
         this.upgItems = items;
-        this.shortName = items[0].getUnlocalizedName();
+        this.shortName = shortName;
         this.shortName = this.shortName.substring(this.shortName.indexOf('.') + 1);
     }
 

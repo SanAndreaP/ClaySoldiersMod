@@ -6,28 +6,37 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
 
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRenderHelper;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.client.util.GuiUtils;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-public class LexiconRenderHelper
-        implements ILexiconRenderHelper
+public class LexiconGuiHelper
+        implements ILexiconGuiHelper
 {
     public GuiLexicon gui;
 
-    LexiconRenderHelper(GuiLexicon gui) {
+    LexiconGuiHelper(GuiLexicon gui) {
         this.gui = gui;
     }
 
@@ -111,12 +120,60 @@ public class LexiconRenderHelper
     }
 
     private static final Pattern PATTERN_LINKSTRING = Pattern.compile("\\{link:(.+?)\\|(.+?):(.+?)}");
-    public void drawContentString(String str, int x, int y, int wrapWidth, int textColor) {
-        Matcher matcher = PATTERN_LINKSTRING.matcher(str);
+    @Override
+    public void drawContentString(String str, int x, int y, int wrapWidth, int textColor, @Nonnull List<GuiButton> buttons) {
+        FontRenderer fontRenderer = this.gui.mc.fontRenderer;
+        Map<Integer, String> links = new HashMap<>();
+        while(true) {
+            Matcher matcher = PATTERN_LINKSTRING.matcher(str);
+            if( matcher.find() ) {
+                links.put(matcher.start(), String.format("%s|%s:%s", matcher.group(1), matcher.group(2), matcher.group(3)));
+                str = matcher.replaceFirst("$1");
+            } else {
+                break;
+            }
+        }
 
-//        String shortStr = .replaceAll("$1$2$5");
-//        Map<String, >
-        List<String> lines = this.gui.mc.fontRenderer.listFormattedStringToWidth(str, wrapWidth);
+        int drawnCharacters = 0;
+        List<String> lines = fontRenderer.listFormattedStringToWidth(str, wrapWidth);
+        for( String line : lines ) {
+            final int currLength = drawnCharacters;
+            final int newLength = drawnCharacters + line.length();
+            List<Map.Entry<Integer, String>> entries = links.entrySet().stream().filter(entry -> entry.getKey() >= currLength && entry.getKey() < newLength)
+                                                            .sorted(Comparator.comparingInt(Map.Entry::getKey)).collect(Collectors.toCollection(ArrayList::new));
+            if( entries.size() > 0 ) {
+                int lastUsedId = 0;
+                int lineX = x;
+                for( Map.Entry<Integer, String> entry : entries ) {
+                    String s = line.substring(lastUsedId, entry.getKey() - currLength - 1);
+                    int sl = fontRenderer.getStringWidth(s);
+                    fontRenderer.drawString(s, lineX, y, textColor, false);
+                    lineX += sl;
+
+                    int entrySplitId = entry.getValue().indexOf('|');
+                    String t = entry.getValue().substring(0, entrySplitId);
+                    int tl = fontRenderer.getStringWidth(t);
+                    GuiButton lnk = buttons.stream().filter(button -> button.id == entry.getKey()).findFirst().orElse(null);
+                    if( lnk == null ) {
+                        lnk = new GuiButtonLink(entry.getKey(), lineX, y, t, entry.getValue().substring(entrySplitId + 1));
+                        buttons.add(lnk);
+                    } else {
+                        lnk.x = lineX;
+                        lnk.y = y;
+                    }
+                    lineX += tl;
+
+                    lastUsedId += s.length() + t.length();
+                }
+                if( lastUsedId < line.length() ) {
+                    fontRenderer.drawString(line.substring(lastUsedId), x, y, textColor, false);
+                }
+            } else {
+                fontRenderer.drawString(line, x, y, textColor, false);
+            }
+            y += fontRenderer.FONT_HEIGHT;
+            drawnCharacters = newLength;
+        }
     }
 
     @Override
@@ -127,5 +184,10 @@ public class LexiconRenderHelper
     @Override
     public void drawTextureRect(int x, int y, int u, int v, int w, int h) {
         this.gui.drawTexturedModalRect(x, y, u, v, w, h);
+    }
+
+    @Override
+    public void changePage(ILexiconGroup group, ILexiconEntry entry) {
+        this.gui.changePage(group, entry);
     }
 }
