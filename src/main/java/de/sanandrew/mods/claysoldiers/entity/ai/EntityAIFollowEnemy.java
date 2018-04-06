@@ -63,7 +63,7 @@ public abstract class EntityAIFollowEnemy
         }
 
         protected double getAttackReachSqr() {
-            final double reach = 0.5F + (this.taskOwner.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.5F : 0.0F);
+            final double reach = 0.5F + (this.taskOwner.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.2F : 0.0F);
             return reach * reach;
         }
     }

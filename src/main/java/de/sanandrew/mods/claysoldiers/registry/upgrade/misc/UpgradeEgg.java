@@ -35,7 +35,7 @@ public class UpgradeEgg
 
     @Override
     public String getShortName() {
-        return "quartz";
+        return "egg";
     }
 
     @Override

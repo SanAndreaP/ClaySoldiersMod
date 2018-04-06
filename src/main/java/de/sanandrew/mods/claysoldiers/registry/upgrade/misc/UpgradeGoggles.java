@@ -49,7 +49,7 @@ public class UpgradeGoggles
             itms.add(new ItemStack(Blocks.STAINED_GLASS_PANE, 1, clr.getMetadata()));
         }
 
-        UPG_ITEMS = itms.toArray(new ItemStack[itms.size()]);
+        UPG_ITEMS = itms.toArray(new ItemStack[0]);
     }
 
     @Override
