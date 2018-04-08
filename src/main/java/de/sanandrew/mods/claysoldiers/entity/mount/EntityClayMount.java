@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -133,7 +134,13 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
 
             drops.removeIf(stack -> !ItemStackUtils.isValid(stack));
             for( ItemStack drop : drops ) {
-                this.entityDropItem(drop, 0.5F);
+                EntityItem item = this.entityDropItem(drop, 0.5F);
+                if( item != null ) {
+                    item.motionX = 0.0F;
+                    item.motionY = 0.0F;
+                    item.motionZ = 0.0F;
+                    item.velocityChanged = true;
+                }
             }
         } else {
             this.spawnBreakParticles();

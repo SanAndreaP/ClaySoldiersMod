@@ -17,10 +17,10 @@ public interface ILexiconPageRender
 {
     int GUI_SIZE_X = 200;
     int GUI_SIZE_Y = 213;
-    int ENTRY_X = 9;
+    int ENTRY_X = 12;
     int ENTRY_Y = 19;
-    int MAX_ENTRY_WIDTH = 168;
-    int MAX_ENTRY_HEIGHT = 183;
+    int MAX_ENTRY_WIDTH = 165;
+    int MAX_ENTRY_HEIGHT = 180;
 
     String getId();
 

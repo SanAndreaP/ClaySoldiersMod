@@ -6,9 +6,11 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.client.lexicon;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -21,6 +23,10 @@ public interface ILexiconGuiHelper
 
     GuiScreen getGui();
 
+    void drawTextureRect(int x, int y, int w, int h, float uMin, float vMin, float uMax, float vMax);
+
+    void drawRect(int x, int y, int w, int h, int color);
+
     void changePage(ILexiconGroup group, ILexiconEntry entry);
 
     int getEntryX();
@@ -31,7 +37,14 @@ public interface ILexiconGuiHelper
 
     void drawContentString(String str, int x, int y, int wrapWidth, int textColor, @Nonnull List<GuiButton> newButtons);
 
+    int getWordWrappedHeight(String str, int wrapWidth);
+
+    FontRenderer getFontRenderer();
+
     void drawItem(@Nonnull ItemStack stack, int x, int y, double scale);
 
     void drawTextureRect(int x, int y, int u, int v, int w, int h);
+
+    @SuppressWarnings("ConstantConditions")
+    boolean tryLoadTexture(ResourceLocation location);
 }

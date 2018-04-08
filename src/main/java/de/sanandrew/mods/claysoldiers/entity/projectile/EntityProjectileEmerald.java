@@ -38,7 +38,7 @@ public class EntityProjectileEmerald
 
     @Override
     public float getDamage(Entity e) {
-        return (4.0F + MiscUtils.RNG.randomFloat()) * (e.isWet() ? 2.0F : 1.0F);
+        return (3.0F + MiscUtils.RNG.randomFloat()) * (e.isWet() ? 2.0F : 1.0F);
     }
 
     @Override

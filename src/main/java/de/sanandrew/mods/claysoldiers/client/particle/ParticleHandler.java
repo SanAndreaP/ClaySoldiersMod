@@ -53,8 +53,9 @@ public final class ParticleHandler
         if( mc == null ) {
             mc = Minecraft.getMinecraft();
         }
-
-        PARTICLES.get(particle).accept(particle, dim, x, y, z, new Tuple(additData));
+        if( mc.world != null ) {
+            PARTICLES.get(particle).accept(particle, dim, x, y, z, new Tuple(additData));
+        }
     }
 
     private static void spawnBreakParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {

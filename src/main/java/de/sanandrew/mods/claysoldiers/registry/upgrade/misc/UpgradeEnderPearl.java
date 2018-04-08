@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -74,9 +75,7 @@ public class UpgradeEnderPearl
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             upgradeInst.getNbtData().setInteger("tickAdded", soldier.getEntity().ticksExisted);
-            if( !soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).hasModifier(HEALTH_BOOST) ) {
-                soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(HEALTH_BOOST);
-            }
+            AttributeHelper.tryApplyMaxHealthModifier(soldier.getEntity(), HEALTH_BOOST);
             soldier.getEntity().heal(5.0F);
             soldier.getEntity().playSound(SoundEvents.ENTITY_GHAST_AMBIENT, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.shrink(1);

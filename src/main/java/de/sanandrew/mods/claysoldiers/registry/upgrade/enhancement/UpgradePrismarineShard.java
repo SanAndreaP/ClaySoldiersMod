@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -74,10 +75,10 @@ public class UpgradePrismarineShard
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) ) {
-                soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(SHEAR_DMG_M);
+                AttributeHelper.tryApplyAttackDmgModifier(soldier.getEntity(), SHEAR_DMG_M);
             }
             if( soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.OFF_HAND) ) {
-                soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(SHEAR_DMG_O);
+                AttributeHelper.tryApplyAttackDmgModifier(soldier.getEntity(), SHEAR_DMG_O);
             }
             soldier.getEntity().playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
         }
@@ -88,10 +89,10 @@ public class UpgradePrismarineShard
         if( !soldier.getEntity().world.isRemote ) {
             if( UuidUtils.areUuidsEqual(UpgradeRegistry.INSTANCE.getId(addedUpgInst.getUpgrade()), Upgrades.MOH_SHEARBLADE) ) {
                 if( addedUpgInst.getUpgradeType() == EnumUpgradeType.MAIN_HAND ) {
-                    soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(SHEAR_DMG_M);
+                    AttributeHelper.tryApplyAttackDmgModifier(soldier.getEntity(), SHEAR_DMG_M);
                 }
                 if( addedUpgInst.getUpgradeType() == EnumUpgradeType.OFF_HAND ) {
-                    soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(SHEAR_DMG_O);
+                    AttributeHelper.tryApplyAttackDmgModifier(soldier.getEntity(), SHEAR_DMG_O);
                 }
             }
         }
@@ -102,10 +103,10 @@ public class UpgradePrismarineShard
         if( !soldier.getEntity().world.isRemote ) {
             if( UuidUtils.areUuidsEqual(UpgradeRegistry.INSTANCE.getId(destroyedUpgInst.getUpgrade()), Upgrades.MOH_SHEARBLADE) ) {
                 if( destroyedUpgInst.getUpgradeType() == EnumUpgradeType.MAIN_HAND ) {
-                    soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(SHEAR_DMG_M);
+                    AttributeHelper.tryRemoveAttackDmgModifier(soldier.getEntity(), SHEAR_DMG_M);
                 }
                 if( destroyedUpgInst.getUpgradeType() == EnumUpgradeType.OFF_HAND ) {
-                    soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(SHEAR_DMG_O);
+                    AttributeHelper.tryRemoveAttackDmgModifier(soldier.getEntity(), SHEAR_DMG_O);
                 }
                 if( !soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.MAIN_HAND) && !soldier.hasUpgrade(Upgrades.MOH_SHEARBLADE, EnumUpgradeType.OFF_HAND) ) {
                     soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), true);

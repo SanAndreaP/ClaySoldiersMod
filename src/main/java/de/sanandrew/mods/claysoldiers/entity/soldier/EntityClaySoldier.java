@@ -18,7 +18,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.CsmMobAttributes;
+import de.sanandrew.mods.claysoldiers.api.attribute.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchInventory;
@@ -866,7 +866,13 @@ public class EntityClaySoldier
 
             drops.removeIf(stack -> !ItemStackUtils.isValid(stack));
             for( ItemStack drop : drops ) {
-                this.entityDropItem(drop, 0.5F);
+                EntityItem item = this.entityDropItem(drop, 0.5F);
+                if( item != null ) {
+                    item.motionX = 0.0F;
+                    item.motionY = 0.0F;
+                    item.motionZ = 0.0F;
+                    item.velocityChanged = true;
+                }
             }
         } else {
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.TEAM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,

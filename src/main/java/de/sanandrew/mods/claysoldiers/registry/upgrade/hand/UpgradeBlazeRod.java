@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.hand;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
@@ -66,7 +67,7 @@ public class UpgradeBlazeRod
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             upgradeInst.getNbtData().setByte("uses", MAX_USAGES);
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(ATTACK_DMG);
+            AttributeHelper.tryApplyAttackDmgModifier(soldier.getEntity(), ATTACK_DMG);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.shrink(1);
         }
@@ -77,7 +78,7 @@ public class UpgradeBlazeRod
         byte uses = (byte) (upgradeInst.getNbtData().getByte("uses") - 1);
         target.setFire(soldier.hasUpgrade(Upgrades.EM_COAL, EnumUpgradeType.ENHANCEMENT) ? 6 : 3);
         if( uses < 1 ) {
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(ATTACK_DMG);
+            AttributeHelper.tryRemoveAttackDmgModifier(soldier.getEntity(), ATTACK_DMG);
             soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
         } else {

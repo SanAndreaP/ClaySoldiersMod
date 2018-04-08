@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.api.client.lexicon;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,4 +27,6 @@ public interface ILexiconEntry
     String getEntryText();
 
     @Nonnull ItemStack getEntryIcon();
+
+    ResourceLocation getPicture();
 }

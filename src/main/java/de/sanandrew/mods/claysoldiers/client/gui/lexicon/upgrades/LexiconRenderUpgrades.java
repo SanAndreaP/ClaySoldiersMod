@@ -15,6 +15,8 @@ import de.sanandrew.mods.claysoldiers.client.gui.lexicon.GuiButtonLink;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,13 +42,20 @@ public class LexiconRenderUpgrades
 
     @Override
     public void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks) {
-        Minecraft mc = helper.getGui().mc;
-        String s = TextFormatting.ITALIC + entry.getEntryName();
-        mc.fontRenderer.drawString(s, (MAX_ENTRY_WIDTH - mc.fontRenderer.getStringWidth(s)) / 2, 0, 0xFF8A4500);
+        String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + entry.getEntryName();
+        helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
 
         s = entry.getEntryText().replace("\\n", "\n");
-        this.drawHeight = mc.fontRenderer.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 55;
+        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 55;
         helper.drawContentString(s, 2, 55, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
+
+        if( helper.tryLoadTexture(entry.getPicture()) ) {
+            int height = MAX_ENTRY_WIDTH / 2;
+            helper.drawRect(0, this.drawHeight + 8, MAX_ENTRY_WIDTH, this.drawHeight + 8 + height, 0xFF000000);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            helper.drawTextureRect(2, this.drawHeight + 10, MAX_ENTRY_WIDTH - 4, height - 4, 0.0F, 0.0F, 1.0F, 1.0F);
+            this.drawHeight += height + 12;
+        }
 
         helper.drawItemGrid((MAX_ENTRY_WIDTH - 36) / 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
     }

@@ -92,7 +92,7 @@ public abstract class EntityAIFollowTarget
 
         @Override
         boolean isTargetValid() {
-            if( this.taskOwner.followingEntity instanceof EntityItem ) {
+            if( this.taskOwner.followingEntity instanceof EntityItem && this.taskOwner.followingEntity.onGround ) {
                 ItemStack stack = ((EntityItem) this.taskOwner.followingEntity).getItem();
                 return ResurrectionHelper.canBeResurrected(this.taskOwner, stack);
             }

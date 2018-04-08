@@ -95,7 +95,7 @@ public class GuiLexicon
         } else if( this.entry == null ) {
             int posY = 0;
             for( ILexiconEntry entry : this.group.getEntries() ) {
-                this.entryButtons.add(new GuiButtonEntry(this.entryButtons.size(), 5, 19 + posY, entry));
+                this.entryButtons.add(new GuiButtonEntry(this.entryButtons.size(), 5, 19 + posY, entry, this.renderHelper.getFontRenderer()));
                 posY += 14;
             }
         } else {
@@ -148,7 +148,7 @@ public class GuiLexicon
             this.render.renderPageEntry(this.entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, Math.round(this.scroll * this.dHeight), partTicks);
         } else if( this.group != null ) {
             this.dHeight = this.entryButtons.size() * 14 + 20 - ILexiconPageRender.MAX_ENTRY_HEIGHT;
-            this.fontRenderer.drawString(TextFormatting.ITALIC + this.group.getGroupName(), 2, 2, 0xFF33AA33, false);
+            this.renderHelper.getFontRenderer().drawString(TextFormatting.ITALIC + this.group.getGroupName(), 2, 2, 0xFF33AA33, false);
             Gui.drawRect(2, 12, ILexiconPageRender.MAX_ENTRY_WIDTH - 2, 13, 0xFF33AA33);
         }
 
@@ -192,7 +192,7 @@ public class GuiLexicon
         int bkgColor = 0xF0101010;
         int lightBg = 0x50A0A0A0;
         int darkBg = (lightBg & 0xFEFEFE) >> 1 | lightBg & 0xFF000000;
-        int textWidth = this.fontRenderer.getStringWidth(title);
+        int textWidth = this.renderHelper.getFontRenderer().getStringWidth(title);
         int tHeight = 8;
 
         this.drawGradientRect(-3,            -4,          textWidth + 3, -3,          bkgColor, bkgColor);
@@ -206,7 +206,7 @@ public class GuiLexicon
         this.drawGradientRect(-3,            -3,          textWidth + 3, -3 + 1,          lightBg, lightBg);
         this.drawGradientRect(-3,            tHeight + 2, textWidth + 3, tHeight + 3,     darkBg,  darkBg);
 
-        this.fontRenderer.drawString(title, 0, 0, 0xFFFFFFFF, true);
+        this.renderHelper.getFontRenderer().drawString(title, 0, 0, 0xFFFFFFFF, true);
         GlStateManager.popMatrix();
     }
 
@@ -275,6 +275,10 @@ public class GuiLexicon
                 super.actionPerformed(button);
             }
         }
+    }
+
+    public float getZLevel() {
+        return this.zLevel;
     }
 
     @Override

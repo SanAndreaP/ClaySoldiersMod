@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -111,7 +112,7 @@ public class UpgradeGoggles
                 upgradeInst.getNbtData().setByte("color", (byte) stack.getItemDamage());
             }
 
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(FOLLOW_RNG);
+            AttributeHelper.tryApplyFollowRangeModifier(soldier.getEntity(), FOLLOW_RNG);
         }
     }
 

@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.entity.projectile;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
@@ -36,7 +37,7 @@ public class EntityProjectileFirecharge
 
     @Override
     public float getDamage(Entity e) {
-        return 0.0F;
+        return 1.0F + MiscUtils.RNG.randomFloat();
     }
 
     @Override

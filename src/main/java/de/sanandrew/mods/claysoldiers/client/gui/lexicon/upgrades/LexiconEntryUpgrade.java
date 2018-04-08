@@ -13,11 +13,15 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@SideOnly(Side.CLIENT)
 public class LexiconEntryUpgrade
         implements ILexiconEntry
 {
@@ -25,6 +29,7 @@ public class LexiconEntryUpgrade
     private final String groupId;
     private final String renderId;
     private final ItemStack[] icons;
+    private final ResourceLocation prevPic;
 
     public LexiconEntryUpgrade(String groupId, String renderId, ISoldierUpgrade upgrade) {
         this.id = upgrade.getModId() + ':' + upgrade.getShortName();
@@ -39,6 +44,7 @@ public class LexiconEntryUpgrade
             }
             return newItems;
         }).collect(ArrayList<ItemStack>::new, ArrayList::addAll, ArrayList::addAll).toArray(new ItemStack[0]);
+        this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/upgrades/" + upgrade.getModId() + '_' + upgrade.getShortName() + ".png");
     }
 
     @Override
@@ -69,5 +75,10 @@ public class LexiconEntryUpgrade
     @Override
     public ItemStack getEntryIcon() {
         return this.icons[(int) ((System.nanoTime() / 1_000_000_000) % this.icons.length)];
+    }
+
+    @Override
+    public ResourceLocation getPicture() {
+        return this.prevPic;
     }
 }

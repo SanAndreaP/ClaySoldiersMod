@@ -4,7 +4,7 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api;
+package de.sanandrew.mods.claysoldiers.api.attribute;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import net.minecraft.entity.ai.attributes.IAttribute;

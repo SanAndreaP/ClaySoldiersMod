@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
+import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.client.util.GuiUtils;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
@@ -18,11 +19,19 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -34,10 +43,16 @@ import java.util.stream.Collectors;
 public class LexiconGuiHelper
         implements ILexiconGuiHelper
 {
-    public GuiLexicon gui;
+    private static final Pattern PATTERN_LINKSTRING = Pattern.compile("\\{link:(.+?)\\|(.+?):(.+?)}");
+
+    private static FontRenderer unicodeFr;
+
+    public final GuiLexicon gui;
+    private final Map<ResourceLocation, Boolean> checkedResources;
 
     LexiconGuiHelper(GuiLexicon gui) {
         this.gui = gui;
+        this.checkedResources = new HashMap<>();
     }
 
     @Override
@@ -97,12 +112,12 @@ public class LexiconGuiHelper
             Gui.drawRect(0, 0, ILexiconPageRender.MAX_ENTRY_WIDTH, 20, 0xD0000000);
 
             List tooltip = GuiUtils.getTooltipWithoutShift(stack);
-            this.gui.mc.fontRenderer.drawString(tooltip.get(0).toString(), 22, 2, 0xFFFFFFFF, false);
+            this.getFontRenderer().drawString(tooltip.get(0).toString(), 22, 2, 0xFFFFFFFF, false);
             if( drawTooltip && tooltip.size() > 1 ) {
-                this.gui.mc.fontRenderer.drawString(tooltip.get(1).toString(), 22, 11, 0xFF808080, false);
+                this.getFontRenderer().drawString(tooltip.get(1).toString(), 22, 11, 0xFF808080, false);
             }
 
-            RenderUtils.renderStackInGui(stack, 2, 2, 1.0F, this.gui.mc.fontRenderer);
+            RenderUtils.renderStackInGui(stack, 2, 2, 1.0F, this.getFontRenderer());
 
             GlStateManager.popMatrix();
         }
@@ -119,33 +134,24 @@ public class LexiconGuiHelper
         }
     }
 
-    private static final Pattern PATTERN_LINKSTRING = Pattern.compile("\\{link:(.+?)\\|(.+?):(.+?)}");
     @Override
     public void drawContentString(String str, int x, int y, int wrapWidth, int textColor, @Nonnull List<GuiButton> buttons) {
-        FontRenderer fontRenderer = this.gui.mc.fontRenderer;
+        FontRenderer fontRenderer = this.getFontRenderer();
         Map<Integer, String> links = new HashMap<>();
-        while(true) {
-            Matcher matcher = PATTERN_LINKSTRING.matcher(str);
-            if( matcher.find() ) {
-                links.put(matcher.start(), String.format("%s|%s:%s", matcher.group(1), matcher.group(2), matcher.group(3)));
-                str = matcher.replaceFirst("$1");
-            } else {
-                break;
-            }
-        }
+        str = replaceLinkedText(str, links);
 
         int drawnCharacters = 0;
-        List<String> lines = fontRenderer.listFormattedStringToWidth(str, wrapWidth);
+        List<String> lines = getSplitString(str, wrapWidth);
         for( String line : lines ) {
-            final int currLength = drawnCharacters;
-            final int newLength = drawnCharacters + line.length();
+            final int currLength = str.indexOf(line, drawnCharacters);
+            final int newLength = currLength + line.length();
             List<Map.Entry<Integer, String>> entries = links.entrySet().stream().filter(entry -> entry.getKey() >= currLength && entry.getKey() < newLength)
                                                             .sorted(Comparator.comparingInt(Map.Entry::getKey)).collect(Collectors.toCollection(ArrayList::new));
             if( entries.size() > 0 ) {
                 int lastUsedId = 0;
                 int lineX = x;
                 for( Map.Entry<Integer, String> entry : entries ) {
-                    String s = line.substring(lastUsedId, entry.getKey() - currLength - 1);
+                    String s = line.substring(lastUsedId, entry.getKey() - currLength);
                     int sl = fontRenderer.getStringWidth(s);
                     fontRenderer.drawString(s, lineX, y, textColor, false);
                     lineX += sl;
@@ -155,7 +161,7 @@ public class LexiconGuiHelper
                     int tl = fontRenderer.getStringWidth(t);
                     GuiButton lnk = buttons.stream().filter(button -> button.id == entry.getKey()).findFirst().orElse(null);
                     if( lnk == null ) {
-                        lnk = new GuiButtonLink(entry.getKey(), lineX, y, t, entry.getValue().substring(entrySplitId + 1));
+                        lnk = new GuiButtonLink(entry.getKey(), lineX, y, t, entry.getValue().substring(entrySplitId + 1), this.getFontRenderer());
                         buttons.add(lnk);
                     } else {
                         lnk.x = lineX;
@@ -166,13 +172,54 @@ public class LexiconGuiHelper
                     lastUsedId += s.length() + t.length();
                 }
                 if( lastUsedId < line.length() ) {
-                    fontRenderer.drawString(line.substring(lastUsedId), x, y, textColor, false);
+                    fontRenderer.drawString(line.substring(lastUsedId), lineX, y, textColor, false);
                 }
             } else {
                 fontRenderer.drawString(line, x, y, textColor, false);
             }
             y += fontRenderer.FONT_HEIGHT;
             drawnCharacters = newLength;
+        }
+    }
+
+    @Override
+    public int getWordWrappedHeight(String str, final int wrapWidth) {
+        return this.getFontRenderer().FONT_HEIGHT * getSplitString(str, wrapWidth).size();
+    }
+
+    private List<String> getSplitString(String str, final int wrapWidth) {
+        final FontRenderer fr = this.getFontRenderer();
+
+        return Arrays.stream(replaceLinkedText(str, null).split("\n"))
+                     .collect(ArrayList::new, (list, elem) -> list.addAll(fr.listFormattedStringToWidth(elem, wrapWidth)), ArrayList::addAll);
+    }
+
+    private String replaceLinkedText(String str, Map<Integer, String> links) {
+        while(true) {
+            Matcher matcher = PATTERN_LINKSTRING.matcher(str);
+            if( matcher.find() ) {
+                if( links != null ) {
+                    links.put(matcher.start(), String.format("%s|%s:%s", matcher.group(1), matcher.group(2), matcher.group(3)));
+                }
+                str = matcher.replaceFirst("$1");
+            } else {
+                break;
+            }
+        }
+
+        return str;
+    }
+
+    @Override
+    public FontRenderer getFontRenderer() {
+        if( CsmConfiguration.lexiconForceUnicode ) {
+            if( unicodeFr == null ) {
+                unicodeFr = new FontRenderer(this.gui.mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.gui.mc.renderEngine, true);
+            }
+
+            return unicodeFr;
+        } else {
+            return this.gui.mc.fontRenderer;
         }
     }
 
@@ -187,7 +234,53 @@ public class LexiconGuiHelper
     }
 
     @Override
+    public void drawTextureRect(int x, int y, int w, int h, float uMin, float vMin, float uMax, float vMax) {
+        float z = this.gui.getZLevel();
+        Tessellator tess = Tessellator.getInstance();
+        BufferBuilder buf = tess.getBuffer();
+
+        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buf.pos(x, y + h, z).tex(uMin, vMax).endVertex();
+        buf.pos(x + w, y + h, z).tex(uMax, vMax).endVertex();
+        buf.pos(x + w, y, z).tex(uMax, vMin).endVertex();
+        buf.pos(x, y, z).tex(uMin, vMin).endVertex();
+
+        tess.draw();
+    }
+
+    @Override
+    public void drawRect(int x, int y, int w, int h, int color) {
+        Gui.drawRect(x, y, w, h, color);
+    }
+
+    @Override
     public void changePage(ILexiconGroup group, ILexiconEntry entry) {
         this.gui.changePage(group, entry);
+    }
+
+    @Override
+    @SuppressWarnings("ConstantConditions")
+    public boolean tryLoadTexture(ResourceLocation location) {
+        if( checkedResources.containsKey(location) ) {
+            if( checkedResources.get(location) ) {
+                this.gui.mc.renderEngine.bindTexture(location);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        try {
+            if( this.gui.mc.renderEngine.getTexture(location) == null ) {
+                new SimpleTexture(location).loadTexture(this.gui.mc.getResourceManager());
+            }
+        } catch( IOException ex ) {
+            checkedResources.put(location, false);
+            return false;
+        }
+
+        this.gui.mc.renderEngine.bindTexture(location);
+        checkedResources.put(location, true);
+        return true;
     }
 }

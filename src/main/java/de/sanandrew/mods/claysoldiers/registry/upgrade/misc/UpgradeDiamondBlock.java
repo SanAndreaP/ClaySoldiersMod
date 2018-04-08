@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -71,8 +72,8 @@ public class UpgradeDiamondBlock
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(SPEED_BOOST);
-            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(HEALTH_BOOST);
+            AttributeHelper.tryApplyMoveSpeedModifier(soldier.getEntity(), SPEED_BOOST);
+            AttributeHelper.tryApplyMaxHealthModifier(soldier.getEntity(), HEALTH_BOOST);
             soldier.getEntity().heal(Float.MAX_VALUE);
             soldier.getUpgradeInstanceList().forEach(inst -> {
                 NBTTagCompound nbt = inst.getNbtData();

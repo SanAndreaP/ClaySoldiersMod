@@ -65,7 +65,6 @@ public class UpgradeBowl
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
             upgradeInst.getNbtData().setShort("uses", MAX_USES);
-//            soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_VALUE);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.shrink(1);
         }
@@ -79,7 +78,6 @@ public class UpgradeBowl
             short uses = (short) (upgradeInst.getNbtData().getShort("uses") - 1);
             if( uses < 1 ) {
                 soldier.destroyUpgrade(upgradeInst.getUpgrade(), upgradeInst.getUpgradeType(), false);
-//                soldier.getEntity().getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_VALUE);
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
             } else if( !(dmgSource.getTrueSource() instanceof EntityPlayer) && dmgSource != IDisruptable.DISRUPT_DAMAGE ) {
                 upgradeInst.getNbtData().setShort("uses", uses);
@@ -93,6 +91,4 @@ public class UpgradeBowl
             drops.add(upgradeInst.getSavedStack());
         }
     }
-
-//    private static final AttributeModifier ARMOR_VALUE = new AttributeModifier(UUID.fromString("E7DDF42E-C494-40E4-92AA-B4F40636C5BE"), CsmConstants.ID + ".bowl_shield", 12.5D, 0);
 }

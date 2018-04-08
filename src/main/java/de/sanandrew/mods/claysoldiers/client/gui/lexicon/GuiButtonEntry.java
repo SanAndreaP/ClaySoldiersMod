@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.sanlib.client.ClientTickHandler;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -33,11 +34,13 @@ public class GuiButtonEntry
 
     private float ticksHovered = 0.0F;
     private float lastTime;
+    private final FontRenderer fontRenderer;
 
-    public GuiButtonEntry(int id, int x, int y, ILexiconEntry entry) {
+    public GuiButtonEntry(int id, int x, int y, ILexiconEntry entry, FontRenderer fontRenderer) {
         super(id, x, y, ILexiconPageRender.MAX_ENTRY_WIDTH - 12, 14, entry.getEntryName());
         this.entry = entry;
         this.icon = entry.getEntryIcon();
+        this.fontRenderer = fontRenderer;
     }
 
     @Override
@@ -70,7 +73,7 @@ public class GuiButtonEntry
 
             RenderUtils.renderStackInGui(this.icon, this.x + 2, this.y + 3, 0.5D);
 
-            mc.fontRenderer.drawString(this.displayString, this.x + 12, this.y + 3, 0xFF000000, false);
+            this.fontRenderer.drawString(this.displayString, this.x + 12, this.y + 3, 0xFF000000, false);
 
             GlStateManager.popMatrix();
         }
