@@ -47,7 +47,7 @@ public class UpgradeFood
                 itm.getSubItems(CreativeTabs.SEARCH, foods);
             }
         });
-        UPG_ITEMS = foods.toArray(new ItemStack[foods.size()]);
+        UPG_ITEMS = foods.toArray(new ItemStack[0]);
     }
 
     @Override
