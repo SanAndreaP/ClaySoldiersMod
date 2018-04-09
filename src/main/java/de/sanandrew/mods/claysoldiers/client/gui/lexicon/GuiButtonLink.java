@@ -27,7 +27,7 @@ public class GuiButtonLink
     public void drawButton(Minecraft mc, int mouseX, int mouseY, float partTicks) {
         if( this.visible ) {
             String clrCode = (this.enabled ? TextFormatting.BLUE : TextFormatting.GRAY).toString();
-            fontRenderer.drawString(clrCode + TextFormatting.UNDERLINE + this.displayString, this.x, this.y, 0xFF000000, false);
+            fontRenderer.drawString(clrCode + this.displayString, this.x, this.y, 0xFF000000, false);
         }
     }
 }

@@ -31,8 +31,13 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @SideOnly(Side.CLIENT)
 public class GuiLexicon
@@ -58,7 +63,12 @@ public class GuiLexicon
     public final List<GuiButton> entryButtons;
     public final ILexiconGuiHelper renderHelper;
 
+    private final Deque<History> navHistory;
+    private final Deque<History> navFuture;
+
     public GuiLexicon() {
+        this.navHistory = new ArrayDeque<>();
+        this.navFuture = new ArrayDeque<>();
         this.entryButtons = new ArrayList<>();
         this.renderHelper = new LexiconGuiHelper(this);
     }
@@ -66,8 +76,6 @@ public class GuiLexicon
     @SuppressWarnings("unchecked")
     public void initGui() {
         super.initGui();
-
-        this.scroll = 0.0F;
 
         this.guiLeft = (this.width - ILexiconPageRender.GUI_SIZE_X) / 2;
         this.guiTop = (this.height - ILexiconPageRender.GUI_SIZE_Y) / 2;
@@ -110,6 +118,18 @@ public class GuiLexicon
             this.updateGUI = false;
             this.initGui();
         }
+
+        if( this.entry != null ) {
+            this.dHeight = this.render.getEntryHeight(this.entry, this.renderHelper) - ILexiconPageRender.MAX_ENTRY_HEIGHT;
+        } else if( this.group != null ) {
+            this.dHeight = this.entryButtons.size() * 14 + 20 - ILexiconPageRender.MAX_ENTRY_HEIGHT;
+        } else {
+            this.dHeight = 0;
+        }
+
+        for( GuiButton btn : this.entryButtons ) {
+            btn.enabled = btn.y - Math.round(this.scroll * this.dHeight) > 0 && btn.y - Math.round(this.scroll * this.dHeight) + btn.height < ILexiconPageRender.MAX_ENTRY_HEIGHT;
+        }
     }
 
     @Override
@@ -144,16 +164,13 @@ public class GuiLexicon
         GlStateManager.translate(0.0F, Math.round(-this.scroll * this.dHeight), 0.0F);
 
         if( this.entry != null ) {
-            this.dHeight = this.render.getEntryHeight(this.entry, this.renderHelper) - ILexiconPageRender.MAX_ENTRY_HEIGHT;
             this.render.renderPageEntry(this.entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, Math.round(this.scroll * this.dHeight), partTicks);
         } else if( this.group != null ) {
-            this.dHeight = this.entryButtons.size() * 14 + 20 - ILexiconPageRender.MAX_ENTRY_HEIGHT;
             this.renderHelper.getFontRenderer().drawString(TextFormatting.ITALIC + this.group.getGroupName(), 2, 2, 0xFF33AA33, false);
             Gui.drawRect(2, 12, ILexiconPageRender.MAX_ENTRY_WIDTH - 2, 13, 0xFF33AA33);
         }
 
         for( GuiButton btn : this.entryButtons ) {
-            btn.enabled = btn.y - Math.round(this.scroll * this.dHeight) > 0 && btn.y - Math.round(this.scroll * this.dHeight) + btn.height < ILexiconPageRender.MAX_ENTRY_HEIGHT;
             btn.drawButton(this.mc, mouseX - this.entryX, mouseY - this.entryY + Math.round(this.scroll * this.dHeight), partTicks);
         }
 
@@ -178,9 +195,14 @@ public class GuiLexicon
         super.drawScreen(mouseX, mouseY, partTicks);
     }
 
-    public void changePage(ILexiconGroup group, ILexiconEntry entry) {
+    public void changePage(ILexiconGroup group, ILexiconEntry entry, float scroll, boolean doHistory) {
+        if( doHistory ) {
+            this.navHistory.offer(new History(this.group, this.entry, this.scroll));
+            this.navFuture.clear();
+        }
         this.group = group;
         this.entry = entry;
+        this.scroll = scroll;
         this.updateGUI = true;
     }
 
@@ -228,37 +250,33 @@ public class GuiLexicon
             if( button instanceof GuiButtonNav ) {
                 switch( ((GuiButtonNav) button).buttonType ) {
                     case 0:
-                        if( this.entry != null && this.group != null ) {
-                            this.entry = null;
-                            if( this.group.getEntries().size() == 1 ) {
-                                this.group = null;
+                        {
+                            History h = this.navHistory.pollLast();
+                            if( h != null ) {
+                                this.navFuture.offer(new History(this.group, this.entry, this.scroll));
+                                this.changePage(h.group, h.entry, h.scroll, false);
                             }
-                            this.updateGUI = true;
-                        } else if( this.entry == null && this.group != null ) {
-                            this.group = null;
-                            this.updateGUI = true;
                         }
                         break;
                     case 1:
-                        this.entry = null;
-                        this.group = null;
-                        this.updateGUI = true;
+                        this.changePage(null, null, 0.0F, true);
                         break;
                     case 2:
-                        this.mc.player.closeScreen();
+                        {
+                            History h = this.navFuture.pollLast();
+                            if( h != null ) {
+                                this.navHistory.offer(new History(this.group, this.entry, this.scroll));
+                                this.changePage(h.group, h.entry, h.scroll, false);
+                            }
+                        }
                         break;
                 }
             } else if( button instanceof GuiButtonGroup ) {
                 GuiButtonGroup grpButton = (GuiButtonGroup) button;
                 List<ILexiconEntry> entries = grpButton.group.getEntries();
-                this.group = grpButton.group;
-                if( entries.size() == 1 ) {
-                    this.entry = entries.get(0);
-                }
-                this.updateGUI = true;
+                this.changePage(grpButton.group, entries.size() == 1 ? entries.get(0) : null, 0.0F, true);
             } else if( button instanceof GuiButtonEntry ) {
-                this.entry = ((GuiButtonEntry) button).entry;
-                this.updateGUI = true;
+                this.changePage(this.group, ((GuiButtonEntry) button).entry, 0.0F, true);
             } else if( button instanceof GuiButtonLink ) {
                 try {
                     this.clickedURI = new URI(((GuiButtonLink) button).link);
@@ -317,6 +335,19 @@ public class GuiLexicon
             java.awt.Desktop.getDesktop().browse(uri);
         } catch( Throwable throwable ) {
             CsmConstants.LOG.log(Level.ERROR, "Couldn\'t open link", throwable);
+        }
+    }
+
+    private static final class History
+    {
+        ILexiconGroup group;
+        ILexiconEntry entry;
+        float scroll;
+
+        History(ILexiconGroup group, ILexiconEntry entry, float scroll) {
+            this.group = group;
+            this.entry = entry;
+            this.scroll = scroll;
         }
     }
 

@@ -41,6 +41,7 @@ public class GuiButtonEntry
         this.entry = entry;
         this.icon = entry.getEntryIcon();
         this.fontRenderer = fontRenderer;
+        this.enabled = false;
     }
 
     @Override

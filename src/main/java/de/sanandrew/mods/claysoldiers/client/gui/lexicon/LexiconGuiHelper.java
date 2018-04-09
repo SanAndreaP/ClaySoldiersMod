@@ -255,7 +255,7 @@ public class LexiconGuiHelper
 
     @Override
     public void changePage(ILexiconGroup group, ILexiconEntry entry) {
-        this.gui.changePage(group, entry);
+        this.gui.changePage(group, entry, 0.0F, true);
     }
 
     @Override
