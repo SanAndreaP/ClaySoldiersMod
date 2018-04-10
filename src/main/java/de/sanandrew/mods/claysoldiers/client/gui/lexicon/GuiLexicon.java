@@ -248,26 +248,23 @@ public class GuiLexicon
     protected void actionPerformed(GuiButton button) throws IOException {
         if( this.render == null || !this.render.actionPerformed(button, this.renderHelper) ) {
             if( button instanceof GuiButtonNav ) {
+                History h;
                 switch( ((GuiButtonNav) button).buttonType ) {
                     case 0:
-                        {
-                            History h = this.navHistory.pollLast();
-                            if( h != null ) {
-                                this.navFuture.offer(new History(this.group, this.entry, this.scroll));
-                                this.changePage(h.group, h.entry, h.scroll, false);
-                            }
+                        h = this.navHistory.pollLast();
+                        if( h != null ) {
+                            this.navFuture.offer(new History(this.group, this.entry, this.scroll));
+                            this.changePage(h.group, h.entry, h.scroll, false);
                         }
                         break;
                     case 1:
                         this.changePage(null, null, 0.0F, true);
                         break;
                     case 2:
-                        {
-                            History h = this.navFuture.pollLast();
-                            if( h != null ) {
-                                this.navHistory.offer(new History(this.group, this.entry, this.scroll));
-                                this.changePage(h.group, h.entry, h.scroll, false);
-                            }
+                        h = this.navFuture.pollLast();
+                        if( h != null ) {
+                            this.navHistory.offer(new History(this.group, this.entry, this.scroll));
+                            this.changePage(h.group, h.entry, h.scroll, false);
                         }
                         break;
                 }
