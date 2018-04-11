@@ -46,7 +46,7 @@ public class LexiconRenderUpgrades
         helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
 
         s = entry.getEntryText().replace("\\n", "\n");
-        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 55;
+        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 58;
         helper.drawContentString(s, 2, 55, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
 
         if( helper.tryLoadTexture(entry.getPicture()) ) {
