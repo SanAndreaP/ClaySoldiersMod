@@ -34,10 +34,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 @SideOnly(Side.CLIENT)
 public class GuiLexicon
@@ -50,11 +47,11 @@ public class GuiLexicon
     int entryX;
     int entryY;
 
-    private ILexiconGroup group;
-    private ILexiconEntry entry;
+    private static ILexiconGroup group;
+    private static ILexiconEntry entry;
     private ILexiconPageRender render;
 
-    float scroll;
+    static float scroll;
     int dHeight;
     boolean isScrolling;
     private URI clickedURI;
@@ -63,12 +60,10 @@ public class GuiLexicon
     public final List<GuiButton> entryButtons;
     public final ILexiconGuiHelper renderHelper;
 
-    private final Deque<History> navHistory;
-    private final Deque<History> navFuture;
+    private static final Deque<History> NAV_HISTORY = new ArrayDeque<>();
+    private static final Deque<History> NAV_FUTURE = new ArrayDeque<>();
 
     public GuiLexicon() {
-        this.navHistory = new ArrayDeque<>();
-        this.navFuture = new ArrayDeque<>();
         this.entryButtons = new ArrayList<>();
         this.renderHelper = new LexiconGuiHelper(this);
     }
@@ -90,7 +85,7 @@ public class GuiLexicon
         this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + 83, this.guiTop + 206, 1));
         this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + 114, this.guiTop + 206, 2));
 
-        if( this.group == null ) {
+        if( group == null ) {
             int posX = 0;
             int posY = 0;
             for( ILexiconGroup group : LexiconRegistry.INSTANCE.getGroups() ) {
@@ -100,16 +95,18 @@ public class GuiLexicon
                     posY += 32;
                 }
             }
-        } else if( this.entry == null ) {
+        } else if( entry == null ) {
             int posY = 0;
-            for( ILexiconEntry entry : this.group.getEntries() ) {
+            for( ILexiconEntry entry : group.getEntries() ) {
                 this.entryButtons.add(new GuiButtonEntry(this.entryButtons.size(), 5, 19 + posY, entry, this.renderHelper.getFontRenderer()));
                 posY += 14;
             }
         } else {
-            this.render = LexiconRegistry.INSTANCE.getPageRender(this.entry.getPageRenderId());
-            this.render.initPage(this.entry, this.renderHelper, this.buttonList, this.entryButtons);
+            this.render = LexiconRegistry.INSTANCE.getPageRender(entry.getPageRenderId());
+            this.render.initPage(entry, this.renderHelper, this.buttonList, this.entryButtons);
         }
+
+        this.updateScreen();
     }
 
     @Override
@@ -119,16 +116,16 @@ public class GuiLexicon
             this.initGui();
         }
 
-        if( this.entry != null ) {
-            this.dHeight = this.render.getEntryHeight(this.entry, this.renderHelper) - ILexiconPageRender.MAX_ENTRY_HEIGHT;
-        } else if( this.group != null ) {
+        if( entry != null ) {
+            this.dHeight = this.render.getEntryHeight(entry, this.renderHelper) - ILexiconPageRender.MAX_ENTRY_HEIGHT;
+        } else if( group != null ) {
             this.dHeight = this.entryButtons.size() * 14 + 20 - ILexiconPageRender.MAX_ENTRY_HEIGHT;
         } else {
             this.dHeight = 0;
         }
 
         for( GuiButton btn : this.entryButtons ) {
-            btn.enabled = btn.y - Math.round(this.scroll * this.dHeight) > 0 && btn.y - Math.round(this.scroll * this.dHeight) + btn.height < ILexiconPageRender.MAX_ENTRY_HEIGHT;
+            btn.enabled = btn.y - Math.round(scroll * this.dHeight) > 0 && btn.y - Math.round(scroll * this.dHeight) + btn.height < ILexiconPageRender.MAX_ENTRY_HEIGHT;
         }
     }
 
@@ -148,7 +145,7 @@ public class GuiLexicon
         GlStateManager.translate(this.entryX + ILexiconPageRender.MAX_ENTRY_WIDTH, this.entryY, 0.0F);
         drawRect(0, 0, 6, ILexiconPageRender.MAX_ENTRY_HEIGHT, 0x30000000);
         if( this.dHeight > 0 ) {
-            drawRect(0, Math.round((ILexiconPageRender.MAX_ENTRY_HEIGHT - 16) * this.scroll), 6, Math.round((ILexiconPageRender.MAX_ENTRY_HEIGHT - 16) * this.scroll + 16), 0x800000FF);
+            drawRect(0, Math.round((ILexiconPageRender.MAX_ENTRY_HEIGHT - 16) * scroll), 6, Math.round((ILexiconPageRender.MAX_ENTRY_HEIGHT - 16) * scroll + 16), 0x800000FF);
         }
         GlStateManager.popMatrix();
 
@@ -157,21 +154,21 @@ public class GuiLexicon
         this.renderHelper.doEntryScissoring();
         GlStateManager.translate(this.entryX, this.entryY, 0.0F);
 
-        if( this.entry != null ) {
-            this.render.renderPageGlobal(this.entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, partTicks);
+        if( entry != null ) {
+            this.render.renderPageGlobal(entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, partTicks);
         }
 
-        GlStateManager.translate(0.0F, Math.round(-this.scroll * this.dHeight), 0.0F);
+        GlStateManager.translate(0.0F, Math.round(-scroll * this.dHeight), 0.0F);
 
-        if( this.entry != null ) {
-            this.render.renderPageEntry(this.entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, Math.round(this.scroll * this.dHeight), partTicks);
-        } else if( this.group != null ) {
-            this.renderHelper.getFontRenderer().drawString(TextFormatting.ITALIC + this.group.getGroupName(), 2, 2, 0xFF33AA33, false);
+        if( entry != null ) {
+            this.render.renderPageEntry(entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, Math.round(scroll * this.dHeight), partTicks);
+        } else if( group != null ) {
+            this.renderHelper.getFontRenderer().drawString(TextFormatting.ITALIC + group.getGroupName(), 2, 2, 0xFF33AA33, false);
             Gui.drawRect(2, 12, ILexiconPageRender.MAX_ENTRY_WIDTH - 2, 13, 0xFF33AA33);
         }
 
         for( GuiButton btn : this.entryButtons ) {
-            btn.drawButton(this.mc, mouseX - this.entryX, mouseY - this.entryY + Math.round(this.scroll * this.dHeight), partTicks);
+            btn.drawButton(this.mc, mouseX - this.entryX, mouseY - this.entryY + Math.round(scroll * this.dHeight), partTicks);
         }
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -189,7 +186,7 @@ public class GuiLexicon
 
         if( this.isScrolling ) {
             int mouseDelta = Math.min(ILexiconPageRender.MAX_ENTRY_HEIGHT - 16, Math.max(0, mouseY - (this.entryY + 8)));
-            this.scroll = mouseDelta / (ILexiconPageRender.MAX_ENTRY_HEIGHT - 16.0F);
+            scroll = mouseDelta / (ILexiconPageRender.MAX_ENTRY_HEIGHT - 16.0F);
         }
 
         super.drawScreen(mouseX, mouseY, partTicks);
@@ -197,12 +194,12 @@ public class GuiLexicon
 
     public void changePage(ILexiconGroup group, ILexiconEntry entry, float scroll, boolean doHistory) {
         if( doHistory ) {
-            this.navHistory.offer(new History(this.group, this.entry, this.scroll));
-            this.navFuture.clear();
+            NAV_HISTORY.offer(new History(GuiLexicon.group, GuiLexicon.entry, GuiLexicon.scroll));
+            NAV_FUTURE.clear();
         }
-        this.group = group;
-        this.entry = entry;
-        this.scroll = scroll;
+        GuiLexicon.group = group;
+        GuiLexicon.entry = entry;
+        GuiLexicon.scroll = scroll;
         this.updateGUI = true;
     }
 
@@ -237,7 +234,7 @@ public class GuiLexicon
         if( this.dHeight > 0 ) {
             int dwheel = Mouse.getEventDWheel() / 120;
             if( dwheel != 0 ) {
-                this.scroll = Math.min(1.0F, Math.max(0.0F, (this.scroll * this.dHeight - dwheel * 16.0F) / this.dHeight));
+                scroll = Math.min(1.0F, Math.max(0.0F, (scroll * this.dHeight - dwheel * 16.0F) / this.dHeight));
             }
         }
 
@@ -251,9 +248,9 @@ public class GuiLexicon
                 History h;
                 switch( ((GuiButtonNav) button).buttonType ) {
                     case 0:
-                        h = this.navHistory.pollLast();
+                        h = NAV_HISTORY.pollLast();
                         if( h != null ) {
-                            this.navFuture.offer(new History(this.group, this.entry, this.scroll));
+                            NAV_FUTURE.offer(new History(group, entry, scroll));
                             this.changePage(h.group, h.entry, h.scroll, false);
                         }
                         break;
@@ -261,9 +258,9 @@ public class GuiLexicon
                         this.changePage(null, null, 0.0F, true);
                         break;
                     case 2:
-                        h = this.navFuture.pollLast();
+                        h = NAV_FUTURE.pollLast();
                         if( h != null ) {
-                            this.navHistory.offer(new History(this.group, this.entry, this.scroll));
+                            NAV_HISTORY.offer(new History(group, entry, scroll));
                             this.changePage(h.group, h.entry, h.scroll, false);
                         }
                         break;
@@ -273,7 +270,7 @@ public class GuiLexicon
                 List<ILexiconEntry> entries = grpButton.group.getEntries();
                 this.changePage(grpButton.group, entries.size() == 1 ? entries.get(0) : null, 0.0F, true);
             } else if( button instanceof GuiButtonEntry ) {
-                this.changePage(this.group, ((GuiButtonEntry) button).entry, 0.0F, true);
+                this.changePage(group, ((GuiButtonEntry) button).entry, 0.0F, true);
             } else if( button instanceof GuiButtonLink ) {
                 try {
                     this.clickedURI = new URI(((GuiButtonLink) button).link);
@@ -314,7 +311,7 @@ public class GuiLexicon
 
         if( mouseBtn == 0 ) {
             for( GuiButton btn : this.entryButtons ) {
-                if( btn.mousePressed(this.mc, mouseX - this.entryX, mouseY - this.entryY + Math.round(this.scroll * this.dHeight)) ) {
+                if( btn.mousePressed(this.mc, mouseX - this.entryX, mouseY - this.entryY + Math.round(scroll * this.dHeight)) ) {
                     btn.playPressSound(this.mc.getSoundHandler());
                     this.actionPerformed(btn);
                 }
