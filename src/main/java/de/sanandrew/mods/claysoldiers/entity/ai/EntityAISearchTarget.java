@@ -176,15 +176,7 @@ public abstract class EntityAISearchTarget<T extends Entity>
 
         @Override
         boolean canFollow(EntityLivingBase entity) {
-            if( entity != null && entity != this.taskOwner && entity.isEntityAlive() && this.taskOwner.canEntityBeSeen(entity) ) {
-                SoldierTargetEnemyEvent evt = new SoldierTargetEnemyEvent(this.taskOwner, entity, true);
-                if( !ClaySoldiersMod.EVENT_BUS.post(evt) ) {
-                    return evt.getResult() == Event.Result.ALLOW || (evt.getResult() != Event.Result.DENY && entity instanceof EntityClaySoldier
-                                                                            && ((EntityClaySoldier)entity).getSoldierTeam() != this.taskOwner.getSoldierTeam());
-                }
-            }
-
-            return false;
+            return this.taskOwner.isEnemyValid(entity);
         }
 
         @Override

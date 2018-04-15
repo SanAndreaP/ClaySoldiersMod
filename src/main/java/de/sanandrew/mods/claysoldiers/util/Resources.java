@@ -150,7 +150,7 @@ public enum Resources
     MODEL_BUNNY("models/entity/mount/bunny.json"),
     MODEL_GECKO("models/entity/mount/gecko.json"),
 
-    LIGHTNING_OVERLAY("textures/entity/creeper/creeper_armor.png"),
+    LIGHTNING_OVERLAY("minecraft", "textures/entity/creeper/creeper_armor.png"),
 
     GUI_LEXICON("textures/gui/lexicon/background.png"),
     GUI_GROUPICON_UPGRADES("textures/gui/lexicon/group_upgrades.png"),
@@ -162,7 +162,11 @@ public enum Resources
     public final ResourceLocation resource;
 
     Resources(String texture) {
-        this.resource = new ResourceLocation(CsmConstants.ID, texture);
+        this(CsmConstants.ID, texture);
+    }
+
+    Resources(String domain, String texture) {
+        this.resource = new ResourceLocation(domain, texture);
     }
 
     @Override

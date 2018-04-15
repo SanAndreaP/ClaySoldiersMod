@@ -199,7 +199,16 @@ public class LexiconGuiHelper
             Matcher matcher = PATTERN_LINKSTRING.matcher(str);
             if( matcher.find() ) {
                 if( links != null ) {
-                    links.put(matcher.start(), String.format("%s|%s:%s", matcher.group(1), matcher.group(2), matcher.group(3)));
+                    String[] linkSplit = matcher.group(1).split(" ");
+                    int currInd = matcher.start();
+                    for( int i = 0; i < linkSplit.length; i++ ) {
+                        String txt = linkSplit[i];
+                        if( i < linkSplit.length - 1 ) {
+                            txt += " ";
+                        }
+                        links.put(currInd, String.format("%s|%s:%s", txt, matcher.group(2), matcher.group(3)));
+                        currInd += txt.length();
+                    }
                 }
                 str = matcher.replaceFirst("$1");
             } else {

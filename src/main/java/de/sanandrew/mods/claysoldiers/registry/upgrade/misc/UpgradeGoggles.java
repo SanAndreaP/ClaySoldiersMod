@@ -101,6 +101,7 @@ public class UpgradeGoggles
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
+            ItemStack orig = stack.copy();
             if( ItemStackUtils.isBlock(stack, Blocks.GLASS_PANE) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) || ItemStackUtils.isItem(stack, Items.GLASS_BOTTLE) ) {
                 soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
                 stack.shrink(1);
@@ -108,8 +109,8 @@ public class UpgradeGoggles
                 soldier.getEntity().playSound(SoundEvents.BLOCK_GLASS_BREAK, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             }
 
-            if( ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS) || ItemStackUtils.isBlock(stack, Blocks.STAINED_GLASS_PANE) ) {
-                upgradeInst.getNbtData().setByte("color", (byte) stack.getItemDamage());
+            if( ItemStackUtils.isBlock(orig, Blocks.STAINED_GLASS) || ItemStackUtils.isBlock(orig, Blocks.STAINED_GLASS_PANE) ) {
+                upgradeInst.getNbtData().setByte("color", (byte) orig.getItemDamage());
             }
 
             AttributeHelper.tryApplyFollowRangeModifier(soldier.getEntity(), FOLLOW_RNG);

@@ -970,6 +970,19 @@ public class EntityClaySoldier
     }
 
     @Override
+    public boolean isEnemyValid(EntityLivingBase entity) {
+        if( entity != null && entity != this && entity.isEntityAlive() && this.canEntityBeSeen(entity) ) {
+            SoldierTargetEnemyEvent evt = new SoldierTargetEnemyEvent(this, entity, true);
+            if( !ClaySoldiersMod.EVENT_BUS.post(evt) ) {
+                return evt.getResult() == Event.Result.ALLOW || (evt.getResult() != Event.Result.DENY && entity instanceof EntityClaySoldier
+                                                                         && ((EntityClaySoldier)entity).getSoldierTeam() != this.getSoldierTeam());
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public double getChasingPosX(float partTicks) {
         return this.prevChasingPosX + (this.chasingPosX - this.prevChasingPosX) * partTicks;
     }

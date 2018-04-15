@@ -31,7 +31,7 @@ public abstract class EntityAIFollowEnemy
 
     @Override
     boolean isTargetValid() {
-        return true;
+        return this.taskOwner.isEnemyValid(this.taskOwner.getAttackTarget());
     }
 
     @Override

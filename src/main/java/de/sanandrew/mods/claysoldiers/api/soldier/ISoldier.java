@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.item.ItemStack;
 
@@ -86,6 +87,8 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
     boolean hasMainHandUpgrade();
 
     boolean hasOffHandUpgrade();
+
+    boolean isEnemyValid(EntityLivingBase entity);
 
     double getChasingPosX(float partTicks);
 
