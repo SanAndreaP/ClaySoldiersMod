@@ -47,4 +47,6 @@ public interface ILexiconGuiHelper
 
     @SuppressWarnings("ConstantConditions")
     boolean tryLoadTexture(ResourceLocation location);
+
+    boolean linkActionPerformed(GuiButton button);
 }

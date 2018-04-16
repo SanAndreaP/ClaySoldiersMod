@@ -8,6 +8,7 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
+import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -19,7 +20,6 @@ import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.EntityUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -46,7 +46,7 @@ public class UpgradePrismarineShard
 
     @Override
     @Nonnull
-    public EnumUpgradeType getType(ISoldier<?> checker) {
+    public EnumUpgradeType getType(IHandedUpgradeable checker) {
         return EnumUpgradeType.ENHANCEMENT;
     }
 

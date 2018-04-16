@@ -19,6 +19,8 @@ import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconEntryUpgrade;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconGroupUpgrades;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconRenderUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconRenderUpgrades;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCrown;
@@ -98,9 +100,8 @@ public class CsmInternalPlugin
     @Override
     public void registerLexicon(ILexiconRegistry registry) {
         registry.registerPageRender(new LexiconRenderUpgrades());
+        registry.registerPageRender(new LexiconRenderUpgradeType());
 
-        ILexiconGroup grp = new LexiconGroup("upgrades", Resources.GUI_GROUPICON_UPGRADES.resource);
-        registry.registerGroup(grp);
-        UpgradeRegistry.INSTANCE.getUpgrades().forEach(upg -> grp.addEntry(new LexiconEntryUpgrade("upgrades", CsmConstants.ID + ":upgrades", upg)));
+        LexiconGroupUpgrades.register(registry);
     }
 }

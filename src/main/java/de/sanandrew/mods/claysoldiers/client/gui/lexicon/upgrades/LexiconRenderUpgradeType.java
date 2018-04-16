@@ -9,30 +9,32 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.GuiButtonLink;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
-import net.minecraft.client.Minecraft;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class LexiconRenderUpgrades
+public class LexiconRenderUpgradeType
         implements ILexiconPageRender
 {
     private int drawHeight;
     private List<GuiButton> entryButtons;
+    private static List<ILexiconEntry> subEntryCache;
 
     @Override
     public String getId() {
-        return CsmConstants.ID + ":upgrades";
+        return CsmConstants.ID + ":upgradetype";
     }
 
     @Override
@@ -48,16 +50,6 @@ public class LexiconRenderUpgrades
         s = entry.getEntryText().replace("\\n", "\n");
         this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 58;
         helper.drawContentString(s, 2, 55, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
-
-        if( helper.tryLoadTexture(entry.getPicture()) ) {
-            int height = MAX_ENTRY_WIDTH / 2;
-            helper.drawRect(0, this.drawHeight + 8, MAX_ENTRY_WIDTH, this.drawHeight + 8 + height, 0xFF000000);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            helper.drawTextureRect(2, this.drawHeight + 10, MAX_ENTRY_WIDTH - 4, height - 4, 0.0F, 0.0F, 1.0F, 1.0F);
-            this.drawHeight += height + 12;
-        }
-
-        helper.drawItemGrid((MAX_ENTRY_WIDTH - 36) / 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
     }
 
     @Override
@@ -66,7 +58,32 @@ public class LexiconRenderUpgrades
     }
 
     @Override
+    public List<ILexiconEntry> getSubEntries(ILexiconEntry entry) {
+        if( subEntryCache == null ) {
+            subEntryCache = new ArrayList<>();
+
+            if( entry instanceof LexiconEntryUpgradeType ) {
+                final EnumUpgradeType type = ((LexiconEntryUpgradeType) entry).type;
+                LexiconRegistry.INSTANCE.getGroup(entry.getGroupId()).getEntries().forEach(subEntry -> {
+                    if( subEntry instanceof LexiconEntryUpgrade ) {
+                        LexiconEntryUpgrade subEntryUpg = (LexiconEntryUpgrade) subEntry;
+                        if( type == subEntryUpg.upgrade.getType(LexiconGroupUpgrades.Hander.MAIN) || type == subEntryUpg.upgrade.getType(LexiconGroupUpgrades.Hander.OFF) ) {
+                            subEntryCache.add(subEntry);
+                        }
+                    }
+                });
+            }
+        }
+
+        return subEntryCache;
+    }
+
+    @Override
     public boolean actionPerformed(GuiButton button, ILexiconGuiHelper helper) {
-        return helper.linkActionPerformed(button);
+        if( !helper.linkActionPerformed(button) ) {
+
+        }
+
+        return false;
     }
 }

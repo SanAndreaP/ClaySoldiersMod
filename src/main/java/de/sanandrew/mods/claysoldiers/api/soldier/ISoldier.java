@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ISoldier<T extends EntityCreature & ISoldier<T>>
-        extends IDisruptable
+        extends IDisruptable, IHandedUpgradeable
 {
     void expireEffect(ISoldierEffect effect);
 
@@ -83,10 +83,6 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
     boolean hasUpgrade(UUID id, EnumUpgradeType type);
 
     boolean hasUpgrade(ISoldierUpgrade upgrade, EnumUpgradeType type);
-
-    boolean hasMainHandUpgrade();
-
-    boolean hasOffHandUpgrade();
 
     boolean isEnemyValid(EntityLivingBase entity);
 

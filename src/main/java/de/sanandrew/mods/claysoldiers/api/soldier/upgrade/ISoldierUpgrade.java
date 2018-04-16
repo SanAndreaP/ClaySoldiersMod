@@ -6,6 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.soldier.upgrade;
 
+import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -26,7 +27,7 @@ public interface ISoldierUpgrade
     ItemStack[] getStacks();
 
     @Nonnull
-    EnumUpgradeType getType(ISoldier<?> checker);
+    EnumUpgradeType getType(IHandedUpgradeable checker);
 
     String getModId();
 

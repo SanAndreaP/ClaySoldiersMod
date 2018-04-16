@@ -135,7 +135,7 @@ public class LexiconGuiHelper
     }
 
     @Override
-    public void drawContentString(String str, int x, int y, int wrapWidth, int textColor, @Nonnull List<GuiButton> buttons) {
+    public void drawContentString(String str, int x, int y, int wrapWidth, int textColor, @Nonnull List<GuiButton> newButtons) {
         FontRenderer fontRenderer = this.getFontRenderer();
         Map<Integer, String> links = new HashMap<>();
         str = replaceLinkedText(str, links);
@@ -159,10 +159,10 @@ public class LexiconGuiHelper
                     int entrySplitId = entry.getValue().indexOf('|');
                     String t = entry.getValue().substring(0, entrySplitId);
                     int tl = fontRenderer.getStringWidth(t);
-                    GuiButton lnk = buttons.stream().filter(button -> button.id == entry.getKey()).findFirst().orElse(null);
+                    GuiButton lnk = newButtons.stream().filter(button -> button.id == entry.getKey()).findFirst().orElse(null);
                     if( lnk == null ) {
                         lnk = new GuiButtonLink(entry.getKey(), lineX, y, t, entry.getValue().substring(entrySplitId + 1), this.getFontRenderer());
-                        buttons.add(lnk);
+                        newButtons.add(lnk);
                     } else {
                         lnk.x = lineX;
                         lnk.y = y;
@@ -291,5 +291,27 @@ public class LexiconGuiHelper
         this.gui.mc.renderEngine.bindTexture(location);
         checkedResources.put(location, true);
         return true;
+    }
+
+    @Override
+    public boolean linkActionPerformed(GuiButton button) {
+        if( button instanceof GuiButtonLink ) {
+            GuiButtonLink btnLink = (GuiButtonLink) button;
+            int groupCharId = btnLink.link.indexOf(':');
+            String groupId = btnLink.link.substring(0, groupCharId);
+            String entryId = btnLink.link.substring(groupCharId + 1);
+
+            ILexiconGroup group = LexiconRegistry.INSTANCE.getGroup(groupId);
+            if( group != null ) {
+                ILexiconEntry entry = group.getEntry(entryId);
+                if( entry != null ) {
+                    this.changePage(group, entry);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

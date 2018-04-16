@@ -8,26 +8,20 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
-import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
-import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemFirework;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 
@@ -57,7 +51,7 @@ public class UpgradeFireworkRocket
 
     @Nonnull
     @Override
-    public EnumUpgradeType getType(ISoldier<?> checker) {
+    public EnumUpgradeType getType(IHandedUpgradeable checker) {
         return EnumUpgradeType.MISC;
     }
 

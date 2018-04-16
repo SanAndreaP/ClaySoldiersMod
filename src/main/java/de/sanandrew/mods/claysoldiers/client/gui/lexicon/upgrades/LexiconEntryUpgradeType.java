@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -20,33 +20,24 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 @SideOnly(Side.CLIENT)
-public class LexiconEntryUpgrade
+public class LexiconEntryUpgradeType
         implements ILexiconEntry
 {
     private final String id;
     private final String groupId;
     private final String renderId;
-    private final ItemStack[] icons;
-    private final ResourceLocation prevPic;
-    final ISoldierUpgrade upgrade;
+    private final ItemStack icon;
+    final EnumUpgradeType type;
 
-    public LexiconEntryUpgrade(ISoldierUpgrade upgrade) {
-        this.id = upgrade.getModId() + ':' + upgrade.getShortName();
+    public LexiconEntryUpgradeType(EnumUpgradeType type, ItemStack icon) {
+        this.id = CsmConstants.ID + ":cat_" + type.name().toLowerCase(Locale.ROOT);
         this.groupId = LexiconGroupUpgrades.GRP_NAME;
-        this.renderId = CsmConstants.ID + ":upgrades";
-        this.upgrade = upgrade;
-        this.icons = Arrays.stream(upgrade.getStacks()).map(item -> {
-            NonNullList<ItemStack> newItems = NonNullList.create();
-            if( item.getItemDamage() == OreDictionary.WILDCARD_VALUE ) {
-                item.getItem().getSubItems(CreativeTabs.SEARCH, newItems);
-            } else {
-                newItems.add(item);
-            }
-            return newItems;
-        }).collect(ArrayList<ItemStack>::new, ArrayList::addAll, ArrayList::addAll).toArray(new ItemStack[0]);
-        this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/upgrades/" + upgrade.getModId() + '_' + upgrade.getShortName() + ".png");
+        this.renderId = CsmConstants.ID + ":upgradetype";
+        this.type = type;
+        this.icon = icon;
     }
 
     @Override
@@ -76,16 +67,16 @@ public class LexiconEntryUpgrade
 
     @Override
     public ItemStack getEntryIcon() {
-        return this.icons[(int) ((System.nanoTime() / 1_000_000_000) % this.icons.length)];
+        return this.icon;
     }
 
     @Override
     public ResourceLocation getPicture() {
-        return this.prevPic;
+        return null;
     }
 
     @Override
     public boolean divideAfter() {
-        return false;
+        return this.type == EnumUpgradeType.VALUES[EnumUpgradeType.VALUES.length - 1];
     }
 }

@@ -29,4 +29,6 @@ public interface ILexiconEntry
     @Nonnull ItemStack getEntryIcon();
 
     ResourceLocation getPicture();
+
+    boolean divideAfter();
 }

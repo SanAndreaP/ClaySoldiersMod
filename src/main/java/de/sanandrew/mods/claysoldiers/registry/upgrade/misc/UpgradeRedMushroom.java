@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -52,7 +53,7 @@ public class UpgradeRedMushroom
 
     @Nonnull
     @Override
-    public EnumUpgradeType getType(ISoldier<?> checker) {
+    public EnumUpgradeType getType(IHandedUpgradeable checker) {
         return EnumUpgradeType.MISC;
     }
 

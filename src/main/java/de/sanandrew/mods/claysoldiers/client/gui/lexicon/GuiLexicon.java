@@ -97,9 +97,14 @@ public class GuiLexicon
             }
         } else if( entry == null ) {
             int posY = 0;
+            group.sortEntries();
             for( ILexiconEntry entry : group.getEntries() ) {
                 this.entryButtons.add(new GuiButtonEntry(this.entryButtons.size(), 5, 19 + posY, entry, this.renderHelper.getFontRenderer()));
                 posY += 14;
+                if( entry.divideAfter() ) {
+                    this.entryButtons.add(new GuiButtonEntryDivider(this.entryButtons.size(), 5, 19 + posY));
+                    posY += 5;
+                }
             }
         } else {
             this.render = LexiconRegistry.INSTANCE.getPageRender(entry.getPageRenderId());

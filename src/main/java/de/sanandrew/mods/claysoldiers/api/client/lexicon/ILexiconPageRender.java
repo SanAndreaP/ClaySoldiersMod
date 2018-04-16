@@ -32,6 +32,8 @@ public interface ILexiconPageRender
 
     int getEntryHeight(ILexiconEntry entry, ILexiconGuiHelper helper);
 
+    List<ILexiconEntry> getSubEntries(ILexiconEntry entry);
+
     default boolean actionPerformed(GuiButton button, ILexiconGuiHelper helper) {
         return false;
     }

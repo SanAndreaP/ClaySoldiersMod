@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.upgrade.enhancement;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
@@ -14,15 +15,12 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
-import org.apache.commons.lang3.mutable.MutableFloat;
 
 import javax.annotation.Nonnull;
 
@@ -55,7 +53,7 @@ public class UpgradeSugarCane
 
     @Nonnull
     @Override
-    public EnumUpgradeType getType(ISoldier<?> checker) {
+    public EnumUpgradeType getType(IHandedUpgradeable checker) {
         return EnumUpgradeType.ENHANCEMENT;
     }
 

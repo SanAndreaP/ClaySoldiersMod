@@ -23,14 +23,14 @@ import java.util.List;
 import java.util.Map;
 
 @SideOnly(Side.CLIENT)
-public final class LexiconGroup
+public abstract class LexiconGroup
         implements ILexiconGroup
 {
     private final String id;
     private final ResourceLocation icon;
     private final Map<String, ILexiconEntry> idToEntryMap;
-    private final List<ILexiconEntry> entries;
     private final List<ILexiconEntry> entriesRO;
+    protected final List<ILexiconEntry> entries;
 
     public LexiconGroup(String id, ResourceLocation icon) {
         this.id = id;
