@@ -35,7 +35,7 @@ public class LexiconEntryUpgradeType
     public LexiconEntryUpgradeType(EnumUpgradeType type, ItemStack icon) {
         this.id = CsmConstants.ID + ":cat_" + type.name().toLowerCase(Locale.ROOT);
         this.groupId = LexiconGroupUpgrades.GRP_NAME;
-        this.renderId = CsmConstants.ID + ":upgradetype";
+        this.renderId = LexiconRenderUpgradeType.ID;
         this.type = type;
         this.icon = icon;
     }

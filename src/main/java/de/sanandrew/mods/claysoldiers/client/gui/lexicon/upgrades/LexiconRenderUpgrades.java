@@ -27,12 +27,14 @@ import java.util.List;
 public class LexiconRenderUpgrades
         implements ILexiconPageRender
 {
+    public static final String ID = CsmConstants.ID + ":upgrades";
+
     private int drawHeight;
     private List<GuiButton> entryButtons;
 
     @Override
     public String getId() {
-        return CsmConstants.ID + ":upgrades";
+        return ID;
     }
 
     @Override

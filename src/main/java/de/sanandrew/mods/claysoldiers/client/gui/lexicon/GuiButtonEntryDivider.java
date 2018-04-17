@@ -8,26 +8,19 @@
  */
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
 
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
-import de.sanandrew.mods.sanlib.client.ClientTickHandler;
-import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
 public class GuiButtonEntryDivider
         extends GuiButton
 {
     public GuiButtonEntryDivider(int id, int x, int y) {
-        super(id, x, y, ILexiconPageRender.MAX_ENTRY_WIDTH - 12, 5, "");
+        super(id, x, y, ILexiconPageRender.BTN_ENTRY_WIDTH, 5, "");
     }
 
     @Override

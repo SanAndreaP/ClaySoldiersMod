@@ -35,7 +35,7 @@ public class LexiconEntryUpgrade
     public LexiconEntryUpgrade(ISoldierUpgrade upgrade) {
         this.id = upgrade.getModId() + ':' + upgrade.getShortName();
         this.groupId = LexiconGroupUpgrades.GRP_NAME;
-        this.renderId = CsmConstants.ID + ":upgrades";
+        this.renderId = LexiconRenderUpgrades.ID;
         this.upgrade = upgrade;
         this.icons = Arrays.stream(upgrade.getStacks()).map(item -> {
             NonNullList<ItemStack> newItems = NonNullList.create();

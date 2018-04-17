@@ -6,10 +6,10 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades;
 
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.DummyHander;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
@@ -61,10 +61,10 @@ public class LexiconGroupUpgrades
                 LexiconEntryUpgrade l1 = (LexiconEntryUpgrade) o1;
                 LexiconEntryUpgrade l2 = (LexiconEntryUpgrade) o2;
 
-                EnumUpgradeType t1m = l1.upgrade.getType(Hander.MAIN);
-                EnumUpgradeType t1o = l1.upgrade.getType(Hander.OFF);
-                EnumUpgradeType t2m = l2.upgrade.getType(Hander.MAIN);
-                EnumUpgradeType t2o = l2.upgrade.getType(Hander.OFF);
+                EnumUpgradeType t1m = l1.upgrade.getType(DummyHander.MAIN);
+                EnumUpgradeType t1o = l1.upgrade.getType(DummyHander.OFF);
+                EnumUpgradeType t2m = l2.upgrade.getType(DummyHander.MAIN);
+                EnumUpgradeType t2o = l2.upgrade.getType(DummyHander.OFF);
 
                 if( t1m == t2m || t1o == t2o ) {
                     return l1.getEntryName().compareTo(l2.getEntryName());
@@ -80,29 +80,6 @@ public class LexiconGroupUpgrades
             } else {
                 return o1 instanceof LexiconEntryUpgradeType ? -1 : o2 instanceof LexiconEntryUpgradeType ? 1 : 0;
             }
-        }
-    }
-
-    public static class Hander
-            implements IHandedUpgradeable
-    {
-        public static final Hander MAIN = new Hander(true);
-        public static final Hander OFF = new Hander(false);
-
-        private final boolean mainHand;
-
-        private Hander(boolean mainHand) {
-            this.mainHand = mainHand;
-        }
-
-        @Override
-        public boolean hasMainHandUpgrade() {
-            return this.mainHand;
-        }
-
-        @Override
-        public boolean hasOffHandUpgrade() {
-            return !this.mainHand;
         }
     }
 }

@@ -7,16 +7,14 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.DummyHander;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.GuiButtonLink;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.GuiButtonEntry;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,16 +28,34 @@ public class LexiconRenderUpgradeType
 {
     private int drawHeight;
     private List<GuiButton> entryButtons;
-    private static List<ILexiconEntry> subEntryCache;
+    private List<GuiButton> subEntryButtons;
+
+    public static final String ID = CsmConstants.ID + ":upgradetype";
 
     @Override
     public String getId() {
-        return CsmConstants.ID + ":upgradetype";
+        return ID;
     }
 
     @Override
     public void initPage(ILexiconEntry entry, ILexiconGuiHelper helper, List<GuiButton> globalButtons, List<GuiButton> entryButtons) {
         this.entryButtons = entryButtons;
+        this.subEntryButtons = new ArrayList<>();
+
+        if( entry instanceof LexiconEntryUpgradeType ) {
+            final EnumUpgradeType type = ((LexiconEntryUpgradeType) entry).type;
+            final int btnX = (ILexiconPageRender.MAX_ENTRY_WIDTH - ILexiconPageRender.BTN_ENTRY_WIDTH) / 2;
+            LexiconRegistry.INSTANCE.getGroup(entry.getGroupId()).getEntries().forEach(subEntry -> {
+                if( subEntry instanceof LexiconEntryUpgrade ) {
+                    LexiconEntryUpgrade subEntryUpg = (LexiconEntryUpgrade) subEntry;
+                    if( type == subEntryUpg.upgrade.getType(DummyHander.MAIN) || type == subEntryUpg.upgrade.getType(DummyHander.OFF) ) {
+                        GuiButton btn = new GuiButtonEntry(this.entryButtons.size(), btnX, 0, subEntry, helper.getFontRenderer());
+                        this.subEntryButtons.add(btn);
+                        this.entryButtons.add(btn);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -48,8 +64,14 @@ public class LexiconRenderUpgradeType
         helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
 
         s = entry.getEntryText().replace("\\n", "\n");
-        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 58;
-        helper.drawContentString(s, 2, 55, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
+        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 4) + 15;
+        helper.drawContentString(s, 2, 12, MAX_ENTRY_WIDTH - 4, 0xFF000000, this.entryButtons);
+
+        for( GuiButton btn : this.subEntryButtons ) {
+            btn.y = this.drawHeight;
+            this.drawHeight += 14;
+        }
+        this.drawHeight += 2;
     }
 
     @Override
@@ -58,32 +80,7 @@ public class LexiconRenderUpgradeType
     }
 
     @Override
-    public List<ILexiconEntry> getSubEntries(ILexiconEntry entry) {
-        if( subEntryCache == null ) {
-            subEntryCache = new ArrayList<>();
-
-            if( entry instanceof LexiconEntryUpgradeType ) {
-                final EnumUpgradeType type = ((LexiconEntryUpgradeType) entry).type;
-                LexiconRegistry.INSTANCE.getGroup(entry.getGroupId()).getEntries().forEach(subEntry -> {
-                    if( subEntry instanceof LexiconEntryUpgrade ) {
-                        LexiconEntryUpgrade subEntryUpg = (LexiconEntryUpgrade) subEntry;
-                        if( type == subEntryUpg.upgrade.getType(LexiconGroupUpgrades.Hander.MAIN) || type == subEntryUpg.upgrade.getType(LexiconGroupUpgrades.Hander.OFF) ) {
-                            subEntryCache.add(subEntry);
-                        }
-                    }
-                });
-            }
-        }
-
-        return subEntryCache;
-    }
-
-    @Override
     public boolean actionPerformed(GuiButton button, ILexiconGuiHelper helper) {
-        if( !helper.linkActionPerformed(button) ) {
-
-        }
-
-        return false;
+        return helper.linkActionPerformed(button);
     }
 }

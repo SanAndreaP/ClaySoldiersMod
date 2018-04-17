@@ -97,12 +97,13 @@ public class GuiLexicon
             }
         } else if( entry == null ) {
             int posY = 0;
+            int btnX = (ILexiconPageRender.MAX_ENTRY_WIDTH - ILexiconPageRender.BTN_ENTRY_WIDTH) / 2;
             group.sortEntries();
             for( ILexiconEntry entry : group.getEntries() ) {
-                this.entryButtons.add(new GuiButtonEntry(this.entryButtons.size(), 5, 19 + posY, entry, this.renderHelper.getFontRenderer()));
+                this.entryButtons.add(new GuiButtonEntry(this.entryButtons.size(), btnX, 19 + posY, entry, this.renderHelper.getFontRenderer()));
                 posY += 14;
                 if( entry.divideAfter() ) {
-                    this.entryButtons.add(new GuiButtonEntryDivider(this.entryButtons.size(), 5, 19 + posY));
+                    this.entryButtons.add(new GuiButtonEntryDivider(this.entryButtons.size(), btnX, 19 + posY));
                     posY += 5;
                 }
             }

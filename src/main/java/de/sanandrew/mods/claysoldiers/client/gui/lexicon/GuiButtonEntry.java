@@ -37,7 +37,7 @@ public class GuiButtonEntry
     private final FontRenderer fontRenderer;
 
     public GuiButtonEntry(int id, int x, int y, ILexiconEntry entry, FontRenderer fontRenderer) {
-        super(id, x, y, ILexiconPageRender.MAX_ENTRY_WIDTH - 12, 14, entry.getEntryName());
+        super(id, x, y, ILexiconPageRender.BTN_ENTRY_WIDTH, 14, entry.getEntryName());
         this.entry = entry;
         this.icon = entry.getEntryIcon();
         this.fontRenderer = fontRenderer;

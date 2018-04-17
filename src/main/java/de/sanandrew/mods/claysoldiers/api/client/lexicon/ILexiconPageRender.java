@@ -21,6 +21,7 @@ public interface ILexiconPageRender
     int ENTRY_Y = 19;
     int MAX_ENTRY_WIDTH = 165;
     int MAX_ENTRY_HEIGHT = 180;
+    int BTN_ENTRY_WIDTH = MAX_ENTRY_WIDTH - 12;
 
     String getId();
 
@@ -31,8 +32,6 @@ public interface ILexiconPageRender
     void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks);
 
     int getEntryHeight(ILexiconEntry entry, ILexiconGuiHelper helper);
-
-    List<ILexiconEntry> getSubEntries(ILexiconEntry entry);
 
     default boolean actionPerformed(GuiButton button, ILexiconGuiHelper helper) {
         return false;
