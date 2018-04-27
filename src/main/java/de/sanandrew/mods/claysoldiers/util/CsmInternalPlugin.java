@@ -6,22 +6,18 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.IEffectRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconEntryUpgrade;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconGroupUpgrades;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconRenderUpgradeType;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconRenderUpgrades;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade.LexiconGroupUpgrades;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade.LexiconRenderUpgradeType;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade.LexiconRenderUpgrades;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCrown;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerGoggles;
@@ -38,7 +34,6 @@ import de.sanandrew.mods.claysoldiers.eventhandler.SoldierInventoryEventHandler;
 import de.sanandrew.mods.claysoldiers.eventhandler.SoldierTargetEnemyEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;

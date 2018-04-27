@@ -26,6 +26,10 @@ public class ClayModelRotationEventHandler
             if( soldier.hasUpgrade(Upgrades.MC_FEATHER, EnumUpgradeType.MISC) && !soldier.onGround ) {
                 model.bipedLeftArm.rotateAngleX += Math.PI;
                 model.bipedRightArm.rotateAngleX += Math.PI;
+            } else if( soldier.hasMainHandUpgrade() ) {
+                (soldier.isLeftHanded() ? model.bipedLeftArm : model.bipedRightArm).rotateAngleX -= 0.25D;
+            } else if( soldier.hasOffHandUpgrade() ) {
+                (soldier.isLeftHanded() ? model.bipedRightArm : model.bipedLeftArm).rotateAngleX -= 0.25D;
             }
         }
     }

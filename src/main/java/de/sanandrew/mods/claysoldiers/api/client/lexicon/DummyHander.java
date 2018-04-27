@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.api.client.lexicon;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades.LexiconGroupUpgrades;
 
 public class DummyHander
         implements IHandedUpgradeable

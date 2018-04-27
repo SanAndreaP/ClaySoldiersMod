@@ -202,9 +202,9 @@ public class LexiconGuiHelper
                     String[] linkSplit = matcher.group(1).split(" ");
                     int currInd = matcher.start();
                     for( int i = 0; i < linkSplit.length; i++ ) {
-                        String txt = linkSplit[i];
+                        StringBuilder txt = new StringBuilder(linkSplit[i]);
                         if( i < linkSplit.length - 1 ) {
-                            txt += " ";
+                            txt.append(' ');
                         }
                         links.put(currInd, String.format("%s|%s:%s", txt, matcher.group(2), matcher.group(3)));
                         currInd += txt.length();

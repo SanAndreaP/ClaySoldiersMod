@@ -4,33 +4,28 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrades;
+package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.DummyHander;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.GuiButtonEntry;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class LexiconRenderUpgradeType
+public class LexiconRenderUpgrades
         implements ILexiconPageRender
 {
+    public static final String ID = CsmConstants.ID + ":upgrades";
+
     private int drawHeight;
     private List<GuiButton> entryButtons;
-    private List<GuiButton> subEntryButtons;
-
-    public static final String ID = CsmConstants.ID + ":upgradetype";
 
     @Override
     public String getId() {
@@ -40,22 +35,6 @@ public class LexiconRenderUpgradeType
     @Override
     public void initPage(ILexiconEntry entry, ILexiconGuiHelper helper, List<GuiButton> globalButtons, List<GuiButton> entryButtons) {
         this.entryButtons = entryButtons;
-        this.subEntryButtons = new ArrayList<>();
-
-        if( entry instanceof LexiconEntryUpgradeType ) {
-            final EnumUpgradeType type = ((LexiconEntryUpgradeType) entry).type;
-            final int btnX = (ILexiconPageRender.MAX_ENTRY_WIDTH - ILexiconPageRender.BTN_ENTRY_WIDTH) / 2;
-            LexiconRegistry.INSTANCE.getGroup(entry.getGroupId()).getEntries().forEach(subEntry -> {
-                if( subEntry instanceof LexiconEntryUpgrade ) {
-                    LexiconEntryUpgrade subEntryUpg = (LexiconEntryUpgrade) subEntry;
-                    if( type == subEntryUpg.upgrade.getType(DummyHander.MAIN) || type == subEntryUpg.upgrade.getType(DummyHander.OFF) ) {
-                        GuiButton btn = new GuiButtonEntry(this.entryButtons.size(), btnX, 0, subEntry, helper.getFontRenderer());
-                        this.subEntryButtons.add(btn);
-                        this.entryButtons.add(btn);
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -64,14 +43,18 @@ public class LexiconRenderUpgradeType
         helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
 
         s = entry.getEntryText().replace("\\n", "\n");
-        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 4) + 15;
-        helper.drawContentString(s, 2, 12, MAX_ENTRY_WIDTH - 4, 0xFF000000, this.entryButtons);
+        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 58;
+        helper.drawContentString(s, 2, 55, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
 
-        for( GuiButton btn : this.subEntryButtons ) {
-            btn.y = this.drawHeight;
-            this.drawHeight += 14;
+        if( helper.tryLoadTexture(entry.getPicture()) ) {
+            int height = MAX_ENTRY_WIDTH / 2;
+            helper.drawRect(0, this.drawHeight + 8, MAX_ENTRY_WIDTH, this.drawHeight + 8 + height, 0xFF000000);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            helper.drawTextureRect(2, this.drawHeight + 10, MAX_ENTRY_WIDTH - 4, height - 4, 0.0F, 0.0F, 1.0F, 1.0F);
+            this.drawHeight += height + 12;
         }
-        this.drawHeight += 2;
+
+        helper.drawItemGrid((MAX_ENTRY_WIDTH - 36) / 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
     }
 
     @Override
