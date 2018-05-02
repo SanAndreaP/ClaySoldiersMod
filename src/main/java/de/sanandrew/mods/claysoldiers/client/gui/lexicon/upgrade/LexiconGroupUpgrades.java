@@ -25,7 +25,7 @@ public class LexiconGroupUpgrades
 {
     public static final String GRP_NAME = "upgrades";
 
-    public LexiconGroupUpgrades() {
+    protected LexiconGroupUpgrades() {
         super(GRP_NAME, Resources.GUI_GROUPICON_UPGRADES.resource);
     }
 

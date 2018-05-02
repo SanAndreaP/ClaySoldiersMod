@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.util.ResourceLocation;
@@ -15,12 +17,14 @@ public class LexiconGroupSoldiers
 {
     public static final String GRP_NAME = "soldiers";
 
-    public LexiconGroupSoldiers() {
+    protected LexiconGroupSoldiers() {
         super(GRP_NAME, Resources.GUI_GROUPICON_SOLDIERS.resource);
     }
 
-    @Override
-    public void sortEntries() {
+    public static void register(ILexiconRegistry registry) {
+        ILexiconGroup grp = new LexiconGroupSoldiers();
+        registry.registerGroup(grp);
+
 
     }
 }

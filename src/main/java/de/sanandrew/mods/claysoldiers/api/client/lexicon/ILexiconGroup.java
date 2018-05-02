@@ -23,7 +23,7 @@ public interface ILexiconGroup
 
     List<ILexiconEntry> getEntries();
 
-    void sortEntries();
+    default void sortEntries() {}
 
     ILexiconEntry getEntry(String id);
 
