@@ -270,8 +270,12 @@ public class LexiconGuiHelper
     @Override
     @SuppressWarnings("ConstantConditions")
     public boolean tryLoadTexture(ResourceLocation location) {
-        if( checkedResources.containsKey(location) ) {
-            if( checkedResources.get(location) ) {
+        if( location == null ) {
+            return false;
+        }
+
+        if( this.checkedResources.containsKey(location) ) {
+            if( this.checkedResources.get(location) ) {
                 this.gui.mc.renderEngine.bindTexture(location);
                 return true;
             } else {
@@ -284,12 +288,12 @@ public class LexiconGuiHelper
                 new SimpleTexture(location).loadTexture(this.gui.mc.getResourceManager());
             }
         } catch( IOException ex ) {
-            checkedResources.put(location, false);
+            this.checkedResources.put(location, false);
             return false;
         }
 
         this.gui.mc.renderEngine.bindTexture(location);
-        checkedResources.put(location, true);
+        this.checkedResources.put(location, true);
         return true;
     }
 
