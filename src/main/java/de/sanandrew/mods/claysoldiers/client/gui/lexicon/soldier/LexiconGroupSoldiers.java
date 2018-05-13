@@ -22,9 +22,11 @@ public class LexiconGroupSoldiers
     }
 
     public static void register(ILexiconRegistry registry) {
+        registry.registerPageRender(new LexiconRenderBaseSoldier());
+
         ILexiconGroup grp = new LexiconGroupSoldiers();
         registry.registerGroup(grp);
 
-
+        grp.addEntry(new LexiconEntryBaseSoldier());
     }
 }

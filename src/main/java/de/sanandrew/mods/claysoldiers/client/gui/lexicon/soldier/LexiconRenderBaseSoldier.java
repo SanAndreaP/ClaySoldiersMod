@@ -20,7 +20,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,6 +42,7 @@ public class LexiconRenderBaseSoldier
     private int drawHeight;
     private List<GuiButton> entryButtons;
     private static IRecipe soldierRecipe;
+    private ItemStack[][][] crfGrid;
 
     @Override
     public String getId() {
@@ -53,6 +57,30 @@ public class LexiconRenderBaseSoldier
             soldierRecipe = StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
                                          .filter(r -> !r.isDynamic() && ItemStackUtils.areEqual(r.getRecipeOutput(), greySoldier) && r.canFit(3, 3))
                                          .findFirst().orElse(null);
+        }
+
+        if( soldierRecipe != null ) {
+            int w, h;
+            NonNullList<Ingredient> ingredients = soldierRecipe.getIngredients();
+            if( soldierRecipe instanceof ShapedRecipes ) {
+                w = ((ShapedRecipes) soldierRecipe).recipeWidth;
+                h = ((ShapedRecipes) soldierRecipe).recipeHeight;
+            } else if( soldierRecipe instanceof ShapedOreRecipe ) {
+                w = ((ShapedOreRecipe) soldierRecipe).getRecipeWidth();
+                h = ((ShapedOreRecipe) soldierRecipe).getRecipeHeight();
+            } else {
+                w = MathHelper.ceil(ingredients.size() / 2.0D);
+                h = w;
+            }
+
+            this.crfGrid = new ItemStack[w][h][];
+            for( int y = 0; y < h; y++ ) {
+                for( int x = 0; x < w; x++ ) {
+                    if( x + y < ingredients.size() ) {
+                        this.crfGrid[x][y] = ingredients.get(x + y).getMatchingStacks();
+                    }
+                }
+            }
         }
     }
 
@@ -73,18 +101,18 @@ public class LexiconRenderBaseSoldier
             this.drawHeight += height + 12;
         }
 
-        helper.drawItemGrid((MAX_ENTRY_WIDTH - 36) / 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
 
         if( soldierRecipe != null ) {
-            int w, h;
-            if( soldierRecipe instanceof ShapedRecipes ) {
-                w = ((ShapedRecipes) soldierRecipe).recipeWidth;
-                h = ((ShapedRecipes) soldierRecipe).recipeHeight;
-            } else if( soldierRecipe instanceof ShapedOreRecipe ) {
-                w = ((ShapedOreRecipe) soldierRecipe).getRecipeWidth();
-                h = ((ShapedOreRecipe) soldierRecipe).getRecipeHeight();
+            helper.drawItemGrid((MAX_ENTRY_WIDTH - 36 - this.crfGrid.length * 18) / 2 - 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
+
+            for( int x = 0, mX = this.crfGrid.length; x < mX; x++ ) {
+                for( int y = 0, mY = this.crfGrid[x].length; y < mY; y++ ) {
+                    ItemStack[] drawnStacks = this.crfGrid[x][y];
+                    ItemStack drawnStack = drawnStacks != null ? drawnStacks[(int) ((System.nanoTime() / 1_000_000_000) % drawnStacks.length)] : ItemStack.EMPTY;
+                    helper.drawItemGrid((MAX_ENTRY_WIDTH + 36 - this.crfGrid.length * 18) / 2 + 2 + x * 18, 12 + y * 18, mouseX, mouseY, scrollY, drawnStack, 1.0F, true);
+                }
             }
-            soldierRecipe.getIngredients()
+        } else {
             helper.drawItemGrid((MAX_ENTRY_WIDTH - 36) / 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
         }
     }

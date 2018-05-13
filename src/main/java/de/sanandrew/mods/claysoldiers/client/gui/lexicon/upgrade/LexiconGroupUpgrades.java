@@ -35,6 +35,9 @@ public class LexiconGroupUpgrades
     }
 
     public static void register(ILexiconRegistry registry) {
+        registry.registerPageRender(new LexiconRenderUpgrades());
+        registry.registerPageRender(new LexiconRenderUpgradeType());
+
         ILexiconGroup grp = new LexiconGroupUpgrades();
         registry.registerGroup(grp);
 
