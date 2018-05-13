@@ -11,8 +11,8 @@ public enum EnumUpgradeType
     MAIN_HAND,
     OFF_HAND,
     CORE,
-    BEHAVIOR,
     MISC,
+    BEHAVIOR,
     ENHANCEMENT;
 
     public static final EnumUpgradeType[] VALUES = values();
