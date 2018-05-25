@@ -10,7 +10,6 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
 import de.sanandrew.mods.claysoldiers.util.Resources;
-import net.minecraft.util.ResourceLocation;
 
 public class LexiconGroupSoldiers
         extends LexiconGroup
@@ -22,7 +21,7 @@ public class LexiconGroupSoldiers
     }
 
     public static void register(ILexiconRegistry registry) {
-        registry.registerPageRender(new LexiconRenderBaseSoldier());
+        registry.registerPageRender(new LexiconRenderCraftingGrid());
 
         ILexiconGroup grp = new LexiconGroupSoldiers();
         registry.registerGroup(grp);

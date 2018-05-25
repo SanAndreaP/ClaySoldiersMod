@@ -58,10 +58,10 @@ public class LexiconGuiHelper
     @Override
     public void doEntryScissoring(int x, int y, int width, int height) {
         int prevX = x;
-        int yShifted = y - Math.round(this.gui.scroll * this.gui.dHeight);
+        int yShifted = y - Math.round(GuiLexicon.scroll * this.gui.dHeight);
 
         int maxWidth = Math.min(width, width - (x + width - ILexiconPageRender.MAX_ENTRY_WIDTH));
-        int maxHeight = Math.min(height, height - (y + height - ILexiconPageRender.MAX_ENTRY_HEIGHT) + Math.round(this.gui.scroll * this.gui.dHeight));
+        int maxHeight = Math.min(height, height - (y + height - ILexiconPageRender.MAX_ENTRY_HEIGHT) + Math.round(GuiLexicon.scroll * this.gui.dHeight));
 
         x = this.gui.entryX + Math.max(0, prevX);
         y = this.gui.entryY + Math.max(0, yShifted);
@@ -99,7 +99,8 @@ public class LexiconGuiHelper
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 0.0F);
         GlStateManager.scale(scale, scale, 1.0F);
-        this.drawTextureRect(0, 0, 222, 0, 18, 18);
+        GlStateManager.enableBlend();
+        this.drawTextureRect(0, 0, 238, 0, 18, 18);
         GlStateManager.popMatrix();
 
         x += (1.0F * scale);

@@ -7,17 +7,21 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
+import de.sanandrew.mods.claysoldiers.item.ItemMountHorse;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
 public class LexiconEntryBaseSoldier
-        implements ILexiconEntry
+        implements ILexiconEntryCraftingGrid
 {
     private static final String ID = CsmConstants.ID + ":baseSoldier";
     private final ItemStack icon;
@@ -38,7 +42,7 @@ public class LexiconEntryBaseSoldier
 
     @Override
     public String getPageRenderId() {
-        return LexiconRenderBaseSoldier.ID;
+        return LexiconRenderCraftingGrid.ID;
     }
 
     @Override
@@ -65,5 +69,11 @@ public class LexiconEntryBaseSoldier
     @Override
     public boolean divideAfter() {
         return false;
+    }
+
+    @Override
+    public ItemStack getRecipeResult() {
+//        return TeamRegistry.INSTANCE.getNewTeamStack(1, Teams.SOLDIER_CLAY);
+        return new ItemStack(Items.PAPER);
     }
 }
