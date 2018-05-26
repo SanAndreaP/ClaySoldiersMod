@@ -8,14 +8,10 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
-import de.sanandrew.mods.claysoldiers.item.ItemMountHorse;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -30,7 +26,7 @@ public class LexiconEntryBaseSoldier
 
     public LexiconEntryBaseSoldier() {
         this.icon = TeamRegistry.INSTANCE.getNewTeamStack(1, Teams.SOLDIER_CLAY);
-        this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/soldiers/" + CsmConstants.ID + "_baseSoldier.png");
+        this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/soldiers/" + CsmConstants.ID + "_basesoldier.png");
     }
 
     @Override

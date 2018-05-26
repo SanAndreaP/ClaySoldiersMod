@@ -4,15 +4,14 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
+package de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
-import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
-import de.sanandrew.mods.claysoldiers.registry.team.Teams;
+import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.client.gui.GuiButton;
@@ -29,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.StreamSupport;
@@ -42,7 +42,7 @@ public class LexiconRenderCraftingGrid
     private int drawHeight;
     private List<GuiButton> entryButtons;
     private IRecipe recipe;
-    private ItemStack[][][] crfGrid;
+    private List<CraftingGrid> crfGrids;
     private boolean isShapeless;
 
     @Override
@@ -57,40 +57,53 @@ public class LexiconRenderCraftingGrid
         }
 
         this.entryButtons = entryButtons;
-//        if( this.recipe == null ) {
-            recipe = ((ILexiconEntryCraftingGrid) entry).getRecipe();
+        this.recipe = ((ILexiconEntryCraftingGrid) entry).getRecipe();
 
-            if( recipe == null ) {
-                final ItemStack result = ((ILexiconEntryCraftingGrid) entry).getRecipeResult();
-                recipe = StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
-                                      .filter(r -> !r.isDynamic() && ItemStackUtils.areEqual(r.getRecipeOutput(), result) && r.canFit(3, 3))
-                                      .findFirst().orElse(null);
-            }
-//        }
+        if( this.recipe == null ) {
+            final ItemStack result = ((ILexiconEntryCraftingGrid) entry).getRecipeResult();
+            this.recipe = StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
+                                       .filter(r -> !r.isDynamic() && ItemStackUtils.areEqual(r.getRecipeOutput(), result) && r.canFit(3, 3))
+                                       .findFirst().orElse(null);
+        }
 
-        if( recipe != null ) {
+        if( this.recipe != null ) {
             int w, h;
-            NonNullList<Ingredient> ingredients = recipe.getIngredients();
-            this.isShapeless = recipe.getClass().getName().toLowerCase(Locale.ROOT).contains("shapeless");
-            if( recipe instanceof ShapedRecipes ) {
-                w = ((ShapedRecipes) recipe).recipeWidth;
-                h = ((ShapedRecipes) recipe).recipeHeight;
-            } else if( recipe instanceof ShapedOreRecipe ) {
-                w = ((ShapedOreRecipe) recipe).getRecipeWidth();
-                h = ((ShapedOreRecipe) recipe).getRecipeHeight();
+            this.crfGrids = new ArrayList<>();
+            List<IRecipe> allRecipes = new ArrayList<>();
+            this.isShapeless = this.recipe.getClass().getName().toLowerCase(Locale.ROOT).contains("shapeless");
+            if( this.recipe instanceof IDummyMultiRecipe ) {
+                IDummyMultiRecipe dummyRecipe = (IDummyMultiRecipe) this.recipe;
+                w = dummyRecipe.getRecipeWidth();
+                h = dummyRecipe.getRecipeHeight();
+                allRecipes.addAll(dummyRecipe.getRecipes());
             } else {
-                w = MathHelper.ceil(MathHelper.sqrt(ingredients.size()));
-                h = MathHelper.ceil(ingredients.size() / (float) w);
+                if( this.recipe instanceof ShapedRecipes ) {
+                    w = ((ShapedRecipes) this.recipe).recipeWidth;
+                    h = ((ShapedRecipes) recipe).recipeHeight;
+                } else if( this.recipe instanceof ShapedOreRecipe ) {
+                    w = ((ShapedOreRecipe) this.recipe).getRecipeWidth();
+                    h = ((ShapedOreRecipe) this.recipe).getRecipeHeight();
+                } else {
+                    int ingredientSize = this.recipe.getIngredients().size();
+                    w = MathHelper.ceil(MathHelper.sqrt(ingredientSize));
+                    h = MathHelper.ceil(ingredientSize / (float) w);
+                }
+                allRecipes.add(this.recipe);
             }
 
-            this.crfGrid = new ItemStack[w][h][];
-            for( int y = 0; y < h; y++ ) {
-                for( int x = 0; x < w; x++ ) {
-                    int ind = x + y * w;
-                    if( ind < ingredients.size() ) {
-                        this.crfGrid[x][y] = ingredients.get(ind).getMatchingStacks();
+            for( IRecipe currRecipe : allRecipes ) {
+                NonNullList<Ingredient> ingredients = currRecipe.getIngredients();
+                CraftingGrid crfGrid = new CraftingGrid(w, h, currRecipe.getRecipeOutput());
+                for( int y = 0; y < h; y++ ) {
+                    for( int x = 0; x < w; x++ ) {
+                        int ind = x + y * w;
+                        if( ind < ingredients.size() ) {
+                            crfGrid.items[x][y] = ingredients.get(ind).getMatchingStacks();
+                        }
                     }
                 }
+
+                this.crfGrids.add(crfGrid);
             }
         }
     }
@@ -100,11 +113,12 @@ public class LexiconRenderCraftingGrid
         String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + entry.getEntryName();
         helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
 
-        if( recipe != null ) {
-            int mX = this.crfGrid.length;
-            int mY = this.crfGrid[0].length;
+        if( this.recipe != null ) {
+            CraftingGrid grid = this.crfGrids.get((int) ((System.nanoTime() / 1_000_000_000L) % this.crfGrids.size()));
+            int mX = grid.items.length;
+            int mY = grid.items[0].length;
             int sumWidth = 36 + 18 * mX + 22;
-            helper.drawItemGrid((MAX_ENTRY_WIDTH - sumWidth) / 2 + 18 * mX + 4 + 18, 12 + Math.max(mY * 9 - 18, 0), mouseX, mouseY, scrollY, recipe.getRecipeOutput(), 2.0F, false);
+            helper.drawItemGrid((MAX_ENTRY_WIDTH - sumWidth) / 2 + 18 * mX + 4 + 18, 12 + Math.max(mY * 9 - 18, 0), mouseX, mouseY, scrollY, grid.result, 2.0F, false);
             helper.tryLoadTexture(Resources.GUI_LEXICON.resource);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableBlend();
@@ -114,7 +128,7 @@ public class LexiconRenderCraftingGrid
 
             for( int x = 0; x < mX; x++ ) {
                 for( int y = 0; y < mY; y++ ) {
-                    ItemStack[] drawnStacks = this.crfGrid[x][y];
+                    ItemStack[] drawnStacks = grid.items[x][y];
                     ItemStack drawnStack = drawnStacks != null && drawnStacks.length > 0
                                                    ? drawnStacks[(int) ((System.nanoTime() / 1_000_000_000) % drawnStacks.length)]
                                                    : ItemStack.EMPTY;

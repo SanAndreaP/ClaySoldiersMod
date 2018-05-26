@@ -308,10 +308,7 @@ public class LexiconGuiHelper
 
             ILexiconGroup group = LexiconRegistry.INSTANCE.getGroup(groupId);
             if( group != null ) {
-                ILexiconEntry entry = group.getEntry(entryId);
-//                if( entry != null ) {
-                    this.changePage(group, entry);
-//                }
+                this.changePage(group, group.getEntry(entryId));
             }
 
             return true;
