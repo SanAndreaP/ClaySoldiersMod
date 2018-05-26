@@ -9,6 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 
 public class LexiconGroupSoldiers
@@ -27,5 +28,6 @@ public class LexiconGroupSoldiers
         registry.registerGroup(grp);
 
         grp.addEntry(new LexiconEntryBaseSoldier());
+        grp.addEntry(new LexiconEntryDyeSoldier());
     }
 }
