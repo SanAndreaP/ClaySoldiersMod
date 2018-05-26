@@ -81,9 +81,9 @@ public class GuiLexicon
         this.buttonList.clear();
         this.entryButtons.clear();
 
-        this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + 53, this.guiTop + 206, 0));
-        this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + 83, this.guiTop + 206, 1));
-        this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + 114, this.guiTop + 206, 2));
+        this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + 30, this.guiTop + 190, 0, !NAV_HISTORY.isEmpty()));
+        this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + (ILexiconPageRender.GUI_SIZE_X - 10) / 2, this.guiTop + 190, 1, true));
+        this.buttonList.add(new GuiButtonNav(this.buttonList.size(), this.guiLeft + ILexiconPageRender.GUI_SIZE_X - 48, this.guiTop + 190, 2, !NAV_FUTURE.isEmpty()));
 
         if( group == null ) {
             int posX = 0;
@@ -356,9 +356,10 @@ public class GuiLexicon
     {
         public final int buttonType;
 
-        public GuiButtonNav(int id, int x, int y, int type) {
-            super(id, x, y, 25 + (type == 1 ? 1 : 0), 25, "");
+        public GuiButtonNav(int id, int x, int y, int type, boolean visible) {
+            super(id, x, y, (type == 1 ? 10 : 18), 10, "");
             this.buttonType = type;
+            this.visible = visible;
         }
 
         @Override
@@ -371,15 +372,9 @@ public class GuiLexicon
                 GlStateManager.enableBlend();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 switch( this.buttonType ) {
-                    case 0:
-                        this.drawTexturedModalRect(this.x + 5, this.y + 8, 0, 236 + (over ? 0 : 10), 15, 9);
-                        break;
-                    case 1:
-                        this.drawTexturedModalRect(this.x + 8, this.y + 8, 16, 236 + (over ? 0 : 10), 10, 9);
-                        break;
-                    case 2:
-                        this.drawTexturedModalRect(this.x + 8, this.y + 8, 27, 236 + (over ? 0 : 10), 9, 9);
-                        break;
+                    case 0: this.drawTexturedModalRect(this.x, this.y, 220 + (over ? 18 : 0), 52, 18, 10); break;
+                    case 1: this.drawTexturedModalRect(this.x, this.y, 236 + (over ? 10 : 0), 62, 10, 10); break;
+                    case 2: this.drawTexturedModalRect(this.x, this.y, 220 + (over ? 18 : 0), 42, 18, 10); break;
                 }
                 GlStateManager.disableBlend();
             }

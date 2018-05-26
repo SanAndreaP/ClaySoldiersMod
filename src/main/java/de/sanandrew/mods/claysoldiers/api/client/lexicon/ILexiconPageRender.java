@@ -20,7 +20,7 @@ public interface ILexiconPageRender
     int ENTRY_X = 12;
     int ENTRY_Y = 19;
     int MAX_ENTRY_WIDTH = 165;
-    int MAX_ENTRY_HEIGHT = 180;
+    int MAX_ENTRY_HEIGHT = 165;
     int BTN_ENTRY_WIDTH = MAX_ENTRY_WIDTH - 12;
 
     String getId();
