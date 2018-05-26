@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class LexiconGuiHelper
         implements ILexiconGuiHelper
 {
-    private static final Pattern PATTERN_LINKSTRING = Pattern.compile("\\{link:(.+?)\\|(.+?):(.+?)}");
+    private static final Pattern PATTERN_LINKSTRING = Pattern.compile("\\{link:(.+?)\\|(.+?):(.*?)}");
 
     private static FontRenderer unicodeFr;
 
@@ -124,7 +124,7 @@ public class LexiconGuiHelper
         }
 
         if( ItemStackUtils.isValid(stack) ) {
-            RenderUtils.renderStackInGui(stack, x, y, scale);
+            RenderUtils.renderStackInGui(stack, x, y, scale, this.getFontRenderer());
         }
 
         if( mouseOver ) {
@@ -309,9 +309,9 @@ public class LexiconGuiHelper
             ILexiconGroup group = LexiconRegistry.INSTANCE.getGroup(groupId);
             if( group != null ) {
                 ILexiconEntry entry = group.getEntry(entryId);
-                if( entry != null ) {
+//                if( entry != null ) {
                     this.changePage(group, entry);
-                }
+//                }
             }
 
             return true;

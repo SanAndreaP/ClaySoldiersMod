@@ -104,7 +104,7 @@ public class LexiconRenderCraftingGrid
             int mX = this.crfGrid.length;
             int mY = this.crfGrid[0].length;
             int sumWidth = 36 + 18 * mX + 22;
-            helper.drawItemGrid((MAX_ENTRY_WIDTH - sumWidth) / 2 + 18 * mX + 4 + 18, 12 + Math.max(mY * 9 - 18, 0), mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
+            helper.drawItemGrid((MAX_ENTRY_WIDTH - sumWidth) / 2 + 18 * mX + 4 + 18, 12 + Math.max(mY * 9 - 18, 0), mouseX, mouseY, scrollY, recipe.getRecipeOutput(), 2.0F, false);
             helper.tryLoadTexture(Resources.GUI_LEXICON.resource);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.enableBlend();
@@ -118,7 +118,7 @@ public class LexiconRenderCraftingGrid
                     ItemStack drawnStack = drawnStacks != null && drawnStacks.length > 0
                                                    ? drawnStacks[(int) ((System.nanoTime() / 1_000_000_000) % drawnStacks.length)]
                                                    : ItemStack.EMPTY;
-                    helper.drawItemGrid((MAX_ENTRY_WIDTH - sumWidth) / 2 + x * 18, 12 + y * 18 + Math.max(18 - mY * 18, 0), mouseX, mouseY, scrollY, drawnStack, 1.0F, true);
+                    helper.drawItemGrid((MAX_ENTRY_WIDTH - sumWidth) / 2 + x * 18, 12 + y * 18 + Math.max(27 - mY * 18, 0), mouseX, mouseY, scrollY, drawnStack, 1.0F, true);
                 }
             }
 
@@ -139,6 +139,8 @@ public class LexiconRenderCraftingGrid
             helper.drawTextureRect(2, this.drawHeight + 10, MAX_ENTRY_WIDTH - 4, height - 4, 0.0F, 0.0F, 1.0F, 1.0F);
             this.drawHeight += height + 12;
         }
+
+        this.drawHeight += 2;
     }
 
     @Override

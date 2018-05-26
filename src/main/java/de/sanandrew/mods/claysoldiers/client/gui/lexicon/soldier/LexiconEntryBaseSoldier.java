@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -25,9 +26,11 @@ public class LexiconEntryBaseSoldier
 {
     private static final String ID = CsmConstants.ID + ":baseSoldier";
     private final ItemStack icon;
+    private final ResourceLocation prevPic;
 
     public LexiconEntryBaseSoldier() {
         this.icon = TeamRegistry.INSTANCE.getNewTeamStack(1, Teams.SOLDIER_CLAY);
+        this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/soldiers/" + CsmConstants.ID + "_baseSoldier.png");
     }
 
     @Override
@@ -63,7 +66,7 @@ public class LexiconEntryBaseSoldier
 
     @Override
     public ResourceLocation getPicture() {
-        return null;
+        return this.prevPic;
     }
 
     @Override
@@ -73,7 +76,6 @@ public class LexiconEntryBaseSoldier
 
     @Override
     public ItemStack getRecipeResult() {
-//        return TeamRegistry.INSTANCE.getNewTeamStack(1, Teams.SOLDIER_CLAY);
-        return new ItemStack(Items.PAPER);
+        return this.icon;
     }
 }
