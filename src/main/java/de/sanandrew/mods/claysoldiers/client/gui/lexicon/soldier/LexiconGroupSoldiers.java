@@ -31,5 +31,6 @@ public class LexiconGroupSoldiers
         grp.addEntry(new LexiconEntryDyeSoldier());
         grp.addEntry(new LexiconEntryGlassSoldier());
         grp.addEntry(new LexiconEntryMiscSoldier());
+        grp.addEntry(new LexiconEntryWashSoldier());
     }
 }
