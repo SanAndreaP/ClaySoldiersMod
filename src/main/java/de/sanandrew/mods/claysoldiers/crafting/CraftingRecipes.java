@@ -8,12 +8,16 @@ package de.sanandrew.mods.claysoldiers.crafting;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +35,9 @@ public class CraftingRecipes
         if( CsmConfiguration.enableDyedGlassSoldierRecipe ) recipeList.add(new DyedGlassSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedGlassSoldier")));
 
         recipeList.forEach(event.getRegistry()::register);
+    }
+
+    public static void registerSmelting() {
+        FurnaceRecipes.instance().addSmelting(ItemRegistry.DOLL_SOLDIER, new ItemStack(ItemRegistry.DOLL_BRICK_SOLDIER, 1), 0);
     }
 }

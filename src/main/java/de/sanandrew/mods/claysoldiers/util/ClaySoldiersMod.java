@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.compat.IMCHandler;
+import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
 import de.sanandrew.mods.claysoldiers.eventhandler.EntityFallEventHandler;
 import de.sanandrew.mods.claysoldiers.eventhandler.LivingAttackEventHandler;
 import de.sanandrew.mods.claysoldiers.eventhandler.LivingJumpEventHandler;
@@ -92,6 +93,8 @@ public class ClaySoldiersMod
         PLUGINS.forEach(plugin -> plugin.registerEffects(EffectRegistry.INSTANCE));
 
         DataSerializerUUID.initialize();
+
+        CraftingRecipes.registerSmelting();
     }
 
     @Mod.EventHandler

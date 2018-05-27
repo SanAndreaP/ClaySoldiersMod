@@ -15,6 +15,7 @@ import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -72,7 +73,7 @@ public class LexiconEntryDyeSoldier
     @Nonnull
     @Override
     public ItemStack getEntryIcon() {
-        return this.icons[(int) ((System.nanoTime() / 1_000_000_000) % this.icons.length)];
+        return this.icons[MiscUtils.RNG.randomInt(this.icons.length)];
     }
 
     @Override
