@@ -48,7 +48,7 @@ public class DyedSoldierRecipe
             Teams.SOLDIER_MAGENTA,
             Teams.SOLDIER_ORANGE,
             Teams.SOLDIER_WHITE,
-            };
+    };
     public static final String[] DYES = {
             "dyeBlack",
             "dyeRed",
