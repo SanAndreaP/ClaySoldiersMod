@@ -38,7 +38,7 @@ public class LexiconEntryGlassSoldier
     private final IRecipe recipe;
 
     public LexiconEntryGlassSoldier() {
-        this.icons = Arrays.stream(DyedSoldierRecipe.TEAMS).map(uuid -> TeamRegistry.INSTANCE.getNewTeamStack(1, uuid)).toArray(ItemStack[]::new);
+        this.icons = Arrays.stream(DyedGlassSoldierRecipe.TEAMS).map(uuid -> TeamRegistry.INSTANCE.getNewTeamStack(1, uuid)).toArray(ItemStack[]::new);
         this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/soldiers/" + CsmConstants.ID + "_glasssoldier.png");
         this.recipe = new DummyShapelessRecipeGlassSoldiers();
     }
