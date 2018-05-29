@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Level;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,6 +50,7 @@ public class GuiLexicon
 
     private static ILexiconGroup group;
     private static ILexiconEntry entry;
+    @Nonnull
     private ILexiconPageRender render;
 
     static float scroll;
@@ -66,6 +68,7 @@ public class GuiLexicon
     public GuiLexicon() {
         this.entryButtons = new ArrayList<>();
         this.renderHelper = new LexiconGuiHelper(this);
+        this.render = EmptyRenderer.INSTANCE;
     }
 
     @SuppressWarnings("unchecked")
@@ -249,7 +252,7 @@ public class GuiLexicon
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        if( this.render == null || !this.render.actionPerformed(button, this.renderHelper) ) {
+        if( !this.render.actionPerformed(button, this.renderHelper) ) {
             if( button instanceof GuiButtonNav ) {
                 History h;
                 switch( ((GuiButtonNav) button).buttonType ) {
@@ -379,5 +382,16 @@ public class GuiLexicon
                 GlStateManager.disableBlend();
             }
         }
+    }
+
+    private static final class EmptyRenderer
+            implements ILexiconPageRender
+    {
+        static final ILexiconPageRender INSTANCE = new EmptyRenderer();
+
+        @Override public String getId() { return ""; }
+        @Override public void initPage(ILexiconEntry entry, ILexiconGuiHelper helper, List<GuiButton> globalButtons, List<GuiButton> entryButtons) { }
+        @Override public void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks) { }
+        @Override public int getEntryHeight(ILexiconEntry entry, ILexiconGuiHelper helper) { return 0; }
     }
 }
