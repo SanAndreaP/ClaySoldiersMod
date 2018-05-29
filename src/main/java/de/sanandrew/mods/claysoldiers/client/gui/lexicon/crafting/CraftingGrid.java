@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 
 final class CraftingGrid
 {
-    ItemStack[][][] items;
-    ItemStack result;
+    final ItemStack[][][] items;
+    final ItemStack result;
 
     CraftingGrid(int width, int height, ItemStack result) {
         this.items = new ItemStack[width][height][];

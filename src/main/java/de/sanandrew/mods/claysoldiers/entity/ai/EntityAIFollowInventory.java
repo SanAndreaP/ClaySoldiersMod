@@ -21,7 +21,7 @@ public class EntityAIFollowInventory
 {
     final EntityClaySoldier taskOwner;
 
-    double speed;
+    final double speed;
     Path path;
 
     public EntityAIFollowInventory(EntityClaySoldier soldier, double speedIn) {

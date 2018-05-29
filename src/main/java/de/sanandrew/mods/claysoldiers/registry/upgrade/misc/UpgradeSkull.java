@@ -28,6 +28,8 @@ import javax.annotation.Nonnull;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 
+import java.util.Objects;
+
 @UpgradeFunctions({EnumUpgFunctions.ON_DEATH})
 public class UpgradeSkull
         implements ISoldierUpgrade
@@ -73,7 +75,7 @@ public class UpgradeSkull
 
     @Override
     public void readSyncData(ByteBuf buf, NBTTagCompound nbt) {
-        nbt.setTag("SkullItem", ByteBufUtils.readTag(buf));
+        nbt.setTag("SkullItem", Objects.requireNonNull(ByteBufUtils.readTag(buf)));
     }
 
     @Override

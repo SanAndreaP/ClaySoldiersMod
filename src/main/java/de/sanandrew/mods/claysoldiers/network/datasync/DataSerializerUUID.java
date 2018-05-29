@@ -10,9 +10,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.DataSerializers;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class DataSerializerUUID
@@ -27,7 +25,7 @@ public class DataSerializerUUID
     }
 
     @Override
-    public UUID read(PacketBuffer buf) throws IOException {
+    public UUID read(PacketBuffer buf) {
         return new UUID(buf.readLong(), buf.readLong());
     }
 
@@ -38,7 +36,7 @@ public class DataSerializerUUID
 
     @Override
     public UUID copyValue(UUID value) {
-        return value == null ? null : new UUID(value.getMostSignificantBits(), value.getLeastSignificantBits());
+        return new UUID(value.getMostSignificantBits(), value.getLeastSignificantBits());
     }
 
     public static void initialize() {

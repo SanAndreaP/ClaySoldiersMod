@@ -24,7 +24,7 @@ public class ModelGoggleBand
         implements ModelJsonHandler<ModelGoggleBand, ModelJsonLoader.ModelJson>
 {
     public ModelRenderer goggles;
-    private ModelJsonLoader<ModelGoggleBand, ModelJsonLoader.ModelJson> jsonLoader;
+    private final ModelJsonLoader<ModelGoggleBand, ModelJsonLoader.ModelJson> jsonLoader;
     public ResourceLocation texture;
 
     public ModelGoggleBand() {

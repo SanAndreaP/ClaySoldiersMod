@@ -8,7 +8,6 @@ package de.sanandrew.mods.claysoldiers.client.model.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +36,6 @@ class MeshDefDisruptor
     }
 
     public ResourceLocation[] getResLocations() {
-        return this.modelRes.values().toArray(new ModelResourceLocation[this.modelRes.size()]);
+        return this.modelRes.values().toArray(new ModelResourceLocation[0]);
     }
 }

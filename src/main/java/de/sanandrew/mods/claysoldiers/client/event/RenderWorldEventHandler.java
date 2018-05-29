@@ -52,6 +52,9 @@ public class RenderWorldEventHandler
     public void renderWorldLast(RenderWorldLastEvent event) {
         partTicks = event.getPartialTicks();
         Entity renderEntity = Minecraft.getMinecraft().getRenderViewEntity();
+        if( renderEntity == null ) {
+            return;
+        }
 
         double renderX = renderEntity.lastTickPosX + (renderEntity.posX - renderEntity.lastTickPosX) * partTicks;
         double renderY = renderEntity.lastTickPosY + (renderEntity.posY - renderEntity.lastTickPosY) * partTicks;

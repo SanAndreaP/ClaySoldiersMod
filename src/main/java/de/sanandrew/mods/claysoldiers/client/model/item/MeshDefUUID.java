@@ -8,7 +8,6 @@ package de.sanandrew.mods.claysoldiers.client.model.item;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -33,7 +32,7 @@ abstract class MeshDefUUID<T>
     public abstract UUID getId(T type);
 
     public ResourceLocation[] getResLocations() {
-        return this.modelRes.values().toArray(new ModelResourceLocation[this.modelRes.size()]);
+        return this.modelRes.values().toArray(new ModelResourceLocation[0]);
     }
 
     static final class Soldier

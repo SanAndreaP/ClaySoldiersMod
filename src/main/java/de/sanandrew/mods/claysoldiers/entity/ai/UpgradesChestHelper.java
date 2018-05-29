@@ -24,12 +24,13 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class UpgradesChestHelper
 {
     public static ChestEntry findValidInventoryStack(EntityClaySoldier soldier) {
         List<EntityItemFrame> frames = soldier.world.getEntitiesWithinAABB(EntityItemFrame.class, EntityAISearchTarget.getTargetableArea(soldier), e -> {
-            if( e != null && e.isEntityAlive() && soldier.canEntityBeSeen(e) ) {
+            if( e != null && e.facingDirection != null && e.isEntityAlive() && soldier.canEntityBeSeen(e) ) {
                 ItemStack stack = e.getDisplayedItem();
                 if( TeamRegistry.INSTANCE.getTeam(stack).getId().equals(soldier.getSoldierTeam().getId()) || ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER) ) {
                     BlockPos pos = e.getHangingPosition().offset(e.facingDirection.getOpposite());
@@ -41,7 +42,7 @@ public final class UpgradesChestHelper
         });
 
         for( EntityItemFrame frame : frames ) {
-            BlockPos pos = frame.getHangingPosition().offset(frame.facingDirection.getOpposite());
+            BlockPos pos = frame.getHangingPosition().offset(Objects.requireNonNull(frame.facingDirection).getOpposite());
             ItemStack stack = getStackFromInv(soldier, soldier.world.getTileEntity(pos));
             if( ItemStackUtils.isValid(stack) ) {
                 return new ChestEntry(pos, stack);
@@ -52,18 +53,23 @@ public final class UpgradesChestHelper
     }
 
     public static ItemStack getStackFromInv(EntityClaySoldier soldier, TileEntity tile) {
+        if( tile == null ) {
+            return ItemStack.EMPTY;
+        }
+
         IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if( handler != null ) {
+            for( int i = 0, max = handler.getSlots(); i < max; i++ ) {
+                ItemStack stack = handler.getStackInSlot(i);
 
-        for( int i = 0, max = handler.getSlots(); i < max; i++ ) {
-            ItemStack stack = handler.getStackInSlot(i);
-
-            SoldierInventoryEvent.ItemValid event = new SoldierInventoryEvent.ItemValid(soldier, tile.getPos(), stack);
-            if( !ClaySoldiersMod.EVENT_BUS.post(event) && event.getResult() != Event.Result.DENY ) {
-                if( event.getResult() == Event.Result.ALLOW ) {
-                    return stack;
+                SoldierInventoryEvent.ItemValid event = new SoldierInventoryEvent.ItemValid(soldier, tile.getPos(), stack);
+                if( !ClaySoldiersMod.EVENT_BUS.post(event) && event.getResult() != Event.Result.DENY ) {
+                    if( event.getResult() == Event.Result.ALLOW ) {
+                        return stack;
+                    }
+                } else {
+                    return ItemStack.EMPTY;
                 }
-            } else {
-                return ItemStack.EMPTY;
             }
         }
 

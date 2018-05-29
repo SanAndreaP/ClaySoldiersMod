@@ -14,7 +14,7 @@ public interface ILexiconEntryCraftingGrid
 {
     default IRecipe getRecipe() {
         return null;
-    };
+    }
 
     default ItemStack getRecipeResult() {
         return ItemStack.EMPTY;

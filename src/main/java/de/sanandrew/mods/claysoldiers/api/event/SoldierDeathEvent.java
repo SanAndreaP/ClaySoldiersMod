@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.api.event;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;

@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("UnusedReturnValue")
 public interface IEffectRegistry
 {
     boolean registerEffect(UUID id, ISoldierEffect effect);

@@ -13,14 +13,12 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
-import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -94,7 +92,7 @@ public class LexiconEntryDyeSoldier
     private static final class DummyShapelessRecipeDyedSoldiers
             implements IDummyMultiRecipe
     {
-        List<IRecipe> recipes;
+        final List<IRecipe> recipes;
 
         DummyShapelessRecipeDyedSoldiers() {
             this.recipes = new ArrayList<>();

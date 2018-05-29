@@ -28,7 +28,7 @@ public class CsmCreativeTabs
             if( this.tabIcons == null ) {
                 NonNullList<ItemStack> subItms = NonNullList.create();
                 ItemRegistry.DOLL_SOLDIER.getSubItems(this, subItms);
-                this.tabIcons = subItms.toArray(new ItemStack[subItms.size()]);
+                this.tabIcons = subItms.toArray(new ItemStack[0]);
             }
 
             return this.tabIcons[(int) (System.currentTimeMillis() / 4250) % this.tabIcons.length];

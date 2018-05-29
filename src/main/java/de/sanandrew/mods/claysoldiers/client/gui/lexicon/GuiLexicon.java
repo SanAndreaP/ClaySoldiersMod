@@ -340,9 +340,9 @@ public class GuiLexicon
 
     private static final class History
     {
-        ILexiconGroup group;
-        ILexiconEntry entry;
-        float scroll;
+        final ILexiconGroup group;
+        final ILexiconEntry entry;
+        final float scroll;
 
         History(ILexiconGroup group, ILexiconEntry entry, float scroll) {
             this.group = group;

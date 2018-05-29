@@ -7,19 +7,14 @@
 package de.sanandrew.mods.claysoldiers.util;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -66,11 +61,7 @@ public final class RayTraceFixed
         double farTimeXY = Math.min(farTimeX, farTimeY);
         double farTimeZY = Math.min(farTimeZ, farTimeY);
 
-        if( nearTimeXY >= 1.0 || farTimeXY <= 0.0 || nearTimeZY >= 1.0 || farTimeZY <= 0.0 ) {
-            return false;
-        }
-
-        return true;
+        return !(nearTimeXY >= 1.0) && !(farTimeXY <= 0.0) && !(nearTimeZY >= 1.0) && !(farTimeZY <= 0.0);
     }
 
     public static boolean rayTraceSight(Entity e, World world, Vec3d from, Vec3d to) {

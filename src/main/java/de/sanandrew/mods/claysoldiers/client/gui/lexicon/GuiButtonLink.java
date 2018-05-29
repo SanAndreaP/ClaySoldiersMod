@@ -15,7 +15,7 @@ public class GuiButtonLink
         extends GuiButton
 {
     public final String link;
-    public FontRenderer fontRenderer;
+    public final FontRenderer fontRenderer;
 
     public GuiButtonLink(int id, int x, int y, String text, String link, FontRenderer fontRenderer) {
         super(id, x, y, fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT, text);

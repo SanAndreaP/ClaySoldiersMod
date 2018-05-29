@@ -31,7 +31,7 @@ public class PacketSyncEffects
     private ISoldierEffect[] effects;
     private Integer[] durations;
     private boolean add;
-    private Map<ISoldierEffect, NBTTagCompound> effectNBT = new HashMap<>();
+    private final Map<ISoldierEffect, NBTTagCompound> effectNBT = new HashMap<>();
 
     public PacketSyncEffects() { }
 

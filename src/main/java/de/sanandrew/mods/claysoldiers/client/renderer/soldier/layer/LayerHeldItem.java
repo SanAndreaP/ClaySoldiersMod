@@ -56,7 +56,7 @@ public class LayerHeldItem
     private static final ItemStack SUGARCANE = new ItemStack(Items.REEDS);
     private static final ItemStack COALBLOCK = new ItemStack(Blocks.COAL_BLOCK);
 
-    private ISoldierRender<?, ?> renderer;
+    private final ISoldierRender<?, ?> renderer;
 
     public LayerHeldItem(ISoldierRender<?, ?> renderer) {
         this.renderer = renderer;

@@ -24,7 +24,7 @@ public class ModelCrown
         implements ModelJsonHandler<ModelCrown, ModelJsonLoader.ModelJson>
 {
     public ModelRenderer crown;
-    private ModelJsonLoader<ModelCrown, ModelJsonLoader.ModelJson> jsonLoader;
+    private final ModelJsonLoader<ModelCrown, ModelJsonLoader.ModelJson> jsonLoader;
     public ResourceLocation texture;
 
     public ModelCrown() {

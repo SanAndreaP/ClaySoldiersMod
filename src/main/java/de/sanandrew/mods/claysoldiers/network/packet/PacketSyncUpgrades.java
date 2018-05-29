@@ -31,7 +31,7 @@ public class PacketSyncUpgrades
     private int soldierId;
     private UpgradeEntry[] upgrades;
     private boolean add;
-    private Map<UpgradeEntry, NBTTagCompound> upgradeNBT = new HashMap<>();
+    private final Map<UpgradeEntry, NBTTagCompound> upgradeNBT = new HashMap<>();
 
     public PacketSyncUpgrades() { }
 

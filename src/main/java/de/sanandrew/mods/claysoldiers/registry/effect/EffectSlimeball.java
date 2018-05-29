@@ -9,8 +9,6 @@ package de.sanandrew.mods.claysoldiers.registry.effect;
 import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.util.EnumParticleTypes;
 
 public class EffectSlimeball
         implements ISoldierEffect

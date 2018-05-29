@@ -39,7 +39,7 @@ public class GuiButtonGroup
 
     private float lastTime;
     private float ticksHovered = 0.0F;
-    private OnMouseOverCallback onMouseOver;
+    private final OnMouseOverCallback onMouseOver;
 
     private void doBtnShader(int shader) {
         TextureManager texMgr = Minecraft.getMinecraft().renderEngine;

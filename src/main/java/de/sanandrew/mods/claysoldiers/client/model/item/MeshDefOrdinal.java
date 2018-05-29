@@ -35,7 +35,7 @@ abstract class MeshDefOrdinal<T extends Enum<T>>
     public abstract T getType(ItemStack stack);
 
     public ResourceLocation[] getResLocations() {
-        return this.modelRes.values().toArray(new ModelResourceLocation[this.modelRes.size()]);
+        return this.modelRes.values().toArray(new ModelResourceLocation[0]);
     }
 
     static final class Horse

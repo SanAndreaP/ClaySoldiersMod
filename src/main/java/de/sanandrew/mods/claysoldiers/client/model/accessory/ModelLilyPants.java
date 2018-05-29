@@ -24,12 +24,10 @@ public class ModelLilyPants
     public ModelRenderer body;
     public ModelRenderer leftLeg;
     public ModelRenderer rightLeg;
-    private ModelJsonLoader<ModelLilyPants, ModelJsonLoader.ModelJson> jsonLoader;
     public ResourceLocation texture;
 
     public ModelLilyPants() {
-        this.jsonLoader = ModelJsonLoader.create(this, Resources.MODEL_SOLDIER_LILYPANTS.resource, "body", "leftLeg", "rightLeg");
-        this.jsonLoader.load();
+        ModelJsonLoader.create(this, Resources.MODEL_SOLDIER_LILYPANTS.resource, "body", "leftLeg", "rightLeg").load();
     }
 
     @Override

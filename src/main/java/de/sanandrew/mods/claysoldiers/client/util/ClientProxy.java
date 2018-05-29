@@ -67,18 +67,14 @@ public class ClientProxy
 
         this.soldierRenderer = (ISoldierRender) Minecraft.getMinecraft().getRenderManager().<EntityClaySoldier>getEntityClassRenderObject(EntityClaySoldier.class);
 
-        ClaySoldiersMod.PLUGINS.forEach(plugin -> {
-            plugin.registerSoldierRenderHook(this);
-        });
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerSoldierRenderHook(this));
 
         Shaders.initShaders();
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        ClaySoldiersMod.PLUGINS.forEach(plugin -> {
-            plugin.registerLexicon(LexiconRegistry.INSTANCE);
-        });
+        ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerLexicon(LexiconRegistry.INSTANCE));
     }
 
     @Override

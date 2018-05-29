@@ -6,9 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.mount;
 
-import de.sanandrew.mods.claysoldiers.client.model.mount.ModelClayHorse;
 import de.sanandrew.mods.claysoldiers.client.model.mount.ModelWoolBunny;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityClayHorse;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityWoolBunny;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;

@@ -31,7 +31,7 @@ public class ModelGecko
     public ModelRenderer leg4;
     public ModelRenderer tail;
 
-    protected ModelJsonLoader<ModelGecko, ModelJsonLoader.ModelJson> jsonLoader;
+    protected final ModelJsonLoader<ModelGecko, ModelJsonLoader.ModelJson> jsonLoader;
 
     public ModelGecko() {
         this.jsonLoader = ModelJsonLoader.create(this, Resources.MODEL_GECKO.resource, "head", "leg1", "leg2", "leg3", "leg4", "tail");

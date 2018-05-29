@@ -20,8 +20,6 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
-
 @JEIPlugin
 @SideOnly(Side.CLIENT)
 public class JeiPlugin

@@ -6,10 +6,6 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
-import de.sanandrew.mods.claysoldiers.eventhandler.EntityFallEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.LivingAttackEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.LivingJumpEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.SoldierDeathEventHandler;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
@@ -17,11 +13,9 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;

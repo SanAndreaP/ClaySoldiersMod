@@ -11,7 +11,6 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGr
 import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
-import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.crafting.OtherSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
@@ -21,10 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreIngredient;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -94,7 +91,7 @@ public class LexiconEntryMiscSoldier
     private static final class DummyRecipeMiscSoldiers
             implements IDummyMultiRecipe
     {
-        List<IRecipe> recipes;
+        final List<IRecipe> recipes;
 
         DummyRecipeMiscSoldiers() {
             this.recipes = new ArrayList<>();

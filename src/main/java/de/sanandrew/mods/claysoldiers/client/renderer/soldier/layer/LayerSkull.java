@@ -24,11 +24,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
+
 @SideOnly(Side.CLIENT)
 public class LayerSkull
         implements LayerRenderer<EntityCreature>
 {
-    public ISoldierRender<?, ?> renderer;
+    public final ISoldierRender<?, ?> renderer;
 
     public LayerSkull(ISoldierRender<?, ?> renderer) {
         this.renderer = renderer;
@@ -58,7 +60,7 @@ public class LayerSkull
         if( skullStack.hasTagCompound() ) {
             NBTTagCompound nbt = skullStack.getTagCompound();
 
-            if( nbt.hasKey("SkullOwner", 10) ) {
+            if( Objects.requireNonNull(nbt).hasKey("SkullOwner", 10) ) {
                 profile = NBTUtil.readGameProfileFromNBT(nbt.getCompoundTag("SkullOwner"));
             } else if( nbt.hasKey("SkullOwner", 8) ) {
                 String s = nbt.getString("SkullOwner");

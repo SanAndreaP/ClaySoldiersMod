@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,7 +17,6 @@ public class ItemSoldierShield
 {
     public ItemSoldierShield() {
         super();
-        this.setCreativeTab(null);
         this.setUnlocalizedName(CsmConstants.ID + ":shield");
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -27,4 +25,9 @@ public class ItemSoldierShield
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) { }
+
+    @Override
+    protected boolean isInCreativeTab(CreativeTabs targetTab) {
+        return false;
+    }
 }

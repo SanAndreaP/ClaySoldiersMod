@@ -7,7 +7,6 @@
 package de.sanandrew.mods.claysoldiers.api.client.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;

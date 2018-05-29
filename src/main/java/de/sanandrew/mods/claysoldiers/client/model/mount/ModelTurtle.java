@@ -30,7 +30,7 @@ public class ModelTurtle
     public ModelRenderer leg3;
     public ModelRenderer leg4;
 
-    protected ModelJsonLoader<ModelTurtle, ModelJsonLoader.ModelJson> jsonLoader;
+    protected final ModelJsonLoader<ModelTurtle, ModelJsonLoader.ModelJson> jsonLoader;
 
     public ModelTurtle() {
         this.jsonLoader = ModelJsonLoader.create(this, Resources.MODEL_TURTLE.resource, "head", "leg1", "leg2", "leg3", "leg4");

@@ -12,7 +12,6 @@ import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.crafting.DyedGlassSoldierRecipe;
-import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -93,7 +92,7 @@ public class LexiconEntryGlassSoldier
     private static final class DummyShapelessRecipeGlassSoldiers
             implements IDummyMultiRecipe
     {
-        List<IRecipe> recipes;
+        final List<IRecipe> recipes;
 
         DummyShapelessRecipeGlassSoldiers() {
             this.recipes = new ArrayList<>();

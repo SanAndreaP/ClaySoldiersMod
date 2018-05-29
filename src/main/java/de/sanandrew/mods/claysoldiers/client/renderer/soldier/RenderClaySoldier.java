@@ -1,9 +1,9 @@
-/*******************************************************************************************************************
- * Authors:   SanAndreasP
- * Copyright: SanAndreasP, SilverChiren and CliffracerX
- * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
- *                http://creativecommons.org/licenses/by-nc-sa/4.0/
- *******************************************************************************************************************/
+/* ******************************************************************************************************************
+   * Authors:   SanAndreasP
+   * Copyright: SanAndreasP, SilverChiren and CliffracerX
+   * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+   *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+   *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
@@ -32,7 +32,7 @@ public class RenderClaySoldier
         extends RenderBiped<EntityClaySoldier>
         implements ISoldierRender<EntityClaySoldier, RenderClaySoldier>
 {
-    public ConcurrentNavigableMap<Integer, Queue<ISoldierRenderHook>> renderHooks;
+    public final ConcurrentNavigableMap<Integer, Queue<ISoldierRenderHook>> renderHooks;
 
     public RenderClaySoldier(RenderManager manager) {
         super(manager, new ModelClaySoldier(), 0.1F);

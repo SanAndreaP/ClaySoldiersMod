@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.api.mount.IMount;
+import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
 import de.sanandrew.mods.claysoldiers.entity.ai.PathHelper;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.entity.Entity;
@@ -132,16 +133,7 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
                 drops.add(this.doll);
             }
 
-            drops.removeIf(stack -> !ItemStackUtils.isValid(stack));
-            for( ItemStack drop : drops ) {
-                EntityItem item = this.entityDropItem(drop, 0.5F);
-                if( item != null ) {
-                    item.motionX = 0.0F;
-                    item.motionY = 0.0F;
-                    item.motionZ = 0.0F;
-                    item.velocityChanged = true;
-                }
-            }
+            EntityHelper.dropItems(this, drops);
         } else {
             this.spawnBreakParticles();
         }

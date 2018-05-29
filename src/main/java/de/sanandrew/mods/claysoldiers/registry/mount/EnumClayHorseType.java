@@ -29,7 +29,7 @@ public enum EnumClayHorseType
     CLAY(true, 35.0F, 1.1F, true, false, 0xA3A3A3, "clay"),
     CARROT(true, 35.0F, 1.2F, true, false, 0xF0A800, "carrot1", "carrot2"),
     SOULSAND(true, 35.0F, 1.15F, false, false, 0x5C3100, "soulsand"),
-    CAKE(true, 30.0F, 1.4F, false, false, "cake", "cake"),
+    CAKE(true, 30.0F, 1.4F, false, false, 0xFFFFFF, "cake", "cake"),
 
     NIGHTMARE(false, 50.0F, 1.6F, false, true, 0x0, "spec_nightmare1", "spec_nightmare2"),
     UNKNOWN(false, 0.0F, 0.0F, false, false, 0x0);
@@ -63,10 +63,6 @@ public enum EnumClayHorseType
 
     EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, boolean immuneToFire, int itemColor, String... textures) {
         this(visible, maxHealth, movementFactor, canBreatheUnderwater, immuneToFire, null, itemColor, textures);
-    }
-
-    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, boolean immuneToFire, String cstItemSuffix, String... textures) {
-        this(visible, maxHealth, movementFactor, canBreatheUnderwater, immuneToFire, cstItemSuffix, 0xFFFFFF, textures);
     }
 
     @Override

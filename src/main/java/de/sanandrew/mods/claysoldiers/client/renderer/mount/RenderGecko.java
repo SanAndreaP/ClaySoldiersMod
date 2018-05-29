@@ -7,10 +7,8 @@
 package de.sanandrew.mods.claysoldiers.client.renderer.mount;
 
 import de.sanandrew.mods.claysoldiers.client.model.mount.ModelGecko;
-import de.sanandrew.mods.claysoldiers.client.model.mount.ModelTurtle;
 import de.sanandrew.mods.claysoldiers.client.renderer.layers.LayerGeckoSpots;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityGecko;
-import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtle;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

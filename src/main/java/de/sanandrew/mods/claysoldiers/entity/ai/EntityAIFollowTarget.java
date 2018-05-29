@@ -25,7 +25,7 @@ public abstract class EntityAIFollowTarget
 {
     final EntityClaySoldier taskOwner;
 
-    double speed;
+    final double speed;
     Path path;
 
     EntityAIFollowTarget(EntityClaySoldier soldier, double speedIn) {

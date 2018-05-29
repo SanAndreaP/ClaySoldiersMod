@@ -19,6 +19,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.attribute.CsmMobAttributes;
+import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchInventory;
@@ -126,7 +127,7 @@ public class EntityClaySoldier
     private double chasingPosY;
     private double chasingPosZ;
 
-    private PathHelper pathHelper;
+    private final PathHelper pathHelper;
 
     public EntityClaySoldier(World world) {
         super(world);
@@ -864,16 +865,7 @@ public class EntityClaySoldier
             SoldierDeathEvent event = new SoldierDeathEvent(this, damageSource, drops);
             ClaySoldiersMod.EVENT_BUS.post(event);
 
-            drops.removeIf(stack -> !ItemStackUtils.isValid(stack));
-            for( ItemStack drop : drops ) {
-                EntityItem item = this.entityDropItem(drop, 0.5F);
-                if( item != null ) {
-                    item.motionX = 0.0F;
-                    item.motionY = 0.0F;
-                    item.motionZ = 0.0F;
-                    item.velocityChanged = true;
-                }
-            }
+            EntityHelper.dropItems(this, drops);
         } else {
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.TEAM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
                                                 this.getSoldierTeam().getId());

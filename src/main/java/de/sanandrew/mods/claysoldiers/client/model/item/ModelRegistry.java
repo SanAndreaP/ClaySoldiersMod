@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class ModelRegistry
 {
     @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) throws Exception {
+    public static void registerModels(ModelRegistryEvent event) {
         setStandardModel(ItemRegistry.DOLL_BRICK_SOLDIER);
         setCustomMeshModel(ItemRegistry.DOLL_SOLDIER, new MeshDefUUID.Soldier());
         setCustomMeshModel(ItemRegistry.DOLL_HORSE, new MeshDefOrdinal.Horse());

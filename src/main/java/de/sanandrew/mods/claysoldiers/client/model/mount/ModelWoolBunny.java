@@ -30,7 +30,7 @@ public class ModelWoolBunny
     public ModelRenderer leg3;
     public ModelRenderer leg4;
 
-    protected ModelJsonLoader<ModelWoolBunny, ModelJsonLoader.ModelJson> jsonLoader;
+    protected final ModelJsonLoader<ModelWoolBunny, ModelJsonLoader.ModelJson> jsonLoader;
 
     public ModelWoolBunny() {
         this.jsonLoader = ModelJsonLoader.create(this, Resources.MODEL_BUNNY.resource, "head", "leg1", "leg2", "leg3", "leg4");

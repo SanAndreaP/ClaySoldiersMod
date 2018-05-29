@@ -48,7 +48,7 @@ public abstract class EntityClayProjectile
     protected UUID targetUUID;
     protected Entity targetCache;
 
-    protected double maxDist;
+    protected final double maxDist;
 
     protected boolean homing;
 
@@ -212,7 +212,7 @@ public abstract class EntityClayProjectile
             hitObj = new RayTraceResult(entity);
         }
 
-        if( hitObj != null && hitObj.entityHit != null && hitObj.entityHit instanceof EntityPlayer ) {
+        if( hitObj != null && hitObj.entityHit instanceof EntityPlayer ) {
             EntityPlayer player = (EntityPlayer)hitObj.entityHit;
 
             if( player.capabilities.disableDamage ) {
@@ -416,11 +416,6 @@ public abstract class EntityClayProjectile
             this.targetCache = this.world.getEntityByID(buffer.readInt());
         }
         this.homing = buffer.readBoolean();
-    }
-
-    @Override
-    public void move(MoverType type, double x, double y, double z) {
-        super.move(type, x, y, z);
     }
 
     public abstract float getArc();
