@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.compat.IMCHandler;
 import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
+import de.sanandrew.mods.claysoldiers.crafting.FuelHelper;
 import de.sanandrew.mods.claysoldiers.eventhandler.EntityFallEventHandler;
 import de.sanandrew.mods.claysoldiers.eventhandler.LivingAttackEventHandler;
 import de.sanandrew.mods.claysoldiers.eventhandler.LivingJumpEventHandler;
@@ -100,6 +101,8 @@ public class ClaySoldiersMod
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        FuelHelper.initialize();
     }
 
     private static void loadPlugins(ASMDataTable dataTable) {

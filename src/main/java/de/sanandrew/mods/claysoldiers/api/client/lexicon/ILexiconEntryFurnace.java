@@ -7,30 +7,16 @@
 package de.sanandrew.mods.claysoldiers.api.client.lexicon;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 
-import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.Map;
 
-@SideOnly(Side.CLIENT)
-public interface ILexiconEntry
+public interface ILexiconEntryFurnace
+        extends ILexiconEntry
 {
-    String getId();
-
-    String getGroupId();
-
-    String getPageRenderId();
-
-    String getEntryName();
-
-    String getEntryText();
-
-    @Nonnull ItemStack getEntryIcon();
-
-    default ResourceLocation getPicture() {
-        return null;
+    default Map<Ingredient, ItemStack> getRecipes() {
+        return Collections.emptyMap();
     }
-
-    boolean divideAfter();
 }

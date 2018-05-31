@@ -112,7 +112,12 @@ public class GuiLexicon
             }
         } else {
             this.render = LexiconRegistry.INSTANCE.getPageRender(entry.getPageRenderId());
-            this.render.initPage(entry, this.renderHelper, this.buttonList, this.entryButtons);
+            if( this.render != null ) {
+                this.render.initPage(entry, this.renderHelper, this.buttonList, this.entryButtons);
+            } else {
+                CsmConstants.LOG.log(Level.ERROR, String.format("cannot render lexicon page entry %s as render ID %s is not registered!", entry.getId(), entry.getPageRenderId()));
+                this.render = EmptyRenderer.INSTANCE;
+            }
         }
 
         this.updateScreen();
