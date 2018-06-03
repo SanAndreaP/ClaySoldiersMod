@@ -37,6 +37,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Consumer;
 
 @SideOnly(Side.CLIENT)
 public class GuiLexicon
@@ -64,6 +65,8 @@ public class GuiLexicon
 
     private static final Deque<History> NAV_HISTORY = new ArrayDeque<>();
     private static final Deque<History> NAV_FUTURE = new ArrayDeque<>();
+
+    Runnable drawFrameLast;
 
     public GuiLexicon() {
         this.entryButtons = new ArrayList<>();
@@ -204,6 +207,11 @@ public class GuiLexicon
         }
 
         super.drawScreen(mouseX, mouseY, partTicks);
+
+        if( this.drawFrameLast != null ) {
+            this.drawFrameLast.run();
+            this.drawFrameLast = null;
+        }
     }
 
     public void changePage(ILexiconGroup group, ILexiconEntry entry, float scroll, boolean doHistory) {

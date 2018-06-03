@@ -44,6 +44,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -116,19 +117,21 @@ public class LexiconGuiHelper
 
         boolean mouseOver = mouseY >= 0 && mouseY < ILexiconPageRender.MAX_ENTRY_HEIGHT && mouseX >= x && mouseX < x + 16 * scale && mouseY >= y - scrollY && mouseY < y + 16 * scale - scrollY;
         if( mouseOver && ItemStackUtils.isValid(stack) ) {
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(0.0F, ILexiconPageRender.MAX_ENTRY_HEIGHT - 20 + scrollY, 32.0F);
-            Gui.drawRect(0, 0, ILexiconPageRender.MAX_ENTRY_WIDTH, 20, 0xD0000000);
+            this.gui.drawFrameLast = () -> {
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(this.gui.entryX, this.gui.entryY + ILexiconPageRender.MAX_ENTRY_HEIGHT - 20, 96.0F);
+                Gui.drawRect(0, 0, ILexiconPageRender.MAX_ENTRY_WIDTH, 20, 0xD0000000);
 
-            List tooltip = GuiUtils.getTooltipWithoutShift(stack);
-            this.getFontRenderer().drawString(tooltip.get(0).toString(), 22, 2, 0xFFFFFFFF, false);
-            if( drawTooltip && tooltip.size() > 1 ) {
-                this.getFontRenderer().drawString(tooltip.get(1).toString(), 22, 11, 0xFF808080, false);
-            }
+                List tooltip = GuiUtils.getTooltipWithoutShift(stack);
+                this.getFontRenderer().drawString(tooltip.get(0).toString(), 22, 2, 0xFFFFFFFF, false);
+                if( drawTooltip && tooltip.size() > 1 ) {
+                    this.getFontRenderer().drawString(tooltip.get(1).toString(), 22, 11, 0xFF808080, false);
+                }
 
-            RenderUtils.renderStackInGui(stack, 2, 2, 1.0F, this.getFontRenderer());
+                RenderUtils.renderStackInGui(stack, 2, 2, 1.0F, this.getFontRenderer());
 
-            GlStateManager.popMatrix();
+                GlStateManager.popMatrix();
+            };
         }
 
         if( ItemStackUtils.isValid(stack) ) {
