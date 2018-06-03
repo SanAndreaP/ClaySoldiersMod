@@ -14,6 +14,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -70,7 +71,7 @@ public class LexiconGroupUpgrades
                 EnumUpgradeType t2o = l2.upgrade.getType(DummyHander.OFF);
 
                 if( t1m == t2m || t1o == t2o ) {
-                    return l1.getEntryName().compareTo(l2.getEntryName());
+                    return getEntryName(l1).compareTo(getEntryName(l2));
                 } else {
                     int cmp = Integer.compare(t1m.ordinal(), t2m.ordinal());
                     return cmp == 0 ? Integer.compare(t1o.ordinal(), t2o.ordinal()) : cmp;
@@ -83,6 +84,10 @@ public class LexiconGroupUpgrades
             } else {
                 return o1 instanceof LexiconEntryUpgradeType ? -1 : o2 instanceof LexiconEntryUpgradeType ? 1 : 0;
             }
+        }
+
+        private static String getEntryName(ILexiconEntry entry) {
+            return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
         }
     }
 }

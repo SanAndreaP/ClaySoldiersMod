@@ -32,7 +32,7 @@ import java.util.List;
 public class LexiconEntryGlassSoldier
         implements ILexiconEntryCraftingGrid
 {
-    private static final String ID = CsmConstants.ID + ":glassSoldier";
+    private static final String ID = "glassSoldier";
     private final ItemStack[] icons;
     private final ResourceLocation prevPic;
     private final IRecipe recipe;
@@ -56,16 +56,6 @@ public class LexiconEntryGlassSoldier
     @Override
     public String getPageRenderId() {
         return LexiconRenderCraftingGrid.ID;
-    }
-
-    @Override
-    public String getEntryName() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.name", CsmConstants.ID, this.getGroupId(), this.getId()));
-    }
-
-    @Override
-    public String getEntryText() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.text", CsmConstants.ID, this.getGroupId(), this.getId()));
     }
 
     @Nonnull

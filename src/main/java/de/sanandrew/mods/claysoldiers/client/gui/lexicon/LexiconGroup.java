@@ -46,11 +46,6 @@ public abstract class LexiconGroup
     }
 
     @Override
-    public String getGroupName() {
-        return I18n.format(String.format("%s.lexicon.%s.name", CsmConstants.ID, this.id));
-    }
-
-    @Override
     public ResourceLocation getIcon() {
         return this.icon;
     }

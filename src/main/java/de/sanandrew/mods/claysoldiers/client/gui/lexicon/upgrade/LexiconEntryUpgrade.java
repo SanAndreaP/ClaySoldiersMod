@@ -33,7 +33,7 @@ public class LexiconEntryUpgrade
     final ISoldierUpgrade upgrade;
 
     public LexiconEntryUpgrade(ISoldierUpgrade upgrade) {
-        this.id = upgrade.getModId() + ':' + upgrade.getShortName();
+        this.id = upgrade.getShortName();
         this.groupId = LexiconGroupUpgrades.GRP_NAME;
         this.renderId = LexiconRenderUpgrades.ID;
         this.upgrade = upgrade;
@@ -62,16 +62,6 @@ public class LexiconEntryUpgrade
     @Override
     public String getPageRenderId() {
         return this.renderId;
-    }
-
-    @Override
-    public String getEntryName() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.name", CsmConstants.ID, this.groupId, this.id));
-    }
-
-    @Override
-    public String getEntryText() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.text", CsmConstants.ID, this.groupId, this.id));
     }
 
     @Override

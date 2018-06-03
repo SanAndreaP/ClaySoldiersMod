@@ -28,7 +28,7 @@ public class LexiconEntryUpgradeType
     final EnumUpgradeType type;
 
     public LexiconEntryUpgradeType(EnumUpgradeType type, ItemStack icon) {
-        this.id = CsmConstants.ID + ":cat_" + type.name().toLowerCase(Locale.ROOT);
+        this.id = "cat_" + type.name().toLowerCase(Locale.ROOT);
         this.groupId = LexiconGroupUpgrades.GRP_NAME;
         this.renderId = LexiconRenderUpgradeType.ID;
         this.type = type;
@@ -48,16 +48,6 @@ public class LexiconEntryUpgradeType
     @Override
     public String getPageRenderId() {
         return this.renderId;
-    }
-
-    @Override
-    public String getEntryName() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.name", CsmConstants.ID, this.groupId, this.id));
-    }
-
-    @Override
-    public String getEntryText() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.text", CsmConstants.ID, this.groupId, this.id));
     }
 
     @Override

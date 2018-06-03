@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.util.Resources;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -110,7 +111,7 @@ public class LexiconRenderCraftingGrid
 
     @Override
     public void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks) {
-        String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + entry.getEntryName();
+        String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
         helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
 
         if( this.recipe != null ) {
@@ -142,7 +143,7 @@ public class LexiconRenderCraftingGrid
             this.drawHeight = 55;
         }
 
-        s = entry.getEntryText().replace("\\n", "\n");
+        s = Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(entry.getGroupId(), entry.getId())).replace("\\n", "\n");
         helper.drawContentString(s, 2, this.drawHeight, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
         this.drawHeight += helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2);
 

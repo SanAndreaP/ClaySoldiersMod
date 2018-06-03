@@ -31,7 +31,7 @@ import java.util.List;
 public class LexiconEntryMiscSoldier
         implements ILexiconEntryCraftingGrid
 {
-    private static final String ID = CsmConstants.ID + ":miscSoldier";
+    private static final String ID = "miscSoldier";
     private final ItemStack[] icons;
     private final ResourceLocation prevPic;
     private final IRecipe recipe;
@@ -55,16 +55,6 @@ public class LexiconEntryMiscSoldier
     @Override
     public String getPageRenderId() {
         return LexiconRenderCraftingGrid.ID;
-    }
-
-    @Override
-    public String getEntryName() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.name", CsmConstants.ID, this.getGroupId(), this.getId()));
-    }
-
-    @Override
-    public String getEntryText() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.text", CsmConstants.ID, this.getGroupId(), this.getId()));
     }
 
     @Nonnull

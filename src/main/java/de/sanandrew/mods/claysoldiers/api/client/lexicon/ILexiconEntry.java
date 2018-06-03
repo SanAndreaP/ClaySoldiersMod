@@ -22,10 +22,6 @@ public interface ILexiconEntry
 
     String getPageRenderId();
 
-    String getEntryName();
-
-    String getEntryText();
-
     @Nonnull ItemStack getEntryIcon();
 
     default ResourceLocation getPicture() {

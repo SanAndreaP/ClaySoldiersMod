@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 public class LexiconEntryBaseSoldier
         implements ILexiconEntryCraftingGrid
 {
-    private static final String ID = CsmConstants.ID + ":baseSoldier";
+    private static final String ID = "baseSoldier";
     private final ItemStack icon;
     private final ResourceLocation prevPic;
 
@@ -42,16 +42,6 @@ public class LexiconEntryBaseSoldier
     @Override
     public String getPageRenderId() {
         return LexiconRenderCraftingGrid.ID;
-    }
-
-    @Override
-    public String getEntryName() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.name", CsmConstants.ID, this.getGroupId(), this.getId()));
-    }
-
-    @Override
-    public String getEntryText() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.text", CsmConstants.ID, this.getGroupId(), this.getId()));
     }
 
     @Nonnull

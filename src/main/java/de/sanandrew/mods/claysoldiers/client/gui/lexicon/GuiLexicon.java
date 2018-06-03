@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -177,7 +178,7 @@ public class GuiLexicon
         if( entry != null ) {
             this.render.renderPageEntry(entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, Math.round(scroll * this.dHeight), partTicks);
         } else if( group != null ) {
-            this.renderHelper.getFontRenderer().drawString(TextFormatting.ITALIC + group.getGroupName(), 2, 2, 0xFF33AA33, false);
+            this.renderHelper.getFontRenderer().drawString(TextFormatting.ITALIC + Lang.translate(Lang.LEXICON_GROUP_NAME.get(group.getId())), 2, 2, 0xFF33AA33, false);
             Gui.drawRect(2, 12, ILexiconPageRender.MAX_ENTRY_WIDTH - 2, 13, 0xFF33AA33);
         }
 
@@ -221,7 +222,7 @@ public class GuiLexicon
         GlStateManager.pushMatrix();
         GlStateManager.translate(mouseX + 12, mouseY - 12, 32.0F);
 
-        String title = group.getGroupName();
+        String title = Lang.translate(Lang.LEXICON_GROUP_NAME.get(group.getId()));
         int bkgColor = 0xF0101010;
         int lightBg = 0x50A0A0A0;
         int darkBg = (lightBg & 0xFEFEFE) >> 1 | lightBg & 0xFF000000;

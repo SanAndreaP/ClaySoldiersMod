@@ -36,7 +36,7 @@ import java.util.Map;
 public class LexiconEntryBrickDoll
         implements ILexiconEntryFurnace, ILexiconEntryCraftingGrid
 {
-    private static final String ID = CsmConstants.ID + ":brickDoll";
+    private static final String ID = "brickDoll";
     private final ItemStack icon;
     private final IRecipe recipe;
     private final Map<Ingredient, ItemStack> furnaceRecipe;
@@ -63,16 +63,6 @@ public class LexiconEntryBrickDoll
     @Override
     public String getPageRenderId() {
         return LexiconRenderBrickDoll.ID;
-    }
-
-    @Override
-    public String getEntryName() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.name", CsmConstants.ID, this.getGroupId(), this.getId()));
-    }
-
-    @Override
-    public String getEntryText() {
-        return I18n.format(String.format("%s.lexicon.%s.%s.text", CsmConstants.ID, this.getGroupId(), this.getId()));
     }
 
     @Nonnull

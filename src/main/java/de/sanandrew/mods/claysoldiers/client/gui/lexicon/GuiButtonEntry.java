@@ -10,6 +10,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
 
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.sanlib.client.ClientTickHandler;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -37,7 +38,7 @@ public class GuiButtonEntry
     private final FontRenderer fontRenderer;
 
     public GuiButtonEntry(int id, int x, int y, ILexiconEntry entry, FontRenderer fontRenderer) {
-        super(id, x, y, ILexiconPageRender.BTN_ENTRY_WIDTH, 14, entry.getEntryName());
+        super(id, x, y, ILexiconPageRender.BTN_ENTRY_WIDTH, 14, Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId())));
         this.entry = entry;
         this.icon = entry.getEntryIcon();
         this.fontRenderer = fontRenderer;

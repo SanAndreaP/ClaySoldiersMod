@@ -17,8 +17,6 @@ public interface ILexiconGroup
 {
     String getId();
 
-    String getGroupName();
-
     ResourceLocation getIcon();
 
     List<ILexiconEntry> getEntries();
