@@ -7,39 +7,29 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.CraftingGrid;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryFurnace;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
-import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGuiHelper;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryBrickDoll;
 import de.sanandrew.mods.claysoldiers.crafting.FuelHelper;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.claysoldiers.util.Resources;
-import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.StreamSupport;
 
 @SideOnly(Side.CLIENT)
 public class LexiconRenderBrickDoll
@@ -50,6 +40,8 @@ public class LexiconRenderBrickDoll
     private int drawHeight;
     private List<GuiButton> entryButtons;
     private List<Map.Entry<Ingredient, ItemStack>> furnaceRecipes;
+    private List<CraftingGrid> crfGridsNoraml;
+    private List<CraftingGrid> crfGridsTeamed;
 
     @Override
     public String getId() {
@@ -68,15 +60,29 @@ public class LexiconRenderBrickDoll
         if( recipes != null && !recipes.isEmpty() ) {
             this.furnaceRecipes = new ArrayList<>(recipes.entrySet());
         }
+
+        if( entry instanceof LexiconEntryBrickDoll ) {
+            IRecipe recipe = ((LexiconEntryBrickDoll) entry).getNormalRecipe();
+            if( recipe != null ) {
+                this.crfGridsNoraml = new ArrayList<>();
+                LexiconGuiHelper.initCraftings(recipe, this.crfGridsNoraml);
+            }
+
+            recipe = ((LexiconEntryBrickDoll) entry).getTeamedRecipe();
+            if( recipe != null ) {
+                this.crfGridsTeamed = new ArrayList<>();
+                LexiconGuiHelper.initCraftings(recipe, this.crfGridsTeamed);
+            }
+        }
     }
 
     @Override
     public void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks) {
+        final long timer = System.nanoTime() / 1_000_000_000L;
         String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
         helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
 
         if( this.furnaceRecipes != null ) {
-            final long timer = System.nanoTime() / 1_000_000_000L;
             Map.Entry<Ingredient, ItemStack> recipe = this.furnaceRecipes.get((int) (timer % this.furnaceRecipes.size()));
             ItemStack[] inputs = recipe.getKey().getMatchingStacks();
             final int width = 76;
@@ -101,6 +107,26 @@ public class LexiconRenderBrickDoll
         s = Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(entry.getGroupId(), entry.getId())).replace("\\n", "\n");
         helper.drawContentString(s, 2, this.drawHeight, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
         this.drawHeight += helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2);
+
+        if( this.crfGridsNoraml != null && this.crfGridsNoraml.size() > 0 ) {
+            CraftingGrid grid = this.crfGridsNoraml.get((int) (timer % this.crfGridsNoraml.size()));
+            Vec3i gridSize = helper.getCraftingGridSize(grid);
+
+            helper.drawCraftingGrid(grid, true, (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, this.drawHeight, mouseX, mouseY, scrollY);
+            this.drawHeight += gridSize.getY() + 2;
+        }
+
+        if( this.crfGridsTeamed != null && this.crfGridsTeamed.size() > 0 ) {
+            s = Lang.translate(Lang.LEXICON_ENTRY_GRIDTEXT.get(entry.getGroupId(), entry.getId())).replace("\\n", "\n");
+            helper.drawContentString(s, 2, this.drawHeight, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
+            this.drawHeight += helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2);
+
+            CraftingGrid grid = this.crfGridsTeamed.get((int) (timer % this.crfGridsTeamed.size()));
+            Vec3i gridSize = helper.getCraftingGridSize(grid);
+
+            helper.drawCraftingGrid(grid, true, (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, this.drawHeight, mouseX, mouseY, scrollY);
+            this.drawHeight += gridSize.getY() + 2;
+        }
 
 //        if( helper.tryLoadTexture(entry.getPicture()) ) {
 //            int height = MAX_ENTRY_WIDTH / 2;

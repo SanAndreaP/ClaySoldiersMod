@@ -7,43 +7,40 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryFurnace;
 import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderBrickDoll;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
-import de.sanandrew.mods.claysoldiers.crafting.OtherSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class LexiconEntryBrickDoll
-        implements ILexiconEntryFurnace, ILexiconEntryCraftingGrid
+        implements ILexiconEntryFurnace
 {
     private static final String ID = "brickDoll";
     private final ItemStack icon;
-    private final IRecipe recipe;
+    private final IRecipe recipeNormal;
+    private final IRecipe recipeTeamed;
     private final Map<Ingredient, ItemStack> furnaceRecipe;
 
     public LexiconEntryBrickDoll() {
         this.icon = new ItemStack(ItemRegistry.DOLL_BRICK_SOLDIER);
-        this.recipe = new DummyRecipeMiscSoldiers();
+        this.recipeNormal = new DummyRecipeBrickDollRev(false);
+        this.recipeTeamed = new DummyRecipeBrickDollRev(true);
         this.furnaceRecipe = Collections.singletonMap(Ingredient.fromStacks(TeamRegistry.INSTANCE.getTeams().stream()
                                                                                                  .map(team -> TeamRegistry.INSTANCE.getNewTeamStack(1, team))
                                                                                                  .toArray(ItemStack[]::new)),
@@ -76,9 +73,12 @@ public class LexiconEntryBrickDoll
         return false;
     }
 
-    @Override
-    public IRecipe getRecipe() {
-        return CsmConfiguration.enableResourceSoldierRecipe ? this.recipe : null;
+    public IRecipe getNormalRecipe() {
+        return CsmConfiguration.enableBrickSoldierReverseRecipe ? this.recipeNormal : null;
+    }
+
+    public IRecipe getTeamedRecipe() {
+        return CsmConfiguration.enableBrickSoldierReverseRecipe ? this.recipeTeamed : null;
     }
 
     @Override
@@ -86,47 +86,42 @@ public class LexiconEntryBrickDoll
         return furnaceRecipe;
     }
 
-    private static final class DummyRecipeMiscSoldiers
+    private static final class DummyRecipeBrickDollRev
             implements IDummyMultiRecipe
     {
         final List<IRecipe> recipes;
+        final int width;
 
-        DummyRecipeMiscSoldiers() {
+        DummyRecipeBrickDollRev(boolean isTeamed) {
             this.recipes = new ArrayList<>();
+            this.width = isTeamed ? 3 : 2;
 
-            List<ItemStack> allTeams = new ArrayList<>();
-            for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
-                allTeams.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
-            }
-            Ingredient allTeamsIngredient = Ingredient.fromStacks(allTeams.toArray(new ItemStack[0]));
+            if( isTeamed ) {
+                for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
+                    NonNullList<Ingredient> ingredients = NonNullList.create();
+                    ingredients.add(Ingredient.fromItem(ItemRegistry.DOLL_BRICK_SOLDIER));
+                    ingredients.add(Ingredient.fromItem(Items.GHAST_TEAR));
+                    ingredients.add(Ingredient.fromStacks(TeamRegistry.INSTANCE.getNewTeamStack(1, team)));
 
-            for( int i = 0, max = OtherSoldierRecipe.TEAMS.length; i < max; i++ ) {
+                    this.recipes.add(new ShapelessRecipes("", TeamRegistry.INSTANCE.getNewTeamStack(1, team), ingredients));
+                }
+            } else {
                 NonNullList<Ingredient> ingredients = NonNullList.create();
+                ingredients.add(Ingredient.fromItem(ItemRegistry.DOLL_BRICK_SOLDIER));
+                ingredients.add(Ingredient.fromItem(Items.GHAST_TEAR));
 
-                Ingredient dye = Ingredient.fromStacks(OtherSoldierRecipe.ITEMS[i]);
-
-                ingredients.add(Ingredient.EMPTY);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(Ingredient.EMPTY);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(dye);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(Ingredient.EMPTY);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(Ingredient.EMPTY);
-
-                this.recipes.add(new ShapedRecipes("", 3, 3, ingredients, TeamRegistry.INSTANCE.getNewTeamStack(4, OtherSoldierRecipe.TEAMS[i])));
+                this.recipes.add(new ShapelessRecipes("", TeamRegistry.INSTANCE.getNewTeamStack(1, Teams.SOLDIER_CLAY), ingredients));
             }
         }
 
         @Override
         public int getRecipeWidth() {
-            return 3;
+            return this.width;
         }
 
         @Override
         public int getRecipeHeight() {
-            return 3;
+            return 1;
         }
 
         @Override

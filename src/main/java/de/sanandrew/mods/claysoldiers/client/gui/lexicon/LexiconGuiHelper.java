@@ -6,10 +6,12 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
 
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.CraftingGrid;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
+import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.client.util.GuiUtils;
@@ -25,7 +27,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -259,8 +267,8 @@ public class LexiconGuiHelper
     }
 
     @Override
-    public void drawRect(int x, int y, int w, int h, int color) {
-        Gui.drawRect(x, y, w, h, color);
+    public void drawRect(int left, int top, int right, int bottom, int color) {
+        Gui.drawRect(left, top, right, bottom, color);
     }
 
     @Override
@@ -311,6 +319,74 @@ public class LexiconGuiHelper
                 this.changePage(group, group.getEntry(entryId));
             }
 
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void initCraftings(IRecipe recipe, List<CraftingGrid> grids) {
+        int w, h;
+        List<IRecipe> allRecipes = new ArrayList<>();
+        if( recipe instanceof IDummyMultiRecipe ) {
+            IDummyMultiRecipe dummyRecipe = (IDummyMultiRecipe) recipe;
+            w = dummyRecipe.getRecipeWidth();
+            h = dummyRecipe.getRecipeHeight();
+            allRecipes.addAll(dummyRecipe.getRecipes());
+        } else {
+            if( recipe instanceof ShapedRecipes ) {
+                w = ((ShapedRecipes) recipe).recipeWidth;
+                h = ((ShapedRecipes) recipe).recipeHeight;
+            } else if( recipe instanceof ShapedOreRecipe ) {
+                w = ((ShapedOreRecipe) recipe).getRecipeWidth();
+                h = ((ShapedOreRecipe) recipe).getRecipeHeight();
+            } else {
+                int ingredientSize = recipe.getIngredients().size();
+                w = MathHelper.ceil(MathHelper.sqrt(ingredientSize));
+                h = MathHelper.ceil(ingredientSize / (float) w);
+            }
+            allRecipes.add(recipe);
+        }
+
+        for( IRecipe currRecipe : allRecipes ) {
+            grids.add(new CraftingGrid(w, h, currRecipe));
+        }
+    }
+
+    @Override
+    public Vec3i getCraftingGridSize(CraftingGrid grid) {
+        return new Vec3i(grid.getWidth() * 18 + 4 + 18 + 36, Math.max(grid.getHeight() * 18, 36), 0);
+    }
+
+    @Override
+    public void drawCraftingGrid(CraftingGrid grid, boolean isShapeless, int x, int y, int mouseX, int mouseY, int scrollY) {
+        final int mX = grid.getWidth();
+        final int mY = grid.getHeight();
+        this.drawItemGrid(x + mX * 18 + 4 + 18, y + Math.max(mY * 9 - 18, 0), mouseX, mouseY, scrollY, grid.getResult(), 2.0F, false);
+        this.tryLoadTexture(Resources.GUI_LEXICON.resource);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+                                            GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        this.drawTextureRect(x + mX * 18 + 2, y + 12 + Math.max(mY * 9 - 18, 0), 238, isShapeless ? 30 : 18, 18, 12);
+
+        for( int gx = 0; gx < mX; gx++ ) {
+            for( int gy = 0; gy < mY; gy++ ) {
+                NonNullList<ItemStack> drawnStacks = grid.getItemsAt(gx, gy);
+                ItemStack drawnStack = drawnStacks.size() > 0
+                                               ? drawnStacks.get((int) ((System.nanoTime() / 1_000_000_000) % drawnStacks.size()))
+                                               : ItemStack.EMPTY;
+                this.drawItemGrid(x + gx * 18, y + gy * 18 + Math.max(27 - mY * 18, 0), mouseX, mouseY, scrollY, drawnStack, 1.0F, true);
+            }
+        }
+    }
+
+    @Override
+    public boolean tryDrawPicture(ResourceLocation location, int x, int y, int width, int height) {
+        if( this.tryLoadTexture(location) ) {
+            this.drawRect(x, y, x + width, y + height, 0xFF000000);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            this.drawTextureRect(x + 1, y + 1, width - 2, height - 2, 0.0F, 0.0F, 1.0F, 1.0F);
             return true;
         }
 

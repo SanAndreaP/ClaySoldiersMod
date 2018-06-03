@@ -43,7 +43,6 @@ public class GuiLexicon
         extends GuiScreen
         implements GuiYesNoCallback
 {
-
     int guiLeft;
     int guiTop;
     int entryX;

@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3i;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -49,4 +50,10 @@ public interface ILexiconGuiHelper
     boolean tryLoadTexture(ResourceLocation location);
 
     boolean linkActionPerformed(GuiButton button);
+
+    Vec3i getCraftingGridSize(CraftingGrid grid);
+
+    void drawCraftingGrid(CraftingGrid grid, boolean isShapeless, int x, int y, int mouseX, int mouseY, int scrollY);
+
+    boolean tryDrawPicture(ResourceLocation location, int x, int y, int width, int height);
 }
