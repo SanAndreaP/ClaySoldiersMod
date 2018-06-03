@@ -12,7 +12,6 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -47,12 +46,9 @@ public class LexiconRenderUpgrades
         this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 2) + 58;
         helper.drawContentString(s, 2, 55, MAX_ENTRY_WIDTH - 2, 0xFF000000, this.entryButtons);
 
-        if( helper.tryLoadTexture(entry.getPicture()) ) {
-            int height = MAX_ENTRY_WIDTH / 2;
-            helper.drawRect(0, this.drawHeight + 8, MAX_ENTRY_WIDTH, this.drawHeight + 8 + height, 0xFF000000);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            helper.drawTextureRect(2, this.drawHeight + 10, MAX_ENTRY_WIDTH - 4, height - 4, 0.0F, 0.0F, 1.0F, 1.0F);
-            this.drawHeight += height + 12;
+        int height = MAX_ENTRY_WIDTH / 2;
+        if( helper.tryDrawPicture(entry.getPicture(), 0, this.drawHeight + 8, MAX_ENTRY_WIDTH, height) ) {
+            this.drawHeight += height + 8;
         }
 
         helper.drawItemGrid((MAX_ENTRY_WIDTH - 36) / 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);
