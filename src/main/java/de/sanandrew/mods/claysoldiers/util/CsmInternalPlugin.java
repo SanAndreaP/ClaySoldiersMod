@@ -15,6 +15,8 @@ import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.mount.LexiconGroupMounts;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconGroupSoldiers;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade.LexiconGroupUpgrades;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
@@ -92,8 +94,12 @@ public class CsmInternalPlugin
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerLexicon(ILexiconRegistry registry) {
+        registry.registerPageRender(new LexiconRenderCraftingGrid());
+
         LexiconGroupSoldiers.register(registry);
         LexiconGroupUpgrades.register(registry);
+        LexiconGroupMounts.register(registry);
     }
 }

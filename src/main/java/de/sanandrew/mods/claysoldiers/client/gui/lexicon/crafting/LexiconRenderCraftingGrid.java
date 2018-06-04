@@ -19,6 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,7 +27,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.StreamSupport;
 
 @SideOnly(Side.CLIENT)
@@ -38,7 +38,6 @@ public class LexiconRenderCraftingGrid
     private int drawHeight;
     private List<GuiButton> entryButtons;
     private List<CraftingGrid> crfGrids;
-    private boolean isShapeless;
 
     @Override
     public String getId() {
@@ -53,19 +52,19 @@ public class LexiconRenderCraftingGrid
 
         this.entryButtons = entryButtons;
 
-        IRecipe recipe = ((ILexiconEntryCraftingGrid) entry).getRecipe();
+        NonNullList<IRecipe> recipes = ((ILexiconEntryCraftingGrid) entry).getRecipes();
 
-        if( recipe == null ) {
-            final ItemStack result = ((ILexiconEntryCraftingGrid) entry).getRecipeResult();
-            recipe = StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
-                                       .filter(r -> !r.isDynamic() && ItemStackUtils.areEqual(r.getRecipeOutput(), result) && r.canFit(3, 3))
-                                       .findFirst().orElse(null);
+        if( recipes.isEmpty() ) {
+            for( ItemStack result : ((ILexiconEntryCraftingGrid) entry).getRecipeResults() ) {
+                StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
+                             .filter(r -> !r.isDynamic() && ItemStackUtils.areEqual(r.getRecipeOutput(), result) && r.canFit(3, 3))
+                             .findFirst().ifPresent(recipes::add);
+            }
         }
 
-        if( recipe != null ) {
-            this.isShapeless = recipe.getClass().getName().toLowerCase(Locale.ROOT).contains("shapeless");
+        if( !recipes.isEmpty() ) {
             this.crfGrids = new ArrayList<>();
-            LexiconGuiHelper.initCraftings(recipe, this.crfGrids);
+            LexiconGuiHelper.initCraftings(recipes, this.crfGrids);
         }
     }
 
@@ -78,7 +77,7 @@ public class LexiconRenderCraftingGrid
             CraftingGrid grid = this.crfGrids.get((int) ((System.nanoTime() / 1_000_000_000L) % this.crfGrids.size()));
             Vec3i gridSize = helper.getCraftingGridSize(grid);
 
-            helper.drawCraftingGrid(grid, this.isShapeless, (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, 12, mouseX, mouseY, scrollY);
+            helper.drawCraftingGrid(grid, grid.isShapeless(), (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, 12, mouseX, mouseY, scrollY);
             this.drawHeight = gridSize.getY() + 16;
         } else {
             helper.drawItemGrid((MAX_ENTRY_WIDTH - 36) / 2, 12, mouseX, mouseY, scrollY, entry.getEntryIcon(), 2.0F, false);

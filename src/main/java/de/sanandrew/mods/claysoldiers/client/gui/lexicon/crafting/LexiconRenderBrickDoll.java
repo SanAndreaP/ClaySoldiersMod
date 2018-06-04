@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,16 +63,16 @@ public class LexiconRenderBrickDoll
         }
 
         if( entry instanceof LexiconEntryBrickDoll ) {
-            IRecipe recipe = ((LexiconEntryBrickDoll) entry).getNormalRecipe();
-            if( recipe != null ) {
+            IRecipe normalRecipe = ((LexiconEntryBrickDoll) entry).getNormalRecipe();
+            if( normalRecipe != null ) {
                 this.crfGridsNoraml = new ArrayList<>();
-                LexiconGuiHelper.initCraftings(recipe, this.crfGridsNoraml);
+                LexiconGuiHelper.initCraftings(NonNullList.withSize(1, normalRecipe), this.crfGridsNoraml);
             }
 
-            recipe = ((LexiconEntryBrickDoll) entry).getTeamedRecipe();
-            if( recipe != null ) {
+            NonNullList<IRecipe> teamedRecipes = ((LexiconEntryBrickDoll) entry).getTeamedRecipes();
+            if( !teamedRecipes.isEmpty() ) {
                 this.crfGridsTeamed = new ArrayList<>();
-                LexiconGuiHelper.initCraftings(recipe, this.crfGridsTeamed);
+                LexiconGuiHelper.initCraftings(teamedRecipes, this.crfGridsTeamed);
             }
         }
     }
@@ -112,7 +113,7 @@ public class LexiconRenderBrickDoll
             CraftingGrid grid = this.crfGridsNoraml.get((int) (timer % this.crfGridsNoraml.size()));
             Vec3i gridSize = helper.getCraftingGridSize(grid);
 
-            helper.drawCraftingGrid(grid, true, (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, this.drawHeight, mouseX, mouseY, scrollY);
+            helper.drawCraftingGrid(grid, grid.isShapeless(), (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, this.drawHeight, mouseX, mouseY, scrollY);
             this.drawHeight += gridSize.getY() + 2;
         }
 
@@ -124,17 +125,9 @@ public class LexiconRenderBrickDoll
             CraftingGrid grid = this.crfGridsTeamed.get((int) (timer % this.crfGridsTeamed.size()));
             Vec3i gridSize = helper.getCraftingGridSize(grid);
 
-            helper.drawCraftingGrid(grid, true, (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, this.drawHeight, mouseX, mouseY, scrollY);
+            helper.drawCraftingGrid(grid, grid.isShapeless(), (MAX_ENTRY_WIDTH - gridSize.getX()) / 2, this.drawHeight, mouseX, mouseY, scrollY);
             this.drawHeight += gridSize.getY() + 2;
         }
-
-//        if( helper.tryLoadTexture(entry.getPicture()) ) {
-//            int height = MAX_ENTRY_WIDTH / 2;
-//            helper.drawRect(0, this.drawHeight + 8, MAX_ENTRY_WIDTH, this.drawHeight + 8 + height, 0xFF000000);
-//            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//            helper.drawTextureRect(2, this.drawHeight + 10, MAX_ENTRY_WIDTH - 4, height - 4, 0.0F, 0.0F, 1.0F, 1.0F);
-//            this.drawHeight += height + 12;
-//        }
 
         this.drawHeight += 2;
     }

@@ -325,3 +325,6 @@ claysoldiers.lexicon.soldiers.washSoldier.text=If you have lots of leftover team
 claysoldiers.lexicon.soldiers.brickDoll.name=Brick Soldier Dolls
 claysoldiers.lexicon.soldiers.brickDoll.text=If soldiers get too hot - either by burning to death or smelting a doll in a furnace - they may end up turning into bricked versions of themselves.\n\nThe only way to bring those back to life is with a ghast tear, either via soldier with the tear as an {link:upgrade|upgrades:ghasttear} or in a crafting grid as shown below (ghast tear is not consumed; shapeless; they'll become regular {link:clay soldiers|upgrades:baseSoldier}).
 claysoldiers.lexicon.soldiers.brickDoll.gridtext=Using the crafting grid to revert the brick dolls to their softer form, you can put another doll in it, this way the resulting doll will be the same variant as the one in the grid. Neither the ghast tear nor the soldier doll will be consumed and the recipe is shapeless.
+claysoldiers.lexicon.mounts.name=Mounts
+claysoldiers.lexicon.mounts.horse.name=Horses
+claysoldiers.lexicon.mounts.horse.text=

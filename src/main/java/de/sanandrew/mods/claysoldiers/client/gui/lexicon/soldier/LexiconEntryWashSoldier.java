@@ -8,13 +8,11 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
-import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -33,12 +31,36 @@ public class LexiconEntryWashSoldier
     private static final String ID = "washSoldier";
     private final ItemStack icon;
     private final ResourceLocation prevPic;
-    private final IRecipe recipe;
+    private final NonNullList<IRecipe> recipes;
 
     public LexiconEntryWashSoldier() {
         this.icon = new ItemStack(Items.WATER_BUCKET);
         this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/soldiers/" + CsmConstants.ID + "_washsoldier.png");
-        this.recipe = new DummyShapelessRecipeWashSoldiers();
+        this.recipes = NonNullList.create();
+
+        List<ItemStack> allTeams = new ArrayList<>();
+        for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
+            allTeams.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
+        }
+        Ingredient allTeamsIngredient = Ingredient.fromStacks(allTeams.toArray(new ItemStack[0]));
+
+        for( int i = 1, max = 8; i <= max; i++ ) {
+            NonNullList<Ingredient> ingredients = NonNullList.create();
+
+            ingredients.add(Ingredient.fromItem(Items.WATER_BUCKET));
+            ingredients.add(allTeamsIngredient);
+            switch( i ) { // no breaks!
+                case 8: ingredients.add(allTeamsIngredient);
+                case 7: ingredients.add(allTeamsIngredient);
+                case 6: ingredients.add(allTeamsIngredient);
+                case 5: ingredients.add(allTeamsIngredient);
+                case 4: ingredients.add(allTeamsIngredient);
+                case 3: ingredients.add(allTeamsIngredient);
+                case 2: ingredients.add(allTeamsIngredient);
+            }
+
+            this.recipes.add(new ShapelessRecipes("", TeamRegistry.INSTANCE.getNewTeamStack(i, Teams.SOLDIER_CLAY), ingredients));
+        }
     }
 
     @Override
@@ -73,56 +95,7 @@ public class LexiconEntryWashSoldier
     }
 
     @Override
-    public IRecipe getRecipe() {
-        return CsmConfiguration.enableSoldierWashRecipe ? this.recipe : null;
-    }
-
-    private static final class DummyShapelessRecipeWashSoldiers
-            implements IDummyMultiRecipe
-    {
-        final List<IRecipe> recipes;
-
-        DummyShapelessRecipeWashSoldiers() {
-            this.recipes = new ArrayList<>();
-
-            List<ItemStack> allTeams = new ArrayList<>();
-            for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
-                allTeams.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
-            }
-            Ingredient allTeamsIngredient = Ingredient.fromStacks(allTeams.toArray(new ItemStack[0]));
-
-            for( int i = 1, max = 8; i <= max; i++ ) {
-                NonNullList<Ingredient> ingredients = NonNullList.create();
-
-                ingredients.add(Ingredient.fromItem(Items.WATER_BUCKET));
-                ingredients.add(allTeamsIngredient);
-                switch( i ) { // no breaks!
-                    case 8: ingredients.add(allTeamsIngredient);
-                    case 7: ingredients.add(allTeamsIngredient);
-                    case 6: ingredients.add(allTeamsIngredient);
-                    case 5: ingredients.add(allTeamsIngredient);
-                    case 4: ingredients.add(allTeamsIngredient);
-                    case 3: ingredients.add(allTeamsIngredient);
-                    case 2: ingredients.add(allTeamsIngredient);
-                }
-
-                this.recipes.add(new ShapelessRecipes("", TeamRegistry.INSTANCE.getNewTeamStack(i, Teams.SOLDIER_CLAY), ingredients));
-            }
-        }
-
-        @Override
-        public int getRecipeWidth() {
-            return 3;
-        }
-
-        @Override
-        public int getRecipeHeight() {
-            return 3;
-        }
-
-        @Override
-        public List<IRecipe> getRecipes() {
-            return this.recipes;
-        }
+    public NonNullList<IRecipe> getRecipes() {
+        return CsmConfiguration.enableSoldierWashRecipe ? this.recipes : NonNullList.create();
     }
 }

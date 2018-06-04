@@ -155,6 +155,7 @@ public enum Resources
     GUI_LEXICON("textures/gui/lexicon/background.png"),
     GUI_GROUPICON_UPGRADES("textures/gui/lexicon/group_upgrades.png"),
     GUI_GROUPICON_SOLDIERS("textures/gui/lexicon/group_soldiers.png"),
+    GUI_GROUPICON_MOUNTS("textures/gui/lexicon/group_mounts.png"),
 
     SHADER_STENCIL("shader/stencil.frag"),
 

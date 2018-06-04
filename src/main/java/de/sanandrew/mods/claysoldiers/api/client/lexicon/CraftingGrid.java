@@ -11,20 +11,24 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 
+import java.util.Locale;
+
 public final class CraftingGrid
 {
     private static final ItemStack[] EMPTY_ITEMS = new ItemStack[] {ItemStack.EMPTY};
 
     private final ItemStack[][][] items;
     private final ItemStack result;
+    private final boolean isShapeless;
 
-    public CraftingGrid(int width, int height, ItemStack result) {
+    public CraftingGrid(int width, int height, boolean shapeless, ItemStack result) {
         this.items = new ItemStack[width][height][];
         this.result = result;
+        this.isShapeless = shapeless;
     }
 
     public CraftingGrid(int width, int height, IRecipe recipe) {
-        this(width, height, recipe.getRecipeOutput());
+        this(width, height, recipe.getClass().getName().toLowerCase(Locale.ROOT).contains("shapeless"), recipe.getRecipeOutput());
         NonNullList<Ingredient> ingredients = recipe.getIngredients();
         for( int y = 0; y < height; y++ ) {
             for( int x = 0; x < width; x++ ) {
@@ -44,6 +48,10 @@ public final class CraftingGrid
 
     public int getHeight() {
         return this.items[0].length;
+    }
+
+    public boolean isShapeless() {
+        return this.isShapeless;
     }
 
     public NonNullList<ItemStack> getItemsAt(int row, int col) {

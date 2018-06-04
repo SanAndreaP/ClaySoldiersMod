@@ -11,7 +11,6 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
-import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.client.util.GuiUtils;
@@ -44,7 +43,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -328,25 +326,20 @@ public class LexiconGuiHelper
         return false;
     }
 
-    public static void initCraftings(IRecipe recipe, List<CraftingGrid> grids) {
-        int w, h;
+    public static void initCraftings(@Nonnull NonNullList<IRecipe> recipes, List<CraftingGrid> grids) {
+        int w = 0, h = 0;
         List<IRecipe> allRecipes = new ArrayList<>();
-        if( recipe instanceof IDummyMultiRecipe ) {
-            IDummyMultiRecipe dummyRecipe = (IDummyMultiRecipe) recipe;
-            w = dummyRecipe.getRecipeWidth();
-            h = dummyRecipe.getRecipeHeight();
-            allRecipes.addAll(dummyRecipe.getRecipes());
-        } else {
+        for( IRecipe recipe : recipes ) {
             if( recipe instanceof ShapedRecipes ) {
-                w = ((ShapedRecipes) recipe).recipeWidth;
-                h = ((ShapedRecipes) recipe).recipeHeight;
+                w = Math.max(w, ((ShapedRecipes) recipe).recipeWidth);
+                h = Math.max(h, ((ShapedRecipes) recipe).recipeHeight);
             } else if( recipe instanceof ShapedOreRecipe ) {
-                w = ((ShapedOreRecipe) recipe).getRecipeWidth();
-                h = ((ShapedOreRecipe) recipe).getRecipeHeight();
+                w = Math.max(w, ((ShapedOreRecipe) recipe).getRecipeWidth());
+                h = Math.max(h, ((ShapedOreRecipe) recipe).getRecipeHeight());
             } else {
                 int ingredientSize = recipe.getIngredients().size();
-                w = MathHelper.ceil(MathHelper.sqrt(ingredientSize));
-                h = MathHelper.ceil(ingredientSize / (float) w);
+                w = Math.max(w, MathHelper.ceil(MathHelper.sqrt(ingredientSize)));
+                h = Math.max(h, MathHelper.ceil(ingredientSize / (float) w));
             }
             allRecipes.add(recipe);
         }

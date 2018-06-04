@@ -8,14 +8,12 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
-import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.crafting.DyedSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -35,12 +33,40 @@ public class LexiconEntryDyeSoldier
     private static final String ID = "dyeSoldier";
     private final ItemStack[] icons;
     private final ResourceLocation prevPic;
-    private final IRecipe recipe;
+    private final NonNullList<IRecipe> recipes;
 
     public LexiconEntryDyeSoldier() {
         this.icons = Arrays.stream(DyedSoldierRecipe.TEAMS).map(uuid -> TeamRegistry.INSTANCE.getNewTeamStack(1, uuid)).toArray(ItemStack[]::new);
         this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/soldiers/" + CsmConstants.ID + "_dyesoldier.png");
-        this.recipe = new DummyShapelessRecipeDyedSoldiers();
+        this.recipes = NonNullList.create();
+
+        List<ItemStack> allTeams = new ArrayList<>();
+        for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
+            allTeams.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
+        }
+        Ingredient allTeamsIngredient = Ingredient.fromStacks(allTeams.toArray(new ItemStack[0]));
+
+        for( int cnt = 1; cnt <= 8; cnt++ ) {
+            for( int i = 0, max = DyedSoldierRecipe.TEAMS.length; i < max; i++ ) {
+                NonNullList<Ingredient> ingredients = NonNullList.create();
+
+                Ingredient dye = new OreIngredient(DyedSoldierRecipe.DYES[i]);
+                ingredients.add(dye);
+
+                ingredients.add(allTeamsIngredient);
+                switch( cnt ) { // no breaks!
+                    case 8: ingredients.add(allTeamsIngredient);
+                    case 7: ingredients.add(allTeamsIngredient);
+                    case 6: ingredients.add(allTeamsIngredient);
+                    case 5: ingredients.add(allTeamsIngredient);
+                    case 4: ingredients.add(allTeamsIngredient);
+                    case 3: ingredients.add(allTeamsIngredient);
+                    case 2: ingredients.add(allTeamsIngredient);
+                }
+
+                this.recipes.add(new ShapelessRecipes("", TeamRegistry.INSTANCE.getNewTeamStack(cnt, DyedSoldierRecipe.TEAMS[i]), ingredients));
+            }
+        }
     }
 
     @Override
@@ -74,61 +100,9 @@ public class LexiconEntryDyeSoldier
         return false;
     }
 
+    @Nonnull
     @Override
-    public IRecipe getRecipe() {
-        return CsmConfiguration.enableDyedSoldierRecipe ? this.recipe : null;
-    }
-
-    private static final class DummyShapelessRecipeDyedSoldiers
-            implements IDummyMultiRecipe
-    {
-        final List<IRecipe> recipes;
-
-        DummyShapelessRecipeDyedSoldiers() {
-            this.recipes = new ArrayList<>();
-
-            List<ItemStack> allTeams = new ArrayList<>();
-            for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
-                allTeams.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
-            }
-            Ingredient allTeamsIngredient = Ingredient.fromStacks(allTeams.toArray(new ItemStack[0]));
-
-            for( int cnt = 1; cnt <= 8; cnt++ ) {
-                for( int i = 0, max = DyedSoldierRecipe.TEAMS.length; i < max; i++ ) {
-                    NonNullList<Ingredient> ingredients = NonNullList.create();
-
-                    Ingredient dye = new OreIngredient(DyedSoldierRecipe.DYES[i]);
-                    ingredients.add(dye);
-
-                    ingredients.add(allTeamsIngredient);
-                    switch( cnt ) { // no breaks!
-                        case 8: ingredients.add(allTeamsIngredient);
-                        case 7: ingredients.add(allTeamsIngredient);
-                        case 6: ingredients.add(allTeamsIngredient);
-                        case 5: ingredients.add(allTeamsIngredient);
-                        case 4: ingredients.add(allTeamsIngredient);
-                        case 3: ingredients.add(allTeamsIngredient);
-                        case 2: ingredients.add(allTeamsIngredient);
-                    }
-
-                    this.recipes.add(new ShapelessRecipes("", TeamRegistry.INSTANCE.getNewTeamStack(cnt, DyedSoldierRecipe.TEAMS[i]), ingredients));
-                }
-            }
-        }
-
-        @Override
-        public int getRecipeWidth() {
-            return 3;
-        }
-
-        @Override
-        public int getRecipeHeight() {
-            return 3;
-        }
-
-        @Override
-        public List<IRecipe> getRecipes() {
-            return this.recipes;
-        }
+    public NonNullList<IRecipe> getRecipes() {
+        return CsmConfiguration.enableDyedSoldierRecipe ? this.recipes : NonNullList.create();
     }
 }

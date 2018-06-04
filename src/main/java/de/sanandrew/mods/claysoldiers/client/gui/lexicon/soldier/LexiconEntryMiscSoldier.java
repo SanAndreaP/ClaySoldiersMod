@@ -8,14 +8,12 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
-import de.sanandrew.mods.claysoldiers.api.misc.IDummyMultiRecipe;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.crafting.OtherSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -34,12 +32,36 @@ public class LexiconEntryMiscSoldier
     private static final String ID = "miscSoldier";
     private final ItemStack[] icons;
     private final ResourceLocation prevPic;
-    private final IRecipe recipe;
+    private final NonNullList<IRecipe> recipes;
 
     public LexiconEntryMiscSoldier() {
         this.icons = Arrays.stream(OtherSoldierRecipe.TEAMS).map(uuid -> TeamRegistry.INSTANCE.getNewTeamStack(1, uuid)).toArray(ItemStack[]::new);
         this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/soldiers/" + CsmConstants.ID + "_miscsoldier.png");
-        this.recipe = new DummyRecipeMiscSoldiers();
+        this.recipes = NonNullList.create();
+
+        List<ItemStack> allTeams = new ArrayList<>();
+        for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
+            allTeams.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
+        }
+        Ingredient allTeamsIngredient = Ingredient.fromStacks(allTeams.toArray(new ItemStack[0]));
+
+        for( int i = 0, max = OtherSoldierRecipe.TEAMS.length; i < max; i++ ) {
+            NonNullList<Ingredient> ingredients = NonNullList.create();
+
+            Ingredient dye = Ingredient.fromStacks(OtherSoldierRecipe.ITEMS[i]);
+
+            ingredients.add(Ingredient.EMPTY);
+            ingredients.add(allTeamsIngredient);
+            ingredients.add(Ingredient.EMPTY);
+            ingredients.add(allTeamsIngredient);
+            ingredients.add(dye);
+            ingredients.add(allTeamsIngredient);
+            ingredients.add(Ingredient.EMPTY);
+            ingredients.add(allTeamsIngredient);
+            ingredients.add(Ingredient.EMPTY);
+
+            this.recipes.add(new ShapedRecipes("", 3, 3, ingredients, TeamRegistry.INSTANCE.getNewTeamStack(4, OtherSoldierRecipe.TEAMS[i])));
+        }
     }
 
     @Override
@@ -74,56 +96,7 @@ public class LexiconEntryMiscSoldier
     }
 
     @Override
-    public IRecipe getRecipe() {
-        return CsmConfiguration.enableResourceSoldierRecipe ? this.recipe : null;
-    }
-
-    private static final class DummyRecipeMiscSoldiers
-            implements IDummyMultiRecipe
-    {
-        final List<IRecipe> recipes;
-
-        DummyRecipeMiscSoldiers() {
-            this.recipes = new ArrayList<>();
-
-            List<ItemStack> allTeams = new ArrayList<>();
-            for( ITeam team : TeamRegistry.INSTANCE.getTeams() ) {
-                allTeams.add(TeamRegistry.INSTANCE.getNewTeamStack(1, team));
-            }
-            Ingredient allTeamsIngredient = Ingredient.fromStacks(allTeams.toArray(new ItemStack[0]));
-
-            for( int i = 0, max = OtherSoldierRecipe.TEAMS.length; i < max; i++ ) {
-                NonNullList<Ingredient> ingredients = NonNullList.create();
-
-                Ingredient dye = Ingredient.fromStacks(OtherSoldierRecipe.ITEMS[i]);
-
-                ingredients.add(Ingredient.EMPTY);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(Ingredient.EMPTY);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(dye);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(Ingredient.EMPTY);
-                ingredients.add(allTeamsIngredient);
-                ingredients.add(Ingredient.EMPTY);
-
-                this.recipes.add(new ShapedRecipes("", 3, 3, ingredients, TeamRegistry.INSTANCE.getNewTeamStack(4, OtherSoldierRecipe.TEAMS[i])));
-            }
-        }
-
-        @Override
-        public int getRecipeWidth() {
-            return 3;
-        }
-
-        @Override
-        public int getRecipeHeight() {
-            return 3;
-        }
-
-        @Override
-        public List<IRecipe> getRecipes() {
-            return this.recipes;
-        }
+    public NonNullList<IRecipe> getRecipes() {
+        return CsmConfiguration.enableResourceSoldierRecipe ? this.recipes : NonNullList.create();
     }
 }
