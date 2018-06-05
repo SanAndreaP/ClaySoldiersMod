@@ -32,6 +32,7 @@ public class LexiconGroupMounts
         ILexiconGroup grp = new LexiconGroupMounts();
         registry.registerGroup(grp);
 
+        grp.addEntry(new LexiconEntryMounts());
         grp.addEntry(new LexiconEntryHorse());
     }
 }
