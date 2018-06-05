@@ -11,7 +11,6 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGr
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +26,7 @@ public class LexiconEntryHorse
     private final ResourceLocation prevPic;
 
     public LexiconEntryHorse() {
-        this.icons = Arrays.stream(EnumClayHorseType.VALUES).map(ItemRegistry.DOLL_HORSE::getTypeStack).toArray(ItemStack[]::new);
+        this.icons = Arrays.stream(EnumClayHorseType.VALUES).filter(EnumClayHorseType::isVisible).map(ItemRegistry.DOLL_HORSE::getTypeStack).toArray(ItemStack[]::new);
         this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/mounts/" + CsmConstants.ID + "_horses.png");
     }
 
@@ -49,7 +48,7 @@ public class LexiconEntryHorse
     @Nonnull
     @Override
     public ItemStack getEntryIcon() {
-        return this.icons[MiscUtils.RNG.randomInt(this.icons.length)];
+        return this.icons[(int) ((System.nanoTime() / 1_000_000_000) % this.icons.length)];
     }
 
     @Override
