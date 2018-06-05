@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
+package de.sanandrew.mods.claysoldiers.client.gui.lexicon.button;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

@@ -6,7 +6,7 @@
  * http://creativecommons.org/licenses/by-nc-sa/4.0/
  * *****************************************************************************************************************
  */
-package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
+package de.sanandrew.mods.claysoldiers.client.gui.lexicon.button;
 
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.client.util.Shaders;

@@ -13,6 +13,10 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.button.GuiButtonEntry;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.button.GuiButtonEntryDivider;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.button.GuiButtonGroup;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.button.GuiButtonLink;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.client.Minecraft;
@@ -37,7 +41,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.function.Consumer;
 
 @SideOnly(Side.CLIENT)
 public class GuiLexicon

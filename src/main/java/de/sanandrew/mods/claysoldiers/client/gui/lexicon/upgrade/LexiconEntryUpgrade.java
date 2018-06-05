@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
-import net.minecraft.client.resources.I18n;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -35,7 +35,7 @@ public class LexiconEntryUpgrade
     public LexiconEntryUpgrade(ISoldierUpgrade upgrade) {
         this.id = upgrade.getShortName();
         this.groupId = LexiconGroupUpgrades.GRP_NAME;
-        this.renderId = LexiconRenderUpgrades.ID;
+        this.renderId = LexiconRenderStandard.ID;
         this.upgrade = upgrade;
         this.icons = Arrays.stream(upgrade.getStacks()).map(item -> {
             NonNullList<ItemStack> newItems = NonNullList.create();

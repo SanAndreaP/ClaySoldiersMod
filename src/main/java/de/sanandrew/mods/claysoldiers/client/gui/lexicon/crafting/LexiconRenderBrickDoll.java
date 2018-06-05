@@ -136,9 +136,4 @@ public class LexiconRenderBrickDoll
     public int getEntryHeight(ILexiconEntry entry, ILexiconGuiHelper helper) {
         return this.drawHeight;
     }
-
-    @Override
-    public boolean actionPerformed(GuiButton button, ILexiconGuiHelper helper) {
-        return helper.linkActionPerformed(button);
-    }
 }

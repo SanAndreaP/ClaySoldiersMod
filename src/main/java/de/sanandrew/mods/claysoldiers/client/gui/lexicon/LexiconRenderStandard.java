@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
+package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
@@ -19,10 +19,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class LexiconRenderUpgrades
+public class LexiconRenderStandard
         implements ILexiconPageRender
 {
-    public static final String ID = CsmConstants.ID + ":upgrades";
+    public static final String ID = CsmConstants.ID + ":standard";
 
     private int drawHeight;
     private List<GuiButton> entryButtons;
@@ -57,10 +57,5 @@ public class LexiconRenderUpgrades
     @Override
     public int getEntryHeight(ILexiconEntry entry, ILexiconGuiHelper helper) {
         return this.drawHeight;
-    }
-
-    @Override
-    public boolean actionPerformed(GuiButton button, ILexiconGuiHelper helper) {
-        return helper.linkActionPerformed(button);
     }
 }

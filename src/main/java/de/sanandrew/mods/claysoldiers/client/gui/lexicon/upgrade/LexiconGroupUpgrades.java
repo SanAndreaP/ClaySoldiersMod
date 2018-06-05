@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.util.Lang;
@@ -36,7 +37,6 @@ public class LexiconGroupUpgrades
     }
 
     public static void register(ILexiconRegistry registry) {
-        registry.registerPageRender(new LexiconRenderUpgrades());
         registry.registerPageRender(new LexiconRenderUpgradeType());
 
         ILexiconGroup grp = new LexiconGroupUpgrades();

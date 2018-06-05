@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.GuiButtonEntry;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.button.GuiButtonEntry;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.client.gui.GuiButton;

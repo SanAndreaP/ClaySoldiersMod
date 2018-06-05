@@ -11,6 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.button.GuiButtonLink;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.client.util.GuiUtils;
