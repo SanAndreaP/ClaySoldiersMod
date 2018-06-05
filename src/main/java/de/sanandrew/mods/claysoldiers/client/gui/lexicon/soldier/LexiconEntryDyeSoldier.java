@@ -87,7 +87,7 @@ public class LexiconEntryDyeSoldier
     @Nonnull
     @Override
     public ItemStack getEntryIcon() {
-        return this.icons[MiscUtils.RNG.randomInt(this.icons.length)];
+        return this.icons[(int) ((System.nanoTime() / 1_000_000_000) % this.icons.length)];
     }
 
     @Override
