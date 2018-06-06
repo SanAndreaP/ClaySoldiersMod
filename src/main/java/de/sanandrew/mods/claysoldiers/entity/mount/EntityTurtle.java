@@ -53,7 +53,7 @@ public class EntityTurtle
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
-        if( this.isInWater() ) {
+        if( this.isInWater() || this.isInLava() ) {
             this.motionY *= 0.05D;
         }
     }
@@ -61,6 +61,11 @@ public class EntityTurtle
     @Override
     public boolean isInWater() {
         return super.isInWater() && this.isInsideOfMaterial(Material.WATER);
+    }
+
+    @Override
+    public boolean isInLava() {
+        return super.isInLava() && this.isInsideOfMaterial(Material.LAVA);
     }
 
     @Override
