@@ -78,6 +78,11 @@ public class EntityGecko
         return this.height * 0.4D;
     }
 
+    @Override
+    public float getEyeHeight() {
+        return this.height * 0.5F;
+    }
+
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
