@@ -35,5 +35,6 @@ public class LexiconGroupMounts
         grp.addEntry(new LexiconEntryMounts());
         grp.addEntry(new LexiconEntryHorse());
         grp.addEntry(new LexiconEntryPegasus());
+        grp.addEntry(new LexiconEntryTurtle());
     }
 }
