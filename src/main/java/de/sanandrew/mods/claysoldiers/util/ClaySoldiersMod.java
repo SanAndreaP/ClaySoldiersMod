@@ -12,10 +12,8 @@ import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.compat.IMCHandler;
 import de.sanandrew.mods.claysoldiers.crafting.CraftingRecipes;
 import de.sanandrew.mods.claysoldiers.crafting.FuelHelper;
-import de.sanandrew.mods.claysoldiers.eventhandler.EntityFallEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.LivingAttackEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.LivingJumpEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.SoldierDeathEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.LivingEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.SoldierEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.DispenserBehaviorRegistry;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
@@ -76,10 +74,8 @@ public class ClaySoldiersMod
         DispenserBehaviorRegistry.initialize();
         EntityRegistry.initialize();
 
-        MinecraftForge.EVENT_BUS.register(new EntityFallEventHandler());
-        MinecraftForge.EVENT_BUS.register(new LivingAttackEventHandler());
-        MinecraftForge.EVENT_BUS.register(new LivingJumpEventHandler());
-        MinecraftForge.EVENT_BUS.register(SoldierDeathEventHandler.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(new LivingEventHandler());
+        MinecraftForge.EVENT_BUS.register(new SoldierEventHandler());
 
         IMCHandler.sendIMC();
 

@@ -11,7 +11,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.claysoldiers.client.event.*;
+import de.sanandrew.mods.claysoldiers.client.eventhandler.*;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHelper;
 import de.sanandrew.mods.claysoldiers.client.render.item.ItemRendererClayNexus;
 import de.sanandrew.mods.claysoldiers.client.render.tileentity.RenderClayNexus;

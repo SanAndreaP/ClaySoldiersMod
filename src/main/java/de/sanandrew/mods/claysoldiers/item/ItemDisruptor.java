@@ -11,10 +11,15 @@ import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,12 +30,19 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ItemDisruptor
@@ -66,32 +78,82 @@ public class ItemDisruptor
         return super.getUnlocalizedName(stack) + '.' + ItemDisruptor.getType(stack).name;
     }
 
+    public String getTranslateKey(ItemStack stack, String subKey) {
+        return super.getUnlocalizedName(stack) + '.' + subKey;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        IDisruptable.DisruptState state = getState(stack);
+        tooltip.add(Lang.translate(getTranslateKey(stack, "tooltip"), Lang.translate(getTranslateKey(stack, "state." + state.name().toLowerCase(Locale.ROOT)))));
+    }
+
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
         return 0;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        ItemStack itemStackIn = playerIn.getHeldItem(hand);
-        NBTTagCompound nbt = itemStackIn.getOrCreateSubCompound("disruptor");
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+        NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
         long lastTimeMillis = nbt.getLong("lastActivated");
         long currTimeMillis = System.currentTimeMillis();
 
         if( lastTimeMillis + 2_000 < currTimeMillis ) {
-            if( !worldIn.isRemote ) {
-                AxisAlignedBB aabb = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 64.0D, 64.0D, 64.0D).offset(playerIn.posX, playerIn.posY, playerIn.posZ).offset(-32.0D, -32.0D, -32.0D);
-                worldIn.getEntitiesWithinAABB(EntityCreature.class, aabb).stream().filter(entity -> entity instanceof IDisruptable).map(entity -> (IDisruptable) entity)
-                       .collect(Collectors.toList()).forEach(IDisruptable::disrupt);
-                nbt.setLong("lastActivated", currTimeMillis);
-                if( itemStackIn.isItemStackDamageable() ) {
-                    itemStackIn.damageItem(1, playerIn);
+            if( !world.isRemote ) {
+                final IDisruptable.DisruptState state = getState(stack);
+
+                if( state != IDisruptable.DisruptState.CLAY ) {
+                    AxisAlignedBB aabb = new AxisAlignedBB(-32.0D, -32.0D, -32.0D, 32.0D, 32.0D, 32.0D).offset(player.posX, player.posY, player.posZ);
+                    world.getEntitiesWithinAABB(EntityCreature.class, aabb).stream().filter(entity -> entity instanceof IDisruptable).map(entity -> (IDisruptable) entity)
+                           .forEach(disruptable -> {
+                                if( state == IDisruptable.DisruptState.ALL || state == IDisruptable.DisruptState.ALL_DOLLS || disruptable.getDisruptableState() == state ) {
+                                    disruptable.disrupt();
+                                }
+                            });
+                    if( stack.isItemStackDamageable() ) {
+                        stack.damageItem(1, player);
+                    }
                 }
+
+                if( ItemStackUtils.isValid(stack) && (state == IDisruptable.DisruptState.CLAY || state == IDisruptable.DisruptState.ALL) ) {
+                    AxisAlignedBB aabb = new AxisAlignedBB(-4.0D, -4.0D, -4.0D, 4.0D, 4.0D, 4.0D).offset(player.posX, player.posY, player.posZ);
+                    clayLoop:
+                    for( int x = MathHelper.floor(aabb.minX), maxX = MathHelper.ceil(aabb.maxX); x <= maxX; x++ ) {
+                        for( int y = MathHelper.floor(aabb.minY), maxY = MathHelper.ceil(aabb.maxY); y <= maxY; y++ ) {
+                            for( int z = MathHelper.floor(aabb.minZ), maxZ = MathHelper.ceil(aabb.maxZ); z <= maxZ; z++ ) {
+                                if( !ItemStackUtils.isValid(stack) ) {
+                                    break clayLoop;
+                                }
+
+                                BlockPos pos = new BlockPos(x, y, z);
+                                if( world.isBlockLoaded(pos) && world.canMineBlockBody(player, pos) ) {
+                                    IBlockState blockState = world.getBlockState(pos);
+                                    Block block = blockState.getBlock();
+                                    if( block == Blocks.CLAY && block.canHarvestBlock(world, pos, player) ) {
+                                        world.playEvent(2001, pos, Block.getStateId(blockState));
+                                        block.removedByPlayer(blockState, world, pos, player, true);
+                                        block.harvestBlock(world, player, pos, blockState, null, stack);
+
+                                        if( stack.isItemStackDamageable() ) {
+                                            stack.damageItem(1, player);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                nbt.setLong("lastActivated", currTimeMillis);
             }
 
-            return ActionResult.newResult(EnumActionResult.SUCCESS, itemStackIn);
+            return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
         } else {
-            return super.onItemRightClick(worldIn, playerIn, hand);
+            return super.onItemRightClick(world, player, hand);
         }
     }
 
@@ -100,7 +162,7 @@ public class ItemDisruptor
         if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
             NBTTagCompound nbt = stack.getSubCompound("disruptor");
             if( nbt != null && nbt.hasKey("type", Constants.NBT.TAG_ANY_NUMERIC) ) {
-                int type = nbt.getInteger("type");
+                int type = nbt.getByte("type");
                 return type >= 0 && type < DisruptorType.VALUES.length ? DisruptorType.VALUES[type] : DisruptorType.UNKNOWN;
             }
         }
@@ -111,7 +173,29 @@ public class ItemDisruptor
     public static ItemStack setType(ItemStack stack, DisruptorType type) {
         if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
             NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
-            nbt.setInteger("type", type.ordinal());
+            nbt.setByte("type", (byte) type.ordinal());
+        }
+
+        return stack;
+    }
+
+    public static IDisruptable.DisruptState getState(ItemStack stack) {
+        if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
+            NBTTagCompound nbt = stack.getSubCompound("disruptor");
+            if( nbt != null && nbt.hasKey("state", Constants.NBT.TAG_ANY_NUMERIC) ) {
+                int type = nbt.getByte("state");
+                return type >= 0 && type < IDisruptable.DisruptState.VALUES.length ? IDisruptable.DisruptState.VALUES[type] : IDisruptable.DisruptState.ALL_DOLLS;
+            }
+        }
+
+        return IDisruptable.DisruptState.ALL_DOLLS;
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public static ItemStack setState(ItemStack stack, IDisruptable.DisruptState type) {
+        if( ItemStackUtils.isItem(stack, ItemRegistry.DISRUPTOR) ) {
+            NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
+            nbt.setByte("state", (byte) type.ordinal());
         }
 
         return stack;

@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.util;
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
-import de.sanandrew.mods.claysoldiers.client.event.RenderWorldEventHandler;
+import de.sanandrew.mods.claysoldiers.client.eventhandler.ClientEventHandler;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorBunny;
@@ -18,6 +18,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorHorse;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorPegasus;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorSoldier;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorTurtle;
+import de.sanandrew.mods.claysoldiers.client.renderer.world.RenderEmeraldLighting;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
@@ -51,7 +52,7 @@ public class ClientProxy
 
         EntityRegistry.registerRenderers();
 
-        MinecraftForge.EVENT_BUS.register(RenderWorldEventHandler.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(ClientEventHandler.INSTANCE);
 
         ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerCsmClientEvents(ClaySoldiersMod.EVENT_BUS));
     }
@@ -94,7 +95,7 @@ public class ClientProxy
 
     @Override
     public void setRenderLightningAt(double x, double y, double z, EnumDyeColor color) {
-        RenderWorldEventHandler.INSTANCE.setRenderLightningAt(x, y, z, color == null ? 0x33FF33 : color.getColorValue());
+        RenderEmeraldLighting.INSTANCE.setRenderLightningAt(x, y, z, color == null ? 0x33FF33 : color.getColorValue());
     }
 
     @Override

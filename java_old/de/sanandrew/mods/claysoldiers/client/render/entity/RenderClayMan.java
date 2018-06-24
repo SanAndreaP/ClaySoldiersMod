@@ -8,8 +8,8 @@ package de.sanandrew.mods.claysoldiers.client.render.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
-import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.EnumRenderStage;
+import de.sanandrew.mods.claysoldiers.client.eventhandler.SoldierRenderEvent;
+import de.sanandrew.mods.claysoldiers.client.eventhandler.SoldierRenderEvent.EnumRenderStage;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClayMan;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;

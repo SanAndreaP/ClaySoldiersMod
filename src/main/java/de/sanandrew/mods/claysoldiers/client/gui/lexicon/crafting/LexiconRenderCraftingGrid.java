@@ -57,7 +57,7 @@ public class LexiconRenderCraftingGrid
         if( recipes.isEmpty() ) {
             for( ItemStack result : ((ILexiconEntryCraftingGrid) entry).getRecipeResults() ) {
                 StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
-                             .filter(r -> !r.isDynamic() && ItemStackUtils.areEqual(r.getRecipeOutput(), result) && r.canFit(3, 3))
+                             .filter(r -> !r.isDynamic() && ItemStackUtils.areEqualNbtFit(result, r.getRecipeOutput(), true, true, false) && r.canFit(3, 3))
                              .findFirst().ifPresent(recipes::add);
             }
         }

@@ -1,25 +1,22 @@
 /* ******************************************************************************************************************
-   * Authors:   SanAndreasP
-   * Copyright: SanAndreasP
-   * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-   *                http://creativecommons.org/licenses/by-nc-sa/4.0/
-   *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.event;
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
+package de.sanandrew.mods.claysoldiers.client.renderer.world;
 
+import de.sanandrew.mods.claysoldiers.client.eventhandler.ClientEventHandler;
 import de.sanandrew.mods.sanlib.lib.ColorObj;
 import de.sanandrew.mods.sanlib.lib.XorShiftRandom;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -28,29 +25,14 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @SideOnly(Side.CLIENT)
-public class RenderWorldEventHandler
+public class RenderEmeraldLighting
 {
-    public static final RenderWorldEventHandler INSTANCE = new RenderWorldEventHandler();
-
-    public static float partTicks;
-    public static int ticksInGame;
+    public static final RenderEmeraldLighting INSTANCE = new RenderEmeraldLighting();
     private static final Queue<RenderLightning> LIGHTNING_RENDERS = new ConcurrentLinkedQueue<>();
 
-    private RenderWorldEventHandler() { }
+    private RenderEmeraldLighting() { }
 
-    @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if( event.phase == TickEvent.Phase.END ) {
-            GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-            if( gui == null || !gui.doesGuiPauseGame() ) {
-                ticksInGame++;
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void renderWorldLast(RenderWorldLastEvent event) {
-        partTicks = event.getPartialTicks();
+    public void render(float partTicks) {
         Entity renderEntity = Minecraft.getMinecraft().getRenderViewEntity();
         if( renderEntity == null ) {
             return;
@@ -69,7 +51,7 @@ public class RenderWorldEventHandler
             GlStateManager.pushMatrix();
             GlStateManager.translate(value.x - renderX, value.y - renderY, value.z - renderZ);
             GlStateManager.scale(0.01D, 0.01D, 0.01D);
-            value.doRender(event.getPartialTicks());
+            value.doRender(partTicks);
             GlStateManager.popMatrix();
         });
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightX, lastBrightY);
@@ -92,7 +74,7 @@ public class RenderWorldEventHandler
         private final ColorObj color;
 
         public RenderLightning(double x, double y, double z, int color) {
-            this.ticksVisible = RenderWorldEventHandler.ticksInGame + MAX_TICKS_VISIBLE;
+            this.ticksVisible = ClientEventHandler.ticksInGame + MAX_TICKS_VISIBLE;
             this.seed = MiscUtils.RNG.randomLong();
 
             this.x = x;
@@ -103,7 +85,7 @@ public class RenderWorldEventHandler
         }
 
         public boolean finished() {
-            return this.ticksVisible <= RenderWorldEventHandler.ticksInGame;
+            return this.ticksVisible <= ClientEventHandler.ticksInGame;
         }
 
         public void doRender(float partTicks) {
@@ -196,7 +178,7 @@ public class RenderWorldEventHandler
                             }
 
                             float lum = 0.5F;
-                            float alpha = (this.ticksVisible - RenderWorldEventHandler.ticksInGame - partTicks) / MAX_TICKS_VISIBLE;
+                            float alpha = (this.ticksVisible - ClientEventHandler.ticksInGame - partTicks) / MAX_TICKS_VISIBLE;
                             buf.pos(xTwigMin + minX,    level * 16,       zTwigMin + minZ)   .color(color.fRed() * lum, color.fGreen() * lum, color.fBlue() * lum, alpha).endVertex();
                             buf.pos(xTwigMax + xBranch, (level + 1) * 16, zTwigMax + zBranch).color(color.fRed() * lum, color.fGreen() * lum, color.fBlue() * lum, alpha).endVertex();
                         }

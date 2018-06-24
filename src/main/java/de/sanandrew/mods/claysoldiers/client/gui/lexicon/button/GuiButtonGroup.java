@@ -31,14 +31,14 @@ import org.lwjgl.opengl.GL11;
 public class GuiButtonGroup
         extends GuiButton
 {
-    private static final float TIME = 6.0F;
+    private static final float TIME = 1.0F;
 
     public final ILexiconGroup group;
 
     private final ResourceLocation texture;
 
     private float lastTime;
-    private float ticksHovered = 0.0F;
+    private float ticksHovered = -0.1F;
     private final OnMouseOverCallback onMouseOver;
 
     private void doBtnShader(int shader) {
@@ -75,17 +75,19 @@ public class GuiButtonGroup
 
     @Override
     public void drawButton(Minecraft mc, int mx, int my, float partTicks) {
-        float time = ClientTickHandler.ticksInGame + partTicks;
-        float timeDelta = time - this.lastTime;
-        this.lastTime = time;
+        float gameTicks = ClientTickHandler.ticksInGame;
+        float timeDelta = (gameTicks - this.lastTime) * partTicks;
+        this.lastTime = gameTicks;
 
         if( mx >= this.x && my >= this.y && mx < this.x + this.width && my < this.y + this.height ) {
-            this.ticksHovered = Math.min(TIME + 1.0F, this.ticksHovered + timeDelta);
+            if( this.ticksHovered <= TIME ) {
+                this.ticksHovered = this.ticksHovered + timeDelta;
+            }
             if( this.onMouseOver != null ) {
                 this.onMouseOver.accept(this.group, mx, my);
             }
-        } else {
-            this.ticksHovered = Math.max(-1.0F, this.ticksHovered - timeDelta);
+        } else if( this.ticksHovered > 0.0F ) {
+            this.ticksHovered = this.ticksHovered - timeDelta;
         }
 
         float s = 1.0F / 32.0F;

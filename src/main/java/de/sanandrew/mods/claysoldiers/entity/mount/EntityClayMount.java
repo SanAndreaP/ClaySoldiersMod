@@ -19,7 +19,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -164,8 +163,8 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
     }
 
     @Override
-    public DisruptType getDisruptType() {
-        return DisruptType.MOUNT;
+    public DisruptState getDisruptableState() {
+        return DisruptState.MOUNTS;
     }
 
     public T getType() {

@@ -14,9 +14,10 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
-import de.sanandrew.mods.claysoldiers.client.event.ClayModelRotationEventHandler;
+import de.sanandrew.mods.claysoldiers.client.eventhandler.ClayModelRotationEventHandler;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.misc.LexiconGroupMisc;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.mount.LexiconGroupMounts;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconGroupSoldiers;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade.LexiconGroupUpgrades;
@@ -31,9 +32,7 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerMagmaCr
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSkull;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerHeldItem;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
-import de.sanandrew.mods.claysoldiers.eventhandler.SoldierDeathEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.SoldierInventoryEventHandler;
-import de.sanandrew.mods.claysoldiers.eventhandler.SoldierTargetEnemyEventHandler;
+import de.sanandrew.mods.claysoldiers.eventhandler.SoldierEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
@@ -62,9 +61,7 @@ public class CsmInternalPlugin
 
     @Override
     public void registerCsmEvents(EventBus bus) {
-        bus.register(new SoldierTargetEnemyEventHandler());
-        bus.register(SoldierDeathEventHandler.INSTANCE);
-        bus.register(new SoldierInventoryEventHandler());
+        bus.register(new SoldierEventHandler());
     }
 
     @Override
@@ -103,5 +100,6 @@ public class CsmInternalPlugin
         LexiconGroupSoldiers.register(registry);
         LexiconGroupUpgrades.register(registry);
         LexiconGroupMounts.register(registry);
+        LexiconGroupMisc.register(registry);
     }
 }

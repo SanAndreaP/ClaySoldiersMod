@@ -14,11 +14,17 @@ public interface IDisruptable
 
     void disrupt();
 
-    DisruptType getDisruptType();
+    DisruptState getDisruptableState();
 
-    enum DisruptType {
-        SOLDIER,
-        MOUNT,
-        ALL
+    enum DisruptState
+    {
+        ALL,
+        ALL_DOLLS,
+        SOLDIERS,
+        MOUNTS,
+        COMPANIONS,
+        CLAY;
+
+        public static final DisruptState[] VALUES = values();
     }
 }

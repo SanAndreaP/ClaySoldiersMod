@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.model;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent;
+import de.sanandrew.mods.claysoldiers.client.eventhandler.SoldierRenderEvent;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import net.minecraft.client.model.ModelBiped;

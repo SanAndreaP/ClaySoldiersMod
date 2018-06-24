@@ -4,13 +4,13 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.event;
+package de.sanandrew.mods.claysoldiers.client.eventhandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.mods.claysoldiers.client.event.SoldierRenderEvent.EnumRenderStage;
+import de.sanandrew.mods.claysoldiers.client.eventhandler.SoldierRenderEvent.EnumRenderStage;
 import de.sanandrew.mods.claysoldiers.client.render.entity.RenderClayMan;
 import de.sanandrew.mods.claysoldiers.entity.EntityClayMan;
 import de.sanandrew.mods.claysoldiers.util.soldier.effect.SoldierEffects;

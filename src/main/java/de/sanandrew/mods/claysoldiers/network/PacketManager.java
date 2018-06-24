@@ -7,6 +7,7 @@
 package de.sanandrew.mods.claysoldiers.network;
 
 import de.sanandrew.mods.claysoldiers.network.packet.PacketParticle;
+import de.sanandrew.mods.claysoldiers.network.packet.PacketSwitchDisruptorState;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncEffects;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncUpgrades;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
@@ -25,6 +26,7 @@ public final class PacketManager
         registerMessage(ClaySoldiersMod.network, PacketParticle.class, 0, Side.CLIENT);
         registerMessage(ClaySoldiersMod.network, PacketSyncUpgrades.class, 1, Side.CLIENT);
         registerMessage(ClaySoldiersMod.network, PacketSyncEffects.class, 2, Side.CLIENT);
+        registerMessage(ClaySoldiersMod.network, PacketSwitchDisruptorState.class, 3, Side.SERVER);
     }
 
     public static void sendToAllAround(IMessage message, int dim, double x, double y, double z, double range) {

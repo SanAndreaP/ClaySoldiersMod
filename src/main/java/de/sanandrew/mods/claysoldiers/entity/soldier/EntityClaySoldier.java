@@ -935,8 +935,8 @@ public class EntityClaySoldier
     }
 
     @Override
-    public DisruptType getDisruptType() {
-        return DisruptType.SOLDIER;
+    public DisruptState getDisruptableState() {
+        return DisruptState.SOLDIERS;
     }
 
     @Override

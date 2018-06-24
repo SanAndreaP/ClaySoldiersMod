@@ -4,7 +4,7 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.client.event;
+package de.sanandrew.mods.claysoldiers.client.eventhandler;
 
 import de.sanandrew.mods.claysoldiers.api.client.event.ClayModelRotationEvent;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;

@@ -51,7 +51,7 @@ repositories {
 dependencies {
     deobfCompile "mezz.jei:jei_1.12.2:4.8.5.147:api"
     runtime "mezz.jei:jei_1.12.2:4.8.5.147"
-    deobfCompile "sanlib:SanLib:1.12.2:1.4.2"
+    deobfCompile "sanlib:SanLib:1.12.2:1.4.4"
     deobfCompile "the-one-probe:theoneprobe:1.12:1.4.19"
     deobfCompile "hwyla:Hwyla:1.8.23:B38_1.12"
     deobfCompile "wawla-what-are-we-looking-at:Wawla:1.12.2:2.5.251"
