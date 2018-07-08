@@ -2,9 +2,9 @@ tile.claysoldiers:nexus.name=Clay Nexus
 
 item.claysoldiers:disruptor.clay.name=Clay Disruptor
 item.claysoldiers:disruptor.hardened.name=Hardened Clay Disruptor
-item.claysoldiers:disruptor.unbreaking.name=Indestructible Clay Disruptor
+item.claysoldiers:disruptor.unbreaking.name=Obsidian Clay Disruptor
 item.claysoldiers:disruptor.tooltip=Currently disrupting: %s
-item.claysoldiers:disruptor.state.all=All
+item.claysoldiers:disruptor.state.all=All the things
 item.claysoldiers:disruptor.state.all_dolls=All clay creatures
 item.claysoldiers:disruptor.state.soldiers=Soldiers
 item.claysoldiers:disruptor.state.mounts=Mounts
@@ -179,6 +179,7 @@ item.claysoldiers:doll_gecko.darkoak_acacia.name=Dark Oak|Acacia Gecko
 item.claysoldiers:doll_gecko.darkoak_darkoak.name=Dark Oak|Dark Oak Gecko
 
 item.claysoldiers:shear_blade.name=Shear Blade
+item.claysoldiers:lexicon.name=Clay Lexicon
 
 item.claysoldiers:stat_display.name=Clay Statistics Display
 item.claysoldiers:stat_display.title.soldiers=Soldiers
@@ -348,5 +349,7 @@ claysoldiers.lexicon.mounts.bunny.text=A simple, small mount, that can jump as h
 claysoldiers.lexicon.mounts.gecko.name=Geckos
 claysoldiers.lexicon.mounts.gecko.text=Geckos, which are made out of woods, are like spiders in regards to their special ability: they can climb up walls. Other than that, these are pretty simple mounts.\n\nAs they do not have varying stats, the health value is 20 HP and speed is 100%% for all of them.
 claysoldiers.lexicon.misc.name=Miscellaneous
-claysoldiers.lexicon.misc.disruptors.name=Disruptors
-claysoldiers.lexicon.misc.disruptors.text=
+claysoldiers.lexicon.misc.disruptor.name=Disruptors
+claysoldiers.lexicon.misc.disruptor.text=If you want to get rid of any soldiers, mounts or companions, this is a very handy utility. The disruptor kills all clay entities in a radius of 32 blocks.\n\nEach use will damage the disruptor by 1 point and apply a cooldown of 2 seconds, after which you can use it again.\n\nThere are 3 types of disruptors you can craft, defined by the material used, each more durable than the other:\n§7-§1Clay (32 uses)\n§7-§1Hardened Clay (128 uses)\n§7-§1Obsidian (∞ uses)\n\nYou have several modes to choose from whilst using this device, determining what's getting disrupted. To change the mode, simply scroll up or down with your mouse wheel whilst sneaking and holding the disruptor in your hand, where you'll see the current mode active (see screenshot below). Following modes are available:\n§7-§1All clay creatures\n§7-§1Soldiers\n§7-§1Mounts\n§7-§1Companions\n§7-§1Clay Blocks\n§7-§1All the things\nThe default mode of any disruptor upon crafting will be "All clay creatures"\n\nAs mentioned, you can actually break clay blocks in the world to gather more clay. The radius of destruction will be 4 blocks and each destroyed block will damage the disruptor by 1 point.
+claysoldiers.lexicon.misc.dispenser.name=Dispenser behavior
+claysoldiers.lexicon.misc.dispenser.text=Are you tired of placing dolls on your own? If you're looking for a way to spawn clay creatures automatically, look no further than the handy dispenser! If one is activated whilst having one or multiple dolls in its inventory, the creature will spawn where the dispenser is firing at. The dispenser will only place 1 creature at a time and, if multiple stack slots are occupied, will choose randomly which slot will be dispensed.\n\n

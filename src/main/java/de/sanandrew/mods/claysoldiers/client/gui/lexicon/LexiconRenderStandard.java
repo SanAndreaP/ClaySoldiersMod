@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
@@ -22,14 +21,13 @@ import java.util.List;
 public class LexiconRenderStandard
         implements ILexiconPageRender
 {
-    public static final String ID = CsmConstants.ID + ":standard";
 
     private int drawHeight;
     private List<GuiButton> entryButtons;
 
     @Override
     public String getId() {
-        return ID;
+        return RENDER_STANDARD_ID;
     }
 
     @Override

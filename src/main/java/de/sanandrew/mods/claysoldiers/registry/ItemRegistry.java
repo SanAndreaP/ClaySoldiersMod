@@ -11,6 +11,7 @@ package de.sanandrew.mods.claysoldiers.registry;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.item.ItemBrickSoldier;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
+import de.sanandrew.mods.claysoldiers.item.ItemLexicon;
 import de.sanandrew.mods.claysoldiers.item.ItemMountBunny;
 import de.sanandrew.mods.claysoldiers.item.ItemMountGecko;
 import de.sanandrew.mods.claysoldiers.item.ItemMountHorse;
@@ -37,6 +38,7 @@ public class ItemRegistry
     public static final ItemBrickSoldier DOLL_BRICK_SOLDIER = new ItemBrickSoldier();
     public static final ItemShearBlade SHEAR_BLADE = new ItemShearBlade();
     public static final ItemSoldierShield SOLDIER_SHIELD = new ItemSoldierShield();
+    public static final ItemLexicon LEXICON = new ItemLexicon();
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
@@ -50,7 +52,8 @@ public class ItemRegistry
                 DISRUPTOR,
                 DOLL_BRICK_SOLDIER,
                 SHEAR_BLADE,
-                SOLDIER_SHIELD
+                SOLDIER_SHIELD,
+                LEXICON
         );
     }
 }

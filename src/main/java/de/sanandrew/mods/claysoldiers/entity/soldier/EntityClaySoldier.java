@@ -219,10 +219,10 @@ public class EntityClaySoldier
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttributeMap().registerAttribute(CsmMobAttributes.KB_RESISTANCE);
 
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(CsmConfiguration.soldierMovementSpeed);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(CsmConfiguration.soldierAttackDamage);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(CsmConfiguration.soldierMaxHealth);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(CsmConfiguration.soldierFollowRange);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(CsmConfiguration.Entities.soldierMovementSpeed);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(CsmConfiguration.Entities.soldierAttackDamage);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(CsmConfiguration.Entities.soldierMaxHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(CsmConfiguration.Entities.soldierFollowRange);
     }
 
     //region upgrades

@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.client.lexicon;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,6 +16,9 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public interface ILexiconPageRender
 {
+    String RENDER_CRAFTING_ID = CsmConstants.ID + ":craftingGrid";
+    String RENDER_STANDARD_ID = CsmConstants.ID + ":standard";
+
     int GUI_SIZE_X = 200;
     int GUI_SIZE_Y = 213;
     int ENTRY_X = 12;

@@ -104,7 +104,7 @@ public enum EnumGeckoType
     }
 
     public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.CAT_ENTITY_VALS + Configuration.CATEGORY_SPLITTER + "Geckos";
+        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Geckos";
         config.getCategory(category).setRequiresWorldRestart(true);
 
         for( EnumGeckoType type : VALUES ) {

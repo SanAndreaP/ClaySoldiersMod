@@ -88,7 +88,7 @@ public enum EnumWoolBunnyType
     }
 
     public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.CAT_ENTITY_VALS + Configuration.CATEGORY_SPLITTER + "Bunnies";
+        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Bunnies";
         config.getCategory(category).setRequiresWorldRestart(true);
 
         for( EnumWoolBunnyType type : VALUES ) {

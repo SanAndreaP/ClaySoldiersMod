@@ -27,7 +27,7 @@ public class ItemMountTurtle
 {
     public ItemMountTurtle() {
         super(CsmConstants.ID, "doll_turtle", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.turtleDollStackSize;
+        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.turtleDollStackSize;
     }
 
     @Override

@@ -31,5 +31,6 @@ public class LexiconGroupMisc
         registry.registerGroup(grp);
 
         grp.addEntry(new LexiconEntryDisruptor());
+        grp.addEntry(new LexiconEntryDispenser());
     }
 }

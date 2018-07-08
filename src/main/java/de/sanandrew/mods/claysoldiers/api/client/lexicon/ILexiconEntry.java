@@ -24,9 +24,15 @@ public interface ILexiconEntry
 
     @Nonnull ItemStack getEntryIcon();
 
+    @Nonnull String getSrcTitle();
+
+    @Nonnull String getSrcText();
+
     default ResourceLocation getPicture() {
         return null;
     }
 
-    boolean divideAfter();
+    default boolean divideAfter() {
+        return false;
+    }
 }

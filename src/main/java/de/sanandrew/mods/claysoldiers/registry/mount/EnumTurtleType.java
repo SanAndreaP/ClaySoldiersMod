@@ -90,7 +90,7 @@ public enum EnumTurtleType
     }
 
     public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.CAT_ENTITY_VALS + Configuration.CATEGORY_SPLITTER + "Turtles";
+        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Turtles";
         config.getCategory(category).setRequiresWorldRestart(true);
 
         for( EnumTurtleType type : VALUES ) {

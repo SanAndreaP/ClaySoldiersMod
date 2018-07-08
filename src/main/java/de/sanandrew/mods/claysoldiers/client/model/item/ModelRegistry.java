@@ -31,6 +31,7 @@ public final class ModelRegistry
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         setStandardModel(ItemRegistry.DOLL_BRICK_SOLDIER);
+        setStandardModel(ItemRegistry.LEXICON);
         setCustomMeshModel(ItemRegistry.DOLL_SOLDIER, new MeshDefUUID.Soldier());
         setCustomMeshModel(ItemRegistry.DOLL_HORSE, new MeshDefOrdinal.Horse());
         setCustomMeshModel(ItemRegistry.DOLL_PEGASUS, new MeshDefOrdinal.Pegasus());

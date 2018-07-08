@@ -9,8 +9,9 @@ package de.sanandrew.mods.claysoldiers.item;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
+import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,11 +31,14 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -98,6 +103,14 @@ public class ItemDisruptor
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
+        if( disruptAction(world, stack, new Vec3d(player.posX, player.posY, player.posZ), player) ) {
+            return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+        } else {
+            return super.onItemRightClick(world, player, hand);
+        }
+    }
+
+    public boolean disruptAction(World world, ItemStack stack, Vec3d pos, @Nullable EntityPlayer player) {
         NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
         long lastTimeMillis = nbt.getLong("lastActivated");
         long currTimeMillis = System.currentTimeMillis();
@@ -107,20 +120,24 @@ public class ItemDisruptor
                 final IDisruptable.DisruptState state = getState(stack);
 
                 if( state != IDisruptable.DisruptState.CLAY ) {
-                    AxisAlignedBB aabb = new AxisAlignedBB(-32.0D, -32.0D, -32.0D, 32.0D, 32.0D, 32.0D).offset(player.posX, player.posY, player.posZ);
+                    AxisAlignedBB aabb = new AxisAlignedBB(-32.0D, -32.0D, -32.0D, 32.0D, 32.0D, 32.0D).offset(pos.x, pos.y, pos.z);
                     world.getEntitiesWithinAABB(EntityCreature.class, aabb).stream().filter(entity -> entity instanceof IDisruptable).map(entity -> (IDisruptable) entity)
-                           .forEach(disruptable -> {
-                                if( state == IDisruptable.DisruptState.ALL || state == IDisruptable.DisruptState.ALL_DOLLS || disruptable.getDisruptableState() == state ) {
-                                    disruptable.disrupt();
-                                }
-                            });
+                         .forEach(disruptable -> {
+                             if( state == IDisruptable.DisruptState.ALL || state == IDisruptable.DisruptState.ALL_DOLLS || disruptable.getDisruptableState() == state ) {
+                                 disruptable.disrupt();
+                             }
+                         });
                     if( stack.isItemStackDamageable() ) {
-                        stack.damageItem(1, player);
+                        if( player != null ) {
+                            stack.damageItem(1, player);
+                        } else {
+                            damageItemNE(world, stack, pos, 1);
+                        }
                     }
                 }
 
                 if( ItemStackUtils.isValid(stack) && (state == IDisruptable.DisruptState.CLAY || state == IDisruptable.DisruptState.ALL) ) {
-                    AxisAlignedBB aabb = new AxisAlignedBB(-4.0D, -4.0D, -4.0D, 4.0D, 4.0D, 4.0D).offset(player.posX, player.posY, player.posZ);
+                    AxisAlignedBB aabb = new AxisAlignedBB(-4.0D, -4.0D, -4.0D, 4.0D, 4.0D, 4.0D).offset(pos.x, pos.y, pos.z);
                     clayLoop:
                     for( int x = MathHelper.floor(aabb.minX), maxX = MathHelper.ceil(aabb.maxX); x <= maxX; x++ ) {
                         for( int y = MathHelper.floor(aabb.minY), maxY = MathHelper.ceil(aabb.maxY); y <= maxY; y++ ) {
@@ -129,17 +146,21 @@ public class ItemDisruptor
                                     break clayLoop;
                                 }
 
-                                BlockPos pos = new BlockPos(x, y, z);
-                                if( world.isBlockLoaded(pos) && world.canMineBlockBody(player, pos) ) {
-                                    IBlockState blockState = world.getBlockState(pos);
+                                BlockPos blockPos = new BlockPos(x, y, z);
+                                if( world.isBlockLoaded(blockPos) && world.canMineBlockBody(player, blockPos) ) {
+                                    IBlockState blockState = world.getBlockState(blockPos);
                                     Block block = blockState.getBlock();
-                                    if( block == Blocks.CLAY && block.canHarvestBlock(world, pos, player) ) {
-                                        world.playEvent(2001, pos, Block.getStateId(blockState));
-                                        block.removedByPlayer(blockState, world, pos, player, true);
-                                        block.harvestBlock(world, player, pos, blockState, null, stack);
+                                    if( block == Blocks.CLAY && (player == null || block.canHarvestBlock(world, blockPos, player)) ) {
+                                        world.playEvent(2001, blockPos, Block.getStateId(blockState));
+                                        block.removedByPlayer(blockState, world, blockPos, player, true);
+                                        block.harvestBlock(world, player, blockPos, blockState, null, stack);
 
                                         if( stack.isItemStackDamageable() ) {
-                                            stack.damageItem(1, player);
+                                            if( player != null ) {
+                                                stack.damageItem(1, player);
+                                            } else {
+                                                damageItemNE(world, stack, pos, 1);
+                                            }
                                         }
                                     }
                                 }
@@ -151,9 +172,18 @@ public class ItemDisruptor
                 nbt.setLong("lastActivated", currTimeMillis);
             }
 
-            return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+            return true;
         } else {
-            return super.onItemRightClick(world, player, hand);
+            return false;
+        }
+    }
+
+    private static void damageItemNE(World world, ItemStack stack, Vec3d pos, int amount) {
+        if( stack.attemptDamageItem(amount, world.rand, null) ) {
+            world.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.8F, 0.8F + world.rand.nextFloat() * 0.4F);
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, world.provider.getDimension(), pos.x, pos.y, pos.z, Item.getIdFromItem(stack.getItem()));
+            stack.shrink(1);
+            stack.setItemDamage(0);
         }
     }
 
@@ -217,16 +247,16 @@ public class ItemDisruptor
             this.damage = damage;
         }
 
-        public static void updateConfiguration(Configuration config) {
-            final String category = CsmConfiguration.CAT_BLOCKSITEMS + Configuration.CATEGORY_SPLITTER + "Disruptors";
-            config.getCategory(category).setRequiresMcRestart(true);
+        public static void updateConfiguration(Configuration config, String category) {
             for( DisruptorType type : VALUES ) {
                 if( type == UNKNOWN ) {
                     continue;
                 }
 
-                type.damage = config.getInt(type.name + "DisruptorDurability", category, type.damage, 0, OreDictionary.WILDCARD_VALUE - 1,
-                                            "Durability of the " + type.name + " disruptor. 0 durability = unbreakable");
+                Property prop = config.get(category, type.name + "DisruptorDurability", type.damage,
+                                           "Durability of the " + type.name + " disruptor. 0 durability = unbreakable", 0, OreDictionary.WILDCARD_VALUE - 1);
+                prop.setRequiresMcRestart(true);
+                type.damage = prop.getInt();
             }
         }
     }

@@ -91,7 +91,7 @@ public enum EnumClayHorseType
     }
 
     public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.CAT_ENTITY_VALS + Configuration.CATEGORY_SPLITTER + "Horses";
+        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Horses";
         config.getCategory(category).setRequiresWorldRestart(true).setComment("This category controls both horses and pegasi!");
 
         for( EnumClayHorseType type : VALUES ) {

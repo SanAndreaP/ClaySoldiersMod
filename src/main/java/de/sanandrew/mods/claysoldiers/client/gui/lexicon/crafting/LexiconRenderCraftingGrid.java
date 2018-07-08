@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.CraftingGrid;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
@@ -33,15 +32,13 @@ import java.util.stream.StreamSupport;
 public class LexiconRenderCraftingGrid
         implements ILexiconPageRender
 {
-    public static final String ID = CsmConstants.ID + ":craftingGrid";
-
     private int drawHeight;
     private List<GuiButton> entryButtons;
     private List<CraftingGrid> crfGrids;
 
     @Override
     public String getId() {
-        return ID;
+        return RENDER_CRAFTING_ID;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class LexiconRenderCraftingGrid
         if( recipes.isEmpty() ) {
             for( ItemStack result : ((ILexiconEntryCraftingGrid) entry).getRecipeResults() ) {
                 StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
-                             .filter(r -> !r.isDynamic() && ItemStackUtils.areEqualNbtFit(result, r.getRecipeOutput(), true, true, false) && r.canFit(3, 3))
+                             .filter(r -> !r.isDynamic() && ItemStackUtils.areEqualNbtFit(result, r.getRecipeOutput(), false, true, false) && r.canFit(3, 3))
                              .findFirst().ifPresent(recipes::add);
             }
         }
@@ -65,6 +62,8 @@ public class LexiconRenderCraftingGrid
         if( !recipes.isEmpty() ) {
             this.crfGrids = new ArrayList<>();
             LexiconGuiHelper.initCraftings(recipes, this.crfGrids);
+        } else {
+            this.crfGrids = null;
         }
     }
 

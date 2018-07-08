@@ -8,12 +8,12 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.crafting.OtherSoldierRecipe;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -76,7 +76,7 @@ public class LexiconEntryMiscSoldier
 
     @Override
     public String getPageRenderId() {
-        return LexiconRenderCraftingGrid.ID;
+        return ILexiconPageRender.RENDER_CRAFTING_ID;
     }
 
     @Nonnull
@@ -91,12 +91,19 @@ public class LexiconEntryMiscSoldier
     }
 
     @Override
-    public boolean divideAfter() {
-        return false;
+    public NonNullList<IRecipe> getRecipes() {
+        return CsmConfiguration.Recipes.enableResourceSoldierRecipe ? this.recipes : NonNullList.create();
     }
 
+    @Nonnull
     @Override
-    public NonNullList<IRecipe> getRecipes() {
-        return CsmConfiguration.enableResourceSoldierRecipe ? this.recipes : NonNullList.create();
+    public String getSrcTitle() {
+        return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(this.getGroupId(), this.getId()));
+    }
+
+    @Nonnull
+    @Override
+    public String getSrcText() {
+        return Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(this.getGroupId(), this.getId()));
     }
 }

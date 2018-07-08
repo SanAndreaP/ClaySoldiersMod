@@ -26,7 +26,7 @@ public class ItemMountPegasus
 {
     public ItemMountPegasus() {
         super(CsmConstants.ID, "doll_pegasus", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.pegasusDollStackSize;
+        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.pegasusDollStackSize;
     }
 
     @Override

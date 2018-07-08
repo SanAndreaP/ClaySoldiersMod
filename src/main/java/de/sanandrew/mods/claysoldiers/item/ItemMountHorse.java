@@ -26,7 +26,7 @@ public class ItemMountHorse
 {
     public ItemMountHorse() {
         super(CsmConstants.ID, "doll_horse", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.horseDollStackSize;
+        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.horseDollStackSize;
     }
 
     @Override

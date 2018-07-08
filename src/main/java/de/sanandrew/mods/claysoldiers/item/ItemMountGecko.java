@@ -26,7 +26,7 @@ public class ItemMountGecko
 {
     public ItemMountGecko() {
         super(CsmConstants.ID, "doll_gecko", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.geckoDollStackSize;
+        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.geckoDollStackSize;
     }
 
     @Override

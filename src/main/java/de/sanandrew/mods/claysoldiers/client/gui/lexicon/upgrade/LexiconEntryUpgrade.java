@@ -8,8 +8,9 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
+import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -35,7 +37,7 @@ public class LexiconEntryUpgrade
     public LexiconEntryUpgrade(ISoldierUpgrade upgrade) {
         this.id = upgrade.getShortName();
         this.groupId = LexiconGroupUpgrades.GRP_NAME;
-        this.renderId = LexiconRenderStandard.ID;
+        this.renderId = ILexiconPageRender.RENDER_STANDARD_ID;
         this.upgrade = upgrade;
         this.icons = Arrays.stream(upgrade.getStacks()).map(item -> {
             NonNullList<ItemStack> newItems = NonNullList.create();
@@ -74,8 +76,15 @@ public class LexiconEntryUpgrade
         return this.prevPic;
     }
 
+    @Nonnull
     @Override
-    public boolean divideAfter() {
-        return false;
+    public String getSrcTitle() {
+        return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(this.getGroupId(), this.getId()));
+    }
+
+    @Nonnull
+    @Override
+    public String getSrcText() {
+        return Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(this.getGroupId(), this.getId()));
     }
 }

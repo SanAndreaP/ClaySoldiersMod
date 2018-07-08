@@ -26,10 +26,14 @@ public class GuiConfigScreen
         super(parentScreen, getCfgElements(), CsmConstants.ID, "configuration", false, false, "Clay Soldiers Configuration");
     }
 
-    @SuppressWarnings("serial")
     private static List<IConfigElement> getCfgElements() {
         return new ArrayList<IConfigElement>() {{
-            this.add(new ConfigElement(CsmConfiguration.getCategory(CsmConfiguration.CAT_ENTITY_VALS)));
+            for( Class<?> c : CsmConfiguration.class.getDeclaredClasses() ) {
+                CsmConfiguration.Category cat = c.getAnnotation(CsmConfiguration.Category.class);
+                if( cat != null ) {
+                    this.add(new ConfigElement(CsmConfiguration.config.getCategory(cat.value())));
+                }
+            }
         }};
     }
 }

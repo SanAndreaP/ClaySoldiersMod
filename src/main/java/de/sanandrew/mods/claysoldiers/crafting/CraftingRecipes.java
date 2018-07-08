@@ -26,11 +26,11 @@ public class CraftingRecipes
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         List<IRecipe> recipeList = new ArrayList<>();
-        if( CsmConfiguration.enableDyedSoldierRecipe ) recipeList.add(new DyedSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedSoldier")));
-        if( CsmConfiguration.enableSoldierWashRecipe ) recipeList.add(new ClearSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "clearSoldier")));
-        if( CsmConfiguration.enableResourceSoldierRecipe ) recipeList.add(new OtherSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "othrSoldier")));
-        if( CsmConfiguration.enableBrickSoldierReverseRecipe ) recipeList.add(new BrickSoldierConvRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "brickSoldierConv")));
-        if( CsmConfiguration.enableDyedGlassSoldierRecipe ) recipeList.add(new DyedGlassSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedGlassSoldier")));
+        if( CsmConfiguration.Recipes.enableDyedSoldierRecipe ) recipeList.add(new DyedSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedSoldier")));
+        if( CsmConfiguration.Recipes.enableSoldierWashRecipe ) recipeList.add(new ClearSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "clearSoldier")));
+        if( CsmConfiguration.Recipes.enableResourceSoldierRecipe ) recipeList.add(new OtherSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "othrSoldier")));
+        if( CsmConfiguration.Recipes.enableBrickSoldierReverseRecipe ) recipeList.add(new BrickSoldierConvRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "brickSoldierConv")));
+        if( CsmConfiguration.Recipes.enableDyedGlassSoldierRecipe ) recipeList.add(new DyedGlassSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedGlassSoldier")));
 
         recipeList.forEach(event.getRegistry()::register);
     }

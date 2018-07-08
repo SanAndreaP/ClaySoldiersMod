@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -77,22 +78,29 @@ public class LexiconEntryBrickDoll
         return this.icon;
     }
 
-    @Override
-    public boolean divideAfter() {
-        return false;
-    }
-
     public IRecipe getNormalRecipe() {
-        return CsmConfiguration.enableBrickSoldierReverseRecipe ? this.recipeNormal : null;
+        return CsmConfiguration.Recipes.enableBrickSoldierReverseRecipe ? this.recipeNormal : null;
     }
 
     @Nonnull
     public NonNullList<IRecipe> getTeamedRecipes() {
-        return CsmConfiguration.enableBrickSoldierReverseRecipe ? this.recipesTeamed : NonNullList.create();
+        return CsmConfiguration.Recipes.enableBrickSoldierReverseRecipe ? this.recipesTeamed : NonNullList.create();
     }
 
     @Override
     public Map<Ingredient, ItemStack> getRecipes() {
         return furnaceRecipe;
+    }
+
+    @Nonnull
+    @Override
+    public String getSrcTitle() {
+        return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(this.getGroupId(), this.getId()));
+    }
+
+    @Nonnull
+    @Override
+    public String getSrcText() {
+        return Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(this.getGroupId(), this.getId()));
     }
 }

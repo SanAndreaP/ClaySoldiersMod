@@ -26,7 +26,7 @@ public class ItemMountBunny
 {
     public ItemMountBunny() {
         super(CsmConstants.ID, "doll_bunny", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.bunnyDollStackSize;
+        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.bunnyDollStackSize;
     }
 
     @Override

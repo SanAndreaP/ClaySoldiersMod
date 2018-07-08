@@ -12,24 +12,23 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class LexiconEntryDisruptor
+public class LexiconEntryDispenser
         implements ILexiconEntryCraftingGrid
 {
-    private static final String ID = "disruptor";
-    private final ItemStack[] icons;
+    private static final String ID = "dispenser";
+    private final ItemStack icon;
     private final ResourceLocation prevPic;
 
-    public LexiconEntryDisruptor() {
-        NonNullList<ItemStack> subItems = NonNullList.create();
-        ItemRegistry.DISRUPTOR.getSubItems(CreativeTabs.SEARCH, subItems);
-        this.icons = subItems.toArray(new ItemStack[0]);
-        this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/misc/" + CsmConstants.ID + "_disruptor.png");
+    public LexiconEntryDispenser() {
+        this.icon = new ItemStack(Blocks.DISPENSER, 1);
+        this.prevPic = new ResourceLocation(CsmConstants.ID, "textures/gui/lexicon/page_pics/misc/" + CsmConstants.ID + '_' + ID + ".png");
     }
 
     @Override
@@ -44,24 +43,18 @@ public class LexiconEntryDisruptor
 
     @Override
     public String getPageRenderId() {
-        return ILexiconPageRender.RENDER_CRAFTING_ID;
+        return ILexiconPageRender.RENDER_STANDARD_ID;
     }
 
     @Nonnull
     @Override
     public ItemStack getEntryIcon() {
-        return this.icons[(int) ((System.nanoTime() / 1_000_000_000) % this.icons.length)];
+        return this.icon;
     }
 
     @Override
     public ResourceLocation getPicture() {
         return this.prevPic;
-    }
-
-    @Nonnull
-    @Override
-    public NonNullList<ItemStack> getRecipeResults() {
-        return NonNullList.from(ItemStack.EMPTY, this.icons);
     }
 
     @Nonnull

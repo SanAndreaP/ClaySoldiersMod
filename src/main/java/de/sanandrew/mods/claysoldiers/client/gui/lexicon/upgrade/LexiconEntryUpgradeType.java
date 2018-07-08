@@ -9,12 +9,14 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.Locale;
 
 @SideOnly(Side.CLIENT)
@@ -63,5 +65,17 @@ public class LexiconEntryUpgradeType
     @Override
     public boolean divideAfter() {
         return this.type == EnumUpgradeType.VALUES[EnumUpgradeType.VALUES.length - 1];
+    }
+
+    @Nonnull
+    @Override
+    public String getSrcTitle() {
+        return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(this.getGroupId(), this.getId()));
+    }
+
+    @Nonnull
+    @Override
+    public String getSrcText() {
+        return Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(this.getGroupId(), this.getId()));
     }
 }
