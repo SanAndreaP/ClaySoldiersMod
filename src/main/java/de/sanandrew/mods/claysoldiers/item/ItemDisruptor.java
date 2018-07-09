@@ -10,6 +10,7 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.claysoldiers.util.Lang;
@@ -231,33 +232,25 @@ public class ItemDisruptor
         return stack;
     }
 
+    @CsmConfig.Category(value = CsmConfig.BlocksAndItems.Disruptor.SUBCAT_DISRUPTOR)
     public enum DisruptorType {
         CLAY("clay", 32),
         HARDENED("hardened", 128),
         OBSIDIAN("unbreaking", 0),
+
+        @CsmConfig.EnumExclude
         UNKNOWN("null", 1);
 
-        public final String name;
+        @CsmConfig.Value(value = "%sDisruptorDurability", category = CsmConfig.BlocksAndItems.Disruptor.SUBCAT_DISRUPTOR,
+                         comment = "Durability of the %s disruptor. 0 durability = unbreakable")
         public int damage;
+        public final String name;
 
         public static final DisruptorType[] VALUES = DisruptorType.values();
 
         DisruptorType(String name, int damage) {
             this.name = name;
             this.damage = damage;
-        }
-
-        public static void updateConfiguration(Configuration config, String category) {
-            for( DisruptorType type : VALUES ) {
-                if( type == UNKNOWN ) {
-                    continue;
-                }
-
-                Property prop = config.get(category, type.name + "DisruptorDurability", type.damage,
-                                           "Durability of the " + type.name + " disruptor. 0 durability = unbreakable", 0, OreDictionary.WILDCARD_VALUE - 1);
-                prop.setRequiresMcRestart(true);
-                type.damage = prop.getInt();
-            }
         }
     }
 }

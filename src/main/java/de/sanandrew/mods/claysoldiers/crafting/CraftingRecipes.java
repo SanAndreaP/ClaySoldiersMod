@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.crafting;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
@@ -26,11 +26,11 @@ public class CraftingRecipes
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         List<IRecipe> recipeList = new ArrayList<>();
-        if( CsmConfiguration.Recipes.enableDyedSoldierRecipe ) recipeList.add(new DyedSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedSoldier")));
-        if( CsmConfiguration.Recipes.enableSoldierWashRecipe ) recipeList.add(new ClearSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "clearSoldier")));
-        if( CsmConfiguration.Recipes.enableResourceSoldierRecipe ) recipeList.add(new OtherSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "othrSoldier")));
-        if( CsmConfiguration.Recipes.enableBrickSoldierReverseRecipe ) recipeList.add(new BrickSoldierConvRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "brickSoldierConv")));
-        if( CsmConfiguration.Recipes.enableDyedGlassSoldierRecipe ) recipeList.add(new DyedGlassSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedGlassSoldier")));
+        if( CsmConfig.Recipes.enableDyedSoldierRecipe ) recipeList.add(new DyedSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedSoldier")));
+        if( CsmConfig.Recipes.enableSoldierWashRecipe ) recipeList.add(new ClearSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "clearSoldier")));
+        if( CsmConfig.Recipes.enableResourceSoldierRecipe ) recipeList.add(new OtherSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "othrSoldier")));
+        if( CsmConfig.Recipes.enableBrickSoldierReverseRecipe ) recipeList.add(new BrickSoldierConvRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "brickSoldierConv")));
+        if( CsmConfig.Recipes.enableDyedGlassSoldierRecipe ) recipeList.add(new DyedGlassSoldierRecipe().setRegistryName(new ResourceLocation(CsmConstants.ID, "dyedGlassSoldier")));
 
         recipeList.forEach(event.getRegistry()::register);
     }

@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.button.GuiButtonLink;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.lib.client.util.GuiUtils;
 import de.sanandrew.mods.sanlib.lib.client.util.RenderUtils;
@@ -232,7 +232,7 @@ public class LexiconGuiHelper
 
     @Override
     public FontRenderer getFontRenderer() {
-        if( CsmConfiguration.Lexicon.lexiconForceUnicode ) {
+        if( CsmConfig.Lexicon.lexiconForceUnicode ) {
             if( unicodeFr == null ) {
                 unicodeFr = new FontRenderer(this.gui.mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.gui.mc.renderEngine, true);
             }

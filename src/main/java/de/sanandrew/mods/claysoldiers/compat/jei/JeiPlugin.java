@@ -11,7 +11,7 @@ package de.sanandrew.mods.claysoldiers.compat.jei;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
@@ -29,23 +29,23 @@ public class JeiPlugin
 
     @Override
     public void register(IModRegistry registry) {
-        if( CsmConfiguration.Recipes.enableDyedSoldierRecipe ) {
+        if( CsmConfig.Recipes.enableDyedSoldierRecipe ) {
             registry.handleRecipes(JeiDyedSoldierRecipe.class, new DyedSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
             registry.addRecipes(JeiDyedSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
         }
-        if( CsmConfiguration.Recipes.enableSoldierWashRecipe ) {
+        if( CsmConfig.Recipes.enableSoldierWashRecipe ) {
             registry.handleRecipes(JeiClearSoldierRecipe.class, new ClearSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
             registry.addRecipes(JeiClearSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
         }
-        if( CsmConfiguration.Recipes.enableResourceSoldierRecipe ) {
+        if( CsmConfig.Recipes.enableResourceSoldierRecipe ) {
             registry.handleRecipes(JeiOtherSoldierRecipe.class, new OtherSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
             registry.addRecipes(JeiOtherSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
         }
-        if( CsmConfiguration.Recipes.enableBrickSoldierReverseRecipe ) {
+        if( CsmConfig.Recipes.enableBrickSoldierReverseRecipe ) {
             registry.handleRecipes(JeiBrickSoldierRecipe.class, new BrickSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
             registry.addRecipes(JeiBrickSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
         }
-        if( CsmConfiguration.Recipes.enableDyedGlassSoldierRecipe ) {
+        if( CsmConfig.Recipes.enableDyedGlassSoldierRecipe ) {
             registry.handleRecipes(JeiDyedGlassSoldierRecipe.class, new DyedGlassSoldierRecipeWrapper.Factory(), VanillaRecipeCategoryUid.CRAFTING);
             registry.addRecipes(JeiDyedGlassSoldierRecipe.getRecipes(), VanillaRecipeCategoryUid.CRAFTING);
         }

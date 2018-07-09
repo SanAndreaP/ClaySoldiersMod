@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderB
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -79,12 +79,12 @@ public class LexiconEntryBrickDoll
     }
 
     public IRecipe getNormalRecipe() {
-        return CsmConfiguration.Recipes.enableBrickSoldierReverseRecipe ? this.recipeNormal : null;
+        return CsmConfig.Recipes.enableBrickSoldierReverseRecipe ? this.recipeNormal : null;
     }
 
     @Nonnull
     public NonNullList<IRecipe> getTeamedRecipes() {
-        return CsmConfiguration.Recipes.enableBrickSoldierReverseRecipe ? this.recipesTeamed : NonNullList.create();
+        return CsmConfig.Recipes.enableBrickSoldierReverseRecipe ? this.recipesTeamed : NonNullList.create();
     }
 
     @Override

@@ -9,13 +9,14 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Locale;
 
+@CsmConfig.Category(EnumGeckoType.CFG_CAT)
 public enum EnumGeckoType
         implements IDollType
 {
@@ -56,11 +57,15 @@ public enum EnumGeckoType
     DARKOAK_ACACIA(true, 0x459633, 0x846412, "darkoak", "acacia"),
     DARKOAK_DARKOAK(true, 0x459633, 0x442D12, "darkoak", "darkoak"),
 
+    @CsmConfig.EnumExclude
     UNKNOWN(false, 0x0, 0x0, null, null);
 
+    public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "geckos";
     public static final EnumGeckoType[] VALUES = values();
 
+    @CsmConfig.Value(value = "%sGeckoMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
+    @CsmConfig.Value(value = "%sGeckoMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
     public final boolean visible;
     public final int itemColorBody;
@@ -101,22 +106,5 @@ public enum EnumGeckoType
     @Override
     public ItemStack getTypeStack() {
         return ItemRegistry.DOLL_GECKO.getTypeStack(this);
-    }
-
-    public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Geckos";
-        config.getCategory(category).setRequiresWorldRestart(true);
-
-        for( EnumGeckoType type : VALUES ) {
-            if( type == UNKNOWN ) {
-                continue;
-            }
-            String typeNameL = type.getName().toLowerCase(Locale.ENGLISH).replace('_', '|');
-
-            type.maxHealth = config.getFloat(typeNameL + "GeckoMaxHealth", category, type.maxHealth, 0.0F, 1024.0F,
-                                             "Maximum health of a " + typeNameL + " Gecko");
-            type.movementFactor = config.getFloat(typeNameL + "GeckoMovementFactor", category, type.movementFactor, 0.0F, 1024.0F,
-                                                  "Movement factor of a " + typeNameL + " Gecko");
-        }
     }
 }

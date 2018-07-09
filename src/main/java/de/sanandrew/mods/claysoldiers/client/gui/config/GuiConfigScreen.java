@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.gui.config;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.GuiConfig;
@@ -28,10 +28,10 @@ public class GuiConfigScreen
 
     private static List<IConfigElement> getCfgElements() {
         return new ArrayList<IConfigElement>() {{
-            for( Class<?> c : CsmConfiguration.class.getDeclaredClasses() ) {
-                CsmConfiguration.Category cat = c.getAnnotation(CsmConfiguration.Category.class);
+            for( Class<?> c : CsmConfig.class.getDeclaredClasses() ) {
+                CsmConfig.Category cat = c.getAnnotation(CsmConfig.Category.class);
                 if( cat != null ) {
-                    this.add(new ConfigElement(CsmConfiguration.config.getCategory(cat.value())));
+                    this.add(new ConfigElement(CsmConfig.config.getCategory(cat.value())));
                 }
             }
         }};

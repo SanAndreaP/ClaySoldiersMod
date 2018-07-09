@@ -12,23 +12,23 @@ import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import net.minecraft.block.BlockDispenser;
 
 public final class DispenserBehaviorRegistry
 {
     public static void initialize() {
-        if( CsmConfiguration.BlocksAndItems.Dispenser.enableSoldierDispense )
+        if( CsmConfig.BlocksAndItems.Dispenser.enableSoldierDispense )
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_SOLDIER, new BehaviorDollDispenseItem<ITeam>());
-        if( CsmConfiguration.BlocksAndItems.Dispenser.enableHorseDispense )
+        if( CsmConfig.BlocksAndItems.Dispenser.enableHorseDispense )
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_HORSE, new BehaviorDollDispenseItem<EnumClayHorseType>());
-        if( CsmConfiguration.BlocksAndItems.Dispenser.enablePegasusDispense )
+        if( CsmConfig.BlocksAndItems.Dispenser.enablePegasusDispense )
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_PEGASUS, new BehaviorDollDispenseItem<EnumClayHorseType>());
-        if( CsmConfiguration.BlocksAndItems.Dispenser.enableTurtleDispense )
+        if( CsmConfig.BlocksAndItems.Dispenser.enableTurtleDispense )
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_TURTLE, new BehaviorDollDispenseItem<EnumTurtleType>());
-        if( CsmConfiguration.BlocksAndItems.Dispenser.enableBunnyDispense )
+        if( CsmConfig.BlocksAndItems.Dispenser.enableBunnyDispense )
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_BUNNY, new BehaviorDollDispenseItem<EnumWoolBunnyType>());
-        if( CsmConfiguration.BlocksAndItems.Dispenser.enableGeckoDispense )
+        if( CsmConfig.BlocksAndItems.Dispenser.enableGeckoDispense )
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_GECKO, new BehaviorDollDispenseItem<EnumGeckoType>());
     }
 }

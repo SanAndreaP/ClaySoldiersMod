@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtle;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.SoundEvents;
@@ -27,7 +27,7 @@ public class ItemMountTurtle
 {
     public ItemMountTurtle() {
         super(CsmConstants.ID, "doll_turtle", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.turtleDollStackSize;
+        this.maxStackSize = CsmConfig.BlocksAndItems.Dolls.turtleDollStackSize;
     }
 
     @Override

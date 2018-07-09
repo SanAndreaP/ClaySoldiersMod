@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.item;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import net.minecraft.item.Item;
 
@@ -19,7 +19,7 @@ public class ItemBrickSoldier
         this.setCreativeTab(CsmCreativeTabs.MISC);
         this.setUnlocalizedName(CsmConstants.ID + ":doll_brick_soldier");
         this.setMaxDamage(0);
-        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.brickDollStackSize;
+        this.maxStackSize = CsmConfig.BlocksAndItems.Dolls.brickDollStackSize;
         this.setRegistryName(CsmConstants.ID, "doll_brick_soldier");
     }
 }

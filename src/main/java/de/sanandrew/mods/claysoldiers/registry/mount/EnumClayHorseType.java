@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
@@ -17,6 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.Arrays;
 import java.util.Locale;
 
+@CsmConfig.Category(EnumClayHorseType.CFG_CAT)
 public enum EnumClayHorseType
         implements IDollType
 {
@@ -32,13 +33,20 @@ public enum EnumClayHorseType
     CAKE(true, 30.0F, 1.4F, false, false, "cake", 0xFFFFFF, "cake"),
 
     NIGHTMARE(false, 50.0F, 1.6F, false, true, 0x0, "spec_nightmare1", "spec_nightmare2"),
+
+    @CsmConfig.EnumExclude
     UNKNOWN(false, 0.0F, 0.0F, false, false, 0x0);
 
+    public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "horses";
     public static final EnumClayHorseType[] VALUES = values();
 
+    @CsmConfig.Value(value = "%sHorseMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
+    @CsmConfig.Value(value = "%sHorseMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
+    @CsmConfig.Value(value = "%sHorseAmphibious", category = CFG_CAT, comment = "Allow %s horses to breathe underwater.")
     public boolean canBreatheUnderwater;
+    @CsmConfig.Value(value = "%sHorseFireproof", category = CFG_CAT, comment = "Allow %s horses to resist fire and lava.")
     public boolean hasFireImmunity;
     public final boolean visible;
     public final int itemColor;
@@ -88,26 +96,5 @@ public enum EnumClayHorseType
     @Override
     public ItemStack getTypeStack() {
         return ItemRegistry.DOLL_HORSE.getTypeStack(this);
-    }
-
-    public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Horses";
-        config.getCategory(category).setRequiresWorldRestart(true).setComment("This category controls both horses and pegasi!");
-
-        for( EnumClayHorseType type : VALUES ) {
-            if( type == UNKNOWN ) {
-                continue;
-            }
-            String typeNameL = type.getName().toLowerCase(Locale.ENGLISH);
-
-            type.maxHealth = config.getFloat(typeNameL + "HorseMaxHealth", category, type.maxHealth, 0.0F, 1024.0F,
-                                             "Maximum health of a " + typeNameL + " horse");
-            type.movementFactor = config.getFloat(typeNameL + "HorseMovementFactor", category, type.movementFactor, 0.0F, 1024.0F,
-                                                  "Movement factor of a " + typeNameL + " horse");
-            type.canBreatheUnderwater = config.getBoolean(typeNameL + "HorseUnderwaterBreath", category, type.canBreatheUnderwater,
-                                                          "Wether or not a " + typeNameL + " horse can breathe underwater");
-            type.hasFireImmunity = config.getBoolean(typeNameL + "HorseHasFireImmunity", category, type.hasFireImmunity,
-                                                          "Wether or not a " + typeNameL + " horse is immune to fire");
-        }
     }
 }

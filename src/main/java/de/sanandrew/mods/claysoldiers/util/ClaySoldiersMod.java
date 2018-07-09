@@ -60,7 +60,7 @@ public class ClaySoldiersMod
     public void preInit(FMLPreInitializationEvent event) {
         network = NetworkRegistry.INSTANCE.newSimpleChannel(CsmConstants.CHANNEL);
 
-        CsmConfiguration.initialize(event);
+        CsmConfig.initialize(event);
 
         loadPlugins(event.getAsmData());
         PLUGINS.forEach(plugin -> {

@@ -37,7 +37,7 @@ import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeEntry;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
@@ -219,10 +219,10 @@ public class EntityClaySoldier
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttributeMap().registerAttribute(CsmMobAttributes.KB_RESISTANCE);
 
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(CsmConfiguration.Entities.soldierMovementSpeed);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(CsmConfiguration.Entities.soldierAttackDamage);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(CsmConfiguration.Entities.soldierMaxHealth);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(CsmConfiguration.Entities.soldierFollowRange);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(CsmConfig.Entities.soldierMovementSpeed);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(CsmConfig.Entities.soldierAttackDamage);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(CsmConfig.Entities.soldierMaxHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(CsmConfig.Entities.soldierFollowRange);
     }
 
     //region upgrades

@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
@@ -17,6 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.Arrays;
 import java.util.Locale;
 
+@CsmConfig.Category(EnumWoolBunnyType.CFG_CAT)
 public enum EnumWoolBunnyType
         implements IDollType
 {
@@ -36,13 +37,19 @@ public enum EnumWoolBunnyType
     MAGENTA(true, 0xE000FF, "magenta"),
     ORANGE(true, 0xD87F33, "orange"),
     WHITE(true, 0xFFFFFF, "white"),
-    
+
+    @CsmConfig.EnumExclude
     UNKNOWN(false, 0x0);
 
+    public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "bunnies";
     public static final EnumWoolBunnyType[] VALUES = values();
 
+    @CsmConfig.Value(value = "%sBunnyMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
+    @CsmConfig.Value(value = "%sBunnyMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
+    @CsmConfig.Value(value = "%sBunnyJumpMovementSpeed", category = CFG_CAT, comment = "Jumping movement speed of a %s bunny",
+                     range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float jumpMoveFactor;
     public final boolean visible;
     public final int itemColor;
@@ -85,24 +92,5 @@ public enum EnumWoolBunnyType
     @Override
     public ItemStack getTypeStack() {
         return ItemRegistry.DOLL_BUNNY.getTypeStack(this);
-    }
-
-    public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Bunnies";
-        config.getCategory(category).setRequiresWorldRestart(true);
-
-        for( EnumWoolBunnyType type : VALUES ) {
-            if( type == UNKNOWN ) {
-                continue;
-            }
-            String typeNameL = type.getName().toLowerCase(Locale.ENGLISH);
-
-            type.maxHealth = config.getFloat(typeNameL + "BunnyMaxHealth", category, type.maxHealth, 0.0F, 1024.0F,
-                                             "Maximum health of a " + typeNameL + " bunny");
-            type.movementFactor = config.getFloat(typeNameL + "BunnyMovementFactor", category, type.movementFactor, 0.0F, 1024.0F,
-                                                  "Movement factor of a " + typeNameL + " bunny");
-            type.jumpMoveFactor = config.getFloat(type.getName().toLowerCase(Locale.ENGLISH) + "BunnyJumpMoveFactor", category, type.jumpMoveFactor, 0.0F, 1024.0F,
-                                                  "Jump movement factor of a " + typeNameL + " bunny");
-        }
     }
 }

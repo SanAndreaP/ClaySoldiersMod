@@ -13,7 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
 import net.minecraft.block.BlockCauldron;
@@ -38,13 +38,13 @@ public class ItemSoldier
 {
     public ItemSoldier() {
         super(CsmConstants.ID, "doll_soldier", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.soldierDollStackSize;
+        this.maxStackSize = CsmConfig.BlocksAndItems.Dolls.soldierDollStackSize;
     }
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        if( CsmConfiguration.Recipes.enableCauldronSoldierWash && !world.isRemote && player.canPlayerEdit(pos.offset(facing), facing, stack) && world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
+        if( CsmConfig.Recipes.enableCauldronSoldierWash && !world.isRemote && player.canPlayerEdit(pos.offset(facing), facing, stack) && world.getBlockState(pos).getBlock() == Blocks.CAULDRON && hand != null ) {
             if( !player.isSneaking() && !UuidUtils.areUuidsEqual(TeamRegistry.INSTANCE.getTeam(stack).getId(), Teams.SOLDIER_CLAY) ) {
                 IBlockState state = world.getBlockState(pos);
                 int level = state.getValue(BlockCauldron.LEVEL);

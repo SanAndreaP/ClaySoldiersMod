@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -92,7 +92,7 @@ public class LexiconEntryWashSoldier
 
     @Override
     public NonNullList<IRecipe> getRecipes() {
-        return CsmConfiguration.Recipes.enableSoldierWashRecipe ? this.recipes : NonNullList.create();
+        return CsmConfig.Recipes.enableSoldierWashRecipe ? this.recipes : NonNullList.create();
     }
 
     @Nonnull

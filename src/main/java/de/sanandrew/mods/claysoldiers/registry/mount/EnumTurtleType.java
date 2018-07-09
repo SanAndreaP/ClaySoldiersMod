@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
@@ -17,6 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.Arrays;
 import java.util.Locale;
 
+@CsmConfig.Category(EnumTurtleType.CFG_CAT)
 public enum EnumTurtleType
         implements IDollType
 {
@@ -31,12 +32,18 @@ public enum EnumTurtleType
     CAKE(true,       30.0F, 0.9F, false, "cake", 0xAD5D0C, 0xFFFFFF, "cake"),
 
     KAWAKO(false, 50.0F, 0.85F, true, 0x0, 0x0, "spec_kawako"),
+
+    @CsmConfig.EnumExclude
     UNKNOWN(false, 0.0F, 0.0F, false, 0x0, 0x0);
 
+    public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "turtles";
     public static final EnumTurtleType[] VALUES = values();
 
+    @CsmConfig.Value(value = "%sTurtleMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
+    @CsmConfig.Value(value = "%sTurtleMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
+    @CsmConfig.Value(value = "%sTurtleFireproof", category = CFG_CAT, comment = "Allow %s turtles to resist fire and lava.")
     public boolean fireproof;
     public final boolean visible;
     public final int itemColorBody;
@@ -87,24 +94,5 @@ public enum EnumTurtleType
     @Override
     public ItemStack getTypeStack() {
         return ItemRegistry.DOLL_TURTLE.getTypeStack(this);
-    }
-
-    public static void updateConfiguration(Configuration config) {
-        final String category = CsmConfiguration.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "Turtles";
-        config.getCategory(category).setRequiresWorldRestart(true);
-
-        for( EnumTurtleType type : VALUES ) {
-            if( type == UNKNOWN ) {
-                continue;
-            }
-            String typeNameL = type.getName().toLowerCase(Locale.ENGLISH);
-
-            type.maxHealth = config.getFloat(typeNameL + "TurtleMaxHealth", category, type.maxHealth, 0.0F, 1024.0F,
-                                             "Maximum health of a " + typeNameL + " turtle");
-            type.movementFactor = config.getFloat(typeNameL + "TurtleMovementFactor", category, type.movementFactor, 0.0F, 1024.0F,
-                                                  "Movement factor of a " + typeNameL + " turtle");
-            type.fireproof = config.getBoolean(typeNameL + "TurtleFireproof", category, type.fireproof,
-                                               "Wether or not a " + typeNameL + " turtle is fireproof");
-        }
     }
 }

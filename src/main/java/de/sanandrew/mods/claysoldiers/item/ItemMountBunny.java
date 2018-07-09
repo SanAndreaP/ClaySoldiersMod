@@ -11,7 +11,7 @@ import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityWoolBunny;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
-import de.sanandrew.mods.claysoldiers.util.CsmConfiguration;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.init.SoundEvents;
@@ -26,7 +26,7 @@ public class ItemMountBunny
 {
     public ItemMountBunny() {
         super(CsmConstants.ID, "doll_bunny", CsmCreativeTabs.DOLLS);
-        this.maxStackSize = CsmConfiguration.BlocksAndItems.Dolls.bunnyDollStackSize;
+        this.maxStackSize = CsmConfig.BlocksAndItems.Dolls.bunnyDollStackSize;
     }
 
     @Override
