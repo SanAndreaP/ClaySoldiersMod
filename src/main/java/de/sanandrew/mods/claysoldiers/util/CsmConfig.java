@@ -12,6 +12,7 @@ import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
+import de.sanandrew.mods.sanlib.lib.Tuple;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -31,7 +32,9 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = CsmConstants.ID)
 public class CsmConfig
@@ -114,7 +117,7 @@ public class CsmConfig
             public static boolean enableDisruptorDispense = true;
         }
 
-        @Category(value = Disruptor.SUBCAT_DISRUPTOR, comment = "Disruptor configuration")
+        @Category(value = Disruptor.SUBCAT_DISRUPTOR, comment = "Disruptor item configuration")
         public static final class Disruptor
         {
             public static final String SUBCAT_DISRUPTOR = CAT_NAME + Configuration.CATEGORY_SPLITTER + "disruptor";
@@ -158,6 +161,10 @@ public class CsmConfig
         @Value(category = CAT_NAME, comment = "Force unicode font to be used in clay lexicon.")
         public static boolean lexiconForceUnicode = false;
     }
+
+    // region CONFIG HANDLER
+
+    private static final Map<String, Tuple> DEFAULTS = new HashMap<>();
 
     public static void initialize(FMLPreInitializationEvent event) {
         File cfgFile = event.getSuggestedConfigurationFile();
@@ -240,10 +247,13 @@ public class CsmConfig
                     Class<?> cv = f.getType();
                     String name = val.value().isEmpty() ? f.getName() : String.format(val.value(), instName);
                     String comment = String.format(val.comment(), instName);
+                    String category = val.category();
 
                     if( cv == long.class || cv == int.class || cv == short.class || cv == byte.class ) {
-                        Property p = config.get(val.category(), name, cv == long.class ? (int) f.getLong(inst) : f.getInt(inst), comment,
-                                                val.range().minI(), val.range().maxI());
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple(cv == long.class ? (int) f.getLong(inst) : f.getInt(inst)));
+                        }
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).<Integer>getValue(0), comment, val.range().minI(), val.range().maxI());
                         p.setRequiresMcRestart(val.reqMcRestart());
                         p.setRequiresWorldRestart(val.reqWorldRestart());
 
@@ -255,8 +265,10 @@ public class CsmConfig
                             f.setByte(inst, (byte) p.getInt());
                         }
                     } else if( cv == double.class || cv == float.class ) {
-                        Property p = config.get(val.category(), name, cv == float.class ? Double.valueOf(Float.valueOf(f.getFloat(inst)).toString()) : f.getDouble(inst),
-                                                comment, val.range().minD(), val.range().maxD());
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple(cv == float.class ? Double.valueOf(Float.valueOf(f.getFloat(inst)).toString()) : f.getDouble(inst)));
+                        }
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).<Double>getValue(0), comment, val.range().minD(), val.range().maxD());
                         p.setRequiresMcRestart(val.reqMcRestart());
                         p.setRequiresWorldRestart(val.reqWorldRestart());
 
@@ -266,36 +278,54 @@ public class CsmConfig
                             f.setDouble(inst, p.getDouble());
                         }
                     } else if( cv == boolean.class ) {
-                        Property p = config.get(val.category(), name, f.getBoolean(inst), comment);
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple(f.getBoolean(inst)));
+                        }
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).<Boolean>getValue(0), comment);
                         p.setRequiresMcRestart(val.reqMcRestart());
                         p.setRequiresWorldRestart(val.reqWorldRestart());
                         f.setBoolean(inst, p.getBoolean());
                     } else if( cv == String.class ) {
-                        Property p = config.get(val.category(), name, f.get(inst).toString(), comment);
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple(f.get(inst).toString()));
+                        }
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).<String>getValue(0), comment);
                         p.setRequiresMcRestart(val.reqMcRestart());
                         p.setRequiresWorldRestart(val.reqWorldRestart());
                         f.set(inst, p.getString());
                     } else if( cv == int[].class ) {
-                        Property p = config.get(val.category(), name, (int[]) f.get(inst), comment, val.range().minI(), val.range().maxI(),
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
+                        }
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).<int[]>getValue(0), comment, val.range().minI(), val.range().maxI(),
                                                 val.range().listFixed(), val.range().maxListLength());
                         p.setRequiresMcRestart(val.reqMcRestart());
                         p.setRequiresWorldRestart(val.reqWorldRestart());
                         f.set(inst, p.getIntList());
                     } else if( cv == double[].class ) {
-                        Property p = config.get(val.category(), name, (double[]) f.get(inst), comment, val.range().minD(), val.range().maxD(),
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
+                        }
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).getValue(0), comment, val.range().minD(), val.range().maxD(),
                                                 val.range().listFixed(), val.range().maxListLength());
                         p.setRequiresMcRestart(val.reqMcRestart());
                         p.setRequiresWorldRestart(val.reqWorldRestart());
                         f.set(inst, p.getDoubleList());
                     } else if( cv == boolean[].class ) {
-                        Property p = config.get(val.category(), name, (boolean[]) f.get(inst), comment, val.range().listFixed(), val.range().maxListLength());
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
+                        }
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).getValue(0), comment, val.range().listFixed(), val.range().maxListLength());
                         p.setRequiresMcRestart(val.reqMcRestart());
                         p.setRequiresWorldRestart(val.reqWorldRestart());
                         f.set(inst, p.getBooleanList());
                     } else if( cv == String[].class ) {
+                        if( !DEFAULTS.containsKey(category + name) ) {
+                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
+                        }
                         Pattern validationPattern = val.range().validationPattern();
                         @SuppressWarnings("MagicConstant")
-                        Property p = config.get(val.category(), name, (String[]) f.get(inst), comment, val.range().listFixed(), val.range().maxListLength(),
+                        Property p = config.get(category, name, DEFAULTS.get(category + name).getValue(0), comment, val.range().listFixed(), val.range().maxListLength(),
                                                 validationPattern.regex().isEmpty() ? null : java.util.regex.Pattern.compile(validationPattern.regex(),
                                                                                                                              validationPattern.flags()));
                         p.setRequiresMcRestart(val.reqMcRestart());
@@ -355,4 +385,6 @@ public class CsmConfig
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     public @interface EnumExclude {}
+
+    // endregion
 }
