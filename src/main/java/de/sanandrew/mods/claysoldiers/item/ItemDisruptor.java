@@ -19,9 +19,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
@@ -41,6 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -49,6 +52,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ItemDisruptor
@@ -111,7 +115,7 @@ public class ItemDisruptor
         }
     }
 
-    public boolean disruptAction(World world, ItemStack stack, Vec3d pos, @Nullable EntityPlayer player) {
+    public static boolean disruptAction(World world, ItemStack stack, Vec3d pos, @Nullable EntityPlayer player) {
         NBTTagCompound nbt = stack.getOrCreateSubCompound("disruptor");
         long lastTimeMillis = nbt.getLong("lastActivated");
         long currTimeMillis = System.currentTimeMillis();
@@ -120,7 +124,7 @@ public class ItemDisruptor
             if( !world.isRemote ) {
                 final IDisruptable.DisruptState state = getState(stack);
 
-                if( state != IDisruptable.DisruptState.CLAY ) {
+                if( state != IDisruptable.DisruptState.CLAY && canBreak(player, state) ) {
                     AxisAlignedBB aabb = new AxisAlignedBB(-32.0D, -32.0D, -32.0D, 32.0D, 32.0D, 32.0D).offset(pos.x, pos.y, pos.z);
                     world.getEntitiesWithinAABB(EntityCreature.class, aabb).stream().filter(entity -> entity instanceof IDisruptable).map(entity -> (IDisruptable) entity)
                          .forEach(disruptable -> {
@@ -132,12 +136,14 @@ public class ItemDisruptor
                         if( player != null ) {
                             stack.damageItem(1, player);
                         } else {
-                            damageItemNE(world, stack, pos, 1);
+                            damageItemNE(world, stack, pos);
                         }
                     }
                 }
 
-                if( ItemStackUtils.isValid(stack) && (state == IDisruptable.DisruptState.CLAY || state == IDisruptable.DisruptState.ALL) ) {
+                if( ItemStackUtils.isValid(stack) && (state == IDisruptable.DisruptState.CLAY || state == IDisruptable.DisruptState.ALL)
+                    && canBreak(player, IDisruptable.DisruptState.CLAY) )
+                {
                     AxisAlignedBB aabb = new AxisAlignedBB(-4.0D, -4.0D, -4.0D, 4.0D, 4.0D, 4.0D).offset(pos.x, pos.y, pos.z);
                     clayLoop:
                     for( int x = MathHelper.floor(aabb.minX), maxX = MathHelper.ceil(aabb.maxX); x <= maxX; x++ ) {
@@ -153,14 +159,20 @@ public class ItemDisruptor
                                     Block block = blockState.getBlock();
                                     if( block == Blocks.CLAY && (player == null || block.canHarvestBlock(world, blockPos, player)) ) {
                                         world.playEvent(2001, blockPos, Block.getStateId(blockState));
-                                        block.removedByPlayer(blockState, world, blockPos, player, true);
-                                        block.harvestBlock(world, player, blockPos, blockState, null, stack);
+                                        if( player != null ) {
+                                            block.removedByPlayer(blockState, world, blockPos, player, true);
+                                            block.harvestBlock(world, player, blockPos, blockState, null, stack);
+                                        } else {
+                                            world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), 3);
+                                            int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
+                                            block.dropBlockAsItem(world, blockPos, blockState, fortune);
+                                        }
 
                                         if( stack.isItemStackDamageable() ) {
                                             if( player != null ) {
                                                 stack.damageItem(1, player);
                                             } else {
-                                                damageItemNE(world, stack, pos, 1);
+                                                damageItemNE(world, stack, pos);
                                             }
                                         }
                                     }
@@ -179,10 +191,25 @@ public class ItemDisruptor
         }
     }
 
-    private static void damageItemNE(World world, ItemStack stack, Vec3d pos, int amount) {
-        if( stack.attemptDamageItem(amount, world.rand, null) ) {
+    private static boolean canBreak(@Nullable EntityPlayer player, IDisruptable.DisruptState state) {
+        if( state != IDisruptable.DisruptState.CLAY ) {
+            return CsmConfig.BlocksAndItems.Disruptor.enableAutomatedDollDisrupt || (player != null && !(player instanceof FakePlayer));
+        } else {
+            if( !CsmConfig.BlocksAndItems.Disruptor.enableClayBlockDisruptMode ) {
+                return false;
+            }
+
+            return CsmConfig.BlocksAndItems.Disruptor.enableAutomatedClayBlockDisrupt || (player != null && !(player instanceof FakePlayer));
+        }
+    }
+
+    private static void damageItemNE(World world, ItemStack stack, Vec3d pos) {
+        int stackId = Item.getIdFromItem(stack.getItem());
+        int damage = stack.getItemDamage();
+        String nbt = stack.hasTagCompound() ? Objects.requireNonNull(stack.getTagCompound()).toString() : "";
+        if( stack.attemptDamageItem(1, world.rand, null) ) {
             world.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 0.8F, 0.8F + world.rand.nextFloat() * 0.4F);
-            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, world.provider.getDimension(), pos.x, pos.y, pos.z, Item.getIdFromItem(stack.getItem()));
+            ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, world.provider.getDimension(), pos.x, pos.y, pos.z, stackId, damage, nbt);
             stack.shrink(1);
             stack.setItemDamage(0);
         }

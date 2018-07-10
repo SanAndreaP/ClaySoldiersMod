@@ -7,7 +7,9 @@
 package de.sanandrew.mods.claysoldiers.registry;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
+import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDollDispenseItem;
+import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
@@ -30,5 +32,7 @@ public final class DispenserBehaviorRegistry
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_BUNNY, new BehaviorDollDispenseItem<EnumWoolBunnyType>());
         if( CsmConfig.BlocksAndItems.Dispenser.enableGeckoDispense )
             BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DOLL_GECKO, new BehaviorDollDispenseItem<EnumGeckoType>());
+        if( CsmConfig.BlocksAndItems.Dispenser.enableDisruptorDispense )
+            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemRegistry.DISRUPTOR, new BehaviorDisruptorDispenseItem());
     }
 }

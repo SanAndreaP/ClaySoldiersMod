@@ -6,14 +6,13 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.dispenser;
 
-import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
-import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
-import de.sanandrew.mods.sanlib.lib.util.ReflectionUtils;
+import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Vec3d;
 
 public class BehaviorDisruptorDispenseItem
         extends BehaviorDefaultDispenseItem
@@ -21,14 +20,11 @@ public class BehaviorDisruptorDispenseItem
     @Override
     protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
         EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
-        double x = source.getX() + facing.getFrontOffsetX();
-        double y = source.getY() + facing.getFrontOffsetY();
-        double z = source.getZ() + facing.getFrontOffsetZ();
+        double x = source.getX() + facing.getFrontOffsetX() * 1.5D;
+        double y = source.getY() + facing.getFrontOffsetY() * 1.5D;
+        double z = source.getZ() + facing.getFrontOffsetZ() * 1.5D;
 
-        ItemStack itemstack = stack.splitStack(1);
-
-//        ItemDoll<?, T> doll = ReflectionUtils.getCasted(itemstack.getItem());
-//        doll.spawnEntities(source.getWorld(), doll.getType(itemstack), 1, x, y, z, itemstack);
+        ItemDisruptor.disruptAction(source.getWorld(), stack, new Vec3d(x, y, z), null);
 
         return stack;
     }
