@@ -31,6 +31,8 @@ import javax.annotation.Nonnull;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
 
+import java.util.Objects;
+
 @UpgradeFunctions({EnumUpgFunctions.ON_DAMAGED, EnumUpgFunctions.ON_DEATH})
 public class UpgradeBrownMushroom
         implements ISoldierUpgrade
@@ -84,8 +86,10 @@ public class UpgradeBrownMushroom
 
             entity.playSound(SoundEvents.ENTITY_PLAYER_BURP, 0.8F, 0.8F + MiscUtils.RNG.randomFloat() * 0.4F);
 
+            ItemStack stack = upgradeInst.getSavedStack();
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, entity.world.provider.getDimension(), entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ,
-                                                Item.getIdFromItem(upgradeInst.getSavedStack().getItem()));
+                                                Item.getIdFromItem(stack.getItem()), stack.getItemDamage(),
+                                                stack.hasTagCompound() ? Objects.requireNonNull(stack.getTagCompound()).toString() : "");
         }
     }
 

@@ -7,6 +7,8 @@
 package de.sanandrew.mods.claysoldiers.client.particle;
 
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
+import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
+import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
@@ -15,6 +17,7 @@ import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.sanlib.lib.Tuple;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
+import de.sanandrew.mods.sanlib.lib.util.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleBlockDust;
@@ -22,6 +25,8 @@ import net.minecraft.client.particle.ParticleBreaking;
 import net.minecraft.client.particle.ParticleCrit;
 import net.minecraft.client.particle.ParticleHeart;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -60,17 +65,33 @@ public final class ParticleHandler
 
     private static void spawnBreakParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
         IDollType type = null;
+        ItemDoll<?, IDollType> doll = null;
         switch( particle ) {
-            case TEAM_BREAK: if( additData.checkValue(0, val -> val instanceof UUID) ) type = TeamRegistry.INSTANCE.getTeam(additData.<UUID>getValue(0)); break;
-            case HORSE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumClayHorseType.VALUES[additData.<Integer>getValue(0)]; break;
-            case TURTLE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumTurtleType.VALUES[additData.<Integer>getValue(0)]; break;
-            case BUNNY_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumWoolBunnyType.VALUES[additData.<Integer>getValue(0)]; break;
-            case GECKO_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) type = EnumGeckoType.VALUES[additData.<Integer>getValue(0)]; break;
+            case TEAM_BREAK: if( additData.checkValue(0, val -> val instanceof UUID) ) {
+                type = TeamRegistry.INSTANCE.getTeam(additData.<UUID>getValue(0));
+                doll = ReflectionUtils.getCasted(ItemRegistry.DOLL_SOLDIER);
+            } break;
+            case HORSE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) {
+                type = EnumClayHorseType.VALUES[additData.<Integer>getValue(0)];
+                doll = ReflectionUtils.getCasted(ItemRegistry.DOLL_HORSE);
+            } break;
+            case TURTLE_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) {
+                type = EnumTurtleType.VALUES[additData.<Integer>getValue(0)];
+                doll = ReflectionUtils.getCasted(ItemRegistry.DOLL_TURTLE);
+            } break;
+            case BUNNY_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) {
+                type = EnumWoolBunnyType.VALUES[additData.<Integer>getValue(0)];
+                doll = ReflectionUtils.getCasted(ItemRegistry.DOLL_BUNNY);
+            } break;
+            case GECKO_BREAK: if( additData.checkValue(0, val -> val instanceof Integer) ) {
+                type = EnumGeckoType.VALUES[additData.<Integer>getValue(0)];
+                doll = ReflectionUtils.getCasted(ItemRegistry.DOLL_GECKO);
+            } break;
         }
 
         if( type != null ) {
             for( int i = 0; i < 20; i++ ) {
-                mc.effectRenderer.addEffect(new ParticleDollBreaking(mc.world, x, y, z, type));
+                mc.effectRenderer.addEffect(new ParticleNbtItemBreaking(mc.world, x, y, z, doll.getTypeStack(type)));
             }
         }
     }
@@ -83,9 +104,16 @@ public final class ParticleHandler
 
     private static void spawnItemParticle(EnumParticle particle, int dim, double x, double y, double z, Tuple additData) {
         if( additData.checkValue(0, val -> val instanceof Integer) ) {
+            int itemId = additData.<Integer>getValue(0);
+            int damage = additData.checkValue(1, val -> val instanceof Integer) ? additData.getValue(1) : 0;
+            String nbtStr = additData.checkValue(2, val -> val instanceof String) ? additData.getValue(2) : "";
+            NBTTagCompound nbt = null;
+            try {
+                nbt = JsonToNBT.getTagFromJson(nbtStr);
+            } catch( NBTException ignored ) { }
             ParticleBreaking.Factory bf = new ParticleBreaking.Factory();
             for( int i = 0; i < 20; i++ ) {
-                mc.effectRenderer.addEffect(bf.createParticle(0, mc.world, x, y, z, 0.0D, 0.0D, 0.0D, additData.<Integer>getValue(0)));
+                mc.effectRenderer.addEffect(new ParticleNbtItemBreaking(mc.world, x, y, z, itemId, damage, nbt));
             }
         }
     }

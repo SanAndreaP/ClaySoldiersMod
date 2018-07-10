@@ -65,7 +65,7 @@ public class PacketSyncUpgrades
                         inst.setNbtData(this.upgradeNBT.get(upg));
                     }
                 } else {
-                    soldier.destroyUpgrade(upg.upgrade, upg.type, false);
+                    soldier.destroyUpgrade(upg.upgrade, upg.type, true);
                 }
             }
         }

@@ -25,6 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 @UpgradeFunctions({EnumUpgFunctions.ON_DEATH, EnumUpgFunctions.ON_TICK})
 public class UpgradeStandardBehavior
@@ -83,8 +84,10 @@ public class UpgradeStandardBehavior
     public void onTick(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
         EntityCreature soldierL = soldier.getEntity();
         if( soldierL.world.isRemote && MiscUtils.RNG.randomInt(50) == 0 ) {
+            ItemStack stack = upgradeInst.getSavedStack();
             ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, soldierL.world.provider.getDimension(), soldierL.posX, soldierL.posY + soldierL.getEyeHeight(),
-                                                soldierL.posZ, Item.getIdFromItem(upgradeInst.getSavedStack().getItem()));
+                                                soldierL.posZ, Item.getIdFromItem(stack.getItem()), stack.getItemDamage(),
+                                                stack.hasTagCompound() ? Objects.requireNonNull(stack.getTagCompound()).toString() : "");
         }
     }
 }

@@ -277,10 +277,10 @@ public class EntityClaySoldier
             }
 
             if( !silent ) {
-                if( this.world.isRemote || !upgrade.syncData() ) {
-                    ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
-                                                        Item.getIdFromItem(inst.getSavedStack().getItem()));
-                }
+                ItemStack stack = inst.getSavedStack();
+                ClaySoldiersMod.proxy.spawnParticle(EnumParticle.ITEM_BREAK, this.world.provider.getDimension(), this.posX, this.posY + this.getEyeHeight(), this.posZ,
+                                                    Item.getIdFromItem(stack.getItem()), stack.getItemDamage(),
+                                                    stack.hasTagCompound() ? Objects.requireNonNull(stack.getTagCompound()).toString() : "");
             }
         }
     }
