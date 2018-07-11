@@ -17,7 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.Arrays;
 import java.util.Locale;
 
-@CsmConfig.Category(EnumTurtleType.CFG_CAT)
+@CsmConfig.Category(value = EnumTurtleType.CFG_CAT, comment = "Turtle entity configuration")
 public enum EnumTurtleType
         implements IDollType
 {
@@ -39,11 +39,11 @@ public enum EnumTurtleType
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "turtles";
     public static final EnumTurtleType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sTurtleMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @CsmConfig.Value(value = "%sTurtleMaxHealth", comment = "Maximum health of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sTurtleMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
+    @CsmConfig.Value(value = "%sTurtleMovementSpeed", comment = "Movement speed of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
-    @CsmConfig.Value(value = "%sTurtleFireproof", category = CFG_CAT, comment = "Allow %s turtles to resist fire and lava.")
+    @CsmConfig.Value(value = "%sTurtleFireproof", comment = "Allow %s turtles to resist fire and lava.")
     public boolean fireproof;
     public final boolean visible;
     public final int itemColorBody;

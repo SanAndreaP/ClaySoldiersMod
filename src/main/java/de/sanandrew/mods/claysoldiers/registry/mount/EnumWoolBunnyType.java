@@ -17,7 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.Arrays;
 import java.util.Locale;
 
-@CsmConfig.Category(EnumWoolBunnyType.CFG_CAT)
+@CsmConfig.Category(value = EnumWoolBunnyType.CFG_CAT, comment = "Bunny entity configuration")
 public enum EnumWoolBunnyType
         implements IDollType
 {
@@ -44,11 +44,11 @@ public enum EnumWoolBunnyType
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "bunnies";
     public static final EnumWoolBunnyType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sBunnyMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @CsmConfig.Value(value = "%sBunnyMaxHealth", comment = "Maximum health of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sBunnyMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
+    @CsmConfig.Value(value = "%sBunnyMovementSpeed", comment = "Movement speed of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
-    @CsmConfig.Value(value = "%sBunnyJumpMovementSpeed", category = CFG_CAT, comment = "Jumping movement speed of a %s bunny",
+    @CsmConfig.Value(value = "%sBunnyJumpMovementSpeed", comment = "Jumping movement speed of a %s bunny",
                      range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float jumpMoveFactor;
     public final boolean visible;

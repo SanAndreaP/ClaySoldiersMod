@@ -48,19 +48,20 @@ public class CsmConfig
     {
         public static final String CAT_NAME = "entity values";
 
-        public static final String SUBCAT_ENTITY_SOLDIER = CAT_NAME + Configuration.CATEGORY_SPLITTER + "soldiers";
-        @Value(category = SUBCAT_ENTITY_SOLDIER, comment = "Maximum health of a soldier.",
-               range = @Range(minD = 0.0D, maxD = 1024.0D))
-        public static float soldierMaxHealth = 20.0F;
-        @Value(category = SUBCAT_ENTITY_SOLDIER, comment = "Base attack damage dealt by a soldier.",
-               range = @Range(minD = 0.0D, maxD = 2048.0D))
-        public static float soldierAttackDamage = 1.0F;
-        @Value(category = SUBCAT_ENTITY_SOLDIER, comment = "Movement speed of a soldier.",
-               range = @Range(minD = 0.0D, maxD = 256.0D))
-        public static float soldierMovementSpeed = 0.3F;
-        @Value(category = SUBCAT_ENTITY_SOLDIER, comment ="The range a soldier searches in for targets to follow.",
-               range = @Range(minD = 0.0D, maxD = 2048.0D))
-        public static float soldierFollowRange = 16.0F;
+        @Category(value = Soldiers.SUBCAT_ENTITY_SOLDIER, comment = "Soldier entity configuration")
+        public static final class Soldiers
+        {
+            public static final String SUBCAT_ENTITY_SOLDIER = CAT_NAME + Configuration.CATEGORY_SPLITTER + "soldiers";
+
+            @Value(comment = "Maximum health of a soldier.", range = @Range(minD = 0.0D, maxD = 1024.0D))
+            public static float soldierMaxHealth = 20.0F;
+            @Value(comment = "Base attack damage dealt by a soldier.", range = @Range(minD = 0.0D, maxD = 2048.0D))
+            public static float soldierAttackDamage = 1.0F;
+            @Value(comment = "Movement speed of a soldier.", range = @Range(minD = 0.0D, maxD = 256.0D))
+            public static float soldierMovementSpeed = 0.3F;
+            @Value(comment ="The range a soldier searches in for targets to follow.", range = @Range(minD = 0.0D, maxD = 2048.0D))
+            public static float soldierFollowRange = 16.0F;
+        }
 
         public static void init() {
             loadCategory(EnumClayHorseType.class);
@@ -80,19 +81,19 @@ public class CsmConfig
         {
             public static final String SUBCAT_DOLLS = CAT_NAME + Configuration.CATEGORY_SPLITTER + "dolls";
 
-            @Value(category = SUBCAT_DOLLS, comment = "Maximum stack size of a brick doll.", range = @Range(minI = 1, maxI = 64))
+            @Value(comment = "Maximum stack size of a brick doll.", range = @Range(minI = 1, maxI = 64))
             public static int brickDollStackSize = 16;
-            @Value(category = SUBCAT_DOLLS, comment = "Maximum stack size of a soldier doll.", range = @Range(minI = 1, maxI = 64))
+            @Value(comment = "Maximum stack size of a soldier doll.", range = @Range(minI = 1, maxI = 64))
             public static int soldierDollStackSize = 16;
-            @Value(category = SUBCAT_DOLLS, comment = "Maximum stack size of a horse doll.", range = @Range(minI = 1, maxI = 64))
+            @Value(comment = "Maximum stack size of a horse doll.", range = @Range(minI = 1, maxI = 64))
             public static int horseDollStackSize = 16;
-            @Value(category = SUBCAT_DOLLS, comment = "Maximum stack size of a pegasus doll.", range = @Range(minI = 1, maxI = 64))
+            @Value(comment = "Maximum stack size of a pegasus doll.", range = @Range(minI = 1, maxI = 64))
             public static int pegasusDollStackSize = 16;
-            @Value(category = SUBCAT_DOLLS, comment = "Maximum stack size of a turtle doll.", range = @Range(minI = 1, maxI = 64))
+            @Value(comment = "Maximum stack size of a turtle doll.", range = @Range(minI = 1, maxI = 64))
             public static int turtleDollStackSize = 16;
-            @Value(category = SUBCAT_DOLLS, comment = "Maximum stack size of a bunny doll.", range = @Range(minI = 1, maxI = 64))
+            @Value(comment = "Maximum stack size of a bunny doll.", range = @Range(minI = 1, maxI = 64))
             public static int bunnyDollStackSize = 16;
-            @Value(category = SUBCAT_DOLLS, comment = "Maximum stack size of a gecko doll.", range = @Range(minI = 1, maxI = 64))
+            @Value(comment = "Maximum stack size of a gecko doll.", range = @Range(minI = 1, maxI = 64))
             public static int geckoDollStackSize = 16;
         }
 
@@ -101,19 +102,19 @@ public class CsmConfig
         {
             public static final String SUBCAT_DISPENSER = CAT_NAME + Configuration.CATEGORY_SPLITTER + "dispenser behavior";
 
-            @Value(category = SUBCAT_DISPENSER, comment = "Allow dispenser to spawn soldiers via dolls.")
+            @Value(comment = "Allow dispenser to spawn soldiers via dolls.")
             public static boolean enableSoldierDispense = true;
-            @Value(category = SUBCAT_DISPENSER, comment = "Allow dispenser to spawn horses via dolls.")
+            @Value(comment = "Allow dispenser to spawn horses via dolls.")
             public static boolean enableHorseDispense = true;
-            @Value(category = SUBCAT_DISPENSER, comment = "Allow dispenser to spawn pegasi via dolls.")
+            @Value(comment = "Allow dispenser to spawn pegasi via dolls.")
             public static boolean enablePegasusDispense = true;
-            @Value(category = SUBCAT_DISPENSER, comment = "Allow dispenser to spawn turtles via dolls.")
+            @Value(comment = "Allow dispenser to spawn turtles via dolls.")
             public static boolean enableTurtleDispense = true;
-            @Value(category = SUBCAT_DISPENSER, comment = "Allow dispenser to spawn bunnies via dolls.")
+            @Value(comment = "Allow dispenser to spawn bunnies via dolls.")
             public static boolean enableBunnyDispense = true;
-            @Value(category = SUBCAT_DISPENSER, comment = "Allow dispenser to spawn geckos via dolls.")
+            @Value(comment = "Allow dispenser to spawn geckos via dolls.")
             public static boolean enableGeckoDispense = true;
-            @Value(category = SUBCAT_DISPENSER, comment = "Allow dispenser to use the disruptor.")
+            @Value(comment = "Allow dispenser to use the disruptor.")
             public static boolean enableDisruptorDispense = true;
         }
 
@@ -121,11 +122,11 @@ public class CsmConfig
         public static final class Disruptor
         {
             public static final String SUBCAT_DISRUPTOR = CAT_NAME + Configuration.CATEGORY_SPLITTER + "disruptor";
-            @Value(category = SUBCAT_DISRUPTOR, comment = "Allow disruptor to break clay blocks.")
+            @Value(comment = "Allow disruptor to break clay blocks.")
             public static boolean enableClayBlockDisruptMode = true;
-            @Value(category = SUBCAT_DISRUPTOR, comment = "Allow disruptor to be automateable (through dispenser or fake player) regarding clay creatures.")
+            @Value(comment = "Allow disruptor to be automateable (through dispenser or fake player) regarding clay creatures.")
             public static boolean enableAutomatedDollDisrupt = true;
-            @Value(category = SUBCAT_DISRUPTOR, comment = "Allow disruptor to be automateable (through dispenser or fake player) regarding clay block break.")
+            @Value(comment = "Allow disruptor to be automateable (through dispenser or fake player) regarding clay block break.")
             public static boolean enableAutomatedClayBlockDisrupt = true;
 
             public static void init() {
@@ -139,17 +140,17 @@ public class CsmConfig
     {
         public static final String CAT_NAME = "recipes";
 
-        @Value(category = CAT_NAME, comment = "Allow recipe registration of dyed clay soldiers.")
+        @Value(comment = "Allow recipe registration of dyed clay soldiers.")
         public static boolean enableDyedSoldierRecipe = true;
-        @Value(category = CAT_NAME, comment = "Allow recipe registration of glass clay soldiers.")
+        @Value(comment = "Allow recipe registration of glass clay soldiers.")
         public static boolean enableDyedGlassSoldierRecipe = true;
-        @Value(category = CAT_NAME, comment = "Allow recipe registration of resource clay soldiers. (Melon, Coal, Redstone, etc.)")
+        @Value(comment = "Allow recipe registration of resource clay soldiers. (Melon, Coal, Redstone, etc.)")
         public static boolean enableResourceSoldierRecipe = true;
-        @Value(category = CAT_NAME, comment = "Allow recipe registration of washing clay soldiers. (Bucket of water + teamed soldier doll -> clay soldier doll)")
+        @Value(comment = "Allow recipe registration of washing clay soldiers. (Bucket of water + teamed soldier doll -> clay soldier doll)")
         public static boolean enableSoldierWashRecipe = true;
-        @Value(category = CAT_NAME, comment = "Allow cauldron to wash clay soldiers. (teamed soldier doll -> clay soldier doll)")
+        @Value(comment = "Allow cauldron to wash clay soldiers. (teamed soldier doll -> clay soldier doll)")
         public static boolean enableCauldronSoldierWash = true;
-        @Value(category = CAT_NAME, comment = "Allow recipe registration of reverting brick soldier dolls to regular soldier dolls. (ghast tear + brick soldier doll (+ opt. teamed soldier doll) -> (teamed) soldier doll)")
+        @Value(comment = "Allow recipe registration of reverting brick soldier dolls to regular soldier dolls. (ghast tear + brick soldier doll (+ opt. teamed soldier doll) -> (teamed) soldier doll)")
         public static boolean enableBrickSoldierReverseRecipe = true;
     }
 
@@ -158,7 +159,7 @@ public class CsmConfig
     {
         public static final String CAT_NAME = "lexicon";
 
-        @Value(category = CAT_NAME, comment = "Force unicode font to be used in clay lexicon.")
+        @Value(comment = "Force unicode font to be used in clay lexicon.")
         public static boolean lexiconForceUnicode = false;
     }
 
@@ -217,7 +218,7 @@ public class CsmConfig
                 for( Field f : c.getDeclaredFields() ) {
                     if( f.isEnumConstant() && f.getAnnotation(EnumExclude.class) == null ) {
                         try {
-                            loadValues(c, f.get(null), f.getName().toLowerCase(Locale.ROOT));
+                            loadValues(cat, c, f.get(null), f.getName().toLowerCase(Locale.ROOT));
                         } catch( IllegalAccessException ex ) {
                             CsmConstants.LOG.log(Level.ERROR, String.format("Could not load config value for enum value %s in enum %s", f.getName(), f.getDeclaringClass().getName()), ex);
                         }
@@ -225,7 +226,7 @@ public class CsmConfig
                 }
             } else {
                 loadCategories(c);
-                loadValues(c);
+                loadValues(cat, c);
 
                 try {
                     Method init = c.getDeclaredMethod("init");
@@ -235,11 +236,11 @@ public class CsmConfig
         }
     }
 
-    private static void loadValues(Class<?> c) {
-        loadValues(c, null, null);
+    private static void loadValues(Category cat, Class<?> c) {
+        loadValues(cat, c, null, null);
     }
 
-    private static void loadValues(Class<?> c, Object inst, String instName) {
+    private static void loadValues(Category cat, Class<?> c, Object inst, String instName) {
         for( Field f : c.getDeclaredFields() ) {
             Value val = f.getAnnotation(Value.class);
             try {
@@ -247,7 +248,7 @@ public class CsmConfig
                     Class<?> cv = f.getType();
                     String name = val.value().isEmpty() ? f.getName() : String.format(val.value(), instName);
                     String comment = String.format(val.comment(), instName);
-                    String category = val.category();
+                    String category = val.category().isEmpty() ? cat.value() : val.category();
 
                     if( cv == long.class || cv == int.class || cv == short.class || cv == byte.class ) {
                         if( !DEFAULTS.containsKey(category + name) ) {
@@ -355,7 +356,7 @@ public class CsmConfig
     public @interface Value
     {
         String value() default "";
-        String category();
+        String category() default "";
         String comment() default "";
         Range range() default @Range;
         boolean reqMcRestart() default false;

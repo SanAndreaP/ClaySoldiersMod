@@ -17,7 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 import java.util.Arrays;
 import java.util.Locale;
 
-@CsmConfig.Category(EnumClayHorseType.CFG_CAT)
+@CsmConfig.Category(value = EnumClayHorseType.CFG_CAT, comment = "Horse and Pegasus entity configuration")
 public enum EnumClayHorseType
         implements IDollType
 {
@@ -40,13 +40,13 @@ public enum EnumClayHorseType
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "horses";
     public static final EnumClayHorseType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sHorseMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @CsmConfig.Value(value = "%sHorseMaxHealth", comment = "Maximum health of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sHorseMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
+    @CsmConfig.Value(value = "%sHorseMovementSpeed", comment = "Movement speed of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
-    @CsmConfig.Value(value = "%sHorseAmphibious", category = CFG_CAT, comment = "Allow %s horses to breathe underwater.")
+    @CsmConfig.Value(value = "%sHorseAmphibious", comment = "Allow %s horses to breathe underwater.")
     public boolean canBreatheUnderwater;
-    @CsmConfig.Value(value = "%sHorseFireproof", category = CFG_CAT, comment = "Allow %s horses to resist fire and lava.")
+    @CsmConfig.Value(value = "%sHorseFireproof", comment = "Allow %s horses to resist fire and lava.")
     public boolean hasFireImmunity;
     public final boolean visible;
     public final int itemColor;

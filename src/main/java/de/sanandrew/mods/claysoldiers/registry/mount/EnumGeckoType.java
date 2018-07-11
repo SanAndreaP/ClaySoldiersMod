@@ -14,9 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
-import java.util.Locale;
-
-@CsmConfig.Category(EnumGeckoType.CFG_CAT)
+@CsmConfig.Category(value = EnumGeckoType.CFG_CAT, comment = "Gecko entity configuration")
 public enum EnumGeckoType
         implements IDollType
 {
@@ -63,9 +61,9 @@ public enum EnumGeckoType
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "geckos";
     public static final EnumGeckoType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sGeckoMaxHealth", category = CFG_CAT, comment = "Maximum health of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @CsmConfig.Value(value = "%sGeckoMaxHealth", comment = "Maximum health of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sGeckoMovementSpeed", category = CFG_CAT, comment = "Movement speed of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
+    @CsmConfig.Value(value = "%sGeckoMovementSpeed", comment = "Movement speed of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
     public float movementFactor;
     public final boolean visible;
     public final int itemColorBody;

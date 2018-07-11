@@ -40,13 +40,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -259,7 +256,7 @@ public class ItemDisruptor
         return stack;
     }
 
-    @CsmConfig.Category(value = CsmConfig.BlocksAndItems.Disruptor.SUBCAT_DISRUPTOR)
+    @CsmConfig.Category(value = CsmConfig.BlocksAndItems.Disruptor.SUBCAT_DISRUPTOR, inherit = true)
     public enum DisruptorType {
         CLAY("clay", 32),
         HARDENED("hardened", 128),
@@ -268,8 +265,7 @@ public class ItemDisruptor
         @CsmConfig.EnumExclude
         UNKNOWN("null", 1);
 
-        @CsmConfig.Value(value = "%sDisruptorDurability", category = CsmConfig.BlocksAndItems.Disruptor.SUBCAT_DISRUPTOR,
-                         comment = "Durability of the %s disruptor. 0 durability = unbreakable")
+        @CsmConfig.Value(value = "%sDisruptorDurability", comment = "Durability of the %s disruptor. 0 durability = unbreakable")
         public int damage;
         public final String name;
 
