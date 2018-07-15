@@ -20,7 +20,9 @@ import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -327,13 +329,17 @@ public class LexiconGuiHelper
     public boolean linkActionPerformed(GuiButton button) {
         if( button instanceof GuiButtonLink ) {
             GuiButtonLink btnLink = (GuiButtonLink) button;
-            int groupCharId = btnLink.link.indexOf(':');
-            String groupId = btnLink.link.substring(0, groupCharId);
-            String entryId = btnLink.link.substring(groupCharId + 1);
+            if( btnLink.link.startsWith("http://") || btnLink.link.startsWith("https://") ) {
+                return false;
+            } else {
+                int groupCharId = btnLink.link.indexOf(':');
+                String groupId = btnLink.link.substring(0, groupCharId);
+                String entryId = btnLink.link.substring(groupCharId + 1);
 
-            ILexiconGroup group = LexiconRegistry.INSTANCE.getGroup(groupId);
-            if( group != null ) {
-                this.changePage(group, group.getEntry(entryId));
+                ILexiconGroup group = LexiconRegistry.INSTANCE.getGroup(groupId);
+                if( group != null ) {
+                    this.changePage(group, group.getEntry(entryId));
+                }
             }
 
             return true;

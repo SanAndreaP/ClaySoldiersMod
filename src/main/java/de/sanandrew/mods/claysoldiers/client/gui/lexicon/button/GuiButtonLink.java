@@ -16,11 +16,17 @@ public class GuiButtonLink
 {
     public final String link;
     public final FontRenderer fontRenderer;
+    public final boolean trusted;
 
     public GuiButtonLink(int id, int x, int y, String text, String link, FontRenderer fontRenderer) {
+        this(id, x, y, text, link, fontRenderer, false);
+    }
+
+    public GuiButtonLink(int id, int x, int y, String text, String link, FontRenderer fontRenderer, boolean trusted) {
         super(id, x, y, fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT, text);
         this.link = link;
         this.fontRenderer = fontRenderer;
+        this.trusted = trusted;
     }
 
     @Override

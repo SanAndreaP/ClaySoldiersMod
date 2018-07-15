@@ -158,6 +158,7 @@ public enum Resources
     GUI_GROUPICON_MOUNTS("textures/gui/lexicon/group_mounts.png"),
     GUI_GROUPICON_MISC("textures/gui/lexicon/group_misc.png"),
     GUI_GROUPICON_SEARCH("textures/gui/lexicon/group_search.png"),
+    GUI_GROUPICON_INFO("textures/gui/lexicon/group_info.png"),
 
     SHADER_STENCIL("shader/stencil.frag"),
 

@@ -81,13 +81,13 @@ public class GuiButtonGroup
 
         if( mx >= this.x && my >= this.y && mx < this.x + this.width && my < this.y + this.height ) {
             if( this.ticksHovered <= TIME ) {
-                this.ticksHovered = this.ticksHovered + timeDelta;
+                this.ticksHovered = Math.min(TIME, this.ticksHovered + timeDelta);
             }
             if( this.onMouseOver != null ) {
                 this.onMouseOver.accept(this.group, mx, my);
             }
-        } else if( this.ticksHovered > 0.0F ) {
-            this.ticksHovered = this.ticksHovered - timeDelta;
+        } else if( this.ticksHovered >= 0.0F ) {
+            this.ticksHovered = Math.max(-0.1F, this.ticksHovered - timeDelta);
         }
 
         float s = 1.0F / 32.0F;

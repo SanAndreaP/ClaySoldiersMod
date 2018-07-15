@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 public class GuiButtonEntry
         extends GuiButton
 {
-    private static final float TIME = 6.0F;
+    private static final float TIME = 1.0F;
     public final ILexiconEntry entry;
 
     @Nonnull
@@ -47,15 +47,16 @@ public class GuiButtonEntry
 
     @Override
     public void drawButton(Minecraft mc, int mx, int my, float partTicks) {
-        float time = ClientTickHandler.ticksInGame + partTicks;
-        float timeDelta = time - this.lastTime;
-        this.lastTime = time;
+        float gameTicks = ClientTickHandler.ticksInGame;
+        float timeDelta = (gameTicks - this.lastTime) * partTicks;
+        this.lastTime = gameTicks;
 
         if( this.visible ) {
-            boolean inside = this.enabled && mx >= this.x && my >= this.y && mx < this.x + this.width && my < this.y + this.height;
-            if( inside ) {
-                this.ticksHovered = Math.min(TIME, this.ticksHovered + timeDelta);
-            } else {
+            if( mx >= this.x && my >= this.y && mx < this.x + this.width && my < this.y + this.height ) {
+                if( this.ticksHovered <= TIME ) {
+                    this.ticksHovered = Math.min(TIME, this.ticksHovered + timeDelta);
+                }
+            } else if( this.ticksHovered > 0.0F ) {
                 this.ticksHovered = Math.max(0.0F, this.ticksHovered - timeDelta);
             }
 

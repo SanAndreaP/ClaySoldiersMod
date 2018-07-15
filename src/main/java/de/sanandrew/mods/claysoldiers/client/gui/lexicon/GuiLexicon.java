@@ -104,7 +104,7 @@ public class GuiLexicon
             int posY = 0;
             for( ILexiconGroup group : LexiconRegistry.INSTANCE.getGroups() ) {
                 this.buttonList.add(new GuiButtonGroup(this.buttonList.size(), this.guiLeft + 12 + posX, this.guiTop + 24 + posY, group, this::groupBtnMouseOver));
-                if( (posX += 32) > this.guiLeft + 12 + ILexiconPageRender.MAX_ENTRY_WIDTH ) {
+                if( (posX += 32) > ILexiconPageRender.MAX_ENTRY_WIDTH - 12 ) {
                     posX = 0;
                     posY += 32;
                 }
@@ -321,9 +321,10 @@ public class GuiLexicon
                 this.changePage(group, ((GuiButtonEntry) button).entry, 0.0F, true);
             } else if( button instanceof GuiButtonLink ) {
                 try {
-                    this.clickedURI = new URI(((GuiButtonLink) button).link);
+                    GuiButtonLink btnLink = (GuiButtonLink) button;
+                    this.clickedURI = new URI(btnLink.link);
                     if( this.mc.gameSettings.chatLinksPrompt ) {
-                        this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, this.clickedURI.toString(), 0, false));
+                        this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, this.clickedURI.toString(), 0, btnLink.trusted));
                     } else {
                         this.openLink(this.clickedURI);
                     }

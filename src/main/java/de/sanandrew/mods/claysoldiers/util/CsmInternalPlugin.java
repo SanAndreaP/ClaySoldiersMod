@@ -17,6 +17,7 @@ import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.eventhandler.ClayModelRotationEventHandler;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.info.LexiconGroupInfo;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.misc.LexiconGroupMisc;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.mount.LexiconGroupMounts;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.search.LexiconGroupSearch;
@@ -103,5 +104,6 @@ public class CsmInternalPlugin
         LexiconGroupMounts.register(registry);
         LexiconGroupMisc.register(registry);
         LexiconGroupSearch.register(registry);
+        LexiconGroupInfo.register(registry);
     }
 }
