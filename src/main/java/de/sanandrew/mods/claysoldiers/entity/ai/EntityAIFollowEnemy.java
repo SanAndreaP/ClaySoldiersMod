@@ -82,7 +82,7 @@ public abstract class EntityAIFollowEnemy
 
                 if( this.attackTick <= 0 ) {
                     this.attackTick = 20;
-                    this.taskOwner.swingArm(EnumHand.MAIN_HAND);
+                    this.taskOwner.swingArm(EnumHand.OFF_HAND);
                     this.taskOwner.getUpgradeInstanceList().stream().filter(inst -> inst.getUpgrade() instanceof ISoldierUpgradeThrowable).findFirst()
                                  .ifPresent(inst -> {
                                      ISoldierUpgradeThrowable upgThrowable = (ISoldierUpgradeThrowable) inst.getUpgrade();

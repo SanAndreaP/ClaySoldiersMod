@@ -623,6 +623,7 @@ public class EntityClaySoldier
         if( this.i58O55 == null ) { this.i58O55 = this.i58055(); if( this.i58O55 ) { this.setSize(0.34F, 0.8F); } }
 
         this.updateCape();
+        this.updateArmSwingProgress();
 
         this.callUpgradeFunc(EnumUpgFunctions.ON_TICK, upg -> upg.getUpgrade().onTick(this, upg));
 
