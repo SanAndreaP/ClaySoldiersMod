@@ -73,5 +73,5 @@ public class UpgradeBrick
         drops.add(upgradeInst.getSavedStack());
     }
 
-    private static final AttributeModifier SLOWDOWN = new AttributeModifier(UUID.fromString("314386d8-2341-4842-b3a6-e50063befbfc"), CsmConstants.ID + ".brick", -0.8D, 2);
+    private static final AttributeModifier SLOWDOWN = new AttributeModifier(UUID.fromString("314386d8-2341-4842-b3a6-e50063befbfc"), CsmConstants.ID + ".brick", -1.0D, 2);
 }
