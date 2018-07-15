@@ -200,7 +200,7 @@ public class LayerHeldItem
                 } else if( soldier.hasUpgrade(Upgrades.OH_QUARTZ, EnumUpgradeType.OFF_HAND) ) {
                     RenderUtils.renderStackInWorld(QUARTZ, 0.0D, -0.125D, -0.05D, 0.0F, 0.0F, 0.0F, 0.6D);
                 } else if( soldier.hasUpgrade(Upgrades.OH_BOWL, EnumUpgradeType.OFF_HAND) ) {
-                    RenderUtils.renderStackInWorld(SHIELD_NRM, 0.0D, 0.2D, 0.0D, 90.0F, 0.0F, 0.0F, 0.75D);
+                    RenderUtils.renderStackInWorld(SHIELD_NRM, 0.0D, 0.02D, 0.0D, 90.0F, 0.0F, 0.0F, 0.75D);
                 }
                 break;
         }
