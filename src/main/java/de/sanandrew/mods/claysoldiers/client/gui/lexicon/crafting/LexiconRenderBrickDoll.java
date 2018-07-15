@@ -81,7 +81,7 @@ public class LexiconRenderBrickDoll
     public void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks) {
         final long timer = System.nanoTime() / 1_000_000_000L;
         String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
-        helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, 0xFF8A4500);
+        helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, TITLE_COLOR);
 
         if( this.furnaceRecipes != null ) {
             Map.Entry<Ingredient, ItemStack> recipe = this.furnaceRecipes.get((int) (timer % this.furnaceRecipes.size()));

@@ -69,7 +69,7 @@ public class LexiconGuiHelper
         int yShifted = y - Math.round(GuiLexicon.scroll * this.gui.dHeight);
 
         int maxWidth = Math.min(width, width - (x + width - ILexiconPageRender.MAX_ENTRY_WIDTH));
-        int maxHeight = Math.min(height, height - (y + height - ILexiconPageRender.MAX_ENTRY_HEIGHT) + Math.round(GuiLexicon.scroll * this.gui.dHeight));
+        int maxHeight = Math.min(height, height - (y + height - this.gui.entryHeight) + Math.round(GuiLexicon.scroll * this.gui.dHeight));
 
         x = this.gui.entryX + Math.max(0, prevX);
         y = this.gui.entryY + Math.max(0, yShifted);
@@ -82,12 +82,22 @@ public class LexiconGuiHelper
 
     @Override
     public void doEntryScissoring() {
-        GuiUtils.glScissor(this.gui.entryX, this.gui.entryY, ILexiconPageRender.MAX_ENTRY_WIDTH, ILexiconPageRender.MAX_ENTRY_HEIGHT);
+        GuiUtils.glScissor(this.gui.entryX, this.gui.entryY, ILexiconPageRender.MAX_ENTRY_WIDTH, this.gui.entryHeight);
     }
 
     @Override
     public GuiScreen getGui() {
         return this.gui;
+    }
+
+    @Override
+    public int getGuiX() {
+        return this.gui.guiLeft;
+    }
+
+    @Override
+    public int getGuiY() {
+        return this.gui.guiTop;
     }
 
     @Override
@@ -98,6 +108,11 @@ public class LexiconGuiHelper
     @Override
     public int getEntryY() {
         return this.gui.entryY;
+    }
+
+    @Override
+    public void setScroll(float scroll) {
+        GuiLexicon.scroll = Math.max(0.0F, Math.min(1.0F, scroll));
     }
 
     @Override
@@ -114,11 +129,11 @@ public class LexiconGuiHelper
         x += (1.0F * scale);
         y += (1.0F * scale);
 
-        boolean mouseOver = mouseY >= 0 && mouseY < ILexiconPageRender.MAX_ENTRY_HEIGHT && mouseX >= x && mouseX < x + 16 * scale && mouseY >= y - scrollY && mouseY < y + 16 * scale - scrollY;
+        boolean mouseOver = mouseY >= 0 && mouseY < this.gui.entryHeight && mouseX >= x && mouseX < x + 16 * scale && mouseY >= y - scrollY && mouseY < y + 16 * scale - scrollY;
         if( mouseOver && ItemStackUtils.isValid(stack) ) {
             this.gui.drawFrameLast = () -> {
                 GlStateManager.pushMatrix();
-                GlStateManager.translate(this.gui.entryX, this.gui.entryY + ILexiconPageRender.MAX_ENTRY_HEIGHT - 20, 96.0F);
+                GlStateManager.translate(this.gui.entryX, this.gui.entryY + this.gui.entryHeight - 20, 96.0F);
                 Gui.drawRect(0, 0, ILexiconPageRender.MAX_ENTRY_WIDTH, 20, 0xD0000000);
 
                 List tooltip = GuiUtils.getTooltipWithoutShift(stack);
@@ -215,7 +230,7 @@ public class LexiconGuiHelper
                     for( int i = 0; i < linkSplit.length; i++ ) {
                         StringBuilder txt = new StringBuilder(linkSplit[i]);
                         if( i < linkSplit.length - 1 ) {
-                            txt.append(' ');
+                            txt.append('\u00A0');
                         }
                         links.put(currInd, String.format("%s|%s:%s", txt, matcher.group(2), matcher.group(3)));
                         currInd += txt.length();

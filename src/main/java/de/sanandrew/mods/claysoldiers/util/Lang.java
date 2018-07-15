@@ -16,6 +16,8 @@ public final class Lang
     public static final TranslateKey LEXICON_ENTRY_NAME = new TranslateKey("%s.lexicon.%%s.%%s.name", CsmConstants.ID);
     public static final TranslateKey LEXICON_ENTRY_TEXT = new TranslateKey("%s.lexicon.%%s.%%s.text", CsmConstants.ID);
     public static final TranslateKey LEXICON_ENTRY_GRIDTEXT = new TranslateKey("%s.lexicon.%%s.%%s.gridtext", CsmConstants.ID);
+    public static final TranslateKey LEXICON_SRC_ENTRY_TITLE = new TranslateKey("%s.lexicon.search.title", CsmConstants.ID);
+    public static final TranslateKey LEXICON_SRC_ENTRY_TEXT = new TranslateKey("%s.lexicon.search.text", CsmConstants.ID);
 
     public static final TranslateKey ENTITY_NAME   = new TranslateKey("entity.%s.name");
     public static final TranslateKey ENTITY_DESC   = new TranslateKey("entity.%s.desc");

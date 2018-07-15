@@ -26,6 +26,7 @@ import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,11 +52,14 @@ public class GuiLexicon
     int guiTop;
     int entryX;
     int entryY;
+    int entryHeight;
 
     private static ILexiconGroup group;
     private static ILexiconEntry entry;
     @Nonnull
     private ILexiconPageRender render;
+    @Nonnull
+    private NBTTagCompound changedPageNbt = new NBTTagCompound();
 
     static float scroll;
     int dHeight;
@@ -86,6 +90,7 @@ public class GuiLexicon
 
         this.entryX = this.guiLeft + ILexiconPageRender.ENTRY_X;
         this.entryY = this.guiTop + ILexiconPageRender.ENTRY_Y;
+        this.entryHeight = ILexiconPageRender.MAX_ENTRY_HEIGHT;
 
         this.buttonList.clear();
         this.entryButtons.clear();
@@ -119,7 +124,11 @@ public class GuiLexicon
         } else {
             this.render = LexiconRegistry.INSTANCE.getPageRender(entry.getPageRenderId());
             if( this.render != null ) {
+                int shift = this.render.shiftEntryPosY();
+                this.entryY += shift;
+                this.entryHeight -= shift;
                 this.render.initPage(entry, this.renderHelper, this.buttonList, this.entryButtons);
+                this.render.loadPageState(this.changedPageNbt);
             } else {
                 CsmConstants.LOG.log(Level.ERROR, String.format("cannot render lexicon page entry %s as render ID %s is not registered!", entry.getId(), entry.getPageRenderId()));
                 this.render = EmptyRenderer.INSTANCE;
@@ -137,16 +146,18 @@ public class GuiLexicon
         }
 
         if( entry != null ) {
-            this.dHeight = this.render.getEntryHeight(entry, this.renderHelper) - ILexiconPageRender.MAX_ENTRY_HEIGHT;
+            this.dHeight = this.render.getEntryHeight(entry, this.renderHelper) - this.entryHeight;
         } else if( group != null ) {
-            this.dHeight = this.entryButtons.size() * 14 + 20 - ILexiconPageRender.MAX_ENTRY_HEIGHT;
+            this.dHeight = this.entryButtons.size() * 14 + 20 - this.entryHeight;
         } else {
             this.dHeight = 0;
         }
 
         for( GuiButton btn : this.entryButtons ) {
-            btn.enabled = btn.y - Math.round(scroll * this.dHeight) > 0 && btn.y - Math.round(scroll * this.dHeight) + btn.height < ILexiconPageRender.MAX_ENTRY_HEIGHT;
+            btn.enabled = btn.y - Math.round(scroll * this.dHeight) > 0 && btn.y - Math.round(scroll * this.dHeight) + btn.height <= this.entryHeight;
         }
+
+        this.render.updateScreen(this.renderHelper);
     }
 
     @Override
@@ -163,20 +174,23 @@ public class GuiLexicon
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(this.entryX + ILexiconPageRender.MAX_ENTRY_WIDTH, this.entryY, 0.0F);
-        drawRect(0, 0, 6, ILexiconPageRender.MAX_ENTRY_HEIGHT, 0x30000000);
+        drawRect(0, 0, 6, this.entryHeight, 0x30000000);
         if( this.dHeight > 0 ) {
-            drawRect(0, Math.round((ILexiconPageRender.MAX_ENTRY_HEIGHT - 16) * scroll), 6, Math.round((ILexiconPageRender.MAX_ENTRY_HEIGHT - 16) * scroll + 16), 0x800000FF);
+            drawRect(0, Math.round((this.entryHeight - 16) * scroll), 6, Math.round((this.entryHeight - 16) * scroll + 16), 0x800000FF);
         }
         GlStateManager.popMatrix();
+
+        if( entry != null ) {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(this.guiLeft, this.guiTop, 0.0F);
+            this.render.renderPageOverlay(entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, partTicks);
+            GlStateManager.popMatrix();
+        }
 
         GlStateManager.pushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         this.renderHelper.doEntryScissoring();
         GlStateManager.translate(this.entryX, this.entryY, 0.0F);
-
-        if( entry != null ) {
-            this.render.renderPageGlobal(entry, this.renderHelper, mouseX - this.entryX, mouseY - entryY, partTicks);
-        }
 
         GlStateManager.translate(0.0F, Math.round(-scroll * this.dHeight), 0.0F);
 
@@ -197,7 +211,7 @@ public class GuiLexicon
         if( !mouseDown && this.isScrolling ) {
             this.isScrolling = false;
         } else if( mouseDown && !this.isScrolling ) {
-            if( mouseY >= this.entryY && mouseY < this.entryY + ILexiconPageRender.MAX_ENTRY_HEIGHT ) {
+            if( mouseY >= this.entryY && mouseY < this.entryY + this.entryHeight ) {
                 if( mouseX >= this.entryX + ILexiconPageRender.MAX_ENTRY_WIDTH && mouseX < this.entryX + ILexiconPageRender.MAX_ENTRY_WIDTH + 6 ) {
                     this.isScrolling = this.dHeight > 0;
                 }
@@ -205,8 +219,8 @@ public class GuiLexicon
         }
 
         if( this.isScrolling ) {
-            int mouseDelta = Math.min(ILexiconPageRender.MAX_ENTRY_HEIGHT - 16, Math.max(0, mouseY - (this.entryY + 8)));
-            scroll = mouseDelta / (ILexiconPageRender.MAX_ENTRY_HEIGHT - 16.0F);
+            int mouseDelta = Math.min(this.entryHeight - 16, Math.max(0, mouseY - (this.entryY + 8)));
+            scroll = mouseDelta / (this.entryHeight - 16.0F);
         }
 
         super.drawScreen(mouseX, mouseY, partTicks);
@@ -219,7 +233,9 @@ public class GuiLexicon
 
     public void changePage(ILexiconGroup group, ILexiconEntry entry, float scroll, boolean doHistory) {
         if( doHistory ) {
-            NAV_HISTORY.offer(new History(GuiLexicon.group, GuiLexicon.entry, GuiLexicon.scroll));
+            History h = new History(GuiLexicon.group, GuiLexicon.entry, GuiLexicon.scroll);
+            this.render.savePageState(h.nbt);
+            NAV_HISTORY.offer(h);
             NAV_FUTURE.clear();
         }
         GuiLexicon.group = group;
@@ -275,17 +291,24 @@ public class GuiLexicon
                     case 0:
                         h = NAV_HISTORY.pollLast();
                         if( h != null ) {
-                            NAV_FUTURE.offer(new History(group, entry, scroll));
+                            History fh = new History(group, entry, scroll);
+                            this.render.savePageState(fh.nbt);
+                            NAV_FUTURE.offer(fh);
+                            this.changedPageNbt = h.nbt;
                             this.changePage(h.group, h.entry, h.scroll, false);
                         }
                         break;
                     case 1:
+                        this.changedPageNbt = new NBTTagCompound();
                         this.changePage(null, null, 0.0F, true);
                         break;
                     case 2:
                         h = NAV_FUTURE.pollLast();
                         if( h != null ) {
-                            NAV_HISTORY.offer(new History(group, entry, scroll));
+                            History ph = new History(group, entry, scroll);
+                            this.render.savePageState(ph.nbt);
+                            NAV_HISTORY.offer(ph);
+                            this.changedPageNbt = h.nbt;
                             this.changePage(h.group, h.entry, h.scroll, false);
                         }
                         break;
@@ -342,6 +365,14 @@ public class GuiLexicon
                 }
             }
         }
+
+        this.render.mouseClicked(mouseX, mouseY, mouseBtn, this.renderHelper);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+        this.render.keyTyped(typedChar, keyCode, this.renderHelper);
     }
 
     @Override
@@ -362,6 +393,7 @@ public class GuiLexicon
         final ILexiconGroup group;
         final ILexiconEntry entry;
         final float scroll;
+        final NBTTagCompound nbt = new NBTTagCompound();
 
         History(ILexiconGroup group, ILexiconEntry entry, float scroll) {
             this.group = group;

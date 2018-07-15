@@ -19,6 +19,7 @@ import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.misc.LexiconGroupMisc;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.mount.LexiconGroupMounts;
+import de.sanandrew.mods.claysoldiers.client.gui.lexicon.search.LexiconGroupSearch;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconGroupSoldiers;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade.LexiconGroupUpgrades;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
@@ -101,5 +102,6 @@ public class CsmInternalPlugin
         LexiconGroupUpgrades.register(registry);
         LexiconGroupMounts.register(registry);
         LexiconGroupMisc.register(registry);
+        LexiconGroupSearch.register(registry);
     }
 }

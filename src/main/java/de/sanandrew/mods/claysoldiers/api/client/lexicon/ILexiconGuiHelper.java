@@ -30,9 +30,15 @@ public interface ILexiconGuiHelper
 
     void changePage(ILexiconGroup group, ILexiconEntry entry);
 
+    int getGuiX();
+
+    int getGuiY();
+
     int getEntryX();
 
     int getEntryY();
+
+    void setScroll(float scroll);
 
     void drawItemGrid(int x, int y, int mouseX, int mouseY, int scrollY, @Nonnull ItemStack stack, float scale, boolean drawTooltip);
 

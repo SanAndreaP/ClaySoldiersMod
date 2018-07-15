@@ -32,5 +32,6 @@ public class LexiconGroupMisc
 
         grp.addEntry(new LexiconEntryDisruptor());
         grp.addEntry(new LexiconEntryDispenser());
+        grp.addEntry(new LexiconEntryChestAccess());
     }
 }
