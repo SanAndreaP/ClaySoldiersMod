@@ -170,7 +170,8 @@ public class CsmConfig
     public static void initialize(FMLPreInitializationEvent event) {
         File cfgFile = event.getSuggestedConfigurationFile();
         config = new Configuration(cfgFile, CONFIG_VER, true);
-        if( Integer.parseInt(config.getLoadedConfigVersion().split("\\.")[0]) < Integer.parseInt(CONFIG_VER.split("\\.")[0]) ) {
+		String loadedVer = config.getLoadedConfigVersion();
+        if( loadedVer != null && Integer.parseInt(loadedVer.split("\\.")[0]) < Integer.parseInt(CONFIG_VER.split("\\.")[0]) ) {
             try {
                 FileUtils.copyFile(cfgFile, new File(cfgFile.getAbsoluteFile() + ".old"));
                 config.getCategoryNames().forEach(cat -> config.removeCategory(config.getCategory(cat)));

@@ -13,7 +13,7 @@ public final class CsmConstants
 {
     public static final String ID = "claysoldiers";
     public static final Logger LOG = LogManager.getLogger(ID);
-    public static final String VERSION = "3.0.0-beta.1";
+    public static final String VERSION = "3.0.0-beta.1.1";
     public static final String CHANNEL = "ClaySoldiersNWCH";
     public static final String NAME = "Clay Soldiers Mod";
     public static final String DEPENDENCIES = "required-after:forge@[14.23.2.2611,];required-after:sanlib@[1.4.2,]";
