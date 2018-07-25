@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.DummyHander;
+import de.sanandrew.mods.claysoldiers.api.client.DummyHander;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
@@ -42,12 +42,12 @@ public class LexiconRenderUpgradeType
 
         if( entry instanceof LexiconEntryUpgradeType ) {
             final EnumUpgradeType type = ((LexiconEntryUpgradeType) entry).type;
-            final int btnX = helper.getEntryX() + 2;
+
             ClientProxy.lexiconInstance.getGroup(entry.getGroupId()).getEntries().forEach(subEntry -> {
                 if( subEntry instanceof LexiconEntryUpgrade ) {
                     LexiconEntryUpgrade subEntryUpg = (LexiconEntryUpgrade) subEntry;
                     if( type == subEntryUpg.upgrade.getType(DummyHander.MAIN) || type == subEntryUpg.upgrade.getType(DummyHander.OFF) ) {
-                        GuiButton btn = helper.getNewEntryButton(this.entryButtons.size(), btnX, 0, subEntry, helper.getFontRenderer()).get();
+                        GuiButton btn = helper.getNewEntryButton(this.entryButtons.size(), 2, 0, subEntry, helper.getFontRenderer()).get();
                         this.subEntryButtons.add(btn);
                         this.entryButtons.add(btn);
                     }
@@ -58,14 +58,9 @@ public class LexiconRenderUpgradeType
 
     @Override
     public void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks) {
-//        String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
-//        helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, TITLE_COLOR);
         helper.drawTitleCenter(0, entry);
 
-//        s = Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(entry.getGroupId(), entry.getId())).replace("\\n", "\n");
-//        this.drawHeight = helper.getWordWrappedHeight(s, MAX_ENTRY_WIDTH - 4) + 15;
-//        helper.drawContentString(s, 2, 12, MAX_ENTRY_WIDTH - 4, 0xFF000000, this.entryButtons);
-        this.drawHeight += helper.drawContentString(2, 12, entry, this.entryButtons);
+        this.drawHeight = helper.drawContentString(2, 12, entry, this.entryButtons) + 12;
 
         for( GuiButton btn : this.subEntryButtons ) {
             btn.y = this.drawHeight;

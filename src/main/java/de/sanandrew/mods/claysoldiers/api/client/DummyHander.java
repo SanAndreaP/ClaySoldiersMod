@@ -4,7 +4,7 @@
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.client.lexicon;
+package de.sanandrew.mods.claysoldiers.api.client;
 
 import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
 

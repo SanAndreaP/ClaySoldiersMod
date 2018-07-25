@@ -80,8 +80,7 @@ public class LexiconRenderBrickDoll
     public void renderPageEntry(ILexiconEntry entry, ILexiconGuiHelper helper, int mouseX, int mouseY, int scrollY, float partTicks) {
         final long timer = System.nanoTime() / 1_000_000_000L;
         final int entryWidth = helper.getLexicon().getEntryWidth();
-//        String s = TextFormatting.ITALIC.toString() + TextFormatting.BOLD + Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
-//        helper.getFontRenderer().drawString(s, (MAX_ENTRY_WIDTH - helper.getFontRenderer().getStringWidth(s)) / 2, 0, TITLE_COLOR);
+
         helper.drawTitleCenter(0, entry);
 
         if( this.furnaceRecipes != null ) {
@@ -108,9 +107,6 @@ public class LexiconRenderBrickDoll
         }
 
         this.drawHeight += helper.drawContentString(2, drawHeight, entry, this.entryButtons);
-//        String s = Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(entry.getGroupId(), entry.getId())).replace("\\n", "\n");
-//        helper.drawContentString(s, 2, this.drawHeight, entryWidth - 2, 0xFF000000, this.entryButtons);
-//        this.drawHeight += helper.getWordWrappedHeight(s, entryWidth - 2);
 
         if( this.crfGridsNoraml != null && this.crfGridsNoraml.size() > 0 ) {
             CraftingGrid grid = this.crfGridsNoraml.get((int) (timer % this.crfGridsNoraml.size()));
