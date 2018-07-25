@@ -13,6 +13,7 @@ import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
@@ -27,6 +28,8 @@ public abstract class EntityAIFollowTarget
 
     final double speed;
     Path path;
+
+    private Vec3d moveTowards = null;
 
     EntityAIFollowTarget(EntityClaySoldier soldier, double speedIn) {
         this.taskOwner = soldier;
@@ -49,14 +52,26 @@ public abstract class EntityAIFollowTarget
     @Override
     public void updateTask() {
         Entity target = this.getTarget();
+        double tgtDist = this.taskOwner.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
 
         if( target != null ) {
-            this.path = this.taskOwner.getNavigator().getPathToEntityLiving(target);
-            if( this.path == null ) {
-                Vec3d vec = new Vec3d(target.posX - this.taskOwner.posX, target.posY - this.taskOwner.posY, target.posZ - this.taskOwner.posZ).normalize().scale(2.0D);
-                this.path = this.taskOwner.getNavigator().getPathToXYZ(this.taskOwner.posX + vec.x, this.taskOwner.posY + vec.y, this.taskOwner.posZ + vec.z);
+            if( tgtDist > 2.0D ) {
+                this.moveTowards = null;
+                this.path = this.taskOwner.getNavigator().getPathToEntityLiving(target);
+                if( this.path == null ) {
+                    Vec3d vec = new Vec3d(target.posX - this.taskOwner.posX, target.posY - this.taskOwner.posY, target.posZ - this.taskOwner.posZ).normalize().scale(2.0D);
+                    this.path = this.taskOwner.getNavigator().getPathToXYZ(this.taskOwner.posX + vec.x, this.taskOwner.posY + vec.y, this.taskOwner.posZ + vec.z);
+                }
+            } else if( this.taskOwner.ticksExisted % 20 == 0 ) {
+                this.moveTowards = new Vec3d(target.posX - this.taskOwner.posX, 0, target.posZ - this.taskOwner.posZ)
+                                       .normalize().scale(this.taskOwner.getAIMoveSpeed() * 0.1D);
+            }
+            if( this.moveTowards != null ) {
+                this.taskOwner.motionX += this.moveTowards.x;
+                this.taskOwner.motionZ += this.moveTowards.z;
             }
         } else {
+            this.moveTowards = null;
             this.path = null;
             return;
         }
@@ -66,7 +81,6 @@ public abstract class EntityAIFollowTarget
         }
 
         this.taskOwner.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
-        double tgtDist = this.taskOwner.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
 
         this.checkAndPerformAction(target, tgtDist);
     }

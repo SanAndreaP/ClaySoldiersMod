@@ -22,6 +22,7 @@ import de.sanandrew.mods.claysoldiers.api.attribute.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowTarget;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIMoveAwayFromCorners;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowEnemy;
@@ -193,6 +194,7 @@ public class EntityClaySoldier
 
     @Override
     protected void initEntityAI() {
+        this.tasks.addTask(0, new EntityAIMoveAwayFromCorners(this, 0.75D));
         this.tasks.addTask(1, new EntityAIFollowTarget.Fallen(this, 1.0D));
         this.tasks.addTask(2, new EntityAIFollowTarget.Upgrade(this, 1.0D));
         this.tasks.addTask(2, new EntityAIFollowTarget.Mount(this, 1.0D));
