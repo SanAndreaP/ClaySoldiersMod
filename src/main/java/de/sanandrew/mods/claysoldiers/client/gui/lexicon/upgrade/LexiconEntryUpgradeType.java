@@ -6,11 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 
-import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.util.Lang;
-import net.minecraft.client.resources.I18n;
+import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,15 +22,11 @@ public class LexiconEntryUpgradeType
         implements ILexiconEntry
 {
     private final String id;
-    private final String groupId;
-    private final String renderId;
     private final ItemStack icon;
     final EnumUpgradeType type;
 
     public LexiconEntryUpgradeType(EnumUpgradeType type, ItemStack icon) {
         this.id = "cat_" + type.name().toLowerCase(Locale.ROOT);
-        this.groupId = LexiconGroupUpgrades.GRP_NAME;
-        this.renderId = LexiconRenderUpgradeType.ID;
         this.type = type;
         this.icon = icon;
     }
@@ -44,12 +38,12 @@ public class LexiconEntryUpgradeType
 
     @Override
     public String getGroupId() {
-        return this.groupId;
+        return LexiconGroupUpgrades.GRP_NAME;
     }
 
     @Override
     public String getPageRenderId() {
-        return this.renderId;
+        return LexiconRenderUpgradeType.ID;
     }
 
     @Override
@@ -70,12 +64,12 @@ public class LexiconEntryUpgradeType
     @Nonnull
     @Override
     public String getSrcTitle() {
-        return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(this.getGroupId(), this.getId()));
+        return ClientProxy.lexiconInstance.getTranslatedTitle(this);
     }
 
     @Nonnull
     @Override
     public String getSrcText() {
-        return Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(this.getGroupId(), this.getId()));
+        return ClientProxy.lexiconInstance.getTranslatedText(this);
     }
 }

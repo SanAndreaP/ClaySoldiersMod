@@ -7,9 +7,8 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
-import de.sanandrew.mods.claysoldiers.util.Lang;
+import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 
 public class LexiconEntryChestAccess
-        implements ILexiconEntryCraftingGrid
+        implements ILexiconEntry
 {
     private static final String ID = "chestaccess";
     private final ItemStack icon;
@@ -40,7 +39,7 @@ public class LexiconEntryChestAccess
 
     @Override
     public String getPageRenderId() {
-        return ILexiconPageRender.RENDER_STANDARD_ID;
+        return ClientProxy.lexiconInstance.getStandardRenderID();
     }
 
     @Nonnull
@@ -57,12 +56,12 @@ public class LexiconEntryChestAccess
     @Nonnull
     @Override
     public String getSrcTitle() {
-        return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(this.getGroupId(), this.getId()));
+        return ClientProxy.lexiconInstance.getTranslatedTitle(this);
     }
 
     @Nonnull
     @Override
     public String getSrcText() {
-        return Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(this.getGroupId(), this.getId()));
+        return ClientProxy.lexiconInstance.getTranslatedText(this);
     }
 }

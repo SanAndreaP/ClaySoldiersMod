@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.util;
 
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.GuiLexicon;
+import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -37,7 +37,7 @@ public class GuiHandler
     public Gui getClientGui(int id, EntityPlayer player, World world, int x, int y, int z) {
         switch( id ) {
             case GUI_LEXICON:
-                return new GuiLexicon();
+                return ClientProxy.lexiconInstance.getGui();
             default:
                 return null;
         }

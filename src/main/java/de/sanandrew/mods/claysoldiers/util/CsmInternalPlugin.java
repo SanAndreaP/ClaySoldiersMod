@@ -10,17 +10,13 @@ import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.IEffectRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.eventhandler.ClayModelRotationEventHandler;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.info.LexiconGroupInfo;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.misc.LexiconGroupMisc;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.mount.LexiconGroupMounts;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.search.LexiconGroupSearch;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconGroupSoldiers;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade.LexiconGroupUpgrades;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerCape;
@@ -34,10 +30,12 @@ import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerMagmaCr
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerSkull;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer.LayerHeldItem;
 import de.sanandrew.mods.claysoldiers.client.renderer.soldier.RenderHookBody;
+import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.claysoldiers.eventhandler.SoldierEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -95,15 +93,13 @@ public class CsmInternalPlugin
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerLexicon(ILexiconRegistry registry) {
-        registry.registerPageRender(new LexiconRenderStandard());
-        registry.registerPageRender(new LexiconRenderCraftingGrid());
+    public void registerLexicon(ILexiconInst registry) {
+        ClientProxy.lexiconInstance = registry;
 
         LexiconGroupSoldiers.register(registry);
         LexiconGroupUpgrades.register(registry);
         LexiconGroupMounts.register(registry);
         LexiconGroupMisc.register(registry);
-        LexiconGroupSearch.register(registry);
         LexiconGroupInfo.register(registry);
     }
 }

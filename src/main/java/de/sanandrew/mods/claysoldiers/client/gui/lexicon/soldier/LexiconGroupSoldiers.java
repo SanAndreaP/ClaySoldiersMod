@@ -6,12 +6,11 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderBrickDoll;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
 import de.sanandrew.mods.claysoldiers.util.Resources;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconGroup;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
+import de.sanandrew.mods.sanlib.api.client.lexicon.LexiconGroup;
 
 public class LexiconGroupSoldiers
         extends LexiconGroup
@@ -22,7 +21,7 @@ public class LexiconGroupSoldiers
         super(GRP_NAME, Resources.GUI_GROUPICON_SOLDIERS.resource);
     }
 
-    public static void register(ILexiconRegistry registry) {
+    public static void register(ILexiconInst registry) {
         registry.registerPageRender(new LexiconRenderBrickDoll());
 
         ILexiconGroup grp = new LexiconGroupSoldiers();

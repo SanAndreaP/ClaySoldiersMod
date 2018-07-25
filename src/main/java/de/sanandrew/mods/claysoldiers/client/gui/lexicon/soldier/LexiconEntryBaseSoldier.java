@@ -7,11 +7,10 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconPageRender;
+import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
-import de.sanandrew.mods.claysoldiers.util.Lang;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntryCraftingGrid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -42,7 +41,7 @@ public class LexiconEntryBaseSoldier
 
     @Override
     public String getPageRenderId() {
-        return ILexiconPageRender.RENDER_CRAFTING_ID;
+        return ClientProxy.lexiconInstance.getCraftingRenderID();
     }
 
     @Nonnull
@@ -64,12 +63,12 @@ public class LexiconEntryBaseSoldier
     @Nonnull
     @Override
     public String getSrcTitle() {
-        return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(this.getGroupId(), this.getId()));
+        return ClientProxy.lexiconInstance.getTranslatedTitle(this);
     }
 
     @Nonnull
     @Override
     public String getSrcText() {
-        return Lang.translate(Lang.LEXICON_ENTRY_TEXT.get(this.getGroupId(), this.getId()));
+        return ClientProxy.lexiconInstance.getTranslatedText(this);
     }
 }

@@ -7,9 +7,9 @@
 package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,5 +34,5 @@ public interface ICsmPlugin
     default void registerSoldierRenderHook(IRenderHookRegistry registry) { }
 
     @SideOnly(Side.CLIENT)
-    default void registerLexicon(ILexiconRegistry registry) { }
+    default void registerLexicon(ILexiconInst registry) { }
 }

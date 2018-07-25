@@ -6,18 +6,10 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.mount;
 
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderBrickDoll;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderCraftingGrid;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryBaseSoldier;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryBrickDoll;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryDyeSoldier;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryGlassSoldier;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryMiscSoldier;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryWashSoldier;
 import de.sanandrew.mods.claysoldiers.util.Resources;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconGroup;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
+import de.sanandrew.mods.sanlib.api.client.lexicon.LexiconGroup;
 
 public class LexiconGroupMounts
         extends LexiconGroup
@@ -28,7 +20,7 @@ public class LexiconGroupMounts
         super(GRP_NAME, Resources.GUI_GROUPICON_MOUNTS.resource);
     }
 
-    public static void register(ILexiconRegistry registry) {
+    public static void register(ILexiconInst registry) {
         ILexiconGroup grp = new LexiconGroupMounts();
         registry.registerGroup(grp);
 

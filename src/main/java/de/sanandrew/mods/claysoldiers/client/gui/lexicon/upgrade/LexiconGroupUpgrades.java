@@ -7,16 +7,15 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.client.lexicon.DummyHander;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntry;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRenderStandard;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.util.Lang;
 import de.sanandrew.mods.claysoldiers.util.Resources;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconGroup;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
+import de.sanandrew.mods.sanlib.api.client.lexicon.LexiconGroup;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -36,7 +35,7 @@ public class LexiconGroupUpgrades
         this.entries.sort(UpgradeSorter.INSTANCE);
     }
 
-    public static void register(ILexiconRegistry registry) {
+    public static void register(ILexiconInst registry) {
         registry.registerPageRender(new LexiconRenderUpgradeType());
 
         ILexiconGroup grp = new LexiconGroupUpgrades();

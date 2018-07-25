@@ -6,14 +6,14 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.info;
 
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconEntryCraftingGrid;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
 public final class LexiconEntryInfo
-        implements ILexiconEntryCraftingGrid
+        implements ILexiconEntry
 {
     public static final String ID = "info";
     private final ItemStack icon;

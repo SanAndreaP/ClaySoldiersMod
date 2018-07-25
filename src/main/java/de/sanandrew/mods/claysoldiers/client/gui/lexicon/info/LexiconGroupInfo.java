@@ -6,10 +6,10 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.info;
 
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconGroup;
-import de.sanandrew.mods.claysoldiers.api.client.lexicon.ILexiconRegistry;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconGroup;
 import de.sanandrew.mods.claysoldiers.util.Resources;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconGroup;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
+import de.sanandrew.mods.sanlib.api.client.lexicon.LexiconGroup;
 
 public final class LexiconGroupInfo
         extends LexiconGroup
@@ -20,7 +20,7 @@ public final class LexiconGroupInfo
         super(GRP_NAME, Resources.GUI_GROUPICON_INFO.resource);
     }
 
-    public static void register(ILexiconRegistry registry) {
+    public static void register(ILexiconInst registry) {
         registry.registerPageRender(new LexiconRenderInfo());
 
         ILexiconGroup grp = new LexiconGroupInfo();

@@ -10,7 +10,6 @@ import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.ISoldierRenderHook;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
 import de.sanandrew.mods.claysoldiers.client.eventhandler.ClientEventHandler;
-import de.sanandrew.mods.claysoldiers.client.gui.lexicon.LexiconRegistry;
 import de.sanandrew.mods.claysoldiers.client.particle.ParticleHandler;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorBunny;
 import de.sanandrew.mods.claysoldiers.client.renderer.color.ItemColorGecko;
@@ -26,6 +25,7 @@ import de.sanandrew.mods.claysoldiers.util.CommonProxy;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
 import de.sanandrew.mods.claysoldiers.util.GuiHandler;
+import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +45,8 @@ public class ClientProxy
         implements IRenderHookRegistry
 {
     private ISoldierRender soldierRenderer;
+
+    public static ILexiconInst lexiconInstance;
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -71,11 +73,6 @@ public class ClientProxy
         ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerSoldierRenderHook(this));
 
         Shaders.initShaders();
-    }
-
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        ClaySoldiersMod.PLUGINS.forEach(plugin -> plugin.registerLexicon(LexiconRegistry.INSTANCE));
     }
 
     @Override
