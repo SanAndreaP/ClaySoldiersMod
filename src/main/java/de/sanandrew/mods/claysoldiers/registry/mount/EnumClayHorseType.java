@@ -10,14 +10,17 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
+import de.sanandrew.mods.sanlib.lib.util.config.Category;
+import de.sanandrew.mods.sanlib.lib.util.config.EnumExclude;
+import de.sanandrew.mods.sanlib.lib.util.config.Range;
+import de.sanandrew.mods.sanlib.lib.util.config.Value;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
-import java.util.Locale;
 
-@CsmConfig.Category(value = EnumClayHorseType.CFG_CAT, comment = "Horse and Pegasus entity configuration")
+@Category(value = EnumClayHorseType.CFG_CAT, comment = "Horse and Pegasus entity configuration")
 public enum EnumClayHorseType
         implements IDollType
 {
@@ -34,43 +37,43 @@ public enum EnumClayHorseType
 
     NIGHTMARE(false, 50.0F, 1.6F, false, true, 0x0, "spec_nightmare1", "spec_nightmare2"),
 
-    @CsmConfig.EnumExclude
+    @EnumExclude
     UNKNOWN(false, 0.0F, 0.0F, false, false, 0x0);
 
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "horses";
     public static final EnumClayHorseType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sHorseMaxHealth", comment = "Maximum health of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @Value(comment = "Maximum health of this type of horse.", range = @Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sHorseMovementSpeed", comment = "Movement speed of a %s horse.", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
-    public float movementFactor;
-    @CsmConfig.Value(value = "%sHorseAmphibious", comment = "Allow %s horses to breathe underwater.")
-    public boolean canBreatheUnderwater;
-    @CsmConfig.Value(value = "%sHorseFireproof", comment = "Allow %s horses to resist fire and lava.")
-    public boolean hasFireImmunity;
+    @Value(comment = "Movement speed of this type of horse.", range = @Range(minD = 0.0D, maxD = 256.0D))
+    public float movementSpeed;
+    @Value(comment = "Allow this type of horse to breathe underwater.")
+    public boolean amphibious;
+    @Value(comment = "Allow this type of horse to resist fire and lava.")
+    public boolean fireproof;
     public final boolean visible;
     public final int itemColor;
     public final String cstItemSuffix;
     public final ResourceLocation[] textures;
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, boolean immuneToFire, String cstItemSuffix, int itemColor, String... textures) {
+    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, boolean immuneToFire, String cstItemSuffix, int itemColor, String... textures) {
         if (textures == null) {
             textures = new String[0];
         }
 
         this.visible = visible;
         this.maxHealth = maxHealth;
-        this.movementFactor = movementFactor;
-        this.canBreatheUnderwater = canBreatheUnderwater;
+        this.movementSpeed = movementSpeed;
+        this.amphibious = canBreatheUnderwater;
         this.itemColor = itemColor;
         this.textures = Arrays.stream(textures).map(s -> new ResourceLocation(CsmConstants.ID, String.format("textures/entities/mount/horses/%s.png", s)))
                               .toArray(ResourceLocation[]::new);
         this.cstItemSuffix = cstItemSuffix;
-        this.hasFireImmunity = immuneToFire;
+        this.fireproof = immuneToFire;
     }
 
-    EnumClayHorseType(boolean visible, float maxHealth, float movementFactor, boolean canBreatheUnderwater, boolean immuneToFire, int itemColor, String... textures) {
-        this(visible, maxHealth, movementFactor, canBreatheUnderwater, immuneToFire, null, itemColor, textures);
+    EnumClayHorseType(boolean visible, float maxHealth, float movementSpeed, boolean canBreatheUnderwater, boolean immuneToFire, int itemColor, String... textures) {
+        this(visible, maxHealth, movementSpeed, canBreatheUnderwater, immuneToFire, null, itemColor, textures);
     }
 
     @Override

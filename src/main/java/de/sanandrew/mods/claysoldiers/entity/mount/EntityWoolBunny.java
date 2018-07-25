@@ -86,12 +86,12 @@ public class EntityWoolBunny
 
     @Override
     float getMovementMultiplier() {
-        return this.type.movementFactor;
+        return this.type.movementSpeed;
     }
 
     @Override
     protected float getJumpUpwardsMotion() {
-        return this.type.jumpMoveFactor;
+        return this.type.jumpMovementSpeed;
     }
 
     @Override

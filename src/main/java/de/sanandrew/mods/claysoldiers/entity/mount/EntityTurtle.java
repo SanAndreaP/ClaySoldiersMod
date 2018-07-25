@@ -199,6 +199,6 @@ public class EntityTurtle
 
     @Override
     float getMovementMultiplier() {
-        return this.type.movementFactor;
+        return this.type.movementSpeed;
     }
 }

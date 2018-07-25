@@ -10,14 +10,17 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
+import de.sanandrew.mods.sanlib.lib.util.config.Category;
+import de.sanandrew.mods.sanlib.lib.util.config.EnumExclude;
+import de.sanandrew.mods.sanlib.lib.util.config.Range;
+import de.sanandrew.mods.sanlib.lib.util.config.Value;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
-import java.util.Locale;
 
-@CsmConfig.Category(value = EnumTurtleType.CFG_CAT, comment = "Turtle entity configuration")
+@Category(value = EnumTurtleType.CFG_CAT, comment = "Turtle entity configuration")
 public enum EnumTurtleType
         implements IDollType
 {
@@ -33,17 +36,17 @@ public enum EnumTurtleType
 
     KAWAKO(false, 50.0F, 0.85F, true, 0x0, 0x0, "spec_kawako"),
 
-    @CsmConfig.EnumExclude
+    @EnumExclude
     UNKNOWN(false, 0.0F, 0.0F, false, 0x0, 0x0);
 
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "turtles";
     public static final EnumTurtleType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sTurtleMaxHealth", comment = "Maximum health of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @Value(comment = "Maximum health of this type of turtle", range = @Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sTurtleMovementSpeed", comment = "Movement speed of a %s turtle", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
-    public float movementFactor;
-    @CsmConfig.Value(value = "%sTurtleFireproof", comment = "Allow %s turtles to resist fire and lava.")
+    @Value(comment = "Movement speed of this type of turtle", range = @Range(minD = 0.0D, maxD = 256.0D))
+    public float movementSpeed;
+    @Value(comment = "Allow this type of turtle to resist fire and lava.")
     public boolean fireproof;
     public final boolean visible;
     public final int itemColorBody;
@@ -51,14 +54,14 @@ public enum EnumTurtleType
     public final String cstItemSuffix;
     public final ResourceLocation[] textures;
 
-    EnumTurtleType(boolean visible, float maxHealth, float movementFactor, boolean fireproof, String cstItemSuffix, int itemColorBody, int itemColorShell, String... textures) {
+    EnumTurtleType(boolean visible, float maxHealth, float movementSpeed, boolean fireproof, String cstItemSuffix, int itemColorBody, int itemColorShell, String... textures) {
         if (textures == null) {
             textures = new String[0];
         }
 
         this.visible = visible;
         this.maxHealth = maxHealth;
-        this.movementFactor = movementFactor;
+        this.movementSpeed = movementSpeed;
         this.fireproof = fireproof;
         this.itemColorBody = itemColorBody;
         this.itemColorShell = itemColorShell;
@@ -67,8 +70,8 @@ public enum EnumTurtleType
         this.cstItemSuffix = cstItemSuffix;
     }
 
-    EnumTurtleType(boolean visible, float maxHealth, float movementFactor, boolean fireproof, int itemColorBody, int itemColorShell, String... textures) {
-        this(visible, maxHealth, movementFactor, fireproof, null, itemColorBody, itemColorShell, textures);
+    EnumTurtleType(boolean visible, float maxHealth, float movementSpeed, boolean fireproof, int itemColorBody, int itemColorShell, String... textures) {
+        this(visible, maxHealth, movementSpeed, fireproof, null, itemColorBody, itemColorShell, textures);
     }
 
     @Override

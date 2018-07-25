@@ -151,7 +151,7 @@ public class EntityGecko
 
     @Override
     float getMovementMultiplier() {
-        return this.type.movementFactor;
+        return this.type.movementSpeed;
     }
 
     @Override

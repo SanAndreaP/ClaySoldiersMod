@@ -10,14 +10,17 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
+import de.sanandrew.mods.sanlib.lib.util.config.Category;
+import de.sanandrew.mods.sanlib.lib.util.config.EnumExclude;
+import de.sanandrew.mods.sanlib.lib.util.config.Range;
+import de.sanandrew.mods.sanlib.lib.util.config.Value;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
-import java.util.Locale;
 
-@CsmConfig.Category(value = EnumWoolBunnyType.CFG_CAT, comment = "Bunny entity configuration")
+@Category(value = EnumWoolBunnyType.CFG_CAT, comment = "Bunny entity configuration")
 public enum EnumWoolBunnyType
         implements IDollType
 {
@@ -38,19 +41,18 @@ public enum EnumWoolBunnyType
     ORANGE(true, 0xD87F33, "orange"),
     WHITE(true, 0xFFFFFF, "white"),
 
-    @CsmConfig.EnumExclude
+    @EnumExclude
     UNKNOWN(false, 0x0);
 
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "bunnies";
     public static final EnumWoolBunnyType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sBunnyMaxHealth", comment = "Maximum health of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @Value(comment = "Maximum health of this type of bunny", range = @Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sBunnyMovementSpeed", comment = "Movement speed of a %s bunny", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
-    public float movementFactor;
-    @CsmConfig.Value(value = "%sBunnyJumpMovementSpeed", comment = "Jumping movement speed of a %s bunny",
-                     range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
-    public float jumpMoveFactor;
+    @Value(comment = "Movement speed of this type of bunny", range = @Range(minD = 0.0D, maxD = 256.0D))
+    public float movementSpeed;
+    @Value(comment = "Jumping movement speed of this type of bunny", range = @Range(minD = 0.0D, maxD = 256.0D))
+    public float jumpMovementSpeed;
     public final boolean visible;
     public final int itemColor;
     public final ResourceLocation[] textures;
@@ -61,8 +63,8 @@ public enum EnumWoolBunnyType
         }
 
         this.maxHealth = 20.0F;
-        this.movementFactor = 1.0F;
-        this.jumpMoveFactor = 0.42F;
+        this.movementSpeed = 1.0F;
+        this.jumpMovementSpeed = 0.42F;
         this.visible = visible;
         this.itemColor = itemColor;
         this.textures = Arrays.stream(textures).map(s -> new ResourceLocation(CsmConstants.ID, String.format("textures/entities/mount/bunnies/%s.png", s)))

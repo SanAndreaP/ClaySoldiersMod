@@ -12,34 +12,22 @@ import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
-import de.sanandrew.mods.sanlib.lib.Tuple;
-import net.minecraftforge.common.config.ConfigCategory;
+import de.sanandrew.mods.sanlib.lib.util.config.Category;
+import de.sanandrew.mods.sanlib.lib.util.config.ConfigUtils;
+import de.sanandrew.mods.sanlib.lib.util.config.Range;
+import de.sanandrew.mods.sanlib.lib.util.config.Value;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.Level;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = CsmConstants.ID)
 public class CsmConfig
 {
-    private static final String CONFIG_VER = "2.0";
+    private static final String CONFIG_VER = "3.0";
 
     public static Configuration config;
 
@@ -51,23 +39,23 @@ public class CsmConfig
         @Category(value = Soldiers.SUBCAT_ENTITY_SOLDIER, comment = "Soldier entity configuration")
         public static final class Soldiers
         {
-            public static final String SUBCAT_ENTITY_SOLDIER = CAT_NAME + Configuration.CATEGORY_SPLITTER + "soldiers";
+            public static final String SUBCAT_ENTITY_SOLDIER = "soldiers";
 
             @Value(comment = "Maximum health of a soldier.", range = @Range(minD = 0.0D, maxD = 1024.0D))
-            public static float soldierMaxHealth = 20.0F;
+            public static float maxHealth = 20.0F;
             @Value(comment = "Base attack damage dealt by a soldier.", range = @Range(minD = 0.0D, maxD = 2048.0D))
-            public static float soldierAttackDamage = 1.0F;
+            public static float attackDamage = 1.0F;
             @Value(comment = "Movement speed of a soldier.", range = @Range(minD = 0.0D, maxD = 256.0D))
-            public static float soldierMovementSpeed = 0.3F;
+            public static float movementSpeed = 0.3F;
             @Value(comment ="The range a soldier searches in for targets to follow.", range = @Range(minD = 0.0D, maxD = 2048.0D))
-            public static float soldierFollowRange = 16.0F;
+            public static float followRange = 16.0F;
         }
 
         public static void init() {
-            loadCategory(EnumClayHorseType.class);
-            loadCategory(EnumTurtleType.class);
-            loadCategory(EnumWoolBunnyType.class);
-            loadCategory(EnumGeckoType.class);
+            ConfigUtils.loadCategory(config, EnumClayHorseType.class, CAT_NAME);
+            ConfigUtils.loadCategory(config, EnumTurtleType.class, CAT_NAME);
+            ConfigUtils.loadCategory(config, EnumWoolBunnyType.class, CAT_NAME);
+            ConfigUtils.loadCategory(config, EnumGeckoType.class, CAT_NAME);
         }
     }
 
@@ -79,7 +67,7 @@ public class CsmConfig
         @Category(value = Dolls.SUBCAT_DOLLS, comment = "Doll items configuration.", reqMcRestart = true)
         public static final class Dolls
         {
-            public static final String SUBCAT_DOLLS = CAT_NAME + Configuration.CATEGORY_SPLITTER + "dolls";
+            public static final String SUBCAT_DOLLS = "dolls";
 
             @Value(comment = "Maximum stack size of a brick doll.", range = @Range(minI = 1, maxI = 64))
             public static int brickDollStackSize = 16;
@@ -100,7 +88,7 @@ public class CsmConfig
         @Category(value = Dispenser.SUBCAT_DISPENSER, comment = "Dispenser behavior configuration", reqMcRestart = true)
         public static final class Dispenser
         {
-            public static final String SUBCAT_DISPENSER = CAT_NAME + Configuration.CATEGORY_SPLITTER + "dispenser behavior";
+            public static final String SUBCAT_DISPENSER = "dispenser behavior";
 
             @Value(comment = "Allow dispenser to spawn soldiers via dolls.")
             public static boolean enableSoldierDispense = true;
@@ -121,7 +109,7 @@ public class CsmConfig
         @Category(value = Disruptor.SUBCAT_DISRUPTOR, comment = "Disruptor item configuration")
         public static final class Disruptor
         {
-            public static final String SUBCAT_DISRUPTOR = CAT_NAME + Configuration.CATEGORY_SPLITTER + "disruptor";
+            public static final String SUBCAT_DISRUPTOR = "disruptor";
             @Value(comment = "Allow disruptor to break clay blocks.")
             public static boolean enableClayBlockDisruptMode = true;
             @Value(comment = "Allow disruptor to be automateable (through dispenser or fake player) regarding clay creatures.")
@@ -130,7 +118,7 @@ public class CsmConfig
             public static boolean enableAutomatedClayBlockDisrupt = true;
 
             public static void init() {
-                loadCategory(ItemDisruptor.DisruptorType.class);
+                ConfigUtils.loadCategory(config, ItemDisruptor.DisruptorType.class, CAT_NAME);
             }
         }
     }
@@ -163,29 +151,16 @@ public class CsmConfig
         public static boolean lexiconForceUnicode = false;
     }
 
-    // region CONFIG HANDLER
-
-    private static final Map<String, Tuple> DEFAULTS = new HashMap<>();
-
     public static void initialize(FMLPreInitializationEvent event) {
         File cfgFile = event.getSuggestedConfigurationFile();
-        config = new Configuration(cfgFile, CONFIG_VER, true);
-		String loadedVer = config.getLoadedConfigVersion();
-        if( loadedVer != null && Integer.parseInt(loadedVer.split("\\.")[0]) < Integer.parseInt(CONFIG_VER.split("\\.")[0]) ) {
-            try {
-                FileUtils.copyFile(cfgFile, new File(cfgFile.getAbsoluteFile() + ".old"));
-                config.getCategoryNames().forEach(cat -> config.removeCategory(config.getCategory(cat)));
-                CsmConstants.LOG.log(Level.WARN, String.format("Clay Soldiers config file is too outdated! Config will be overwritten - the old config file can be found at %s.old", cfgFile.getAbsoluteFile()));
-            } catch( IOException ex ) {
-                CsmConstants.LOG.log(Level.ERROR, "Clay Soldiers config file is too outdated but cannot be updated! This will cause errors! Please copy the old config somewhere and remove it from the config folder!", ex);
-            }
-        }
+
+        config = ConfigUtils.loadConfigFile(cfgFile, CONFIG_VER, CsmConstants.NAME);
 
         synchronize();
     }
 
     public static void synchronize() {
-        loadCategories(CsmConfig.class);
+        ConfigUtils.loadCategories(config, CsmConfig.class);
 
         if( config.hasChanged() ) {
             config.save();
@@ -198,195 +173,4 @@ public class CsmConfig
             synchronize();
         }
     }
-
-    private static void loadCategories(Class<?> base) {
-        for( Class<?> c : base.getDeclaredClasses() ) {
-            loadCategory(c);
-        }
-    }
-
-    public static void loadCategory(Class<?> c) {
-        Category cat = c.getAnnotation(Category.class);
-        if( cat != null ) {
-            ConfigCategory cCat = config.getCategory(cat.value());
-            if( !cat.inherit() ) {
-                cCat.setComment(cat.comment());
-                cCat.setRequiresMcRestart(cat.reqMcRestart());
-                cCat.setRequiresWorldRestart(cat.reqWorldRestart());
-            }
-
-            if( c.isEnum() ) {
-                for( Field f : c.getDeclaredFields() ) {
-                    if( f.isEnumConstant() && f.getAnnotation(EnumExclude.class) == null ) {
-                        try {
-                            loadValues(cat, c, f.get(null), f.getName().toLowerCase(Locale.ROOT));
-                        } catch( IllegalAccessException ex ) {
-                            CsmConstants.LOG.log(Level.ERROR, String.format("Could not load config value for enum value %s in enum %s", f.getName(), f.getDeclaringClass().getName()), ex);
-                        }
-                    }
-                }
-            } else {
-                loadCategories(c);
-                loadValues(cat, c);
-
-                try {
-                    Method init = c.getDeclaredMethod("init");
-                    init.invoke(null);
-                } catch( NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored ) { }
-            }
-        }
-    }
-
-    private static void loadValues(Category cat, Class<?> c) {
-        loadValues(cat, c, null, null);
-    }
-
-    private static void loadValues(Category cat, Class<?> c, Object inst, String instName) {
-        for( Field f : c.getDeclaredFields() ) {
-            Value val = f.getAnnotation(Value.class);
-            try {
-                if( val != null ) {
-                    Class<?> cv = f.getType();
-                    String name = val.value().isEmpty() ? f.getName() : String.format(val.value(), instName);
-                    String comment = String.format(val.comment(), instName);
-                    String category = val.category().isEmpty() ? cat.value() : val.category();
-
-                    if( cv == long.class || cv == int.class || cv == short.class || cv == byte.class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple(cv == long.class ? (int) f.getLong(inst) : f.getInt(inst)));
-                        }
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).<Integer>getValue(0), comment, val.range().minI(), val.range().maxI());
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-
-                        if( cv == long.class || cv == int.class ) {
-                            f.setInt(inst, p.getInt());
-                        } else if( cv == short.class ) {
-                            f.setShort(inst, (short) p.getInt());
-                        } else if( cv == byte.class ) {
-                            f.setByte(inst, (byte) p.getInt());
-                        }
-                    } else if( cv == double.class || cv == float.class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple(cv == float.class ? Double.valueOf(Float.valueOf(f.getFloat(inst)).toString()) : f.getDouble(inst)));
-                        }
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).<Double>getValue(0), comment, val.range().minD(), val.range().maxD());
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-
-                        if( cv == float.class ) {
-                            f.setFloat(inst, (float) p.getDouble());
-                        } else {
-                            f.setDouble(inst, p.getDouble());
-                        }
-                    } else if( cv == boolean.class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple(f.getBoolean(inst)));
-                        }
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).<Boolean>getValue(0), comment);
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-                        f.setBoolean(inst, p.getBoolean());
-                    } else if( cv == String.class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple(f.get(inst).toString()));
-                        }
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).<String>getValue(0), comment);
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-                        f.set(inst, p.getString());
-                    } else if( cv == int[].class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
-                        }
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).<int[]>getValue(0), comment, val.range().minI(), val.range().maxI(),
-                                                val.range().listFixed(), val.range().maxListLength());
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-                        f.set(inst, p.getIntList());
-                    } else if( cv == double[].class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
-                        }
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).getValue(0), comment, val.range().minD(), val.range().maxD(),
-                                                val.range().listFixed(), val.range().maxListLength());
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-                        f.set(inst, p.getDoubleList());
-                    } else if( cv == boolean[].class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
-                        }
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).getValue(0), comment, val.range().listFixed(), val.range().maxListLength());
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-                        f.set(inst, p.getBooleanList());
-                    } else if( cv == String[].class ) {
-                        if( !DEFAULTS.containsKey(category + name) ) {
-                            DEFAULTS.put(category + name, new Tuple((Object) f.get(inst)));
-                        }
-                        Pattern validationPattern = val.range().validationPattern();
-                        @SuppressWarnings("MagicConstant")
-                        Property p = config.get(category, name, DEFAULTS.get(category + name).getValue(0), comment, val.range().listFixed(), val.range().maxListLength(),
-                                                validationPattern.regex().isEmpty() ? null : java.util.regex.Pattern.compile(validationPattern.regex(),
-                                                                                                                             validationPattern.flags()));
-                        p.setRequiresMcRestart(val.reqMcRestart());
-                        p.setRequiresWorldRestart(val.reqWorldRestart());
-                        f.set(inst, p.getStringList());
-                    }
-                }
-            } catch( IllegalAccessException | IllegalArgumentException ex ) {
-                CsmConstants.LOG.log(Level.ERROR, String.format("Could not load config value for field %s in class %s", f.getName(), f.getDeclaringClass().getName()), ex);
-            }
-        }
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface Category
-    {
-        String value();
-        String comment() default "";
-        boolean reqMcRestart() default false;
-        boolean reqWorldRestart() default false;
-        boolean inherit() default false;
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.FIELD)
-    public @interface Value
-    {
-        String value() default "";
-        String category() default "";
-        String comment() default "";
-        Range range() default @Range;
-        boolean reqMcRestart() default false;
-        boolean reqWorldRestart() default false;
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.ANNOTATION_TYPE)
-    public @interface Range
-    {
-        int minI() default Integer.MIN_VALUE;
-        int maxI() default Integer.MAX_VALUE;
-        double minD() default -Double.MAX_VALUE;
-        double maxD() default Double.MAX_VALUE;
-        boolean listFixed() default false;
-        int maxListLength() default -1;
-        Pattern validationPattern() default @Pattern;
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.ANNOTATION_TYPE)
-    public @interface Pattern {
-        String regex() default "";
-        int flags() default 0;
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.FIELD)
-    public @interface EnumExclude {}
-
-    // endregion
 }

@@ -10,11 +10,15 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
+import de.sanandrew.mods.sanlib.lib.util.config.Category;
+import de.sanandrew.mods.sanlib.lib.util.config.EnumExclude;
+import de.sanandrew.mods.sanlib.lib.util.config.Range;
+import de.sanandrew.mods.sanlib.lib.util.config.Value;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 
-@CsmConfig.Category(value = EnumGeckoType.CFG_CAT, comment = "Gecko entity configuration")
+@Category(value = EnumGeckoType.CFG_CAT, comment = "Gecko entity configuration")
 public enum EnumGeckoType
         implements IDollType
 {
@@ -55,16 +59,16 @@ public enum EnumGeckoType
     DARKOAK_ACACIA(true, 0x459633, 0x846412, "darkoak", "acacia"),
     DARKOAK_DARKOAK(true, 0x459633, 0x442D12, "darkoak", "darkoak"),
 
-    @CsmConfig.EnumExclude
+    @EnumExclude
     UNKNOWN(false, 0x0, 0x0, null, null);
 
     public static final String CFG_CAT = CsmConfig.Entities.CAT_NAME + Configuration.CATEGORY_SPLITTER + "geckos";
     public static final EnumGeckoType[] VALUES = values();
 
-    @CsmConfig.Value(value = "%sGeckoMaxHealth", comment = "Maximum health of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 1024.0D))
+    @Value(comment = "Maximum health of this type of gecko", range = @Range(minD = 0.0D, maxD = 1024.0D))
     public float maxHealth;
-    @CsmConfig.Value(value = "%sGeckoMovementSpeed", comment = "Movement speed of a %s gecko", range = @CsmConfig.Range(minD = 0.0D, maxD = 256.0D))
-    public float movementFactor;
+    @Value(comment = "Movement speed of this type of gecko", range = @Range(minD = 0.0D, maxD = 256.0D))
+    public float movementSpeed;
     public final boolean visible;
     public final int itemColorBody;
     public final int itemColorSpots;
@@ -73,7 +77,7 @@ public enum EnumGeckoType
 
     EnumGeckoType(boolean visible, int itemColorBody, int itemColorSpots, String textureBody, String textureSpots) {
         this.maxHealth = 20.0F;
-        this.movementFactor = 1.0F;
+        this.movementSpeed = 1.0F;
         this.visible = visible;
         this.itemColorBody = itemColorBody;
         this.itemColorSpots = itemColorSpots;

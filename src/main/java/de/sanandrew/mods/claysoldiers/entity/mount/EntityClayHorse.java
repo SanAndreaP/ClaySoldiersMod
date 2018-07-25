@@ -59,7 +59,7 @@ public class EntityClayHorse
 
     @Override
     public boolean canBreatheUnderwater() {
-        return this.type.canBreatheUnderwater;
+        return this.type.amphibious;
     }
 
     @Nullable
@@ -137,7 +137,7 @@ public class EntityClayHorse
         this.textureId = MiscUtils.RNG.randomInt(type.textures.length);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(type.maxHealth);
         this.setHealth(this.getMaxHealth());
-        this.isImmuneToFire = type.hasFireImmunity;
+        this.isImmuneToFire = type.fireproof;
     }
 
     @Override
@@ -147,6 +147,6 @@ public class EntityClayHorse
 
     @Override
     float getMovementMultiplier() {
-        return this.type.movementFactor;
+        return this.type.movementSpeed;
     }
 }

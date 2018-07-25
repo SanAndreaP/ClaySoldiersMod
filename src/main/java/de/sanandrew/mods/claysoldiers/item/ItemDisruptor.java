@@ -13,9 +13,12 @@ import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
-import de.sanandrew.mods.claysoldiers.util.LangKeys;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.LangUtils;
+import de.sanandrew.mods.sanlib.lib.util.config.Category;
+import de.sanandrew.mods.sanlib.lib.util.config.EnumExclude;
+import de.sanandrew.mods.sanlib.lib.util.config.Range;
+import de.sanandrew.mods.sanlib.lib.util.config.Value;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -69,7 +72,7 @@ public class ItemDisruptor
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return getType(stack).damage;
+        return getType(stack).durability;
     }
 
     @Override
@@ -257,24 +260,24 @@ public class ItemDisruptor
         return stack;
     }
 
-    @CsmConfig.Category(value = CsmConfig.BlocksAndItems.Disruptor.SUBCAT_DISRUPTOR, inherit = true)
+    @Category(value = CsmConfig.BlocksAndItems.Disruptor.SUBCAT_DISRUPTOR, inherit = true)
     public enum DisruptorType {
         CLAY("clay", 32),
         HARDENED("hardened", 128),
         OBSIDIAN("unbreaking", 0),
 
-        @CsmConfig.EnumExclude
+        @EnumExclude
         UNKNOWN("null", 1);
 
-        @CsmConfig.Value(value = "%sDisruptorDurability", comment = "Durability of the %s disruptor. 0 durability = unbreakable")
-        public int damage;
+        @Value(comment = "Durability of this type of disruptor. 0 durability = unbreakable", range = @Range(minI = 0))
+        public int durability;
         public final String name;
 
         public static final DisruptorType[] VALUES = DisruptorType.values();
 
-        DisruptorType(String name, int damage) {
+        DisruptorType(String name, int durability) {
             this.name = name;
-            this.damage = damage;
+            this.durability = durability;
         }
     }
 }
