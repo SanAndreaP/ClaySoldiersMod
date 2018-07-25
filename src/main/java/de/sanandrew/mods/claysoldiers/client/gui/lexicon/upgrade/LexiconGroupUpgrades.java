@@ -10,12 +10,13 @@ import de.sanandrew.mods.claysoldiers.api.client.DummyHander;
 import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
-import de.sanandrew.mods.claysoldiers.util.Lang;
+import de.sanandrew.mods.claysoldiers.util.LangKeys;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconGroup;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
 import de.sanandrew.mods.sanlib.api.client.lexicon.LexiconGroup;
+import de.sanandrew.mods.sanlib.lib.util.LangUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -86,7 +87,7 @@ public class LexiconGroupUpgrades
         }
 
         private static String getEntryName(ILexiconEntry entry) {
-            return Lang.translate(Lang.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
+            return LangUtils.translate(LangKeys.LEXICON_ENTRY_NAME.get(entry.getGroupId(), entry.getId()));
         }
     }
 }

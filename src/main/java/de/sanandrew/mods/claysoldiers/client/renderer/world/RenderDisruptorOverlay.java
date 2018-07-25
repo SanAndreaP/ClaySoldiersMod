@@ -10,8 +10,9 @@ import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.IDisruptable;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.util.Lang;
+import de.sanandrew.mods.claysoldiers.util.LangKeys;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
+import de.sanandrew.mods.sanlib.lib.util.LangUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -93,7 +94,7 @@ public class RenderDisruptorOverlay
         mc.renderEngine.bindTexture(postPic);
         Gui.drawModalRectWithCustomSizedTexture(34, 0, 0, 0, 32, 32, 32.0F, 32.0F);
 
-        String s = Lang.translate(ItemRegistry.DISRUPTOR.getTranslateKey(stack, "state." + vals[stateId].name().toLowerCase(Locale.ROOT)));
+        String s = LangUtils.translate(ItemRegistry.DISRUPTOR.getTranslateKey(stack, "state." + vals[stateId].name().toLowerCase(Locale.ROOT)));
         mc.fontRenderer.drawString(s, 16 - mc.fontRenderer.getStringWidth(s) / 2, 36, 0xFFFFFF | Math.max(((int)(0xFF * fade)), 0x04) << 24, true);
 
         GlStateManager.popMatrix();

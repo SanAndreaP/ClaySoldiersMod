@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier.LexiconEntryBrickDoll;
 import de.sanandrew.mods.claysoldiers.crafting.FuelHelper;
-import de.sanandrew.mods.claysoldiers.util.Lang;
+import de.sanandrew.mods.claysoldiers.util.LangKeys;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import de.sanandrew.mods.sanlib.api.client.lexicon.CraftingGrid;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
@@ -117,7 +117,7 @@ public class LexiconRenderBrickDoll
         }
 
         if( this.crfGridsTeamed != null && this.crfGridsTeamed.size() > 0 ) {
-            String s = LangUtils.translate(Lang.LEXICON_ENTRY_GRIDTEXT.get(entry.getGroupId(), entry.getId())).replace("\\n", "\n");
+            String s = LangUtils.translate(LangKeys.LEXICON_ENTRY_GRIDTEXT.get(entry.getGroupId(), entry.getId())).replace("\\n", "\n");
             helper.drawContentString(s, 2, this.drawHeight, entryWidth - 2, 0xFF000000, this.entryButtons);
             this.drawHeight += helper.getWordWrappedHeight(s, entryWidth - 2);
 

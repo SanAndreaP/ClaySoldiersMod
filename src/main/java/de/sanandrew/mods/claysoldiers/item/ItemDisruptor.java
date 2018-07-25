@@ -13,8 +13,9 @@ import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.CsmCreativeTabs;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
-import de.sanandrew.mods.claysoldiers.util.Lang;
+import de.sanandrew.mods.claysoldiers.util.LangKeys;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
+import de.sanandrew.mods.sanlib.lib.util.LangUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -94,7 +95,7 @@ public class ItemDisruptor
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         IDisruptable.DisruptState state = getState(stack);
-        tooltip.add(Lang.translate(getTranslateKey(stack, "tooltip"), Lang.translate(getTranslateKey(stack, "state." + state.name().toLowerCase(Locale.ROOT)))));
+        tooltip.add(LangUtils.translate(getTranslateKey(stack, "tooltip"), LangUtils.translate(getTranslateKey(stack, "state." + state.name().toLowerCase(Locale.ROOT)))));
     }
 
     @Override

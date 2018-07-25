@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.info;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.util.Lang;
+import de.sanandrew.mods.claysoldiers.util.LangKeys;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconGuiHelper;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconPageRender;
@@ -42,9 +42,9 @@ public class LexiconRenderInfo
 
         entryButtons.add(helper.getNewLinkButton(entryButtons.size(), 6, 90, "Vazkii (some rendering code)", "https://minecraft.curseforge.com/members/Vazkii", helper.getFontRenderer(), true).get());
 
-        entryButtons.add(helper.getNewLinkButton(entryButtons.size(), 6, 111, LangUtils.translate(Lang.LEXICON_INFO_ITEM.get("github")), "https://github.com/SanAndreasP/ClaySoldiersMod", helper.getFontRenderer(), true).get());
-        entryButtons.add(helper.getNewLinkButton(entryButtons.size(), 6, 120, LangUtils.translate(Lang.LEXICON_INFO_ITEM.get("issues")), "https://github.com/SanAndreasP/ClaySoldiersMod/issues/", helper.getFontRenderer(), true).get());
-        entryButtons.add(helper.getNewLinkButton(entryButtons.size(), 6, 129, LangUtils.translate(Lang.LEXICON_INFO_ITEM.get("curse")), "https://minecraft.curseforge.com/projects/clay-soldiers-mod", helper.getFontRenderer(), true).get());
+        entryButtons.add(helper.getNewLinkButton(entryButtons.size(), 6, 111, LangUtils.translate(LangKeys.LEXICON_INFO_ITEM.get("github")), "https://github.com/SanAndreasP/ClaySoldiersMod", helper.getFontRenderer(), true).get());
+        entryButtons.add(helper.getNewLinkButton(entryButtons.size(), 6, 120, LangUtils.translate(LangKeys.LEXICON_INFO_ITEM.get("issues")), "https://github.com/SanAndreasP/ClaySoldiersMod/issues/", helper.getFontRenderer(), true).get());
+        entryButtons.add(helper.getNewLinkButton(entryButtons.size(), 6, 129, LangUtils.translate(LangKeys.LEXICON_INFO_ITEM.get("curse")), "https://minecraft.curseforge.com/projects/clay-soldiers-mod", helper.getFontRenderer(), true).get());
     }
 
     @Override
@@ -57,22 +57,22 @@ public class LexiconRenderInfo
         helper.drawTitleCenter(0, entry);
 
         this.drawHeight = 12;
-        helper.getFontRenderer().drawString(LangUtils.translate(Lang.LEXICON_INFO_ITEM.get("version")), 0, this.drawHeight, ITEM_TXT_COLOR);
+        helper.getFontRenderer().drawString(LangUtils.translate(LangKeys.LEXICON_INFO_ITEM.get("version")), 0, this.drawHeight, ITEM_TXT_COLOR);
         this.drawHeight += 9;
         helper.getFontRenderer().drawString(CsmConstants.VERSION, 6, this.drawHeight, TXT_COLOR);
 
         this.drawHeight += 12;
-        helper.getFontRenderer().drawString(LangUtils.translate(Lang.LEXICON_INFO_ITEM.get("author")), 0, this.drawHeight, ITEM_TXT_COLOR);
+        helper.getFontRenderer().drawString(LangUtils.translate(LangKeys.LEXICON_INFO_ITEM.get("author")), 0, this.drawHeight, ITEM_TXT_COLOR);
         this.drawHeight += 27;
 
         this.drawHeight += 12;
-        helper.getFontRenderer().drawString(LangUtils.translate(Lang.LEXICON_INFO_ITEM.get("credits")), 0, this.drawHeight, ITEM_TXT_COLOR);
+        helper.getFontRenderer().drawString(LangUtils.translate(LangKeys.LEXICON_INFO_ITEM.get("credits")), 0, this.drawHeight, ITEM_TXT_COLOR);
         this.drawHeight += 9;
         helper.getFontRenderer().drawString("KodaichiZero (Creator)", 6, this.drawHeight, TXT_COLOR);
         this.drawHeight += 9;
 
         this.drawHeight += 12;
-        helper.getFontRenderer().drawString(LangUtils.translate(Lang.LEXICON_INFO_ITEM.get("links")), 0, this.drawHeight, ITEM_TXT_COLOR);
+        helper.getFontRenderer().drawString(LangUtils.translate(LangKeys.LEXICON_INFO_ITEM.get("links")), 0, this.drawHeight, ITEM_TXT_COLOR);
         this.drawHeight += 27;
     }
 
