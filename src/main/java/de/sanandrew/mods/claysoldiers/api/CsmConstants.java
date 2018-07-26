@@ -23,5 +23,5 @@ public final class CsmConstants
     public static final String MOD_PROXY_SERVER = "de.sanandrew.mods.claysoldiers.util.CommonProxy";
 
     public static final String API_ID = "claysoldiers_api";
-    public static final String API_VERSION = "1.0.0-beta.2";
+    public static final String API_VERSION = "2.0.0-beta.2";
 }

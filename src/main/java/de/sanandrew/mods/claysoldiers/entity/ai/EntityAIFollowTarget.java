@@ -6,32 +6,33 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.api.mount.IMount;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.entity.ITargetingEntity;
+import de.sanandrew.mods.claysoldiers.api.entity.mount.IMount;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
-import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.Vec3d;
 
-public abstract class EntityAIFollowTarget
+public abstract class EntityAIFollowTarget<E extends EntityCreature>
         extends EntityAIBase
 {
-    final EntityClaySoldier taskOwner;
+    final E taskOwner;
 
     final double speed;
     Path path;
 
     private Vec3d moveTowards = null;
 
-    EntityAIFollowTarget(EntityClaySoldier soldier, double speedIn) {
+    EntityAIFollowTarget(E soldier, double speedIn) {
         this.taskOwner = soldier;
         this.speed = speedIn;
         this.setMutexBits(MutexBits.MOTION);
@@ -85,20 +86,16 @@ public abstract class EntityAIFollowTarget
         this.checkAndPerformAction(target, tgtDist);
     }
 
-    Entity getTarget() {
-        return this.taskOwner.followingEntity;
-    }
+    abstract Entity getTarget();
 
-    void clearTarget() {
-        this.taskOwner.followingEntity = null;
-    }
+    abstract void clearTarget();
 
     abstract boolean isTargetValid();
 
     abstract void checkAndPerformAction(Entity entity, double dist);
 
     public static class Fallen
-            extends EntityAIFollowTarget
+            extends EntityAIFollowTarget<EntityClaySoldier>
     {
         public Fallen(EntityClaySoldier soldier, double speedIn) {
             super(soldier, speedIn);
@@ -126,10 +123,20 @@ public abstract class EntityAIFollowTarget
                 }
             }
         }
+
+        @Override
+        Entity getTarget() {
+            return this.taskOwner.followingEntity;
+        }
+
+        @Override
+        void clearTarget() {
+            this.taskOwner.followingEntity = null;
+        }
     }
 
     public static class King
-            extends EntityAIFollowTarget
+            extends EntityAIFollowTarget<EntityClaySoldier>
     {
         public King(EntityClaySoldier soldier, double speedIn) {
             super(soldier, speedIn);
@@ -151,10 +158,20 @@ public abstract class EntityAIFollowTarget
                 this.clearTarget();
             }
         }
+
+        @Override
+        Entity getTarget() {
+            return this.taskOwner.followingEntity;
+        }
+
+        @Override
+        void clearTarget() {
+            this.taskOwner.followingEntity = null;
+        }
     }
 
     public static class Mount
-            extends EntityAIFollowTarget
+            extends EntityAIFollowTarget<EntityClaySoldier>
     {
         public Mount(EntityClaySoldier soldier, double speedIn) {
             super(soldier, speedIn);
@@ -173,10 +190,20 @@ public abstract class EntityAIFollowTarget
                 this.clearTarget();
             }
         }
+
+        @Override
+        Entity getTarget() {
+            return this.taskOwner.followingEntity;
+        }
+
+        @Override
+        void clearTarget() {
+            this.taskOwner.followingEntity = null;
+        }
     }
 
     public static class Upgrade
-            extends EntityAIFollowTarget
+            extends EntityAIFollowTarget<EntityClaySoldier>
     {
         public Upgrade(EntityClaySoldier soldier, double speedIn) {
             super(soldier, speedIn);
@@ -203,6 +230,16 @@ public abstract class EntityAIFollowTarget
                     item.setDead();
                 }
             }
+        }
+
+        @Override
+        Entity getTarget() {
+            return this.taskOwner.followingEntity;
+        }
+
+        @Override
+        void clearTarget() {
+            this.taskOwner.followingEntity = null;
         }
     }
 }

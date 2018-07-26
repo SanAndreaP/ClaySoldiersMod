@@ -4,10 +4,9 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.soldier.upgrade;
+package de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;

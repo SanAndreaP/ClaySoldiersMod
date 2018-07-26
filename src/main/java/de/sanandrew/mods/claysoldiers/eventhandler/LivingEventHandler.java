@@ -6,9 +6,9 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.eventhandler;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgradeInst;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;

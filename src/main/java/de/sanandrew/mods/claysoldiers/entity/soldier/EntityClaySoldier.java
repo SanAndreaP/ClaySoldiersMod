@@ -6,18 +6,18 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierDeathEvent;
 import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffectInst;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgFunctions;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.attribute.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowInventory;
@@ -846,6 +846,13 @@ public class EntityClaySoldier
         }
 
         return false;
+    }
+
+    @Override
+    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
+        super.setAttackTarget(entitylivingbaseIn);
+        this.followingEntity = null;
+        this.followingBlock = null;
     }
 
     @Override

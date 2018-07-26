@@ -6,19 +6,21 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeThrowable;
+import de.sanandrew.mods.claysoldiers.api.entity.ITargetingEntity;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgradeThrowable;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.util.EnumHand;
 
 public abstract class EntityAIFollowEnemy
-        extends EntityAIFollowTarget
+        extends EntityAIFollowTarget<ITargetingEntity>
 {
     protected int attackTick;
 
-    public EntityAIFollowEnemy(EntityClaySoldier soldier, double speedIn) {
+    public EntityAIFollowEnemy(EntityCreature soldier, double speedIn) {
         super(soldier, speedIn);
         this.setMutexBits(MutexBits.MOTION | MutexBits.LOOK_MOVEMENT);
     }
@@ -49,7 +51,7 @@ public abstract class EntityAIFollowEnemy
     public static final class Meelee
             extends EntityAIFollowEnemy
     {
-        public Meelee(EntityClaySoldier creature, double speedIn) {
+        public Meelee(EntityCreature creature, double speedIn) {
             super(creature, speedIn);
         }
 

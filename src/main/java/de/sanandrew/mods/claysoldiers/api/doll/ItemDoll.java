@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.doll;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;

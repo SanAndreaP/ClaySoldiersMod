@@ -8,10 +8,10 @@ package de.sanandrew.mods.claysoldiers.registry.upgrade;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgFunctions;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.UpgradeFunctions;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgFunctions;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.UpgradeFunctions;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

@@ -1,4 +1,4 @@
-package de.sanandrew.mods.claysoldiers.api.soldier.upgrade;
+package de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;

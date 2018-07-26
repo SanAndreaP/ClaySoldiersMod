@@ -1,4 +1,4 @@
-package de.sanandrew.mods.claysoldiers.api.soldier;
+package de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade;
 
 public interface IHandedUpgradeable
 {

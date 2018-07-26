@@ -8,8 +8,8 @@ package de.sanandrew.mods.claysoldiers.registry.team;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;

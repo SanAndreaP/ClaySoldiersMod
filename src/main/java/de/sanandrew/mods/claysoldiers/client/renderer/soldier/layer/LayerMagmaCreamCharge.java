@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeMagmaCream;

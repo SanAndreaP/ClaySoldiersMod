@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.effect;
 
-import de.sanandrew.mods.claysoldiers.api.IEffectRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.IEffectRegistry;
 
 import java.util.UUID;
 

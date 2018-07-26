@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.eventhandler;
 
 import de.sanandrew.mods.claysoldiers.api.client.event.ClayModelRotationEvent;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.client.model.ModelClaySoldier;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;

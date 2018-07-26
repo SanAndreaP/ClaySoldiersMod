@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.api.client;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.IHandedUpgradeable;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.IHandedUpgradeable;
 
 public class DummyHander
         implements IHandedUpgradeable

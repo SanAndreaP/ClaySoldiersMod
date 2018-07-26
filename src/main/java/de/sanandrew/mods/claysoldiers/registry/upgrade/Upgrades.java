@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.upgrade;
 
-import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.behavior.UpgradeStandardBehavior;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeBrick;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.core.UpgradeCactus;

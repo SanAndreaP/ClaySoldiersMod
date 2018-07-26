@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.crafting.LexiconRenderBrickDoll;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;

@@ -8,11 +8,11 @@ package de.sanandrew.mods.claysoldiers.util;
 
 import de.sanandrew.mods.claysoldiers.api.CsmPlugin;
 import de.sanandrew.mods.claysoldiers.api.ICsmPlugin;
-import de.sanandrew.mods.claysoldiers.api.IEffectRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.IEffectRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
-import de.sanandrew.mods.claysoldiers.api.IUpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeamRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.IUpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.client.eventhandler.ClayModelRotationEventHandler;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.info.LexiconGroupInfo;
 import de.sanandrew.mods.claysoldiers.client.gui.lexicon.misc.LexiconGroupMisc;

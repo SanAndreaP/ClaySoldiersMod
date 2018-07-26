@@ -8,8 +8,8 @@ package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 
 import com.mojang.authlib.GameProfile;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;

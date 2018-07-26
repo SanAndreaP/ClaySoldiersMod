@@ -6,8 +6,8 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffectInst;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class SoldierEffect

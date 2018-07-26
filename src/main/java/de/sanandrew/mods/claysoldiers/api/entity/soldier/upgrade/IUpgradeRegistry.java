@@ -4,9 +4,9 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api;
+package de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;

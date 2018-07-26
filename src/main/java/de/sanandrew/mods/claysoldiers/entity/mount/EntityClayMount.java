@@ -6,10 +6,10 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.mount;
 
-import de.sanandrew.mods.claysoldiers.api.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
-import de.sanandrew.mods.claysoldiers.api.mount.IMount;
+import de.sanandrew.mods.claysoldiers.api.entity.mount.IMount;
 import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
 import de.sanandrew.mods.claysoldiers.entity.ai.PathHelper;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
@@ -91,7 +91,7 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
 
-        compound.setInteger(NBTConstants.E_MOUNT_TEXTURE_ID, this.textureId);
+        compound.setInteger(NBTConstants.E_TEXTURE_ID, this.textureId);
         compound.setTag(NBTConstants.E_DOLL_ITEM, this.doll.serializeNBT());
     }
 
@@ -99,7 +99,7 @@ public abstract class EntityClayMount<E extends EntityLivingBase, T extends IDol
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
 
-        this.textureId = compound.getInteger(NBTConstants.E_MOUNT_TEXTURE_ID);
+        this.textureId = compound.getInteger(NBTConstants.E_TEXTURE_ID);
         this.doll = new ItemStack(compound.getCompoundTag(NBTConstants.E_DOLL_ITEM));
     }
 

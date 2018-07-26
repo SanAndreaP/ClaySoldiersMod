@@ -7,8 +7,8 @@
 package de.sanandrew.mods.claysoldiers.client.renderer.soldier.layer;
 
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.client.model.ModelBiped;

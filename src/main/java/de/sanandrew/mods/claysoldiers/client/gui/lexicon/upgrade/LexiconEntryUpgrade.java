@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
 import net.minecraft.creativetab.CreativeTabs;

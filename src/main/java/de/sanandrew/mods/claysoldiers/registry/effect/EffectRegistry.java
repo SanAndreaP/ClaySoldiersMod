@@ -8,8 +8,8 @@ package de.sanandrew.mods.claysoldiers.registry.effect;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.IEffectRegistry;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.IEffectRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffect;
 import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nullable;

@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.team;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.Resources;
 import net.minecraft.util.ResourceLocation;
 

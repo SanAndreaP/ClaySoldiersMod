@@ -4,14 +4,15 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.soldier;
+package de.sanandrew.mods.claysoldiers.api.entity.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.IDisruptable;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgrade;
-import de.sanandrew.mods.claysoldiers.api.soldier.upgrade.ISoldierUpgradeInst;
+import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffectInst;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.IHandedUpgradeable;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgradeInst;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;

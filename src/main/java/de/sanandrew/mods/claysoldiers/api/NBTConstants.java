@@ -14,7 +14,8 @@ public final class NBTConstants
     public static final String E_DOLL_TYPE_GECKO = "gecko_type";            // integer
     public static final String E_DOLL_ITEM = "dollItem";                    // compound tag
 
-    public static final String E_MOUNT_TEXTURE_ID = "textureId";            // integer
+    public static final String E_TEXTURE_ID = "textureId";                  // integer
+    public static final String E_COMPANION_TEAM = "occupation";             // string
 
     public static final String E_SOLDIER_TEAM = "soldier_team";             // string
     public static final String E_SOLDIER_TEXTYPE = "soldier_texture_type";  // byte

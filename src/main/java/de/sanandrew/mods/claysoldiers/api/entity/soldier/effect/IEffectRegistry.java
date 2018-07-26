@@ -1,6 +1,6 @@
-package de.sanandrew.mods.claysoldiers.api;
+package de.sanandrew.mods.claysoldiers.api.entity.soldier.effect;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffect;
 
 import javax.annotation.Nullable;
 import java.util.List;

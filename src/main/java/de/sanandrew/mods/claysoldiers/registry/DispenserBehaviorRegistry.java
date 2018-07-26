@@ -6,10 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDisruptorDispenseItem;
 import de.sanandrew.mods.claysoldiers.dispenser.BehaviorDollDispenseItem;
-import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumClayHorseType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;

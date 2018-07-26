@@ -7,7 +7,7 @@
 package de.sanandrew.mods.claysoldiers.registry.team;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeam;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

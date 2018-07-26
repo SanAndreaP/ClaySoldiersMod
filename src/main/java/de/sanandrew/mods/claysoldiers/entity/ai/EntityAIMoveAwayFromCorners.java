@@ -6,9 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.util.EnumFacing;
@@ -17,13 +17,13 @@ import net.minecraft.util.math.BlockPos;
 public class EntityAIMoveAwayFromCorners
         extends EntityAIBase
 {
-    final EntityClaySoldier taskOwner;
+    final EntityCreature taskOwner;
 
     final double speed;
     Path path;
     int lastCheckedTickTime;
 
-    public EntityAIMoveAwayFromCorners(EntityClaySoldier soldier, double speedIn) {
+    public EntityAIMoveAwayFromCorners(EntityCreature soldier, double speedIn) {
         this.taskOwner = soldier;
         this.speed = speedIn;
         this.setMutexBits(MutexBits.MOTION);
@@ -60,8 +60,6 @@ public class EntityAIMoveAwayFromCorners
 
             this.path = this.taskOwner.getNavigator().getPathToPos(tgtPos);
             this.taskOwner.setAttackTarget(null);
-            this.taskOwner.followingEntity = null;
-            this.taskOwner.followingBlock = null;
             this.taskOwner.getNavigator().setPath(this.path, this.speed);
         } else if( this.taskOwner.ticksExisted - this.lastCheckedTickTime >= 10 ) {
             this.resetTask();

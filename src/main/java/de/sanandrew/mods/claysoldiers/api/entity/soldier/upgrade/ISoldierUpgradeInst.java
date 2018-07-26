@@ -4,16 +4,20 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.soldier.upgrade;
+package de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade;
 
-public enum EnumUpgradeType
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+public interface ISoldierUpgradeInst
 {
-    MAIN_HAND,
-    OFF_HAND,
-    CORE,
-    MISC,
-    BEHAVIOR,
-    ENHANCEMENT;
+    NBTTagCompound getNbtData();
 
-    public static final EnumUpgradeType[] VALUES = values();
+    void setNbtData(NBTTagCompound compound);
+
+    ISoldierUpgrade getUpgrade();
+
+    EnumUpgradeType getUpgradeType();
+
+    ItemStack getSavedStack();
 }

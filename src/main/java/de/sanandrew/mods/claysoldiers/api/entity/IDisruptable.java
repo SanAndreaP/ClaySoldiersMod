@@ -4,8 +4,9 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api;
+package de.sanandrew.mods.claysoldiers.api.entity;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import net.minecraft.util.DamageSource;
 
 public interface IDisruptable

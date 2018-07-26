@@ -8,7 +8,9 @@ package de.sanandrew.mods.claysoldiers.api;
 
 import de.sanandrew.mods.claysoldiers.api.client.IRenderHookRegistry;
 import de.sanandrew.mods.claysoldiers.api.client.soldier.ISoldierRender;
-import de.sanandrew.mods.claysoldiers.api.soldier.ITeamRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.IEffectRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeamRegistry;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.IUpgradeRegistry;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconInst;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.relauncher.Side;

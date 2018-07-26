@@ -6,9 +6,9 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.registry.effect;
 
-import de.sanandrew.mods.claysoldiers.api.soldier.ISoldier;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffect;
-import de.sanandrew.mods.claysoldiers.api.soldier.effect.ISoldierEffectInst;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffect;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffectInst;
 
 public class EffectTimeBomb
         implements ISoldierEffect

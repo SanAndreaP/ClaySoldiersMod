@@ -4,9 +4,9 @@
    * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    *                http://creativecommons.org/licenses/by-nc-sa/4.0/
    *******************************************************************************************************************/
-package de.sanandrew.mods.claysoldiers.api.mount;
+package de.sanandrew.mods.claysoldiers.api.entity.mount;
 
-import de.sanandrew.mods.claysoldiers.api.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
 import net.minecraft.entity.EntityLivingBase;
 
 public interface IMount<T extends EntityLivingBase>
