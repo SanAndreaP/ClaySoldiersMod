@@ -40,7 +40,7 @@ public abstract class EntityAIFollowTarget
     @Override
     public boolean shouldExecute() {
         Entity target = this.getTarget();
-        return target != null && target.isEntityAlive() && isTargetValid() && (this.taskOwner.canEntityBeSeen(target) || !this.taskOwner.getNavigator().noPath());
+        return target != null && target.isEntityAlive() && isTargetValid() && (this.taskOwner.canEntityBeSeen(target) || this.taskOwner.hasPath());
     }
 
     @Override
