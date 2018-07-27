@@ -12,5 +12,8 @@ import net.minecraft.entity.ai.attributes.RangedAttribute;
 
 public final class CsmMobAttributes
 {
-    public static final IAttribute KB_RESISTANCE = (new RangedAttribute(null, CsmConstants.ID + ".knockbackResistance", 0.0D, 0.0D, 1.0D)).setDescription("Knockback Resistance");
+    public static final IAttribute KB_RESISTANCE = new RangedAttribute(null, CsmConstants.ID + ".knockbackresistance", 0.0D, 0.0D, 1.0D)
+                                                       .setDescription("Knockback Resistance");
+    public static final IAttribute MV_FWDIRECTION = new RangedAttribute(null, CsmConstants.ID + ".movement.fwdirection", 1.0D, -1.0D, 1.0D)
+                                                        .setDescription("Movement Forward Direction").setShouldWatch(true);
 }

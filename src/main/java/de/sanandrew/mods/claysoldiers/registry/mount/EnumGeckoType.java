@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.registry.mount;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.sanlib.lib.util.config.Category;
 import de.sanandrew.mods.sanlib.lib.util.config.EnumExclude;

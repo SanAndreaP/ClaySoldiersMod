@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import com.google.common.collect.ImmutableList;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.Teams;
 import net.minecraft.init.Items;

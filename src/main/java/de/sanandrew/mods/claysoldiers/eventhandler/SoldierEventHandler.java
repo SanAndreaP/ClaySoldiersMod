@@ -32,7 +32,10 @@ public class SoldierEventHandler
 
     @SubscribeEvent
     public void onItemValidity(SoldierInventoryEvent.ItemValid event) {
-        if( event.soldier.canPickupUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(event.stack), event.stack) ) {
+        if( event.soldier.hasUpgrade(Upgrades.CR_BRICK, EnumUpgradeType.CORE) || event.soldier.hasEffect(Effects.STICKING_SLIMEBALL) ) {
+            event.setResult(Event.Result.DENY);
+            event.setCanceled(true);
+        } else if( event.soldier.canPickupUpgrade(UpgradeRegistry.INSTANCE.getUpgrade(event.stack), event.stack) ) {
             event.setResult(Event.Result.ALLOW);
         } else if( ResurrectionHelper.canBeResurrected(event.soldier, event.stack) ) {
             event.setResult(Event.Result.ALLOW);

@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.network.packet;
 
 import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.sanlib.lib.network.AbstractMessage;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import io.netty.buffer.ByteBuf;

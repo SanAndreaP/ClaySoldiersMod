@@ -41,13 +41,7 @@ public interface ISoldier<T extends EntityCreature & ISoldier<T>>
 
     ISoldierEffectInst getEffectInstance(ISoldierEffect entry);
 
-    void setMoveMultiplier(float fwd);
-
     void removeTask(EntityAIBase task);
-
-    boolean canMove();
-
-    void setMovable(boolean move);
 
     void setBreathableUnderwater(boolean breathable);
 

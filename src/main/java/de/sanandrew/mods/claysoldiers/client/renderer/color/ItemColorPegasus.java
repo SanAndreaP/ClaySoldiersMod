@@ -6,7 +6,7 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.client.renderer.color;
 
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 

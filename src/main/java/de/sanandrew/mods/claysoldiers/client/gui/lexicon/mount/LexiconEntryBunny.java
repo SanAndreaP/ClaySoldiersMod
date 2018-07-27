@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.mount;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntryCraftingGrid;
 import net.minecraft.item.ItemStack;

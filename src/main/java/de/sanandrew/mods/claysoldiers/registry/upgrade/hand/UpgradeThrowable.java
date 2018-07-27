@@ -84,11 +84,6 @@ public abstract class UpgradeThrowable
         }
     }
 
-    @Override
-    public void onDestroyed(ISoldier<?> soldier, ISoldierUpgradeInst upgradeInst) {
-        soldier.setMoveMultiplier(1.0F);
-    }
-
     protected static Entity setHoming(Entity shooter, Entity in) {
         if( shooter instanceof ISoldier && ((ISoldier) shooter).hasUpgrade(Upgrades.EM_SUGARCANE, EnumUpgradeType.ENHANCEMENT) && in instanceof EntityClayProjectile ) {
             ((EntityClayProjectile) in).setHoming();

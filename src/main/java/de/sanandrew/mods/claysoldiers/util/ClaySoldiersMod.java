@@ -17,7 +17,7 @@ import de.sanandrew.mods.claysoldiers.eventhandler.SoldierEventHandler;
 import de.sanandrew.mods.claysoldiers.registry.DispenserBehaviorRegistry;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
-import de.sanandrew.mods.claysoldiers.registry.EntityRegistry;
+import de.sanandrew.mods.claysoldiers.entity.EntityRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;

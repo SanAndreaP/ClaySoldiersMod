@@ -31,6 +31,14 @@ public final class AttributeHelper
         tryRemoveModifier(entity, CsmMobAttributes.KB_RESISTANCE, modifier);
     }
 
+    public static void tryApplyMoveDirectionModifier(EntityCreature entity, AttributeModifier modifier) {
+        tryApplyModifier(entity, CsmMobAttributes.MV_FWDIRECTION, modifier);
+    }
+
+    public static void tryRemoveMoveDirectionModifier(EntityCreature entity, AttributeModifier modifier) {
+        tryRemoveModifier(entity, CsmMobAttributes.MV_FWDIRECTION, modifier);
+    }
+
     public static void tryApplyMoveSpeedModifier(EntityCreature entity, AttributeModifier modifier) {
         tryApplyModifier(entity, SharedMonsterAttributes.MOVEMENT_SPEED, modifier);
     }

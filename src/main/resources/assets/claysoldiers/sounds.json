@@ -1,6 +1,6 @@
 {
-    "mob.soldier.hurt": {
-        "category": "neutral",
+    "entity.soldier.hurt": {
+        "subtitle": "subtitles.claysoldiers.soldier.hurt",
         "sounds": [
             "claysoldiers:mob/soldier/hurt"
         ]

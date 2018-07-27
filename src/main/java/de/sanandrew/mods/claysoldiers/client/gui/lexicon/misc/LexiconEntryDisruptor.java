@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.misc;
 
 import de.sanandrew.mods.claysoldiers.api.CsmConstants;
 import de.sanandrew.mods.claysoldiers.client.util.ClientProxy;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.sanlib.api.client.lexicon.ILexiconEntry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;

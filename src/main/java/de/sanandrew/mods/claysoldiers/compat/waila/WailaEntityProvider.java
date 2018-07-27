@@ -12,7 +12,7 @@ import de.sanandrew.mods.claysoldiers.entity.mount.EntityPegasus;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityTurtle;
 import de.sanandrew.mods.claysoldiers.entity.mount.EntityWoolBunny;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;

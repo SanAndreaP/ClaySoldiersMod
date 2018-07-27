@@ -7,17 +7,19 @@
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
 import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
+import de.sanandrew.mods.claysoldiers.api.entity.ITargetingEntity;
 import de.sanandrew.mods.claysoldiers.api.entity.mount.IMount;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -27,16 +29,16 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.List;
 
-public abstract class EntityAISearchTarget<T extends Entity>
+public abstract class EntityAISearchTarget<T extends Entity, E extends EntityCreature>
         extends EntityAIBase
 {
-    final EntityClaySoldier taskOwner;
+    final E taskOwner;
     final Class<T> toScanEntityType;
 
     T target;
 
-    EntityAISearchTarget(EntityClaySoldier soldier, Class<T> toScanEntityType) {
-        this.taskOwner = soldier;
+    EntityAISearchTarget(E creature, Class<T> toScanEntityType) {
+        this.taskOwner = creature;
         this.toScanEntityType = toScanEntityType;
         this.setMutexBits(MutexBits.TARGETING);
     }
@@ -57,13 +59,9 @@ public abstract class EntityAISearchTarget<T extends Entity>
         }
     }
 
-    boolean hasTarget() {
-        return hasFollowTarget(this.taskOwner);
-    }
+    abstract boolean hasTarget();
 
-    void setTarget(T target) {
-        this.taskOwner.followingEntity = target;
-    }
+    abstract void setTarget(T target);
 
     abstract boolean canFollow(T entity);
 
@@ -79,17 +77,17 @@ public abstract class EntityAISearchTarget<T extends Entity>
         }
     }
 
-    static boolean hasFollowTarget(EntityClaySoldier soldier) {
+    static boolean hasSoldierFollowTarget(EntityClaySoldier soldier) {
         return (soldier.followingEntity != null && soldier.followingEntity.isEntityAlive())
                        || (soldier.followingBlock != null && soldier.world.isBlockLoaded(soldier.followingBlock) && soldier.world.getChunkFromBlockCoords(soldier.followingBlock).isLoaded());
     }
 
-    static AxisAlignedBB getTargetableArea(EntityClaySoldier soldier) {
+    static AxisAlignedBB getTargetableArea(EntityCreature soldier) {
         return soldier.getEntityBoundingBox().grow(soldier.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue());
     }
 
     public static class Mount
-            extends EntityAISearchTarget<EntityLivingBase>
+            extends EntityAISearchTarget<EntityLivingBase, EntityClaySoldier>
     {
         public Mount(EntityClaySoldier soldier) {
             super(soldier, EntityLivingBase.class);
@@ -101,10 +99,20 @@ public abstract class EntityAISearchTarget<T extends Entity>
                            && !this.taskOwner.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND)
                            && ((IMount) entity).getMaxPassengers() > entity.getPassengers().size();
         }
+
+        @Override
+        boolean hasTarget() {
+            return hasSoldierFollowTarget(this.taskOwner);
+        }
+
+        @Override
+        void setTarget(EntityLivingBase target) {
+            this.taskOwner.followingEntity = target;
+        }
     }
 
     public static class King
-            extends EntityAISearchTarget<EntityLivingBase>
+            extends EntityAISearchTarget<EntityLivingBase, EntityClaySoldier>
     {
         public King(EntityClaySoldier soldier) {
             super(soldier, EntityLivingBase.class);
@@ -123,10 +131,20 @@ public abstract class EntityAISearchTarget<T extends Entity>
 
             return false;
         }
+
+        @Override
+        boolean hasTarget() {
+            return hasSoldierFollowTarget(this.taskOwner);
+        }
+
+        @Override
+        void setTarget(EntityLivingBase target) {
+            this.taskOwner.followingEntity = target;
+        }
     }
 
     public static class Fallen
-            extends EntityAISearchTarget<EntityItem>
+            extends EntityAISearchTarget<EntityItem, EntityClaySoldier>
     {
         public Fallen(EntityClaySoldier soldier) {
             super(soldier, EntityItem.class);
@@ -144,10 +162,20 @@ public abstract class EntityAISearchTarget<T extends Entity>
                                 && ((ItemDoll<?, ?>) stack.getItem()).canBeResurrected(stack, this.taskOwner))
                            || (this.taskOwner.hasUpgrade(Upgrades.MC_GHASTTEAR, EnumUpgradeType.MISC) && ItemStackUtils.isItem(stack, ItemRegistry.DOLL_BRICK_SOLDIER));
         }
+
+        @Override
+        boolean hasTarget() {
+            return hasSoldierFollowTarget(this.taskOwner);
+        }
+
+        @Override
+        void setTarget(EntityItem target) {
+            this.taskOwner.followingEntity = target;
+        }
     }
 
     public static class Upgrade
-            extends EntityAISearchTarget<EntityItem>
+            extends EntityAISearchTarget<EntityItem, EntityClaySoldier>
     {
         public Upgrade(EntityClaySoldier soldier) {
             super(soldier, EntityItem.class);
@@ -162,13 +190,26 @@ public abstract class EntityAISearchTarget<T extends Entity>
 
             return false;
         }
+
+        @Override
+        boolean hasTarget() {
+            return hasSoldierFollowTarget(this.taskOwner);
+        }
+
+        @Override
+        void setTarget(EntityItem target) {
+            this.taskOwner.followingEntity = target;
+        }
     }
 
     public static class Enemy
-            extends EntityAISearchTarget<EntityLivingBase>
+            extends EntityAISearchTarget<EntityLivingBase, EntityCreature>
     {
-        public Enemy(EntityClaySoldier soldier) {
-            super(soldier, EntityLivingBase.class);
+        private final ITargetingEntity<? extends EntityCreature> taskOwner;
+
+        public Enemy(ITargetingEntity<? extends EntityCreature> targetingEntity) {
+            super(targetingEntity.getEntity(), EntityLivingBase.class);
+            this.taskOwner = targetingEntity;
         }
 
         @Override
@@ -178,12 +219,12 @@ public abstract class EntityAISearchTarget<T extends Entity>
 
         @Override
         boolean hasTarget() {
-            return this.taskOwner.getAttackTarget() != null && this.taskOwner.getAttackTarget().isEntityAlive();
+            return super.taskOwner.getAttackTarget() != null && super.taskOwner.getAttackTarget().isEntityAlive();
         }
 
         @Override
         void setTarget(EntityLivingBase target) {
-            this.taskOwner.setAttackTarget(target);
+            super.taskOwner.setAttackTarget(target);
         }
     }
 }

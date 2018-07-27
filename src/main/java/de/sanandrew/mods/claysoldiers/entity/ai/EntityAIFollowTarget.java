@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
-import de.sanandrew.mods.claysoldiers.api.entity.ITargetingEntity;
 import de.sanandrew.mods.claysoldiers.api.entity.mount.IMount;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
@@ -53,9 +52,10 @@ public abstract class EntityAIFollowTarget<E extends EntityCreature>
     @Override
     public void updateTask() {
         Entity target = this.getTarget();
-        double tgtDist = this.taskOwner.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
 
         if( target != null ) {
+            double tgtDist = this.taskOwner.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
+
             if( tgtDist > 2.0D ) {
                 this.moveTowards = null;
                 this.path = this.taskOwner.getNavigator().getPathToEntityLiving(target);
@@ -63,7 +63,7 @@ public abstract class EntityAIFollowTarget<E extends EntityCreature>
                     Vec3d vec = new Vec3d(target.posX - this.taskOwner.posX, target.posY - this.taskOwner.posY, target.posZ - this.taskOwner.posZ).normalize().scale(2.0D);
                     this.path = this.taskOwner.getNavigator().getPathToXYZ(this.taskOwner.posX + vec.x, this.taskOwner.posY + vec.y, this.taskOwner.posZ + vec.z);
                 }
-            } else if( this.taskOwner.ticksExisted % 20 == 0 ) {
+            } else if( this.taskOwner.ticksExisted % 20 == 0 || this.moveTowards == null ) {
                 this.moveTowards = new Vec3d(target.posX - this.taskOwner.posX, 0, target.posZ - this.taskOwner.posZ)
                                        .normalize().scale(this.taskOwner.getAIMoveSpeed() * 0.1D);
             }
@@ -71,6 +71,10 @@ public abstract class EntityAIFollowTarget<E extends EntityCreature>
                 this.taskOwner.motionX += this.moveTowards.x;
                 this.taskOwner.motionZ += this.moveTowards.z;
             }
+
+            this.taskOwner.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
+
+            this.checkAndPerformAction(target, tgtDist);
         } else {
             this.moveTowards = null;
             this.path = null;
@@ -80,10 +84,6 @@ public abstract class EntityAIFollowTarget<E extends EntityCreature>
         if( this.taskOwner.getNavigator().noPath() && this.path != null ) {
             this.taskOwner.getNavigator().setPath(this.path, this.speed);
         }
-
-        this.taskOwner.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
-
-        this.checkAndPerformAction(target, tgtDist);
     }
 
     abstract Entity getTarget();

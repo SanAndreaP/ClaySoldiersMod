@@ -6,22 +6,32 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.ai;
 
+import de.sanandrew.mods.claysoldiers.api.CsmConstants;
+import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
 import de.sanandrew.mods.claysoldiers.api.entity.ITargetingEntity;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgradeThrowable;
+import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
 import de.sanandrew.mods.claysoldiers.entity.soldier.EntityClaySoldier;
+import de.sanandrew.mods.claysoldiers.registry.effect.EffectBackWalk;
+import de.sanandrew.mods.claysoldiers.registry.effect.Effects;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.EnumHand;
 
+import java.util.UUID;
+
 public abstract class EntityAIFollowEnemy
-        extends EntityAIFollowTarget<ITargetingEntity>
+        extends EntityAIFollowTarget<EntityCreature>
 {
     protected int attackTick;
+    protected ITargetingEntity<?> taskOwner;
 
-    public EntityAIFollowEnemy(EntityCreature soldier, double speedIn) {
-        super(soldier, speedIn);
+    public EntityAIFollowEnemy(ITargetingEntity<?> targetingEntity, double speedIn) {
+        super(targetingEntity.getEntity(), speedIn);
+        this.taskOwner = targetingEntity;
         this.setMutexBits(MutexBits.MOTION | MutexBits.LOOK_MOVEMENT);
     }
 
@@ -33,17 +43,17 @@ public abstract class EntityAIFollowEnemy
 
     @Override
     boolean isTargetValid() {
-        return this.taskOwner.isEnemyValid(this.taskOwner.getAttackTarget());
+        return this.taskOwner.isEnemyValid(super.taskOwner.getAttackTarget());
     }
 
     @Override
     Entity getTarget() {
-        return this.taskOwner.getAttackTarget();
+        return super.taskOwner.getAttackTarget();
     }
 
     @Override
     void clearTarget() {
-        this.taskOwner.setAttackTarget(null);
+        super.taskOwner.setAttackTarget(null);
     }
 
     protected abstract void checkAndPerformAttack(Entity entity, double dist);
@@ -51,59 +61,66 @@ public abstract class EntityAIFollowEnemy
     public static final class Meelee
             extends EntityAIFollowEnemy
     {
-        public Meelee(EntityCreature creature, double speedIn) {
-            super(creature, speedIn);
+        public Meelee(ITargetingEntity<?> targetingEntity, double speedIn) {
+            super(targetingEntity, speedIn);
         }
 
         @Override
         protected void checkAndPerformAttack(Entity entity, double dist) {
             if( dist <= this.getAttackReachSqr() && this.attackTick <= 0 ) {
                 this.attackTick = 20;
-                this.taskOwner.swingArm(EnumHand.MAIN_HAND);
-                this.taskOwner.attackEntityAsMob(entity);
+                this.taskOwner.getEntity().swingArm(EnumHand.MAIN_HAND);
+                this.taskOwner.getEntity().attackEntityAsMob(entity);
             }
         }
 
         protected double getAttackReachSqr() {
-            final double reach = 0.5F + (this.taskOwner.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.2F : 0.0F);
+            final double reach = this.taskOwner.getReach();
             return reach * reach;
         }
     }
 
-    public static final class Ranged
+    public static final class RangedSoldier
             extends EntityAIFollowEnemy
     {
-        public Ranged(EntityClaySoldier creature, double speedIn) {
-            super(creature, speedIn);
+        private final EntityClaySoldier soldier;
+
+        public RangedSoldier(EntityClaySoldier soldier, double speedIn) {
+            super(soldier, speedIn);
+            this.soldier = soldier;
         }
 
         @Override
         protected void checkAndPerformAttack(Entity entity, double dist) {
             if( dist <= this.getAttackReachSqr() ) {
-                this.taskOwner.setMoveMultiplier(-1.0F);
+                if( !this.soldier.hasEffect(Effects.MOVE_BACK) ) {
+                    this.soldier.addEffect(EffectBackWalk.INSTANCE, 20);
+                }
 
                 if( this.attackTick <= 0 ) {
                     this.attackTick = 20;
-                    this.taskOwner.swingArm(EnumHand.OFF_HAND);
-                    this.taskOwner.getUpgradeInstanceList().stream().filter(inst -> inst.getUpgrade() instanceof ISoldierUpgradeThrowable).findFirst()
+                    this.taskOwner.getEntity().swingArm(EnumHand.OFF_HAND);
+                    this.soldier.getUpgradeInstanceList().stream().filter(inst -> inst.getUpgrade() instanceof ISoldierUpgradeThrowable).findFirst()
                                  .ifPresent(inst -> {
                                      ISoldierUpgradeThrowable upgThrowable = (ISoldierUpgradeThrowable) inst.getUpgrade();
-                                     this.taskOwner.world.spawnEntity(upgThrowable.createProjectile(this.taskOwner.world, this.taskOwner, entity));
-                                     inst.getUpgrade().onAttack(this.taskOwner, inst, entity, null, null);
+                                     this.soldier.world.spawnEntity(upgThrowable.createProjectile(this.soldier.world, this.soldier, entity));
+                                     inst.getUpgrade().onAttack(this.soldier, inst, entity, null, null);
                                  });
                 }
             } else {
-                this.taskOwner.setMoveMultiplier(1.0F);
+                if( this.soldier.hasEffect(Effects.MOVE_BACK) ) {
+                    this.soldier.expireEffect(EffectBackWalk.INSTANCE);
+                }
             }
         }
 
         @Override
         public boolean shouldExecute() {
-            return super.shouldExecute() && this.taskOwner.getUpgradeInstanceList().stream().anyMatch(inst -> inst.getUpgrade() instanceof ISoldierUpgradeThrowable);
+            return super.shouldExecute() && this.soldier.getUpgradeInstanceList().stream().anyMatch(inst -> inst.getUpgrade() instanceof ISoldierUpgradeThrowable);
         }
 
         protected double getAttackReachSqr() {
-            return this.taskOwner.hasUpgrade(Upgrades.EM_SUGARCANE, EnumUpgradeType.ENHANCEMENT) ? 16.0D : 9.0D;
+            return this.soldier.hasUpgrade(Upgrades.EM_SUGARCANE, EnumUpgradeType.ENHANCEMENT) ? 16.0D : 9.0D;
         }
     }
 }

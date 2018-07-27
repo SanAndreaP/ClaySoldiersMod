@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.gui.lexicon.upgrade;
 
 import de.sanandrew.mods.claysoldiers.api.client.DummyHander;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
 import de.sanandrew.mods.claysoldiers.util.LangKeys;
 import de.sanandrew.mods.claysoldiers.util.Resources;

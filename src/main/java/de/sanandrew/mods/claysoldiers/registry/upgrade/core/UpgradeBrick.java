@@ -62,7 +62,8 @@ public class UpgradeBrick
     @Override
     public void onAdded(ISoldier<?> soldier, ItemStack stack, ISoldierUpgradeInst upgradeInst) {
         if( !soldier.getEntity().world.isRemote ) {
-            AttributeHelper.tryApplyMoveSpeedModifier(soldier.getEntity(), SLOWDOWN);
+            AttributeHelper.tryApplyMoveSpeedModifier(soldier.getEntity(), STANDSTILL);
+            AttributeHelper.tryApplyKnockbackResModifier(soldier.getEntity(), FULL_KB_RESIST);
             soldier.getEntity().playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((MiscUtils.RNG.randomFloat() - MiscUtils.RNG.randomFloat()) * 0.7F + 1.0F) * 2.0F);
             stack.shrink(1);
         }
@@ -73,5 +74,6 @@ public class UpgradeBrick
         drops.add(upgradeInst.getSavedStack());
     }
 
-    private static final AttributeModifier SLOWDOWN = new AttributeModifier(UUID.fromString("314386d8-2341-4842-b3a6-e50063befbfc"), CsmConstants.ID + ".brick", -1.0D, 2);
+    private static final AttributeModifier STANDSTILL = new AttributeModifier(UUID.fromString("314386d8-2341-4842-b3a6-e50063befbfc"), CsmConstants.ID + ".brick.mv", -1.0D, 2);
+    private static final AttributeModifier FULL_KB_RESIST = new AttributeModifier(UUID.fromString("62B8C0ED-1595-4A0E-8BF6-065F56101945"), CsmConstants.ID + ".brick.kb", 1.0D, 0);
 }

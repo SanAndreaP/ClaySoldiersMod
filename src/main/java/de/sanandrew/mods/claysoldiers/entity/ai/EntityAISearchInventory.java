@@ -26,7 +26,7 @@ public class EntityAISearchInventory
     @Override
     public boolean shouldExecute() {
         if( this.srcCounter++ % 10 == 0 ) {
-            if( EntityAISearchTarget.hasFollowTarget(this.taskOwner) ) {
+            if( EntityAISearchTarget.hasSoldierFollowTarget(this.taskOwner) ) {
                 return false;
             }
 

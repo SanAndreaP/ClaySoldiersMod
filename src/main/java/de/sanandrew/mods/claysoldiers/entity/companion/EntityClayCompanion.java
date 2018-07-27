@@ -6,22 +6,25 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.companion;
 
-import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
-import de.sanandrew.mods.claysoldiers.api.entity.companion.ICompanion;
+import de.sanandrew.mods.claysoldiers.api.attribute.CsmMobAttributes;
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
+import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.entity.ITargetingEntity;
+import de.sanandrew.mods.claysoldiers.api.entity.companion.ICompanion;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowEnemy;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIMoveAwayFromCorners;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.PathHelper;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
+import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIWander;
@@ -38,9 +41,9 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public abstract class EntityClayCompanion<E extends EntityLivingBase, T extends IDollType>
+public abstract class EntityClayCompanion<E extends EntityCreature, T extends IDollType>
         extends EntityCreature
-        implements ICompanion<E>, IEntityAdditionalSpawnData
+        implements ICompanion<E>, IEntityAdditionalSpawnData, ITargetingEntity<E>
 {
     private static final DataParameter<UUID> OCCUPATION_PARAM = EntityDataManager.createKey(EntityClayCompanion.class, DataSerializerUUID.INSTANCE);
 
@@ -72,7 +75,10 @@ public abstract class EntityClayCompanion<E extends EntityLivingBase, T extends 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
 
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
     }
@@ -83,6 +89,8 @@ public abstract class EntityClayCompanion<E extends EntityLivingBase, T extends 
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.applyAttackAI();
+
+        this.targetTasks.addTask(4, new EntityAISearchTarget.Enemy(this));
     }
 
     protected void applyAttackAI() {

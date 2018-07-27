@@ -15,23 +15,21 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 import java.util.UUID;
 
-public class EffectSlimeball
+public class EffectBackWalk
         implements ISoldierEffect
 {
-    public static final EffectSlimeball INSTANCE = new EffectSlimeball();
+    public static final EffectBackWalk INSTANCE = new EffectBackWalk();
 
-    private EffectSlimeball() { }
+    private EffectBackWalk() { }
 
     @Override
     public void onAdded(ISoldier<?> soldier, ISoldierEffectInst effectInst) {
-        AttributeHelper.tryApplyMoveSpeedModifier(soldier.getEntity(), STANDSTILL);
-        AttributeHelper.tryApplyKnockbackResModifier(soldier.getEntity(), FULL_KB_RESIST);
+        AttributeHelper.tryApplyMoveDirectionModifier(soldier.getEntity(), MOVE_BACK);
     }
 
     @Override
     public void onExpired(ISoldier<?> soldier, ISoldierEffectInst effectInst) {
-        AttributeHelper.tryRemoveMoveSpeedModifier(soldier.getEntity(), STANDSTILL);
-        AttributeHelper.tryRemoveKnockbackResModifier(soldier.getEntity(), FULL_KB_RESIST);
+        AttributeHelper.tryRemoveMoveDirectionModifier(soldier.getEntity(), MOVE_BACK);
     }
 
     @Override
@@ -39,6 +37,5 @@ public class EffectSlimeball
         return true;
     }
 
-    private static final AttributeModifier STANDSTILL = new AttributeModifier(UUID.fromString("D9C0D2CC-4CB7-4854-A8DC-AC9EEE9B9AB2"), CsmConstants.ID + ".slimeball.mv", -1.0D, 2);
-    private static final AttributeModifier FULL_KB_RESIST = new AttributeModifier(UUID.fromString("1622C34B-CF15-4329-9086-BBAC1989FE49"), CsmConstants.ID + ".slimeball.kb", 1.0D, 0);
+    private static final AttributeModifier MOVE_BACK = new AttributeModifier(UUID.fromString("351A7B3C-B4B9-4B89-91B8-F42621E918A8"), CsmConstants.ID + ".movement.backwards", -2.0D, 2);
 }

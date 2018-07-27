@@ -6,41 +6,42 @@
    *******************************************************************************************************************/
 package de.sanandrew.mods.claysoldiers.entity.soldier;
 
-import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
 import de.sanandrew.mods.claysoldiers.api.NBTConstants;
-import de.sanandrew.mods.claysoldiers.api.event.SoldierDeathEvent;
-import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
+import de.sanandrew.mods.claysoldiers.api.attribute.CsmMobAttributes;
+import de.sanandrew.mods.claysoldiers.api.entity.IDisruptable;
+import de.sanandrew.mods.claysoldiers.api.entity.ITargetingEntity;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.ITeam;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffect;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.effect.ISoldierEffectInst;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgFunctions;
+import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgradeInst;
-import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.api.attribute.CsmMobAttributes;
+import de.sanandrew.mods.claysoldiers.api.event.SoldierDeathEvent;
+import de.sanandrew.mods.claysoldiers.api.event.SoldierTargetEnemyEvent;
 import de.sanandrew.mods.claysoldiers.entity.EntityHelper;
+import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowEnemy;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowTarget;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIMoveAwayFromCorners;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchInventory;
 import de.sanandrew.mods.claysoldiers.entity.ai.EntityAISearchTarget;
-import de.sanandrew.mods.claysoldiers.entity.ai.EntityAIFollowEnemy;
 import de.sanandrew.mods.claysoldiers.entity.ai.PathHelper;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.network.PacketManager;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataSerializerUUID;
 import de.sanandrew.mods.claysoldiers.network.datasync.DataWatcherBooleans;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncEffects;
 import de.sanandrew.mods.claysoldiers.network.packet.PacketSyncUpgrades;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
-import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.effect.EffectRegistry;
-import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeEntry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.UpgradeRegistry;
+import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;
-import de.sanandrew.mods.claysoldiers.util.RayTraceFixed;
 import de.sanandrew.mods.sanlib.lib.util.ItemStackUtils;
 import de.sanandrew.mods.sanlib.lib.util.MiscUtils;
 import de.sanandrew.mods.sanlib.lib.util.UuidUtils;
@@ -50,7 +51,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -71,7 +71,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -100,7 +99,7 @@ import java.util.stream.Collectors;
 
 public class EntityClaySoldier
         extends EntityCreature
-        implements ISoldier<EntityClaySoldier>, IEntityAdditionalSpawnData
+        implements ISoldier<EntityClaySoldier>, IEntityAdditionalSpawnData, ITargetingEntity<EntityClaySoldier>
 {
     private static final DataParameter<UUID> TEAM_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializerUUID.INSTANCE);
     private static final DataParameter<Byte> TEXTURE_TYPE_PARAM = EntityDataManager.createKey(EntityClaySoldier.class, DataSerializers.BYTE);
@@ -120,8 +119,6 @@ public class EntityClaySoldier
 
     public Entity followingEntity;
     public BlockPos followingBlock;
-
-    public float moveMulti;
 
     private double prevChasingPosX;
     private double prevChasingPosY;
@@ -155,10 +152,6 @@ public class EntityClaySoldier
 
         this.effectSyncList = new ConcurrentLinkedQueue<>();
         this.effectMap = new ConcurrentHashMap<>();
-
-        this.moveMulti = 1.0F;
-
-        this.setMovable(true);
 
         ((PathNavigateGround) this.getNavigator()).setCanSwim(true);
 
@@ -202,7 +195,7 @@ public class EntityClaySoldier
         this.tasks.addTask(2, new EntityAIFollowTarget.Mount(this, 1.0D));
         this.tasks.addTask(2, new EntityAIFollowInventory(this, 1.0D));
         this.tasks.addTask(3, new EntityAIFollowTarget.King(this, 1.0D));
-        this.tasks.addTask(4, new EntityAIFollowEnemy.Ranged(this, 1.0D));
+        this.tasks.addTask(4, new EntityAIFollowEnemy.RangedSoldier(this, 1.0D));
         this.tasks.addTask(5, new EntityAIFollowEnemy.Meelee(this, 1.0D));
         this.tasks.addTask(6, new EntityAIMoveTowardsRestriction(this, 0.5D));
         this.tasks.addTask(7, new EntityAIWander(this, 0.5D));
@@ -222,6 +215,7 @@ public class EntityClaySoldier
 
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttributeMap().registerAttribute(CsmMobAttributes.KB_RESISTANCE);
+        this.getAttributeMap().registerAttribute(CsmMobAttributes.MV_FWDIRECTION);
 
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(CsmConfig.Entities.Soldiers.movementSpeed);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(CsmConfig.Entities.Soldiers.attackDamage);
@@ -507,8 +501,18 @@ public class EntityClaySoldier
 
     //region ai and movement
     @Override
-    public void setMoveMultiplier(float fwd) {
-        this.moveMulti = Math.min(1.0F, Math.max(-1.0F, fwd));
+    public void setAIMoveSpeed(float speedIn) {
+        super.setAIMoveSpeed(speedIn * (float) this.getEntityAttribute(CsmMobAttributes.MV_FWDIRECTION).getAttributeValue());
+    }
+
+    @Override
+    public void setMoveForward(float amount) {
+        super.setMoveForward(amount * (float) this.getEntityAttribute(CsmMobAttributes.MV_FWDIRECTION).getAttributeValue());
+    }
+
+    @Override
+    public void setMoveStrafing(float amount) {
+        super.setMoveStrafing(amount * (float) this.getEntityAttribute(CsmMobAttributes.MV_FWDIRECTION).getAttributeValue());
     }
 
     @Override
@@ -517,37 +521,8 @@ public class EntityClaySoldier
     }
 
     @Override
-    public void setMoveForward(float amount) {
-        super.setMoveForward(amount * this.moveMulti);
-    }
-
-    @Override
-    public void setAIMoveSpeed(float speedIn) {
-        super.setAIMoveSpeed(speedIn * this.moveMulti);
-    }
-
-    @Override
-    public boolean canMove() {
-        return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit);
-    }
-
-    @Override
-    public void setMovable(boolean move) {
-        this.dwBooleans.setBit(DataWatcherBooleans.Soldier.CAN_MOVE.bit, move);
-    }
-
-    @Override
     public void setBreathableUnderwater(boolean breathable) {
         this.dwBooleans.setBit(DataWatcherBooleans.Soldier.BREATHE_WATER.bit, breathable);
-    }
-
-    @Override
-    public void move(MoverType type, double motionX, double motionY, double motionZ) {
-        if( this.canMove() ) {
-            super.move(type, motionX, motionY, motionZ);
-        } else {
-            super.move(type, 0.0D, motionY > 0.0D ? motionY / 2.0D : motionY, 0.0D);
-        }
     }
 
     @Override
@@ -642,12 +617,6 @@ public class EntityClaySoldier
                 this.expireEffect(effect);
             }
         });
-
-        if( !this.canMove() ) {
-            this.motionX = 0.0F;
-            this.motionZ = 0.0F;
-            this.isJumping = false;
-        }
     }
 
     @Override
@@ -655,23 +624,26 @@ public class EntityClaySoldier
         return this.dwBooleans.getBit(DataWatcherBooleans.Soldier.BREATHE_WATER.bit);
     }
 
+    //TODO: fix look vectors
     @Override
     public boolean canEntityBeSeen(Entity target) {
-        Vec3d myVec = new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ);
-        Vec3d tgVec = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
+//        Vec3d myVec = new Vec3d(this.posX, this.posY + this.getEyeHeight(), this.posZ);
+//        Vec3d tgVec = new Vec3d(target.posX, target.posY + target.getEyeHeight(), target.posZ);
+//
+//        return !RayTraceFixed.rayTraceSight(this, this.world, myVec, tgVec);
 
-        return !RayTraceFixed.rayTraceSight(this, this.world, myVec, tgVec);
-    }
-
-    @Override
-    public boolean canBePushed() {
-        return this.canMove();
+        return super.canEntityBeSeen(target);
     }
     //endregion
 
     @Override
     public ITeam getSoldierTeam() {
         return TeamRegistry.INSTANCE.getTeam(this.dataManager.get(TEAM_PARAM));
+    }
+
+    @Override
+    public double getReach() {
+        return 0.5F + (this.hasUpgrade(Upgrades.MH_BONE, EnumUpgradeType.MAIN_HAND) ? 0.2F : 0.0F);
     }
 
     @Override
@@ -885,10 +857,6 @@ public class EntityClaySoldier
 
     @Override
     public void knockBack(Entity entityIn, float strength, double xRatio, double zRatio) {
-        if( !this.canMove() ) {
-            return;
-        }
-
         strength *= 1.0D - this.getEntityAttribute(CsmMobAttributes.KB_RESISTANCE).getAttributeValue();
 
         super.knockBack(entityIn, strength, xRatio, zRatio);

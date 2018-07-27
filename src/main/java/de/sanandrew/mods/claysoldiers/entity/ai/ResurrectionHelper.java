@@ -9,7 +9,7 @@ package de.sanandrew.mods.claysoldiers.entity.ai;
 import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.ISoldier;
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.misc.UpgradeClay;

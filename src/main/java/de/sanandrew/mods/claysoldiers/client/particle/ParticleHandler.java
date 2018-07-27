@@ -8,7 +8,7 @@ package de.sanandrew.mods.claysoldiers.client.particle;
 
 import de.sanandrew.mods.claysoldiers.api.doll.IDollType;
 import de.sanandrew.mods.claysoldiers.api.doll.ItemDoll;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumGeckoType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumTurtleType;
 import de.sanandrew.mods.claysoldiers.registry.mount.EnumWoolBunnyType;

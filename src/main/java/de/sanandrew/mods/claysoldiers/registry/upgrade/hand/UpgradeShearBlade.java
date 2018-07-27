@@ -15,7 +15,7 @@ import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.ISoldierUpgrade
 import de.sanandrew.mods.claysoldiers.api.entity.soldier.upgrade.EnumUpgradeType;
 import de.sanandrew.mods.claysoldiers.entity.attributes.AttributeModifierRnd;
 import de.sanandrew.mods.claysoldiers.api.attribute.AttributeHelper;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.upgrade.Upgrades;
 import de.sanandrew.mods.claysoldiers.util.ClaySoldiersMod;
 import de.sanandrew.mods.claysoldiers.util.EnumParticle;

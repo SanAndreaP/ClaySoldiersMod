@@ -9,7 +9,7 @@
 package de.sanandrew.mods.claysoldiers.compat.jei;
 
 import de.sanandrew.mods.claysoldiers.item.ItemDisruptor;
-import de.sanandrew.mods.claysoldiers.registry.ItemRegistry;
+import de.sanandrew.mods.claysoldiers.item.ItemRegistry;
 import de.sanandrew.mods.claysoldiers.registry.team.TeamRegistry;
 import de.sanandrew.mods.claysoldiers.util.CsmConfig;
 import mezz.jei.api.IModPlugin;
