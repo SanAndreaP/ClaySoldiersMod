@@ -111,7 +111,6 @@ public abstract class EntityAIFollowTarget<E extends EntityCreature>
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         void checkAndPerformAction(Entity entity, double dist) {
             if( dist < 1.0F && entity instanceof EntityItem ) {
                 ItemStack stack = ((EntityItem) entity).getItem();
